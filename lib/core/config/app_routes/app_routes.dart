@@ -1,5 +1,7 @@
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
+import 'package:autorevive/pregentaitions/screens/reset_password/reset_password_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +13,8 @@ class AppRoutes {
   static const String onboardingScreen = "/OnboardingScreen";
   static const String logInScreen = "/LogInScreen";
   static const String emailVerifyScreen = "/EmailVerifyScreen";
+  static const String otpScreen = "/OtpScreen";
+  static const String resetPasswordScreen = "/ResetPasswordScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -28,6 +32,7 @@ class AppRoutes {
         },
       ),
 
+      ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
 
       GoRoute(
         path: onboardingScreen,
@@ -36,6 +41,7 @@ class AppRoutes {
       ),
 
 
+      ///<<<=============>>> LOGIN SCREEN <<<===============>>>
 
       GoRoute(
         path: logInScreen,
@@ -45,11 +51,34 @@ class AppRoutes {
 
 
 
+      ///<<<=============>>> EMAIL VERIFY SCREEN <<<===============>>>
       GoRoute(
         path: emailVerifyScreen,
         name: emailVerifyScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(EmailVerifyScreen(), state),
-      )
+      ),
+
+
+      ///<<<=============>>> OTP SCREEN <<<===============>>>
+
+      GoRoute(
+        path: otpScreen,
+        name: otpScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(OtpScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> RESET PASSWORD SCREEN <<<===============>>>
+
+
+      GoRoute(
+        path: resetPasswordScreen,
+        name: resetPasswordScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ResetPasswordScreen(), state),
+      ),
+
+
 
 
     ]
