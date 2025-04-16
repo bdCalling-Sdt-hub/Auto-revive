@@ -1,7 +1,6 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
-import 'package:autorevive/pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
@@ -24,12 +23,15 @@ class LogInScreen extends StatelessWidget {
           children: [
             SizedBox(height: 138.h),
 
+            ///<<<=============>>>   Logo Icon   <<<===============>>>
 
             Assets.icons.logoSVG.svg(),
 
 
             SizedBox(height: 38.h),
 
+
+            ///<<<=============>>>   Email Filed   <<<===============>>>
 
             CustomTextField(
                 controller: emailCtrl,
@@ -39,12 +41,16 @@ class LogInScreen extends StatelessWidget {
 
 
 
+            ///<<<=============>>>   Password Filed   <<<===============>>>
+
             CustomTextField(
                 controller: passCtrl,
                 hintText: "Enter Password",
                 prefixIcon: Assets.icons.key.svg(),
                 isPassword: true),
 
+
+            ///<<<=============>>> Forgot filed <<<===============>>>
 
             Align(
               alignment: Alignment.centerRight,
@@ -56,12 +62,17 @@ class LogInScreen extends StatelessWidget {
             ),
 
 
+
+            ///<<<=============>>> BUTTON <<<===============>>>
+
             CustomButton(title: "Let's Go", onpress: (){
 
             }),
 
 
             SizedBox(height: 40.h),
+
+            ///<<<=============>>> DO NOT HAVE ACCOUNT <<<===============>>>
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
