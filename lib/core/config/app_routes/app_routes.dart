@@ -1,5 +1,6 @@
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/mechanic_view/personal_screen/personal_information_screen.dart';
 import 'package:autorevive/pregentaitions/screens/signup/signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/reset_password/reset_password_screen.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
   static const String signUpScreen = "/SignUpScreen";
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
+  static const String personalInformationScreen = "/PersonalInformationScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -86,9 +88,15 @@ class AppRoutes {
         path: signUpScreen,
         name: signUpScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(SignUpScreen(), state),
+      ),
+
+      ///<<<=============>>> PERSONAL INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: personalInformationScreen,
+        name: personalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(PersonalInformationScreen(), state),
       )
-
-
     ]
   );
 

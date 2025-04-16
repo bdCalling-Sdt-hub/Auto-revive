@@ -44,7 +44,7 @@ class OnboardingScreen extends StatelessWidget {
               
               
               CustomButton(title: "Start Your Journey !", onpress: (){
-                context.goNamed(AppRoutes.logInScreen);
+                context.goNamed(AppRoutes.signUpScreen);
               })
             ],
           ),
