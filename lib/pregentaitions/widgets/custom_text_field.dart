@@ -67,65 +67,71 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: widget.onChanged,
-      onTap:widget. onTap,
-      readOnly: widget.readOnly!,
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscuringCharacter: widget.obscure!,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      maxLines: widget.maxLine ?? 1,
-      // validator: widget.validator,
-      validator: widget.validator ??
-              (value) {
-            if (widget.isEmail == false) {
-              if (value!.isEmpty) {
-                return "Please enter ${widget.hintText!.toLowerCase()}";
-              } else if (widget.isPassword) {
+    return Padding(
+      padding:  EdgeInsets.only(bottom: 12.h),
+      child: TextFormField(
+        onChanged: widget.onChanged,
+        onTap:widget. onTap,
+        readOnly: widget.readOnly!,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscuringCharacter: widget.obscure!,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        maxLines: widget.maxLine ?? 1,
+        // validator: widget.validator,
+        validator: widget.validator ??
+                (value) {
+              if (widget.isEmail == false) {
+                if (value!.isEmpty) {
+                  return "Please enter ${widget.hintText!.toLowerCase()}";
+                } else if (widget.isPassword) {
+                  if (value.isEmpty) {
+                    return "Please enter ${widget.hintText!.toLowerCase()}";
+                  } else if (value.length < 8 || !AppConstants.validatePassword(value)) {
+                    return "Password: 8 characters min, letters & digits \nrequired";
+                  }
+                }
+              } else {
+                bool data = AppConstants.emailValidate.hasMatch(value!);
                 if (value.isEmpty) {
                   return "Please enter ${widget.hintText!.toLowerCase()}";
-                } else if (value.length < 8 || !AppConstants.validatePassword(value)) {
-                  return "Password: 8 characters min, letters & digits \nrequired";
+                } else if (!data) {
+                  return "Please check your email!";
                 }
               }
-            } else {
-              bool data = AppConstants.emailValidate.hasMatch(value!);
-              if (value.isEmpty) {
-                return "Please enter ${widget.hintText!.toLowerCase()}";
-              } else if (!data) {
-                return "Please check your email!";
-              }
-            }
-            return null;
-          },
+              return null;
+            },
 
-      cursorColor: Colors.white,
-      obscureText: widget.isPassword ? obscureText : false,
-      style: TextStyle(color: widget.hintextColor ?? Colors.white, fontSize: widget.hintextSize ?? 12.h),
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: widget.contentPaddingHorizontal ?? 20.w,
-              vertical: widget.contentPaddingVertical ?? 10.h),
-          fillColor: const Color(0xffFAFAFA),
-          filled: true,
-          prefixIcon: widget.prefixIcon,
-          suffixIcon: widget.isPassword
-              ? GestureDetector(
-            onTap: toggle,
-            child: _suffixIcon(
-                obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined),
-          )
-              : widget.suffixIcon,
-          prefixIconConstraints: BoxConstraints(minHeight: 24.w, minWidth: 24.w),
-          labelText: widget.labelText,
-          hintText: widget.hintText,
-          hintStyle: TextStyle(color: widget.hintextColor ?? AppColors.textColor808080, fontSize: widget.hintextSize ?? 12.h,fontWeight: FontWeight.w400),
-          focusedBorder: focusedBorder(),
-          enabledBorder: enabledBorder(),
-          errorBorder: errorBorder(),
-          border: focusedBorder(),
-          errorStyle: TextStyle(fontSize: 12.h, fontWeight: FontWeight.w400)
+        cursorColor: Colors.white,
+        obscureText: widget.isPassword ? obscureText : false,
+        style: TextStyle(color: widget.hintextColor ?? Colors.white, fontSize: widget.hintextSize ?? 12.h),
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(
+                horizontal: widget.contentPaddingHorizontal ?? 20.w,
+                vertical: widget.contentPaddingVertical ?? 10.h),
+            fillColor: const Color(0xffFAFAFA),
+            filled: true,
+            prefixIcon: Padding(
+              padding:  EdgeInsets.symmetric(horizontal: 12.w),
+              child: widget.prefixIcon,
+            ),
+            suffixIcon: widget.isPassword
+                ? GestureDetector(
+              onTap: toggle,
+              child: _suffixIcon(
+                  obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+            )
+                : widget.suffixIcon,
+            prefixIconConstraints: BoxConstraints(minHeight: 24.w, minWidth: 24.w),
+            labelText: widget.labelText,
+            hintText: widget.hintText,
+            hintStyle: TextStyle(color: widget.hintextColor ?? AppColors.textColor808080, fontSize: widget.hintextSize ?? 12.h,fontWeight: FontWeight.w400),
+            focusedBorder: focusedBorder(),
+            enabledBorder: enabledBorder(),
+            errorBorder: errorBorder(),
+            border: focusedBorder(),
+            errorStyle: TextStyle(fontSize: 12.h, fontWeight: FontWeight.w400)
+        ),
       ),
     );
   }
@@ -138,7 +144,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular( widget.borderRadio?.r ?? 16.r),
       borderSide:BorderSide(
-          color: widget.borderColor ??AppColors.textColor808080
+          color: widget.borderColor ??AppColors.borderColor
       ),
     );
   }
@@ -147,7 +153,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(widget.borderRadio?.r ?? 16.r),
       borderSide:BorderSide(
-          color: widget.borderColor ?? AppColors.textColor808080
+          color: widget.borderColor ?? AppColors.borderColor
       ),
     );
   }

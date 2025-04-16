@@ -19,8 +19,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Logo SVG.svg
   SvgGenImage get logoSVG => const SvgGenImage('assets/icons/Logo SVG.svg');
 
+  /// File path: assets/icons/key.svg
+  SvgGenImage get key => const SvgGenImage('assets/icons/key.svg');
+
+  /// File path: assets/icons/mail.svg
+  SvgGenImage get mail => const SvgGenImage('assets/icons/mail.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [logoSVG];
+  List<SvgGenImage> get values => [logoSVG, key, mail];
 }
 
 class $AssetsImagesGen {

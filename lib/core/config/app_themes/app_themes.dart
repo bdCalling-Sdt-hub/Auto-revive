@@ -26,12 +26,11 @@ class Themes {
       ),
 
       ///-----------------app bar theme------------------>
-      appBarTheme: const AppBarTheme(
-          color: Colors.white,
-          // backgroundColor: Colors.white10,
+      appBarTheme: const  AppBarTheme(
+          color: AppColors.bgColorWhite,
           centerTitle: true,
-          elevation: 5,
-          shadowColor: Colors.green)
+          elevation: 0),
+        scaffoldBackgroundColor: AppColors.bgColorWhite,
   );
 
 
