@@ -80,9 +80,7 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(ResetPasswordScreen(), state),
       ),
 
-
-      ),
-
+      ///<<<=============>>> SIGN UP SCREEN <<<===============>>>
 
       GoRoute(
         path: signUpScreen,
