@@ -1,5 +1,6 @@
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/signup/signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static const String onboardingScreen = "/OnboardingScreen";
   static const String logInScreen = "/LogInScreen";
   static const String emailVerifyScreen = "/EmailVerifyScreen";
+  static const String signUpScreen = "/SignUpScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -49,6 +51,13 @@ class AppRoutes {
         path: emailVerifyScreen,
         name: emailVerifyScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(EmailVerifyScreen(), state),
+      ),
+
+
+      GoRoute(
+        path: signUpScreen,
+        name: signUpScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(SignUpScreen(), state),
       )
 
 
