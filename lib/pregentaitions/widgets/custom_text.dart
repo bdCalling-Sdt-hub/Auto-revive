@@ -50,7 +50,7 @@ class CustomText extends StatelessWidget {
             fontSize: fontsize ?? 14.h,
             fontFamily: fontName?? "Nova",
             fontWeight:fontWeight == null ? FontWeight.w400 : fontWeight ,
-            color: color ?? AppColors.fontColorFEFEFE
+            color: color ?? AppColors.textColor4E4E4E
         ),
       ),
     );
