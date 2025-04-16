@@ -1,3 +1,4 @@
+import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
   static const String onboardingScreen = "/OnboardingScreen";
+  static const String logInScreen = "/LogInScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -19,7 +21,7 @@ class AppRoutes {
           },
         redirect: (context, state) {
           Future.delayed(const Duration(seconds: 3), ()async{
-            AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+             AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
           });
         },
       ),
@@ -29,6 +31,14 @@ class AppRoutes {
         path: onboardingScreen,
         name: onboardingScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
+      ),
+
+
+
+      GoRoute(
+        path: logInScreen,
+        name: logInScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(LogInScreen(), state),
       )
 
     ]
