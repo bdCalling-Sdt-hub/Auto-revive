@@ -66,10 +66,12 @@ class _LicensingAndComplianceScreenState
               labelText: 'US-DOT Number',
               hintText: 'US-DOT Number',
             ),
-            CustomText(
-              text: 'Upload Proof of a Active DOT registration',
+            CustomUploadButton(
+              topLabel: 'Upload Proof of a Active DOT registration',
+              title: 'DOT registration.pdf',
+              icon: Icons.upload,
+              onTap: () {},
             ),
-            CustomUploadButton(title: 'DOT registration.pdf', onTap: (){},icon: Icons.upload,),
             CustomTextField(
               controller: _addressTEController,
               labelText: 'Business Address',
