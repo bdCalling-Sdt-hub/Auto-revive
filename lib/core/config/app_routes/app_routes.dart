@@ -5,6 +5,7 @@ import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
   static const String companyInformationScreen = "/companyInformationScreen";
+  static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -140,6 +142,14 @@ class AppRoutes {
         path: companyInformationScreen,
         name: companyInformationScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(CompanyInformationScreen(), state),
+      ),
+
+ ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: licensingAndComplianceScreen,
+        name: licensingAndComplianceScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(LicensingAndComplianceScreen(), state),
       ),
 
 

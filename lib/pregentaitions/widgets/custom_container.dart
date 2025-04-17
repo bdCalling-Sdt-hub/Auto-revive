@@ -32,7 +32,9 @@ class CustomContainer extends StatelessWidget {
     this.topRightRadius,
     this.bottomLeft,
     this.bottomRight,
-    this.elevation = false, this.paddingAll,
+    this.elevation = false,
+    this.paddingAll,
+    this.marginAll,
   });
 
   final Widget? child;
@@ -51,6 +53,7 @@ class CustomContainer extends StatelessWidget {
   final double? horizontalMargin;
   final double? marginLeft;
   final double? marginRight;
+  final double? marginAll;
   final double? paddingLeft;
   final double? paddingRight;
   final double? paddingAll;
@@ -95,7 +98,9 @@ class CustomContainer extends StatelessWidget {
                     left: marginLeft ?? 0,
                     right: marginRight ?? 0,
                   )
-                : null,
+                : marginAll != null
+                    ? EdgeInsets.all(marginAll ?? 0)
+                    : null,
         alignment: alignment,
         decoration: BoxDecoration(
           boxShadow: boxShadow ??

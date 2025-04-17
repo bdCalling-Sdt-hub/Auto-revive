@@ -1,0 +1,33 @@
+import 'package:autorevive/core/constants/app_colors.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
+import 'package:flutter/material.dart';
+
+class CustomChecked extends StatelessWidget {
+  const CustomChecked(
+      {super.key, required this.selected, required this.onChanged});
+
+  final bool? selected;
+  final ValueChanged<bool?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          side: const BorderSide(color: AppColors.primaryColor),
+          activeColor: AppColors.primaryColor,
+          value: selected == true,
+          onChanged: (_) => onChanged(true),
+        ),
+        CustomText(text: 'Yes'),
+        Checkbox(
+            side: const BorderSide(color: AppColors.primaryColor),
+            activeColor: AppColors.primaryColor,
+            value: selected == false,
+          onChanged: (_) => onChanged(false),
+        ),
+        CustomText(text: 'No'),
+      ],
+    );
+  }
+}

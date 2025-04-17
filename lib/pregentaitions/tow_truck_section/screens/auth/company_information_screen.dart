@@ -19,18 +19,13 @@ class CompanyInformationScreen extends StatefulWidget {
 }
 
 class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
-  final TextEditingController _companyNameTEController =
-      TextEditingController();
+  final TextEditingController _companyNameTEController = TextEditingController();
   final TextEditingController _ownerNameTEController = TextEditingController();
-  final TextEditingController _businessPhoneTEController =
-      TextEditingController();
-  final TextEditingController _businessEmailTEController =
-      TextEditingController();
-  final TextEditingController _companyAddressTEController =
-      TextEditingController();
+  final TextEditingController _businessPhoneTEController = TextEditingController();
+  final TextEditingController _businessEmailTEController = TextEditingController();
+  final TextEditingController _companyAddressTEController = TextEditingController();
   final TextEditingController _websiteURLTEController = TextEditingController();
-  final TextEditingController _businessYearTEController =
-      TextEditingController();
+  final TextEditingController _businessYearTEController = TextEditingController();
   final TextEditingController _towTrucksTEController = TextEditingController();
   final TextEditingController _eINTEController = TextEditingController();
 
@@ -125,7 +120,7 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
                 child: CustomButton(
                     title: 'Save and Next',
                     onpress: () {
-                      context.pushNamed(AppRoutes.companyInformationScreen);
+                      context.pushNamed(AppRoutes.licensingAndComplianceScreen);
                     })),
             SizedBox(height: 24.h),
           ],
