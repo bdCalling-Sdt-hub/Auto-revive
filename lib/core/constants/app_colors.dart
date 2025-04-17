@@ -5,6 +5,7 @@ class AppColors{
   static const Color bgColorWhite = Color(0xffF7F7F7);
   static const Color borderColor = Color(0xffB0B0FF);
   static const Color primaryColor = Color(0xff0000FF);
+  static const Color pdfButtonColor = Color(0xff8A8AFF);
   static const Color primaryColorTransparent = Color(0x990000FF);
   static const Color integatorColor = Color(0xffE6E6FF);
   static const Color fontColorFEFEFE = Color(0xffFEFEFE);

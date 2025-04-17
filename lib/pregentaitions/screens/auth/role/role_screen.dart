@@ -61,8 +61,10 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Tow Truck Operator",
                 onpress: (){
+                  context.pushNamed(AppRoutes.basicInfoScreen);
 
-            }),
+
+                }),
 
 
 
