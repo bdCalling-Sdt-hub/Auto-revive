@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/config/app_routes/app_routes.dart';
+import '../../../../core/config/app_routes/app_routes.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+
+class RoleScreen extends StatelessWidget {
+  RoleScreen({super.key});
 
   final TextEditingController emailCtrl = TextEditingController();
 
@@ -47,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
             CustomButton(
                 title: "Customer",
                 onpress: (){
-
+                  context.pushNamed(AppRoutes.customerSignupScreen);
             }),
            SizedBox(height: 10.h),
             CustomButton(

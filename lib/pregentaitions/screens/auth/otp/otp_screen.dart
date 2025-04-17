@@ -4,7 +4,10 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../../../../core/config/app_routes/app_routes.dart';
 
 class OtpScreen extends StatelessWidget {
   OtpScreen({super.key});
@@ -58,7 +61,7 @@ class OtpScreen extends StatelessWidget {
             ///<<<=============>>> VERIFY <<<===============>>>
 
             CustomButton(title: "Verify", onpress: (){
-
+              context.pushNamed(AppRoutes.resetPasswordScreen);
             }),
 
 

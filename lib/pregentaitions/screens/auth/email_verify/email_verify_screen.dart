@@ -52,7 +52,7 @@ class EmailVerifyScreen extends StatelessWidget {
             ///<<<=============>>> SEND OTP <<<===============>>>
 
             CustomButton(title: "Send OTP", onpress: (){
-              context.pushNamed(AppRoutes.resetPasswordScreen);
+              context.pushNamed(AppRoutes.otpScreen);
             }),
 
 

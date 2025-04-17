@@ -1,6 +1,5 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
-import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
@@ -35,12 +34,6 @@ class PersonalInformationScreen extends StatelessWidget {
           children: [
             SizedBox(height: 8 .h),
             ///<<<=============>>> PERCENT <<<===============>>>
-
-
-
-
-
-
 
 
             // Image and camera upload section

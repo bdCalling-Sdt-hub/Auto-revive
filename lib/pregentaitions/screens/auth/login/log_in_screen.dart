@@ -78,7 +78,11 @@ class LogInScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomText(text: "Don't have an account?"),
-                CustomText(text: "  Sign Up", color: AppColors.primaryColor),
+                GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.roleScreen);
+                    },
+                    child: CustomText(text: "  Sign Up", color: AppColors.primaryColor)),
               ],
             )
           ],
