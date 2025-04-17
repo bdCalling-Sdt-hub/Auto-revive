@@ -1,0 +1,2 @@
+/Users/tanvirhridoy/Desktop/officeWorks/Auto-revive/android/app/.cxx/Debug/363f376v/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/tanvirhridoy/Desktop/officeWorks/Auto-revive/android/app/.cxx/Debug/363f376v/armeabi-v7a/CMakeFiles/rebuild_cache.dir
