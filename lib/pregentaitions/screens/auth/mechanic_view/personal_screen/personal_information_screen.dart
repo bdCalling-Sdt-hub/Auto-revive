@@ -5,13 +5,18 @@ import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../global/custom_assets/assets.gen.dart';
+import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
+import '../../../../widgets/custom_linear_indicator.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   PersonalInformationScreen({super.key});
@@ -31,7 +36,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController currentAddressCtrl = TextEditingController();
-
+  bool? validUSDOTNumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,9 +57,12 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 8.h),
-              ///<<<=============>>> PERCENT <<<===============>>>
-
-
+              ///<<<=============>>> LinearIndicator <<<===============>>>
+              const CustomLinearIndicator(
+                progressValue: 0.03,
+                label: 0,
+              ),
+              SizedBox(height: 30.h),
               /// <<<=============>>> Image and camera upload section <<<=============>>>
               Center(
                 child: GestureDetector(
@@ -113,38 +121,30 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 38.h),
-
+              SizedBox(height: 8.h),
               ///<<<=============>>> Name Filed <<<===============>>>
-
               CustomText(
-                  text: "Full Name",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
+                  text: "Full Name"),
+              SizedBox(height: 8.h),
               CustomTextField(controller: fullNameCtrl, hintText: "Enter your name"),
               ///<<<=============>>> Platform Filed <<<===============>>>
               SizedBox(height: 11.h),
               CustomText(
-                  text: "Platform",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
+                  text: "Platform"),
+              SizedBox(height: 8.h),
               // Platform dropdown or text field (use if needed)
               CustomTextField(
                 controller: platformCtrl,
                 hintText: "Enter Platform",
-                suffixIcon:  Assets.icons.selectIcon.svg(),
+                // suffixIcon:  Assets.icons.selectIcon.svg(),
                 // prefixIcon: Assets.icons.platform.svg(),
               ),
               SizedBox(height: 11.h),
 
               ///<<<=============>>> Email Filed <<<===============>>>
               CustomText(
-                  text: "Email",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
+                  text: "Email"),
+              SizedBox(height: 8.h),
               CustomTextField(
                   controller: emailCtrl,
                   hintText: "Enter E-mail",
@@ -154,30 +154,57 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
 
               ///<<<=============>>> Phone Filed <<<===============>>>
               CustomText(
-                  text: "Phone No.",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(
-                controller: phoneNoCtrl,
-                hintText: "Enter Phone Number",
-                // prefixIcon: Assets.icons.phone.svg(),
+                  text: "Phone No."),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  CountryPickerDropdown(
+                    initialValue: 'US',
+                    itemBuilder: _buildDropdownItem,
+                    onValuePicked: (Country country) {
+                      print("${country.name} +${country.phoneCode}");
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: CustomTextField(
+                      controller: phoneNoCtrl,
+                      hintText: 'Enter your number',
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 11.h),
 
               ///<<<=============>>> Address Filed <<<===============>>>
               CustomText(
-                  text: "Current Address",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
+                  text: "Current Address"),
+              SizedBox(height: 8.h),
               CustomTextField(
                 controller: currentAddressCtrl,
                 hintText: "Enter Current Address",
-
               ),
-
-              SizedBox(height: 50.h),
+              SizedBox(height: 19.h),
+              CustomText(text: 'Do you have a valid driver’s license?'),
+              CustomChecked(
+                selected: validUSDOTNumber,
+                onChanged: (val) {
+                  setState(() {
+                    validUSDOTNumber = val;
+                  });
+                },
+              ),
+              SizedBox(height: 11.h),
+              CustomText(text: 'Do you have a CDL?'),
+              CustomChecked(
+                selected: validUSDOTNumber,
+                onChanged: (val) {
+                  setState(() {
+                    validUSDOTNumber = val;
+                  });
+                },
+              ),
+              SizedBox(height: 31.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               CustomButton(
@@ -187,6 +214,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   context.pushNamed(AppRoutes.resetPasswordScreen);
                 },
               ),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -194,7 +222,13 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
     );
   }
 
-
+  Widget _buildDropdownItem(Country country) => Row(
+    children: <Widget>[
+      CountryPickerUtils.getDefaultFlagImage(country),
+      SizedBox(width: 8.0.w),
+      Text("+${country.phoneCode}"),
+    ],
+  );
 
 
 //==================================> ShowImagePickerOption Function <===============================
