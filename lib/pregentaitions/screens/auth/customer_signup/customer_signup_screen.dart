@@ -1,8 +1,10 @@
+import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../widgets/custom_text.dart';
 
@@ -115,7 +117,7 @@ class CustomerSignupScreen extends StatelessWidget {
 
 
             CustomButton(title: "Sign Up", onpress: () {
-
+              context.pushNamed(AppRoutes.customerBottomNavBar);
             },)
           ],
         ),

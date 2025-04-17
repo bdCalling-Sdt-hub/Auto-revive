@@ -19,18 +19,35 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Logo SVG.svg
   SvgGenImage get logoSVG => const SvgGenImage('assets/icons/Logo SVG.svg');
 
+  /// File path: assets/icons/carIcon.svg
+  SvgGenImage get carIcon => const SvgGenImage('assets/icons/carIcon.svg');
+
+  /// File path: assets/icons/homeIcon.svg
+  SvgGenImage get homeIcon => const SvgGenImage('assets/icons/homeIcon.svg');
+
   /// File path: assets/icons/key.svg
   SvgGenImage get key => const SvgGenImage('assets/icons/key.svg');
 
   /// File path: assets/icons/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/icons/mail.svg');
 
+  /// File path: assets/icons/message.svg
+  SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
+
+  /// File path: assets/icons/profile.svg
+  SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [logoSVG, key, mail];
+  List<SvgGenImage> get values =>
+      [logoSVG, carIcon, homeIcon, key, mail, message, profile];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/customerHomeScreenImage.png
+  AssetGenImage get customerHomeScreenImage =>
+      const AssetGenImage('assets/images/customerHomeScreenImage.png');
 
   /// File path: assets/images/onboardingImage.png
   AssetGenImage get onboardingImage =>
@@ -41,7 +58,8 @@ class $AssetsImagesGen {
       const AssetGenImage('assets/images/splashImage.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [onboardingImage, splashImage];
+  List<AssetGenImage> get values =>
+      [customerHomeScreenImage, onboardingImage, splashImage];
 }
 
 class $AssetsLottieGen {

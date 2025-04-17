@@ -4,7 +4,8 @@ class AppColors{
   static const Color bgColor = Color(0xff111111);
   static const Color bgColorWhite = Color(0xffF7F7F7);
   static const Color borderColor = Color(0xffB0B0FF);
-  static const Color primaryColor = Color(0x990000FF);
+  static const Color primaryColor = Color(0xff0000FF);
+  static const Color primaryColorTransparent = Color(0x990000FF);
   static const Color fontColorFEFEFE = Color(0xffFEFEFE);
   static const Color fontColorFFFFFF = Color(0x90FFFFFF);
   static const Color cardColor272727 = Color(0xff272727);
