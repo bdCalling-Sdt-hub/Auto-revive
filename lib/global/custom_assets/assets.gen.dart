@@ -31,6 +31,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/icons/mail.svg');
 
+  /// File path: assets/icons/select.svg
+  SvgGenImage get selectIcon => const SvgGenImage('assets/icons/select.svg');
+
   /// File path: assets/icons/message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
 
