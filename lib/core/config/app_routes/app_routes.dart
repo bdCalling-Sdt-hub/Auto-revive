@@ -5,6 +5,8 @@ import 'package:autorevive/pregentaitions/screens/signup/signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/reset_password/reset_password_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,6 +21,8 @@ class AppRoutes {
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String personalInformationScreen = "/PersonalInformationScreen";
+  static const String basicInfoScreen = "/basicInfoScreen";
+  static const String companyInformationScreen = "/companyInformationScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -96,7 +100,28 @@ class AppRoutes {
         path: personalInformationScreen,
         name: personalInformationScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(PersonalInformationScreen(), state),
-      )
+      ),
+
+      ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: basicInfoScreen,
+        name: basicInfoScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(BasicInfoScreen(), state),
+      ),
+
+      ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: companyInformationScreen,
+        name: companyInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CompanyInformationScreen(), state),
+      ),
+
+
+
+
+
     ]
   );
 

@@ -27,6 +27,7 @@ class Themes {
 
       ///-----------------app bar theme------------------>
       appBarTheme: const  AppBarTheme(
+        scrolledUnderElevation: 0,
           color: AppColors.bgColorWhite,
           centerTitle: true,
           elevation: 0),
