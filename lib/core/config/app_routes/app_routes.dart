@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/mechanic_view/personal_screen/personal_information_screen.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
+import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 
 class AppRoutes {
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String personalInformationScreen = "/PersonalInformationScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
+  static const String customerBottomNavBar = "/CustomerBottomNavBar";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -108,6 +110,16 @@ class AppRoutes {
         path: customerSignupScreen,
         name: customerSignupScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(CustomerSignupScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> Customer BOTTOM NAV BAR <<<===============>>>
+
+      GoRoute(
+        path: customerBottomNavBar,
+        name: customerBottomNavBar,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerBottomNavBar(), state),
       )
     ]
   );
