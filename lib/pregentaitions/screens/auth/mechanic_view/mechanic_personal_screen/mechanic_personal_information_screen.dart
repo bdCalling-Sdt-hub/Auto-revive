@@ -16,12 +16,12 @@ import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
-class PersonalInformationScreen extends StatefulWidget {
-  PersonalInformationScreen({super.key});
+class MechanicPersonalInformationScreen extends StatefulWidget {
+  MechanicPersonalInformationScreen({super.key});
   @override
-  State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
+  State<MechanicPersonalInformationScreen> createState() => _MechanicPersonalInformationScreenState();
 }
-class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
+class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInformationScreen> {
 
   final TextEditingController fullNameCtrl = TextEditingController();
   final TextEditingController platformCtrl = TextEditingController();
