@@ -4,8 +4,11 @@ import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart'
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/business_requirement_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/profile_details/profile_details_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service_coverage_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +36,9 @@ class AppRoutes {
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
   static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
+  static const String serviceCoverageScreen = "/serviceCoverageScreen";
+  static const String businessRequirementScreen = "/businessRequirementScreen";
+  static const String profileDetailsScreen = "/profileDetailsScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -173,6 +179,32 @@ class AppRoutes {
         path: vehicleEquipmentScreen,
         name: vehicleEquipmentScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(VehicleEquipmentScreen(), state),
+      ),
+
+ ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: serviceCoverageScreen,
+        name: serviceCoverageScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ServiceCoverageScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: businessRequirementScreen,
+        name: businessRequirementScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(BusinessRequirementScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: profileDetailsScreen,
+        name: profileDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ProfileDetailsScreen(), state),
       ),
 
 

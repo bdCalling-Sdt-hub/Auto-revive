@@ -77,6 +77,7 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
               bottom: 6.h,
             ),
             CustomTextField(
+              onTap: _selectDate,
               readOnly: true,
               controller: _makingYearTEController,
               labelText: 'Making of the year..',
@@ -148,7 +149,7 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 child: CustomButton(
                     title: 'Save and Next',
                     onpress: () {
-                      context.pushNamed(AppRoutes.licensingAndComplianceScreen);
+                      context.pushNamed(AppRoutes.serviceCoverageScreen);
                     })),
             SizedBox(height: 24.h),
           ],
