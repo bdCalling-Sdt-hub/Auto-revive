@@ -15,6 +15,7 @@ import '../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
+import '../../../../widgets/custom_popup_menu.dart';
 
 class MechanicPersonalInformationScreen extends StatefulWidget {
   MechanicPersonalInformationScreen({super.key});
@@ -29,6 +30,12 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController currentAddressCtrl = TextEditingController();
   bool? validUSDOTNumber;
+
+
+  final List<String> platForm = [
+    'In shop',
+    'On Site',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +92,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                           width: 128.w,
                         ),
                       ),
-                      //// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
+                      /// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
                       Positioned(
                         top: 67.h,
                         left: 42.w,
@@ -128,12 +135,15 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
               SizedBox(height: 8.h),
               // Platform dropdown or text field
               CustomTextField(
+                readOnly: true,
                 controller: platformCtrl,
                 hintText: "Enter Platform",
-                suffixIcon: Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 20.r,
-                ),
+                suffixIcon: CustomPopupMenu(
+                    items: platForm,
+                    onSelected: (p0) {
+                      platformCtrl.text = p0;
+                      setState(() {});
+                    }),
               ),
               SizedBox(height: 11.h),
 
@@ -218,7 +228,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                 title: "Save and Next",
                 onpress: () {
                   // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.resetPasswordScreen);
+                  context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
                 },
               ),
               SizedBox(height: 20.h),
