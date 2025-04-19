@@ -3,6 +3,7 @@ import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomerSelectCarScreen extends StatefulWidget {
@@ -38,73 +39,18 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
           children: [
 
             const SizedBox(height: 10),
-            DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
-                isExpanded: true,
-                value: selectedType,
-
-                hint: const Icon(Icons.arrow_drop_down),
-                items: carTypes.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: item != carTypes.last
-                            ? const Border(
-                          bottom: BorderSide(color: Colors.black12, width: 1),
-                        )
-                            : null,
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        item,
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedType = value!;
-                  });
-                },
-                buttonStyleData: ButtonStyleData(
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(color: AppColors.primaryColor),
-                  ),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  maxHeight: 400,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black),
-                  ),
-                  offset: const Offset(0, -1),
-                ),
-                isDense: false,
-                underline: const SizedBox(),
-
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
-                  // padding: EdgeInsets.only(left: 12, right: 12),
-                ),
-              ),
-            ),
 
 
 
 
-            SizedBox(height: 100,),
 
+            Spacer(),
 
-            CustomButton(title: "title", onpress: () {
+            CustomButton(title: "Submit", onpress: () {
               context.pushNamed(AppRoutes.customerMapScreen);
-            },)
+            }),
+
+            SizedBox(height: 50.h)
           ],
         ),
       ),
