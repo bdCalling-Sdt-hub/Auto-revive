@@ -1,6 +1,10 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_dropdown_field.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_popup_menu.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +31,7 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
   ];
 
   String selectedType = 'Sedan';
+  TextEditingController carCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +43,26 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            const SizedBox(height: 10),
 
-
-
-
-
-            Spacer(),
-
-            CustomButton(title: "Submit", onpress: () {
-              context.pushNamed(AppRoutes.customerMapScreen);
-            }),
-
+            CustomText(text: "Select YOur Car Type...", color: Colors.black),
+            SizedBox(height: 10.h),
+            CustomTextField(
+              readOnly: true,
+              hintText: "Select car",
+              controller: carCtrl,
+              suffixIcon: CustomPopupMenu(
+                  items: carTypes,
+                  onSelected: (p0) {
+                    carCtrl.text = p0;
+                    setState(() {});
+                  }),
+            ),
+            const Spacer(),
+            CustomButton(
+                title: "Submit",
+                onpress: () {
+                  context.pushNamed(AppRoutes.customerMapScreen);
+                }),
             SizedBox(height: 50.h)
           ],
         ),
