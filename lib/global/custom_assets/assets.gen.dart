@@ -22,6 +22,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/carIcon.svg
   SvgGenImage get carIcon => const SvgGenImage('assets/icons/carIcon.svg');
 
+  /// File path: assets/icons/filterIcons.svg
+  SvgGenImage get filterIcons =>
+      const SvgGenImage('assets/icons/filterIcons.svg');
+
   /// File path: assets/icons/homeIcon.svg
   SvgGenImage get homeIcon => const SvgGenImage('assets/icons/homeIcon.svg');
 
@@ -52,6 +56,7 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
         logoSVG,
         carIcon,
+        filterIcons,
         homeIcon,
         key,
         mail,
