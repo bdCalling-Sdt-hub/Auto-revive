@@ -1,6 +1,7 @@
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
@@ -9,8 +10,6 @@ import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensi
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../pregentaitions/screens/auth/mechanic_view/personal_screen/personal_information_screen.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
 import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_screen.dart';
@@ -27,7 +26,7 @@ class AppRoutes {
   static const String roleScreen = "/SignUpScreen";
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
-  static const String personalInformationScreen = "/PersonalInformationScreen";
+  static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
@@ -111,12 +110,12 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(RoleScreen(), state),
       ),
 
-      ///<<<=============>>> PERSONAL INFORMATION SCREEN <<<===============>>>
+      ///<<<=============>>> MECHANIC PERSONAL INFORMATION SCREEN <<<===============>>>
 
       GoRoute(
-        path: personalInformationScreen,
-        name: personalInformationScreen,
-        pageBuilder: (context, state) =>  _customTransitionPage(PersonalInformationScreen(), state),
+        path: mechanicPersonalInformationScreen,
+        name: mechanicPersonalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicPersonalInformationScreen(), state),
       ),
 
 
