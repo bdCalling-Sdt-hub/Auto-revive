@@ -1,7 +1,6 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_dropdown_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_popup_menu.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';

@@ -1,6 +1,7 @@
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_experience_skill/mechanic_experience_skill.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
+  static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
@@ -117,8 +119,12 @@ class AppRoutes {
         name: mechanicPersonalInformationScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MechanicPersonalInformationScreen(), state),
       ),
-
-
+        ///<<<=============>>> MECHANIC Experience and Skill <<<===============>>>
+      GoRoute(
+        path: mechanicExperienceSkillScreen,
+        name: mechanicExperienceSkillScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicExperienceSkillScreen(), state),
+      ),
 
       ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
 
