@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
@@ -20,16 +18,10 @@ import '../../../../widgets/custom_linear_indicator.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
   PersonalInformationScreen({super.key});
-
   @override
   State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
 }
-
 class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-
-
-
-
 
   final TextEditingController fullNameCtrl = TextEditingController();
   final TextEditingController platformCtrl = TextEditingController();
@@ -37,6 +29,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController currentAddressCtrl = TextEditingController();
   bool? validUSDOTNumber;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +72,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: AppColors.cameBorderColorFA5654,
+                            color: AppColors.primaryColor,
                             width: 3,
                           ),
                         ),
@@ -92,7 +85,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           width: 128.w,
                         ),
                       ),
-                      // Camera icon on top of the image
+                      //// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
                       Positioned(
                         top: 67.h,
                         left: 42.w,
@@ -127,19 +120,23 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   text: "Full Name"),
               SizedBox(height: 8.h),
               CustomTextField(controller: fullNameCtrl, hintText: "Enter your name"),
+
               ///<<<=============>>> Platform Filed <<<===============>>>
               SizedBox(height: 11.h),
               CustomText(
                   text: "Platform"),
               SizedBox(height: 8.h),
-              // Platform dropdown or text field (use if needed)
+              // Platform dropdown or text field
               CustomTextField(
                 controller: platformCtrl,
                 hintText: "Enter Platform",
-                // suffixIcon:  Assets.icons.selectIcon.svg(),
-                // prefixIcon: Assets.icons.platform.svg(),
+                suffixIcon: Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 20.r,
+                ),
               ),
               SizedBox(height: 11.h),
+
 
               ///<<<=============>>> Email Filed <<<===============>>>
               CustomText(
@@ -158,12 +155,22 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
               SizedBox(height: 8.h),
               Row(
                 children: [
-                  CountryPickerDropdown(
-                    initialValue: 'US',
-                    itemBuilder: _buildDropdownItem,
-                    onValuePicked: (Country country) {
-                      print("${country.name} +${country.phoneCode}");
-                    },
+                  Container(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primaryColor,
+                        width: 0.3,
+                      ),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: CountryPickerDropdown(
+                      initialValue: 'US',
+                      itemBuilder: _buildDropdownItem,
+                      onValuePicked: (Country country) {
+                        print("${country.name} +${country.phoneCode}");
+                      },
+                    ),
                   ),
                   SizedBox(width: 8.w),
                   Expanded(
