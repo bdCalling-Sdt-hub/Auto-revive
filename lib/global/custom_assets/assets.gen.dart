@@ -31,18 +31,36 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/icons/mail.svg');
 
-  /// File path: assets/icons/select.svg
-  SvgGenImage get selectIcon => const SvgGenImage('assets/icons/select.svg');
-
   /// File path: assets/icons/message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
+
+  /// File path: assets/icons/notificationIcon.svg
+  SvgGenImage get notificationIcon =>
+      const SvgGenImage('assets/icons/notificationIcon.svg');
 
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
 
+  /// File path: assets/icons/select.svg
+  SvgGenImage get select => const SvgGenImage('assets/icons/select.svg');
+
+  /// File path: assets/icons/time_progress.svg
+  SvgGenImage get timeProgress =>
+      const SvgGenImage('assets/icons/time_progress.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [logoSVG, carIcon, homeIcon, key, mail, message, profile];
+  List<SvgGenImage> get values => [
+        logoSVG,
+        carIcon,
+        homeIcon,
+        key,
+        mail,
+        message,
+        notificationIcon,
+        profile,
+        select,
+        timeProgress
+      ];
 }
 
 class $AssetsImagesGen {

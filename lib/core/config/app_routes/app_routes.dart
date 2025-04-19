@@ -13,6 +13,7 @@ import '../../../pregentaitions/screens/auth/mechanic_view/personal_screen/perso
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
+import '../../../pregentaitions/screens/customer/customer_mechanic/customer_mechanic_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 
 class AppRoutes {
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String basicInfoScreen = "/basicInfoScreen";
   static const String companyInformationScreen = "/companyInformationScreen";
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
+  static const String customerMechanicScreen = "/CustomerMechanicScreen";
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -152,6 +154,15 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(LicensingAndComplianceScreen(), state),
       ),
 
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerMechanicScreen,
+        name: customerMechanicScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerMechanicScreen(), state),
+      ),
 
 
 
