@@ -6,8 +6,6 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -20,16 +18,15 @@ class LicensingAndComplianceScreen extends StatefulWidget {
       _LicensingAndComplianceScreenState();
 }
 
-class _LicensingAndComplianceScreenState
-    extends State<LicensingAndComplianceScreen> {
-  final TextEditingController _nameTEController = TextEditingController();
-  final TextEditingController _addressTEController = TextEditingController();
-  final TextEditingController _emailTEController = TextEditingController();
-  final TextEditingController _priceTEController = TextEditingController();
-  final TextEditingController _phoneTEController = TextEditingController();
-  final TextEditingController _lLCTEController = TextEditingController();
+class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScreen> {
+  final TextEditingController _uSDOTNumberTEController = TextEditingController();
+  final TextEditingController _policyNumberTEController = TextEditingController();
+  final TextEditingController _coverageLimitsTEController = TextEditingController();
+  final TextEditingController _mCNumberTEController = TextEditingController();
 
   bool? validUSDOTNumber;
+  bool? coverageNumber;
+  bool? mCNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class _LicensingAndComplianceScreenState
       appBar: AppBar(
           centerTitle: false,
           title: CustomText(
-            text: "Basic Info...",
+            text: "Licensing and Compliance",
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
@@ -45,13 +42,11 @@ class _LicensingAndComplianceScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomLinearIndicator(
-              progressValue: 0.33,
+              progressValue: 0.2,
             ),
             SizedBox(height: 16.h),
-            CustomText(
-              text: 'Do you have a valid US-DOT number? *',
-            ),
             CustomChecked(
+              title: 'Do you have a valid US-DOT number? *',
               selected: validUSDOTNumber,
               onChanged: (val) {
                 setState(() {
@@ -60,61 +55,67 @@ class _LicensingAndComplianceScreenState
               },
             ),
             CustomTextField(
-              controller: _nameTEController,
+              controller: _uSDOTNumberTEController,
               labelText: 'US-DOT Number',
               hintText: 'US-DOT Number',
             ),
             CustomUploadButton(
-              topLabel: 'Upload Proof of a Active DOT registration',
+              topLabel: 'Do you have commercial insurance coverage?*',
               title: 'DOT registration.pdf',
               icon: Icons.upload,
               onTap: () {},
             ),
-            CustomTextField(
-              controller: _addressTEController,
-              labelText: 'Business Address',
-              hintText: 'USA, New York',
+            CustomChecked(
+              title: 'Do you have commercial insurance coverage?*',
+              selected: coverageNumber,
+              onChanged: (val) {
+                setState(() {
+                  coverageNumber = val;
+                });
+              },
             ),
             CustomTextField(
-              controller: _emailTEController,
-              labelText: 'Email',
-              hintText: 'Enter your email',
+              controller: _policyNumberTEController,
+              labelText: 'Policy Number',
+              hintText: 'Policy Number',
             ),
             CustomTextField(
-              controller: _priceTEController,
-              labelText: 'Price Per Mile',
-              hintText: 'Enter your price',
+              controller: _coverageLimitsTEController,
+              labelText: 'Coverage Limits',
+              hintText: 'Coverage Limits',
             ),
-            CustomText(text: 'Phone No.'),
-            Row(
-              children: [
-                CountryPickerDropdown(
-                  initialValue: 'US',
-                  itemBuilder: _buildDropdownItem,
-                  onValuePicked: (Country country) {
-                    print("${country.name} +${country.phoneCode}");
-                  },
-                ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: CustomTextField(
-                    controller: _phoneTEController,
-                    hintText: 'Enter your number',
-                  ),
-                ),
-              ],
+            CustomUploadButton(
+              topLabel: 'Upload Proof of a Active insurance policy.',
+              title: 'Insurance-policy.pdf',
+              icon: Icons.upload,
+              onTap: () {},
+            ),
+            CustomChecked(
+              title: 'Do you have a valid Motor Carrier (MC) number?*',
+              selected: mCNumber,
+              onChanged: (val) {
+                setState(() {
+                  mCNumber = val;
+                });
+              },
             ),
             CustomTextField(
-              controller: _lLCTEController,
-              labelText: 'Partner with LLC for Reliable Towing Service',
-              hintText: 'David William LLC',
+              controller: _mCNumberTEController,
+              labelText: 'MC Number',
+              hintText: 'MC Number',
+            ),
+            CustomUploadButton(
+              topLabel: 'Upload Proof of MC authority',
+              title: 'mc.pdf',
+              icon: Icons.upload,
+              onTap: () {},
             ),
             SizedBox(height: 44.h),
             Center(
                 child: CustomButton(
                     title: 'Save and Next',
                     onpress: () {
-                      context.pushNamed(AppRoutes.companyInformationScreen);
+                      context.pushNamed(AppRoutes.vehicleEquipmentScreen);
                     })),
             SizedBox(height: 24.h),
           ],
@@ -122,12 +123,4 @@ class _LicensingAndComplianceScreenState
       ),
     );
   }
-
-  Widget _buildDropdownItem(Country country) => Row(
-        children: <Widget>[
-          CountryPickerUtils.getDefaultFlagImage(country),
-          SizedBox(width: 8.0.w),
-          Text("+${country.phoneCode}"),
-        ],
-      );
 }

@@ -42,7 +42,7 @@ class CustomLinearIndicator extends StatelessWidget {
                 color: Colors.white,
                 text: label != null
                     ? '${label!.toStringAsFixed(0)}%'
-                    : '${(progressValue * 60).toStringAsFixed(0)}%',
+                    : '${(progressValue * 100).toStringAsFixed(0)}%',
               ),
             ),
           ),
