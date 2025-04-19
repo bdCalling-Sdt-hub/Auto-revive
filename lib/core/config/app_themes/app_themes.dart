@@ -31,6 +31,8 @@ class Themes {
           color: AppColors.bgColorWhite,
           centerTitle: true,
           elevation: 0),
+
+        iconTheme: IconThemeData(color: Colors.black),
         scaffoldBackgroundColor: AppColors.bgColorWhite,
   );
 
