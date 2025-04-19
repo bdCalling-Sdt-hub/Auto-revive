@@ -6,6 +6,7 @@ import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.da
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,8 +34,12 @@ class AppRoutes {
   static const String companyInformationScreen = "/companyInformationScreen";
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
+
+  static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
+
   static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
   static const String customerMapScreen = "/CustomerMapScreen";
+
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -166,6 +171,15 @@ class AppRoutes {
         path: customerMechanicScreen,
         name: customerMechanicScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(CustomerMechanicScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: vehicleEquipmentScreen,
+        name: vehicleEquipmentScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(VehicleEquipmentScreen(), state),
       ),
 
 

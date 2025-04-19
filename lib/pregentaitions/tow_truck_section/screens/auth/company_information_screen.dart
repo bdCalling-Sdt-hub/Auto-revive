@@ -35,7 +35,7 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
       appBar: AppBar(
           centerTitle: false,
           title: CustomText(
-            text: "Basic Info...",
+            text: "Company Information",
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
@@ -43,7 +43,7 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomLinearIndicator(
-              progressValue: 0.16,
+              progressValue: 0.1,
             ),
             SizedBox(height: 16.h),
             CustomTextField(

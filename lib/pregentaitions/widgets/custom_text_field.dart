@@ -129,7 +129,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
             )
                 : widget.suffixIcon,
             prefixIconConstraints: BoxConstraints(minHeight: 24.w, minWidth: 24.w),
-            labelText: widget.labelText,
             hintText: widget.hintText,
             hintStyle: TextStyle(color: widget.hintextColor ?? AppColors.textColor808080, fontSize: widget.hintextSize ?? 12.h,fontWeight: FontWeight.w400),
             focusedBorder: focusedBorder(),
