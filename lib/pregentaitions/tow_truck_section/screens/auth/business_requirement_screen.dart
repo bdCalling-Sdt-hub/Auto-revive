@@ -109,7 +109,7 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                 child: CustomButton(
                     title: 'Submit',
                     onpress: () {
-                      context.pushNamed(AppRoutes.profileDetailsScreen);
+                      context.pushNamed(AppRoutes.towTruckBottomNavBar);
                     })),
             SizedBox(height: 24.h),
           ],

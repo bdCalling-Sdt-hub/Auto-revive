@@ -25,6 +25,11 @@ dependencies:
   dropdown_button2: ^2.3.9
   google_maps_flutter:
 
+  flutter_switch: ^0.3.2
+
+  chat_bubbles: ^1.6.0
+
+
 
 
   country_pickers: ^3.0.1

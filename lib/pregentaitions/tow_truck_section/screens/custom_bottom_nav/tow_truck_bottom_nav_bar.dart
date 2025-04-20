@@ -1,23 +1,23 @@
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_home/tow_truck_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../message/users/users_screen.dart';
-import '../customer_home/customer_home_screen.dart';
 
-class CustomerBottomNavBar extends StatefulWidget {
-  const CustomerBottomNavBar({super.key});
+class TowTruckBottomNavBar extends StatefulWidget {
+  const TowTruckBottomNavBar({super.key});
 
   @override
-  State<CustomerBottomNavBar> createState() => CustomerBottomNavBarState();
+  State<TowTruckBottomNavBar> createState() => TowTruckBottomNavBarState();
 }
 
-class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
+class TowTruckBottomNavBarState extends State<TowTruckBottomNavBar> {
   final List<Widget> screens = [
-    const CustomerHomeScreen(),
-    const CustomerHomeScreen(),
-     UsersScreen(),
-    const CustomerHomeScreen(),
+    TowTruckHomeScreen(),
+    TowTruckHomeScreen(),
+    TowTruckHomeScreen(),
+    TowTruckHomeScreen(),
+
   ];
 
   int currentIndex = 0;
@@ -33,7 +33,7 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
     final sizeH = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
+      backgroundColor: Colors.transparent,
       body: screens[currentIndex],
       bottomNavigationBar: Container(
         height: sizeH * .07,
@@ -74,24 +74,24 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
         });
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        height: sizeH * .06,
-        decoration: BoxDecoration(
-            color: isSelected ? Colors.white : Colors.transparent,
-            shape: BoxShape.circle),
-        child:  Padding(padding: EdgeInsets.all(6.r),
-        child: index == 0
-            ? Assets.icons.homeIcon
-            .svg(color: isSelected ? Colors.black : Colors.white)
-            : index == 1
-            ? Assets.icons.carIcon
-            .svg(color: isSelected ? Colors.black : Colors.white)
-            : index == 2
-            ? Assets.icons.message
-            .svg(color: isSelected ? Colors.black : Colors.white)
-            : Assets.icons.profile.svg(color: isSelected ? Colors.black : Colors.white),
-        )
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          height: sizeH * .06,
+          decoration: BoxDecoration(
+              color: isSelected ? Colors.white : Colors.transparent,
+              shape: BoxShape.circle),
+          child:  Padding(padding: EdgeInsets.all(6.r),
+            child: index == 0
+                ? Assets.icons.homeIcon
+                .svg(color: isSelected ? Colors.black : Colors.white)
+                : index == 1
+                ? Assets.icons.carIcon
+                .svg(color: isSelected ? Colors.black : Colors.white)
+                : index == 2
+                ? Assets.icons.message
+                .svg(color: isSelected ? Colors.black : Colors.white)
+                : Assets.icons.profile.svg(color: isSelected ? Colors.black : Colors.white),
+          )
       ),
     );
   }
