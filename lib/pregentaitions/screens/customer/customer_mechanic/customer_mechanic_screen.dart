@@ -23,8 +23,12 @@ class CustomerMechanicScreen extends StatelessWidget {
               context.pushNamed(AppRoutes.customerSelectCarScreen);
             }),
             SizedBox(height: 11.h),
-            CustomButton(title: "In-Shop", onpress: () {}),
+            CustomButton(title: "In-Shop", onpress: () {
+              context.pushNamed(AppRoutes.customerSelectCarScreen);
+            }),
+
             SizedBox(height: 87.h),
+
             CustomText(
                 text: "Find a mobile mechanic (On-Site)",
                 color: AppColors.primaryColor,
