@@ -12,6 +12,9 @@ import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensi
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/profile_details/profile_details_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service_coverage_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/custom_bottom_nav/tow_truck_bottom_nav_bar.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_request_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
@@ -34,6 +37,7 @@ class AppRoutes {
   static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
+  static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
   static const String companyInformationScreen = "/companyInformationScreen";
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
@@ -47,9 +51,15 @@ class AppRoutes {
   static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
   static const String customerMapScreen = "/CustomerMapScreen";
 
+  static const String towTruckJobScreen = "/towTruckJobScreen";
+  static const String towTruckJobRequestScreen = "/TowTruckJobRequestScreen";
+
+
+
+
 
   static final GoRouter goRouter = GoRouter(
-    initialLocation: splashScreen,
+    initialLocation: towTruckJobRequestScreen,
     routes: [
       GoRoute(
           path: splashScreen,
@@ -238,6 +248,31 @@ class AppRoutes {
         path: customerMapScreen,
         name: customerMapScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(CustomerMapScreen(), state),
+      ),
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckBottomNavBar,
+        name: towTruckBottomNavBar,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckBottomNavBar(), state),
+      ),
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckJobScreen,
+        name: towTruckJobScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckJobScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckJobRequestScreen,
+        name: towTruckJobRequestScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckJobRequestScreen(), state),
       ),
 
 
