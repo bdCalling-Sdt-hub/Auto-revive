@@ -59,7 +59,7 @@ class AppRoutes {
 
 
   static final GoRouter goRouter = GoRouter(
-    initialLocation: towTruckJobRequestScreen,
+    initialLocation: splashScreen,
     routes: [
       GoRoute(
           path: splashScreen,
