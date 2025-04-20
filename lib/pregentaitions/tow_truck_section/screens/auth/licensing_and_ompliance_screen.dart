@@ -91,6 +91,7 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
               onTap: () {},
             ),
             CustomChecked(
+
               title: 'Do you have a valid Motor Carrier (MC) number?*',
               selected: mCNumber,
               onChanged: (val) {
