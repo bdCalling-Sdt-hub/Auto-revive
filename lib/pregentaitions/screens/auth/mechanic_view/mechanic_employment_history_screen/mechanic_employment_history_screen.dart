@@ -6,6 +6,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
 
@@ -16,11 +17,22 @@ class MechanicEmploymentHistoryScreen extends StatefulWidget {
 }
 class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHistoryScreen> {
 
+
+
+
   final TextEditingController companyNameCtrl = TextEditingController();
   final TextEditingController jobTitleCtrl = TextEditingController();
   final TextEditingController supervisorsNameCtrl = TextEditingController();
   final TextEditingController supervisorsContactCtrl = TextEditingController();
 
+
+  TextEditingController dateCtrl = TextEditingController();
+
+  final Map<String, bool> workSettingCheckbox = {
+    'In-Shop': false,
+    'On-Site': false,
+    'Both': false,
+  };
 
 
   @override
@@ -45,8 +57,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
               SizedBox(height: 8.h),
               ///<<<=============>>> LinearIndicator <<<===============>>>
               const CustomLinearIndicator(
-                progressValue: 0.03,
-                label: 0,
+                progressValue: 0.4,
               ),
               SizedBox(height: 20.h),
               CustomText(text: "Most recent employers",
@@ -55,13 +66,13 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
               SizedBox(height: 8.h),
               ///<<<=============>>> Company Name Field <<<===============>>>
               CustomText(
-                  text: "Company Name:"),
+                  text: "Company Name:",color: AppColors.textColor151515,fontsize: 14.sp),
               SizedBox(height: 8.h),
               CustomTextField(controller: companyNameCtrl, hintText: "Company name"),
 
               ///<<<=============>>> Job Title Field <<<===============>>>
               CustomText(
-                  text: "Job Title:"),
+                  text: "Job Title:",color: AppColors.textColor151515,fontsize: 14.sp),
               SizedBox(height: 8.h),
               CustomTextField(
                 readOnly: true,
@@ -70,35 +81,125 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
               ),
               ///<<<=============>>> Supervisors Name Field <<<===============>>>
               CustomText(
-                  text: "Supervisors Name:"),
+                  text: "Supervisors Name:",color: AppColors.textColor151515,fontsize: 14.sp),
               SizedBox(height: 8.h),
               CustomTextField(
                   controller: supervisorsNameCtrl,
                   hintText: "Supervisors Name"),
               ///<<<=============>>> Supervisors Contact <<<===============>>>
               CustomText(
-                  text: "Supervisors Contact:"),
+                  text: "Supervisors Contact:",color: AppColors.textColor151515,fontsize: 14.sp),
               SizedBox(height: 8.h),
               CustomTextField(
                   controller: supervisorsContactCtrl,
                   hintText: "Supervisors Contact"),
               ///<<<=============>>> Employment Duration <<<===============>>>
-              CustomText(text: 'Employment Duration:'),
-              Row(
-                children: [
-
-                ],
+              CustomText(text: 'Employment Duration:',color: AppColors.textColor151515,fontsize: 14.sp),
+              Padding(
+                padding:  EdgeInsets.symmetric(vertical: 18.h,horizontal: 25.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                final formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                dateCtrl.text = formattedDate;
+                              }
+                            },
+                            child: AbsorbPointer(
+                              child: CustomTextField(
+                                readOnly: true,
+                                controller: dateCtrl,
+                                hintText: "Select Date",
+                                suffixIcon: const Icon(Icons.calendar_today),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 16.h),
+                    // CustomText(text: 'To',fontsize: 14.sp,fontWeight: FontWeight.bold,),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                              );
+                              if (pickedDate != null) {
+                                final formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                dateCtrl.text = formattedDate;
+                              }
+                            },
+                            child: AbsorbPointer(
+                              child: CustomTextField(
+                                readOnly: true,
+                                controller: dateCtrl,
+                                hintText: "Select Date",
+                                suffixIcon: const Icon(Icons.calendar_today),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
-
-              SizedBox(height: 31.h),
+              ///<<<=============>>> Work Setting <<<===============>>>
+              CustomText(text: 'Work Setting:',color: AppColors.textColor151515,fontsize: 14.sp),
+              Padding(
+                padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+                child: CustomCheckboxList(
+                  items: workSettingCheckbox,
+                ),
+              ),
+              ///<<<=============>>> Reason for leaving <<<===============>>>
+              CustomText(text: 'Reason for leaving:',color: AppColors.textColor151515,fontsize: 14.sp ),
+              SizedBox(height: 10.h),
+              Container(
+                width: 342,
+                height: 107,
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.textColor151515, width: 0.8),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: Padding(
+                  padding:  EdgeInsets.all(8.h),
+                  child: CustomText(
+                    text: 'Leaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity....',
+                    fontsize: 10.sp,
+                    maxline: 5,
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ),
+              SizedBox(height: 77.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               CustomButton(
                 title: "Save and Next",
                 onpress: () {
                   // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
+                  context.pushNamed(AppRoutes.mechanicReferenceScreen);
                 },
               ),
               SizedBox(height: 20.h),
@@ -109,30 +210,6 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
     );
   }
 
-  DateTime? _startDate;
-  DateTime? _endDate;
-
-  Future<void> _pickDate({required bool isStart}) async {
-    DateTime initialDate = isStart ? (_startDate ?? DateTime.now()) : (_endDate ?? DateTime.now());
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(1990),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isStart) {
-          _startDate = picked;
-          if (_endDate != null && _endDate!.isBefore(_startDate!)) {
-            _endDate = null; // End date can't be before start date
-          }
-        } else {
-          _endDate = picked;
-        }
-      });
-    }
-  }
 
 
 }
