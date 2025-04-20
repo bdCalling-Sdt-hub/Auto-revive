@@ -2,6 +2,7 @@ import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../message/users/users_screen.dart';
 import '../customer_home/customer_home_screen.dart';
 
 class CustomerBottomNavBar extends StatefulWidget {
@@ -15,7 +16,7 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
   final List<Widget> screens = [
     const CustomerHomeScreen(),
     const CustomerHomeScreen(),
-    const CustomerHomeScreen(),
+     UsersScreen(),
     const CustomerHomeScreen(),
   ];
 
@@ -32,7 +33,7 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
     final sizeH = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
       body: screens[currentIndex],
       bottomNavigationBar: Container(
         height: sizeH * .07,
