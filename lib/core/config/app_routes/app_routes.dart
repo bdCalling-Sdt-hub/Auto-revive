@@ -1,16 +1,19 @@
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_experience_skill/mechanic_experience_skill.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/business_requirement_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/profile_details/profile_details_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service_coverage_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../pregentaitions/screens/auth/mechanic_view/personal_screen/personal_information_screen.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
 import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_screen.dart';
@@ -28,7 +31,8 @@ class AppRoutes {
   static const String roleScreen = "/SignUpScreen";
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
-  static const String personalInformationScreen = "/PersonalInformationScreen";
+  static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
+  static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
@@ -37,6 +41,9 @@ class AppRoutes {
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
 
   static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
+  static const String serviceCoverageScreen = "/serviceCoverageScreen";
+  static const String businessRequirementScreen = "/businessRequirementScreen";
+  static const String profileDetailsScreen = "/profileDetailsScreen";
 
   static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
   static const String customerMapScreen = "/CustomerMapScreen";
@@ -113,15 +120,19 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(RoleScreen(), state),
       ),
 
-      ///<<<=============>>> PERSONAL INFORMATION SCREEN <<<===============>>>
+      ///<<<=============>>> MECHANIC PERSONAL INFORMATION SCREEN <<<===============>>>
 
       GoRoute(
-        path: personalInformationScreen,
-        name: personalInformationScreen,
-        pageBuilder: (context, state) =>  _customTransitionPage(PersonalInformationScreen(), state),
+        path: mechanicPersonalInformationScreen,
+        name: mechanicPersonalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicPersonalInformationScreen(), state),
       ),
-
-
+        ///<<<=============>>> MECHANIC Experience and Skill <<<===============>>>
+      GoRoute(
+        path: mechanicExperienceSkillScreen,
+        name: mechanicExperienceSkillScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicExperienceSkillScreen(), state),
+      ),
 
       ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
 
@@ -182,6 +193,32 @@ class AppRoutes {
         path: vehicleEquipmentScreen,
         name: vehicleEquipmentScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(VehicleEquipmentScreen(), state),
+      ),
+
+ ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: serviceCoverageScreen,
+        name: serviceCoverageScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ServiceCoverageScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: businessRequirementScreen,
+        name: businessRequirementScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(BusinessRequirementScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: profileDetailsScreen,
+        name: profileDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ProfileDetailsScreen(), state),
       ),
 
 

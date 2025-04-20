@@ -54,7 +54,7 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Mechanic or automotive shop",
                 onpress: (){
-                  context.pushNamed(AppRoutes.personalInformationScreen);
+                  context.pushNamed(AppRoutes.mechanicPersonalInformationScreen);
 
             }),
             SizedBox(height: 10.h),
