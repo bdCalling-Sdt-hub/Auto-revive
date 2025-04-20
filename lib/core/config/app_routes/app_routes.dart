@@ -16,8 +16,10 @@ import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/mechanic_view/personal_screen/personal_information_screen.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
+import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
 import '../../../pregentaitions/screens/customer/customer_mechanic/customer_mechanic_screen.dart';
+import '../../../pregentaitions/screens/customer/customer_selecte_car/customer_selecte_car_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 
 class AppRoutes {
@@ -35,10 +37,15 @@ class AppRoutes {
   static const String companyInformationScreen = "/companyInformationScreen";
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
+
   static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
   static const String serviceCoverageScreen = "/serviceCoverageScreen";
   static const String businessRequirementScreen = "/businessRequirementScreen";
   static const String profileDetailsScreen = "/profileDetailsScreen";
+
+  static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
+  static const String customerMapScreen = "/CustomerMapScreen";
+
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
@@ -207,6 +214,26 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(ProfileDetailsScreen(), state),
       ),
 
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerSelectCarScreen,
+        name: customerSelectCarScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerSelectCarScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerMapScreen,
+        name: customerMapScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerMapScreen(), state),
+      ),
 
 
 
