@@ -76,8 +76,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
               SizedBox(height: 8.h),
               ///<<<=============>>> LinearIndicator <<<===============>>>
               const CustomLinearIndicator(
-                progressValue: 0.03,
-                label: 0,
+                progressValue: 0.2,
               ),
               SizedBox(height: 20.h),
               CustomText(

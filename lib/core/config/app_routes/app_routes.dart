@@ -1,8 +1,12 @@
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_additional_information/mechanic_additional_information.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_experience_skill/mechanic_experience_skill.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_profile_information_screen/mechanic_profile_information_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_reference_screen/mechanic_reference_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_resume_certificate_screen/mechanic_resume_certificate_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
@@ -40,6 +44,10 @@ class AppRoutes {
   static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
   static const String mechanicToolsEquipmentScreen = "/MechanicToolsEquipmentScreen";
   static const String mechanicEmploymentHistoryScreen = "/MechanicEmploymentHistoryScreen";
+  static const String mechanicReferenceScreen = "/MechanicReferenceScreen";
+  static const String mechanicAdditionalInformationScreen = "/MechanicAdditionalInformationScreen";
+  static const String mechanicResumeCertificateScreen = "/MechanicResumeCertificateScreen";
+  static const String mechanicProfileInformationScreen = "/MechanicProfileInformationScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
@@ -161,6 +169,37 @@ class AppRoutes {
         name: mechanicEmploymentHistoryScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MechanicEmploymentHistoryScreen(), state),
       ),
+
+      ///<<<=============>>> MECHANIC REFERENCE SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicReferenceScreen,
+        name: mechanicReferenceScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicReferenceScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC Additional Information SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicAdditionalInformationScreen,
+        name: mechanicAdditionalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage( MechanicAdditionalInformationScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> MECHANIC RESUME CERTIFICATE SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicResumeCertificateScreen,
+        name: mechanicResumeCertificateScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicResumeCertificateScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC PROFILE INFORMATION SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicProfileInformationScreen,
+        name: mechanicProfileInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicProfileInformationScreen(), state),
+      ),
+
 
 
       ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>

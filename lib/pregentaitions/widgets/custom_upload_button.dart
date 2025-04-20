@@ -44,7 +44,7 @@ class CustomUploadButton extends StatelessWidget {
           radiusAll: 16.r,
           marginAll: 8.h,
           width: double.infinity,
-          height: 32.h,
+          height: 45.h,
           color: AppColors.pdfButtonColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
