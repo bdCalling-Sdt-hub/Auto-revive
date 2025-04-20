@@ -23,6 +23,7 @@ import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_scree
 import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
 import '../../../pregentaitions/screens/customer/customer_mechanic/customer_mechanic_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_selecte_car/customer_selecte_car_screen.dart';
+import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 
 class AppRoutes {
@@ -50,6 +51,7 @@ class AppRoutes {
 
   static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
   static const String customerMapScreen = "/CustomerMapScreen";
+  static const String messageChatScreen = "/MessageChatScreen";
 
   static const String towTruckJobScreen = "/towTruckJobScreen";
   static const String towTruckJobRequestScreen = "/TowTruckJobRequestScreen";
@@ -273,6 +275,16 @@ class AppRoutes {
         path: towTruckJobRequestScreen,
         name: towTruckJobRequestScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(TowTruckJobRequestScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: messageChatScreen,
+        name: messageChatScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MessageChatScreen(), state),
       ),
 
 
