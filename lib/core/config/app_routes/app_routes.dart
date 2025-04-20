@@ -14,6 +14,8 @@ import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_employment_history_screen/mechanic_employment_history_screen.dart';
+import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_tools_equipment_screen/mechanic_tools_equipment_screen.dart';
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
 import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_screen.dart';
@@ -32,6 +34,8 @@ class AppRoutes {
   static const String resetPasswordScreen = "/ResetPasswordScreen";
   static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
   static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
+  static const String mechanicToolsEquipmentScreen = "/MechanicToolsEquipmentScreen";
+  static const String mechanicEmploymentHistoryScreen = "/MechanicEmploymentHistoryScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
@@ -131,6 +135,21 @@ class AppRoutes {
         name: mechanicExperienceSkillScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MechanicExperienceSkillScreen(), state),
       ),
+
+      ///<<<=============>>>  MECHANIC TOOLS EQUIPMENT SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicToolsEquipmentScreen,
+        name: mechanicToolsEquipmentScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicToolsEquipmentScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC EMPLOYMENT HISTORY SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicEmploymentHistoryScreen,
+        name: mechanicEmploymentHistoryScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicEmploymentHistoryScreen(), state),
+      ),
+
 
       ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
 

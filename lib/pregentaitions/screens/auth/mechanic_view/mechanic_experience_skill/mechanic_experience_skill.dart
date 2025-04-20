@@ -6,6 +6,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
 
@@ -15,6 +16,14 @@ class MechanicExperienceSkillScreen extends StatefulWidget {
   State<MechanicExperienceSkillScreen> createState() => _MechanicExperienceSkillScreenState();
 }
 class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillScreen> {
+
+  final Map<String, bool> certificationCheckbox = {
+    'ASE': false,
+    'OEM': false,
+    'DOT': false,
+    'Other:': false,
+  };
+
 
   final List<String> workSpaceOptions = ['In Shop', 'On site', 'Both'];
 
@@ -31,6 +40,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
     'Welding/Fabrication',
     'Computer Diagnostics',
   ];
+
   bool? validUSDOTNumber;
   // State
   List<String> selectedWorkSpaces = List.generate(10, (index) => 'In Shop');
@@ -77,7 +87,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                 textAlign: TextAlign.left,
               ),
               SizedBox(height: 4.h),
-              ///<<<=============>>> Work Apace and Experience <<<===============>>>
+              ///<<<=============>>> Work Space and Experience <<<===============>>>
               Row (
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -166,6 +176,9 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
               /// =================================> Certification ==============================>
               CustomText(text: 'Certification',fontsize: 16.sp),
               SizedBox(height: 14.sp),
+              CustomCheckboxList(
+                items: certificationCheckbox,
+              ),
               CustomText(text: 'Are you comfortable working on-site (roadside, fleet yards, job sites)?',
                 textAlign: TextAlign.start,
                 maxline: 2,
@@ -188,7 +201,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                 title: "Save and Next",
                 onpress: () {
                   // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.resetPasswordScreen);
+                  context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
                 },
               ),
               SizedBox(height: 20.h),
