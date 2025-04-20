@@ -26,11 +26,11 @@ class ProfileDetailsScreen extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 10,
                 children: [
                   CustomImageAvatar(
                     radius: 60.r,
                   ),
+                  SizedBox(width: 10.w,),
                   RichText(
                       text: TextSpan(
                           style:
