@@ -96,8 +96,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
               SizedBox(height: 8.h),
               ///<<<=============>>> LinearIndicator <<<===============>>>
               const CustomLinearIndicator(
-                progressValue: 0.03,
-                label: 0,
+                progressValue: 0.3,
               ),
               SizedBox(height: 29.h),
               ///<<<=============>>> CHECKED <<<===============>>>
