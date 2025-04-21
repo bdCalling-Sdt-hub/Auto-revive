@@ -9,10 +9,11 @@ class CustomScaffold extends StatelessWidget {
       this.body,
       this.floatingActionButton,
       this.bottomNavigationBar,
-      this.paddingSide});
+      this.paddingSide, this.endDrawer});
 
   final PreferredSizeWidget? appBar;
   final Widget? body;
+  final Widget? endDrawer;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
   final double? paddingSide;
@@ -20,6 +21,9 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerEnableOpenDragGesture: false,
+      endDrawerEnableOpenDragGesture: false,
+      endDrawer: endDrawer,
       backgroundColor: AppColors.bgColorWhite,
       appBar: appBar,
       body: SafeArea(

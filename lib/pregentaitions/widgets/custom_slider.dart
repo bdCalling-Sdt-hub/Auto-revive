@@ -3,17 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSlider extends StatelessWidget {
   const CustomSlider(
-      {super.key, required this.value, this.onChanged, this.max = 5});
+      {super.key,
+      required this.value,
+      this.onChanged,
+      this.max = 5,
+      this.activeColor,
+      this.inactiveColor,
+      this.thumbColor});
 
   final double value;
   final ValueChanged<double>? onChanged;
   final double max;
+  final Color? activeColor;
+  final Color? inactiveColor;
+  final Color? thumbColor;
 
   @override
   Widget build(BuildContext context) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        trackHeight: 10.h,
+        trackHeight: 8.h,
         tickMarkShape: SliderTickMarkShape.noTickMark,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
@@ -23,9 +32,9 @@ class CustomSlider extends StatelessWidget {
           min: 0,
           max: max,
           divisions: 5,
-          activeColor: Colors.white,
-          inactiveColor: const Color(0xffB0B0FF),
-          thumbColor: Colors.white,
+          activeColor: activeColor ?? Colors.white,
+          inactiveColor: inactiveColor ?? const Color(0xffB0B0FF),
+          thumbColor: thumbColor ?? Colors.white,
           onChanged: onChanged),
     );
   }
