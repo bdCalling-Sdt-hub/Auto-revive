@@ -1,4 +1,5 @@
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/pregentaitions/screens/message/users/users_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_home/tow_truck_home_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/tow_truck_profile_screen.dart';
@@ -14,11 +15,11 @@ class TowTruckBottomNavBar extends StatefulWidget {
 }
 
 class TowTruckBottomNavBarState extends State<TowTruckBottomNavBar> {
-  final List<Widget> screens = const [
-    TowTruckHomeScreen(),
-    TowTrucksBookingsScreen(),
-    TowTruckHomeScreen(),
-    TowTruckProfileScreen(),
+  final List<Widget> screens = [
+    const TowTruckHomeScreen(),
+    const TowTrucksBookingsScreen(),
+    UsersScreen(),
+    const TowTruckProfileScreen(),
 
   ];
 
@@ -35,7 +36,7 @@ class TowTruckBottomNavBarState extends State<TowTruckBottomNavBar> {
     final sizeH = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
       body: screens[currentIndex],
       bottomNavigationBar: Container(
         height: sizeH * .07,

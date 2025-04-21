@@ -24,7 +24,7 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: AppBar(
-        actionsPadding: EdgeInsets.only(right: 16.w),
+
         actions: [
           Builder(
               builder: (context) {
@@ -35,6 +35,8 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
                     child: Assets.icons.menu.svg());
               }
           ),
+
+          SizedBox(width: 24.w)
         ],
           centerTitle: true,
           title: CustomText(
@@ -72,6 +74,10 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
                     text: 'Maximum',
                     fontsize: 12.sp,
                     bottom: 4.h),
+
+
+
+
                 CustomContainer(
                   alignment: Alignment.center,
                   radiusAll: 12.r,
@@ -120,45 +126,50 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
           children: [
              CustomImageAvatar(image: '',radius: 38.r,),
             SizedBox(width: 16.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(text: 'David Bryan',fontsize: 16.sp,),
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(fontSize: 10.sp,color: AppColors.pdfButtonColor,height: 1.6),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(Icons.directions_car_filled, size: 14.r,color: AppColors.pdfButtonColor,),
-                      ),
-                      const TextSpan(
-                        text: ' Sedan \n Distance: 23 KM',
-                      ),
-                    ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: 'David Bryan',fontsize: 16.sp,),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 10.sp,color: AppColors.pdfButtonColor,height: 1.6),
+                      children: [
+                        WidgetSpan(
+                          child: Icon(Icons.directions_car_filled, size: 14.r,color: AppColors.pdfButtonColor,),
+                        ),
+                        const TextSpan(
+                          text: ' Sedan \n Distance: 23 KM',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
 
-                SizedBox(height: 10.h),
+                  SizedBox(height: 10.h),
 
-                CustomContainer(
-                  alignment: Alignment.center,
-                  width: 188.w,
-                  height: 28.h,
-                  color: AppColors.primaryColor,
-                  radiusAll: 100.r,
-                  child: CustomText(
-                    text: 'Request',
-                    fontsize: 10.sp,
-                    color: Colors.white,
+                  CustomContainer(
+                    alignment: Alignment.center,
+                    width: 188.w,
+                    height: 28.h,
+                    color: AppColors.primaryColor,
+                    radiusAll: 100.r,
+                    child: CustomText(
+                      text: 'Request',
+                      fontsize: 10.sp,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
 
-              ],
+                ],
+              ),
             )
           ],
         ),
       )),
     );
   }
+
+
+
 }
