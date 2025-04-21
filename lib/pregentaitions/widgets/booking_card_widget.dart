@@ -125,11 +125,13 @@ class BookingCardWidget extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: ' $subTitle',
+                              text: ' $subTitle'
                             ),
+
                           ],
                         ),
                       ),
+
                     ],
                   ),
                 ],

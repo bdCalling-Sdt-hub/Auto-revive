@@ -9,7 +9,8 @@ class CustomScaffold extends StatelessWidget {
       this.body,
       this.floatingActionButton,
       this.bottomNavigationBar,
-      this.paddingSide, this.endDrawer});
+      this.paddingSide,
+        this.endDrawer});
 
   final PreferredSizeWidget? appBar;
   final Widget? body;
