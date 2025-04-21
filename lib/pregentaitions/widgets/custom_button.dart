@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
   final Color? titlecolor;
   final double? height;
   final double? width;
+  final double? borderRadius;
   final double? fontSize;
   final FontWeight? fontWeight;
   final bool loading;
@@ -26,7 +27,7 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.titlecolor,
     this.loading=false,
-    this.loaderIgnore = false, this.fontWeight,
+    this.loaderIgnore = false, this.fontWeight, this.borderRadius,
   });
 
   @override
@@ -38,7 +39,7 @@ class CustomButton extends StatelessWidget {
         height: height ?? 52.h,
         padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
         decoration: BoxDecoration(
-          borderRadius:BorderRadius.circular(100.r),
+          borderRadius:BorderRadius.circular(borderRadius ?? 100.r),
           border: Border.all(color: AppColors.primaryColor),
           color: color ?? AppColors.primaryColor,
         ),
