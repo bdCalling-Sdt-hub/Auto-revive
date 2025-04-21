@@ -13,6 +13,10 @@ import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/profile
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service_coverage_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/custom_bottom_nav/tow_truck_bottom_nav_bar.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_truck_details_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/earning/earning_screen.dart';
+import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/earning/withdraw_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_request_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_screen.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +63,10 @@ class AppRoutes {
 
   static const String towTruckJobScreen = "/towTruckJobScreen";
   static const String towTruckJobRequestScreen = "/TowTruckJobRequestScreen";
+  static const String towTrucksBookingsScreen = "/TowTrucksBookingsScreen";
+  static const String towTruckDetailsScreen = "/towTruckDetailsScreen";
+  static const String earningScreen = "/EarningScreen";
+  static const String withdrawScreen = "/withdrawScreen";
 
 
 
@@ -304,6 +312,41 @@ class AppRoutes {
         path: messageChatScreen,
         name: messageChatScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MessageChatScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTrucksBookingsScreen,
+        name: towTrucksBookingsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTrucksBookingsScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckDetailsScreen,
+        name: towTruckDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckDetailsScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: earningScreen,
+        name: earningScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(EarningScreen(), state),
+      ),
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: withdrawScreen,
+        name: withdrawScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(WithdrawScreen(), state),
       ),
 
 

@@ -12,6 +12,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? width;
   final double? fontSize;
+  final FontWeight? fontWeight;
   final bool loading;
   final bool loaderIgnore;
 
@@ -25,7 +26,7 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.titlecolor,
     this.loading=false,
-    this.loaderIgnore = false,
+    this.loaderIgnore = false, this.fontWeight,
   });
 
   @override
@@ -55,7 +56,7 @@ class CustomButton extends StatelessWidget {
                 text: title,
                 fontsize: fontSize ?? 16.h,
                 color: titlecolor ?? Colors.white,
-                fontWeight: FontWeight.w600,
+                fontWeight: fontWeight ?? FontWeight.w600,
               ),
             ),
 
