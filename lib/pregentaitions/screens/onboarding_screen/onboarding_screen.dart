@@ -42,13 +42,16 @@ class OnboardingScreen extends StatelessWidget {
 
 
 
-              
-              
-              CustomButton(
-                  color: AppColors.primaryColorTransparent,
-                  title: "Start Your Journey !", onpress: (){
-                context.goNamed(AppRoutes.logInScreen);
-              })
+
+
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 46.w),
+                child: CustomButton(
+                    color: AppColors.primaryColorTransparent,
+                    title: "Start Your Journey !", onpress: (){
+                  context.goNamed(AppRoutes.logInScreen);
+                }),
+              )
             ],
           ),
         )

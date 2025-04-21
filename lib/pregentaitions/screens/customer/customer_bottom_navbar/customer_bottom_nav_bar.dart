@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../message/users/users_screen.dart';
+import '../customer_booking/customer_booking_screen.dart';
 import '../customer_home/customer_home_screen.dart';
 
 class CustomerBottomNavBar extends StatefulWidget {
@@ -15,7 +16,7 @@ class CustomerBottomNavBar extends StatefulWidget {
 class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
   final List<Widget> screens = [
     const CustomerHomeScreen(),
-    const CustomerHomeScreen(),
+    const CustomerBookingScreen(),
      UsersScreen(),
     const CustomerHomeScreen(),
   ];
