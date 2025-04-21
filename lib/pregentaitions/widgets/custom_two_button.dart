@@ -24,16 +24,16 @@ class CustomTwoButon extends StatelessWidget {
 
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primaryColor),
+                border: Border.all(color: index == 0 ? AppColors.primaryColor : Colors.red),
                 borderRadius: BorderRadius.circular(8.r),
-                color: index == 0 ? Colors.white : AppColors.primaryColor),
+                color: index == 0 ? AppColors.primaryColor : Colors.red),
             width: width,
             height: height,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 7.w),
               child: CustomText(
                   text: btnNameList![index],
-                  color: index == 0 ? AppColors.primaryColor : Colors.white,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600),
             ),
           ),

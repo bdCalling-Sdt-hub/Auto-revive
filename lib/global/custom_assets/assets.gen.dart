@@ -19,6 +19,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Logo SVG.svg
   SvgGenImage get logoSVG => const SvgGenImage('assets/icons/Logo SVG.svg');
 
+  /// File path: assets/icons/atrachfileIcon.svg
+  SvgGenImage get atrachfileIcon =>
+      const SvgGenImage('assets/icons/atrachfileIcon.svg');
+
   /// File path: assets/icons/carIcon.svg
   SvgGenImage get carIcon => const SvgGenImage('assets/icons/carIcon.svg');
 
@@ -52,6 +56,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mail.svg
   SvgGenImage get mail => const SvgGenImage('assets/icons/mail.svg');
 
+  /// File path: assets/icons/meneyIcon.svg
+  SvgGenImage get meneyIcon => const SvgGenImage('assets/icons/meneyIcon.svg');
+
   /// File path: assets/icons/menu.svg
   SvgGenImage get menu => const SvgGenImage('assets/icons/menu.svg');
 
@@ -64,6 +71,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
+
+  /// File path: assets/icons/profileIcon.svg
+  SvgGenImage get profileIcon =>
+      const SvgGenImage('assets/icons/profileIcon.svg');
 
   /// File path: assets/icons/profile_info.svg
   SvgGenImage get profileInfo =>
@@ -85,6 +96,7 @@ class $AssetsIconsGen {
   /// List of all assets
   List<SvgGenImage> get values => [
         logoSVG,
+        atrachfileIcon,
         carIcon,
         detailsLocation,
         detailsMessage,
@@ -95,10 +107,12 @@ class $AssetsIconsGen {
         location,
         logout,
         mail,
+        meneyIcon,
         menu,
         message,
         notificationIcon,
         profile,
+        profileIcon,
         profileInfo,
         select,
         settings,
