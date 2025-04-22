@@ -40,9 +40,12 @@ import '../../../pregentaitions/screens/customer/customer_selecte_car/customer_s
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_details_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_complete_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_map_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_screen.dart';
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
+import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
+import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
@@ -69,6 +72,10 @@ class AppRoutes {
   static const String mechanicBookingsScreen = "/MechanicBookingsScreen";
   static const String mechanicBookingsDetailsScreen = "/MechanicBookingsDetailsScreen";
   static const String mechanicCompleteDetailsScreen = "/MechanicCompleteDetailsScreen";
+  static const String mechanicMapScreen = "/MechanicMapScreen";
+  static const String notificationsScreen = "/NotificationsScreen";
+  static const String settingsScreen = "/SettingsScreen";
+  static const String changePasswordScreen = "/ChangePasswordScreen";
 
 
 
@@ -447,6 +454,733 @@ class AppRoutes {
               _customTransitionPage(CustomerBookingCancelScreen(), state),
         ),
   ]);
+
+
+
+
+  static final GoRouter goRouter = GoRouter(
+    initialLocation: splashScreen,
+    routes: [
+      GoRoute(
+          path: splashScreen,
+          name: splashScreen,
+          builder: (context, state) {
+           return SplashScreen();
+          },
+        redirect: (context, state) {
+          Future.delayed(const Duration(seconds: 3), ()async{
+             AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+          });
+        },
+      ),
+
+      ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
+
+      GoRoute(
+        path: onboardingScreen,
+        name: onboardingScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
+      ),
+
+      ///<<<=============>>> CHANGE PASSWORD  SCREEN <<<===============>>>
+
+      GoRoute(
+        path: changePasswordScreen,
+        name: changePasswordScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
+      ),
+
+      ///<<<=============>>> LOGIN SCREEN <<<===============>>>
+
+      GoRoute(
+        path: logInScreen,
+        name: logInScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(LogInScreen(), state),
+      ),
+
+      ///<<<=============>>> NOTIFICATIONS SCREEN <<<===============>>>
+
+      GoRoute(
+        path: notificationsScreen,
+        name: notificationsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(NotificationScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> EMAIL VERIFY SCREEN <<<===============>>>
+      GoRoute(
+        path: emailVerifyScreen,
+        name: emailVerifyScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(EmailVerifyScreen(), state),
+      ),
+
+
+      ///<<<=============>>> OTP SCREEN <<<===============>>>
+
+      GoRoute(
+        path: otpScreen,
+        name: otpScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(OtpScreen(), state),
+      ),
+
+      ///<<<=============>>> SETTINGS SCREEN <<<===============>>>
+
+
+      GoRoute(
+        path: settingsScreen,
+        name: settingsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(SettingScreen(), state),
+      ),
+
+      ///<<<=============>>> RESET PASSWORD SCREEN <<<===============>>>
+
+
+      GoRoute(
+        path: resetPasswordScreen,
+        name: resetPasswordScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ResetPasswordScreen(), state),
+      ),
+
+      ///<<<=============>>> SIGN UP SCREEN <<<===============>>>
+
+      GoRoute(
+        path: roleScreen,
+        name: roleScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(RoleScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC PERSONAL INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: mechanicPersonalInformationScreen,
+        name: mechanicPersonalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicPersonalInformationScreen(), state),
+      ),
+        ///<<<=============>>> MECHANIC Experience and Skill <<<===============>>>
+      GoRoute(
+        path: mechanicExperienceSkillScreen,
+        name: mechanicExperienceSkillScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicExperienceSkillScreen(), state),
+      ),
+
+      ///<<<=============>>>  MECHANIC TOOLS EQUIPMENT SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicToolsEquipmentScreen,
+        name: mechanicToolsEquipmentScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicToolsEquipmentScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC EMPLOYMENT HISTORY SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicEmploymentHistoryScreen,
+        name: mechanicEmploymentHistoryScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicEmploymentHistoryScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC REFERENCE SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicReferenceScreen,
+        name: mechanicReferenceScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicReferenceScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC Additional Information SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicAdditionalInformationScreen,
+        name: mechanicAdditionalInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage( MechanicAdditionalInformationScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> MECHANIC RESUME CERTIFICATE SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicResumeCertificateScreen,
+        name: mechanicResumeCertificateScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicResumeCertificateScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC PROFILE INFORMATION SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicProfileInformationScreen,
+        name: mechanicProfileInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicProfileInformationScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC BOTTOM NAVBAR SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicBottomNavBar,
+        name: mechanicBottomNavBar,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicBottomNavBar(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC JOB SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicJobScreen,
+        name: mechanicJobScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicJobScreen(), state),
+      ),
+
+
+      ///<<<=============>>> MECHANIC JOB REQUEST SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicJobRequestScreen,
+        name: mechanicJobRequestScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicJobRequestScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC JOB REQUEST SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicBookingsScreen,
+        name: mechanicBookingsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicBookingsScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC BOOKINGS DETAILS SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicBookingsDetailsScreen,
+        name: mechanicBookingsDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicBookingsDetailsScreen(), state),
+      ),
+
+
+      ///<<<=============>>> MECHANIC COMPLETE DETAILS SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicCompleteDetailsScreen,
+        name: mechanicCompleteDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicCompleteDetailsScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC MAP SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicMapScreen,
+        name: mechanicMapScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicMapScreen(), state),
+      ),
+
+      ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerSignupScreen,
+        name: customerSignupScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerSignupScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> Customer BOTTOM NAV BAR <<<===============>>>
+
+      GoRoute(
+        path: customerBottomNavBar,
+        name: customerBottomNavBar,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerBottomNavBar(), state),
+      ),
+
+      ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: basicInfoScreen,
+        name: basicInfoScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(BasicInfoScreen(), state),
+      ),
+
+      ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: companyInformationScreen,
+        name: companyInformationScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CompanyInformationScreen(), state),
+      ),
+
+ ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+
+      GoRoute(
+        path: licensingAndComplianceScreen,
+        name: licensingAndComplianceScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(LicensingAndComplianceScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerMechanicScreen,
+        name: customerMechanicScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerMechanicScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: vehicleEquipmentScreen,
+        name: vehicleEquipmentScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(VehicleEquipmentScreen(), state),
+      ),
+
+ ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: serviceCoverageScreen,
+        name: serviceCoverageScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ServiceCoverageScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: businessRequirementScreen,
+        name: businessRequirementScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(BusinessRequirementScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: profileDetailsScreen,
+        name: profileDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(ProfileDetailsScreen(), state),
+      ),
+
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerSelectCarScreen,
+        name: customerSelectCarScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerSelectCarScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: customerMapScreen,
+        name: customerMapScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(CustomerMapScreen(), state),
+      ),
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckBottomNavBar,
+        name: towTruckBottomNavBar,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckBottomNavBar(), state),
+      ),
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckJobScreen,
+        name: towTruckJobScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckJobScreen(), state),
+      ),
+
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckJobRequestScreen,
+        name: towTruckJobRequestScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckJobRequestScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: messageChatScreen,
+        name: messageChatScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MessageChatScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTrucksBookingsScreen,
+        name: towTrucksBookingsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTrucksBookingsScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: towTruckDetailsScreen,
+        name: towTruckDetailsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(TowTruckDetailsScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: earningScreen,
+        name: earningScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(EarningScreen(), state),
+      ),
+
+///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+
+      GoRoute(
+        path: withdrawScreen,
+        name: withdrawScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(WithdrawScreen(), state),
+      ),
+
+
+      ///<<<=============>>> CUSTOMER BOOKING DETAILS SCREEN <<<===============>>>
+
+            GoRoute(
+              path: customerBookingDetailsScreen,
+              name: customerBookingDetailsScreen,
+              pageBuilder: (context, state) =>
+                  _customTransitionPage(CustomerBookingDetailsScreen(), state),
+            ),
+
+
+    ]
+  );
+
+
+
+  // static Page<dynamic> _customTransitionPage(Widget child, GoRouterState state) {
+  //
+  // static const String customerBookingDetailsScreen = "/CustomerBookingDetailsScreen";
+  //
+  // static final GoRouter goRouter =
+  //     GoRouter(initialLocation: splashScreen, routes: [
+  //   GoRoute(
+  //     path: splashScreen,
+  //     name: splashScreen,
+  //     builder: (context, state) {
+  //       return SplashScreen();
+  //     },
+  //     redirect: (context, state) {
+  //       Future.delayed(const Duration(seconds: 3), () async {
+  //         AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+  //       });
+  //     },
+  //   ),
+  //
+  //   ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: onboardingScreen,
+  //     name: onboardingScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(const OnboardingScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> LOGIN SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: logInScreen,
+  //     name: logInScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(LogInScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> EMAIL VERIFY SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: emailVerifyScreen,
+  //     name: emailVerifyScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(EmailVerifyScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> OTP SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: otpScreen,
+  //     name: otpScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(OtpScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> RESET PASSWORD SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: resetPasswordScreen,
+  //     name: resetPasswordScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(ResetPasswordScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> SIGN UP SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: roleScreen,
+  //     name: roleScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(RoleScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC PERSONAL INFORMATION SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: mechanicPersonalInformationScreen,
+  //     name: mechanicPersonalInformationScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicPersonalInformationScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC Experience and Skill <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicExperienceSkillScreen,
+  //     name: mechanicExperienceSkillScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicExperienceSkillScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>>  MECHANIC TOOLS EQUIPMENT SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicToolsEquipmentScreen,
+  //     name: mechanicToolsEquipmentScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicToolsEquipmentScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC EMPLOYMENT HISTORY SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicEmploymentHistoryScreen,
+  //     name: mechanicEmploymentHistoryScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicEmploymentHistoryScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC REFERENCE SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicReferenceScreen,
+  //     name: mechanicReferenceScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicReferenceScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC Additional Information SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicAdditionalInformationScreen,
+  //     name: mechanicAdditionalInformationScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicAdditionalInformationScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC RESUME CERTIFICATE SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicResumeCertificateScreen,
+  //     name: mechanicResumeCertificateScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicResumeCertificateScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> MECHANIC PROFILE INFORMATION SCREEN <<<===============>>>
+  //   GoRoute(
+  //     path: mechanicProfileInformationScreen,
+  //     name: mechanicProfileInformationScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MechanicProfileInformationScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: customerSignupScreen,
+  //     name: customerSignupScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CustomerSignupScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> Customer BOTTOM NAV BAR <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: customerBottomNavBar,
+  //     name: customerBottomNavBar,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CustomerBottomNavBar(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: basicInfoScreen,
+  //     name: basicInfoScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(BasicInfoScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: companyInformationScreen,
+  //     name: companyInformationScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CompanyInformationScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: licensingAndComplianceScreen,
+  //     name: licensingAndComplianceScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(LicensingAndComplianceScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: customerMechanicScreen,
+  //     name: customerMechanicScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CustomerMechanicScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: vehicleEquipmentScreen,
+  //     name: vehicleEquipmentScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(VehicleEquipmentScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: serviceCoverageScreen,
+  //     name: serviceCoverageScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(ServiceCoverageScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: businessRequirementScreen,
+  //     name: businessRequirementScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(BusinessRequirementScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: profileDetailsScreen,
+  //     name: profileDetailsScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(ProfileDetailsScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: customerSelectCarScreen,
+  //     name: customerSelectCarScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CustomerSelectCarScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: customerMapScreen,
+  //     name: customerMapScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(CustomerMapScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: towTruckBottomNavBar,
+  //     name: towTruckBottomNavBar,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(TowTruckBottomNavBar(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: towTruckJobScreen,
+  //     name: towTruckJobScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(TowTruckJobScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: towTruckJobRequestScreen,
+  //     name: towTruckJobRequestScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(TowTruckJobRequestScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: messageChatScreen,
+  //     name: messageChatScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(MessageChatScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: towTrucksBookingsScreen,
+  //     name: towTrucksBookingsScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(TowTrucksBookingsScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: towTruckDetailsScreen,
+  //     name: towTruckDetailsScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(TowTruckDetailsScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: earningScreen,
+  //     name: earningScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(EarningScreen(), state),
+  //   ),
+  //
+  //   ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
+  //
+  //   GoRoute(
+  //     path: withdrawScreen,
+  //     name: withdrawScreen,
+  //     pageBuilder: (context, state) =>
+  //         _customTransitionPage(WithdrawScreen(), state),
+  //   ),
+  //
+  //
+  //
+  //       ///<<<=============>>> CUSTOMER BOOKING DETAILS SCREEN <<<===============>>>
+  //
+  //       GoRoute(
+  //         path: customerBookingDetailsScreen,
+  //         name: customerBookingDetailsScreen,
+  //         pageBuilder: (context, state) =>
+  //             _customTransitionPage(CustomerBookingDetailsScreen(), state),
+  //       ),
+  // ]);
 
 
   static Page<dynamic> _customTransitionPage(

@@ -8,13 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MechanicCompleteDetailsScreen extends StatelessWidget {
-  const MechanicCompleteDetailsScreen({super.key});
+   MechanicCompleteDetailsScreen({super.key});
 
-  final List<Map<String, dynamic>> services = const [
-    {"title": "Diesel Engine Repair", "price": 27, "checked": true},
-    {"title": "Gasoline Engine Repair", "price": 27, "checked": true},
-    {"title": "Semi-Truck Repair", "price": 27, "checked": false},
-    {"title": "Trailer Repair", "price": 27, "checked": false},
+  final List<String> services = [
+    "Diesel Engine Repair",
+    "Gasoline Engine Repair",
+    "Semi-Truck Repair",
+    "Trailer Repair",
   ];
 
   @override
@@ -66,60 +66,54 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
           ),
           SizedBox(height: 26.h),
 
-          // /// Services UI Section
-          // Container(
-          //   margin: EdgeInsets.symmetric(horizontal: 16.w),
-          //   padding: EdgeInsets.symmetric(vertical: 10.h),
-          //   decoration: BoxDecoration(
-          //     color: Colors.black,
-          //     borderRadius: BorderRadius.circular(10.r),
-          //   ),
-          //   child: Column(
-          //     children: services.map((service) {
-          //       return Container(
-          //         padding:
-          //         EdgeInsets.symmetric(horizontal: 10.w, vertical: 12.h),
-          //         decoration: BoxDecoration(
-          //           border: Border(
-          //             bottom: BorderSide(color: Colors.white12, width: 1),
-          //           ),
-          //         ),
-          //         child: Row(
-          //           children: [
-          //             Container(
-          //               width: 20.w,
-          //               height: 20.h,
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(4.r),
-          //                 color: service["checked"]
-          //                     ? Colors.blue
-          //                     : Colors.transparent,
-          //                 border: Border.all(color: Colors.blue, width: 2),
-          //               ),
-          //             ),
-          //             SizedBox(width: 12.w),
-          //             Expanded(
-          //               child: CustomText(
-          //                 text: service["title"],
-          //                 fontsize: 14.sp,
-          //                 fontWeight: FontWeight.w500,
-          //                 color: Colors.white.withOpacity(
-          //                     service["checked"] ? 1 : 0.4), // faded if not selected
-          //               ),
-          //             ),
-          //             CustomText(
-          //               text: "\$ ${service["price"]}",
-          //               fontsize: 14.sp,
-          //               fontWeight: FontWeight.w500,
-          //               color: Colors.white.withOpacity(
-          //                   service["checked"] ? 1 : 0.4),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     }).toList(),
-          //   ),
-          // ),
+         Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(left: 22.w),
+          height: 317.h,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryShade300, width: 0.4),
+          ),
+          child: Scrollbar(
+            thickness: 4.w,
+            radius: Radius.circular(4.r),
+            child: ListView.separated(
+              padding: EdgeInsets.all(8.w),
+              itemCount: services.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding:  EdgeInsets.only(top: index == 0 ? 22.h : 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 16.w,
+                            height: 16.w,
+                            margin: EdgeInsets.only(right: 8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                          ),
+                          CustomText(text: services[index], color: Colors.black),
+
+                        ],
+                      ),
+
+                      CustomText(text: r"$ 27", right: 22.w, color: Colors.black),
+
+
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => SizedBox(height: 12.h),
+            ),
+          ),
+        ),
 
           const Spacer(),
           CustomButton(title: 'Complete', onpress: () {}),

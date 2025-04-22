@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
+import '../../../widgets/custom_button.dart';
 
 class TowTruckProfileScreen extends StatelessWidget {
   const TowTruckProfileScreen({super.key});
@@ -27,7 +28,11 @@ class TowTruckProfileScreen extends StatelessWidget {
                   const Spacer(),
                   Assets.icons.timeProgress.svg(color: Colors.black),
                   SizedBox(width: 20.w),
-                  Assets.icons.notificationIcon.svg(color: Colors.black),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.notificationsScreen);
+                    },
+                      child: Assets.icons.notificationIcon.svg(color: Colors.black)),
                 ],
               ),
               CustomImageAvatar(
@@ -64,13 +69,108 @@ class TowTruckProfileScreen extends StatelessWidget {
               CustomProfileListTile(
                   title: 'Settings ',
                   icon: Assets.icons.settings.svg(),
-                  onTap: () {}),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.settingsScreen);
+
+
+                  }),
 
 
               CustomProfileListTile(
                   title: 'Logout',
                   icon: Assets.icons.logout.svg(),
-                  onTap: () {}),
+                 onTap: (){
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 26.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                textAlign: TextAlign.center,
+                                  text: 'Log Out', fontsize: 20.sp,  color: AppColors.logColor,
+                                fontWeight: FontWeight.w400),
+                              SizedBox(height: 10.h),
+                              Divider(thickness: 1, color: Colors.grey.withOpacity(0.4)),
+                              SizedBox(height: 24.h),
+                              Text(
+                                "Are you sure you want to sure\nLogout?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              SizedBox(height: 30.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  // Cancel Button
+                                  SizedBox(
+                                    width: 110.w,
+                                    height: 44.h,
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25.r),
+                                        ),
+                                        side: BorderSide(color: Colors.pinkAccent, width: 1.5),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.pinkAccent,
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  // Logout Button
+                                  SizedBox(
+                                    width: 110.w,
+                                    height: 44.h,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25.r),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        context.go(AppRoutes.roleScreen);
+                                      },
+                                      child: Text(
+                                        "Logout",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
+
+
+                },)
+
             ],
           ),
         ],

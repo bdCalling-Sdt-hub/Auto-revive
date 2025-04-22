@@ -24,6 +24,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   google_maps_flutter:
   shared_preferences: ^2.5.3
+  timeago: ^3.6.1
 
   flutter_switch: ^0.3.2
 

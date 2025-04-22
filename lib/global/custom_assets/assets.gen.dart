@@ -93,6 +93,26 @@ class $AssetsIconsGen {
   SvgGenImage get timeProgress =>
       const SvgGenImage('assets/icons/time_progress.svg');
 
+  /// File path: assets/icons/password.svg
+  SvgGenImage get changePass => const SvgGenImage('assets/icons/changePass.svg');
+
+  /// File path: assets/icons/password.svg
+  SvgGenImage get arrowRight => const SvgGenImage('assets/icons/arrow_right.svg');
+
+  /// File path: assets/icons/privacy.svg
+  SvgGenImage get privacy => const SvgGenImage('assets/icons/privacy.svg');
+
+
+  /// File path: assets/icons/terms.svg
+  SvgGenImage get terms => const SvgGenImage('assets/icons/terms.svg');
+
+  /// File path: assets/icons/about.svg
+  SvgGenImage get about => const SvgGenImage('assets/icons/about.svg');
+
+  /// File path: assets/icons/delete.svg
+  SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
+
+
   /// List of all assets
   List<SvgGenImage> get values => [
         logoSVG,
@@ -144,6 +164,29 @@ class $AssetsImagesGen {
   AssetGenImage get splashImage =>
       const AssetGenImage('assets/images/splashImage.png');
 
+  /// File path: assets/icons/changePass.svg
+  SvgGenImage get changePass =>
+       SvgGenImage('assets/icons/changePass.svg');
+
+  /// File path: assets/icons/arrow_right.svg
+  SvgGenImage get arrowRight =>
+       SvgGenImage('assets/icons/arrow_right.svg');
+
+  /// File path:assets/icons/privacy.svg
+  SvgGenImage get privacy =>
+       SvgGenImage('assets/icons/privacy.svg');
+
+  /// File path: assets/icons/terms.svg
+  SvgGenImage get terms =>
+       SvgGenImage('assets/icons/terms.svg');
+  /// File path: assets/icons/about.svg
+  SvgGenImage get about =>
+      SvgGenImage('assets/icons/about.svg');
+
+  /// File path: assets/icons/delete.svg
+  SvgGenImage get delete =>
+      SvgGenImage('assets/icons/delete.svg');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         balanceBg,
@@ -171,6 +214,7 @@ class Assets {
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
+
 }
 
 class AssetGenImage {

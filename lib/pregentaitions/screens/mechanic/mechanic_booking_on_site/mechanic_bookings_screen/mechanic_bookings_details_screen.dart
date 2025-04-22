@@ -88,7 +88,7 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: const Row(
                     children: [
                       Expanded(
                         child: TextField(
@@ -138,8 +138,6 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
           CustomButton(title: 'Submit',
               onpress: () {
                 context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen);
-
-
 
 
               }),
