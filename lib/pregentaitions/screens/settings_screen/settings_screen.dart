@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/config/app_routes/app_routes.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../global/custom_assets/assets.gen.dart';
 import '../../widgets/custom_text.dart';
@@ -21,20 +23,21 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: CustomText(text: "My Profile", fontsize: 20.h),
+        title: CustomText(text: "Settings", fontsize: 20.h),
       ),
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
+            SizedBox(height: 30.h),
 
             ///==============Change password===============>>>
 
             GestureDetector(
                 onTap: (){
-                  // context.pushNamed(AppRoutes.changePasswordScreen);
+                  context.pushNamed(AppRoutes.changePasswordScreen);
                 },
                 child:_customTile(
                     Assets.icons.changePass.svg(),
@@ -201,7 +204,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 CustomText(text: title, left: 18.w, fontsize: 16.h),
                 const Spacer(),
                 trailing,
-                SizedBox(width: 23.w),
+                SizedBox(width: 25.w),
               ],
             ),
           ),
