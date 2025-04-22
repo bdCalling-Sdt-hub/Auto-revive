@@ -30,6 +30,7 @@ import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_tools_equipm
 import '../../../pregentaitions/screens/auth/reset_password/reset_password_screen.dart';
 import '../../../pregentaitions/screens/auth/role/role_screen.dart';
 import '../../../pregentaitions/screens/customer/cusotmer_map/customer_map_screen.dart';
+import '../../../pregentaitions/screens/customer/customer_booking/customer_booking_cancel_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_booking/customer_booking_details_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
 import '../../../pregentaitions/screens/customer/customer_mechanic/customer_mechanic_screen.dart';
@@ -85,6 +86,7 @@ class AppRoutes {
   static const String earningScreen = "/EarningScreen";
   static const String withdrawScreen = "/withdrawScreen";
   static const String customerBookingDetailsScreen = "/CustomerBookingDetailsScreen";
+  static const String customerBookingCancelScreen = "/CustomerBookingCancelScreen";
 
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
@@ -408,6 +410,16 @@ class AppRoutes {
           name: customerBookingDetailsScreen,
           pageBuilder: (context, state) =>
               _customTransitionPage(CustomerBookingDetailsScreen(), state),
+        ),
+
+
+        ///<<<=============>>> CUSTOMER BOOKING Cancel SCREEN <<<===============>>>
+
+        GoRoute(
+          path: customerBookingCancelScreen,
+          name: customerBookingCancelScreen,
+          pageBuilder: (context, state) =>
+              _customTransitionPage(CustomerBookingCancelScreen(), state),
         ),
   ]);
 
