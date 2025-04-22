@@ -21,6 +21,8 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
   final TextEditingController _nameTEController = TextEditingController();
   final TextEditingController _titleTEController = TextEditingController();
   final TextEditingController _dateTEController = TextEditingController();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+
 
   final Map<String, bool> _services = {
     'Maintain active DOT registration & insurance coverage at all times.': false,
@@ -54,65 +56,69 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomLinearIndicator(
-              progressValue: 0.94,
-              label: 100,
-            ),
-            SizedBox(height: 24.h),
-            CustomText(
-              textAlign: TextAlign.start,
-              maxline: 2,
-              text: 'By applying to work with Fix It LLC, you agree to the following..',
-              bottom: 6.h,
-            ),
-            CustomCheckboxList(
-              isAllChecked: true,
-              items: _services,
-            ),
+        child: Form(
+          key: _globalKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomLinearIndicator(
+                progressValue: 0.94,
+                label: 100,
+              ),
+              SizedBox(height: 24.h),
+              CustomText(
+                textAlign: TextAlign.start,
+                maxline: 2,
+                text: 'By applying to work with Fix It LLC, you agree to the following..',
+                bottom: 6.h,
+              ),
+              CustomCheckboxList(
+                isAllChecked: true,
+                items: _services,
+              ),
 
-            SizedBox(height: 10.h),
+              SizedBox(height: 10.h),
 
-            CustomTextField(
-              controller: _nameTEController,
-              labelText: 'Authorized or Representative name',
-              hintText: 'Authorized or Representative name',
-            ),
+              CustomTextField(
+                controller: _nameTEController,
+                labelText: 'Authorized or Representative name',
+                hintText: 'Authorized or Representative name',
+              ),
 
-            CustomTextField(
-              controller: _titleTEController,
-              labelText: 'Authorized or Representative title',
-              hintText: 'Authorized or Representative title',
-            ),
+              CustomTextField(
+                controller: _titleTEController,
+                labelText: 'Authorized or Representative title',
+                hintText: 'Authorized or Representative title',
+              ),
 
 
 
-            CustomUploadButton(
-              topLabel: 'Signarure',
-                title: 'signature.jpg',
+              CustomUploadButton(
+                topLabel: 'Signarure',
+                  title: 'signature.jpg',
 
-                onTap: (){}),
+                  onTap: (){}),
 
-            CustomTextField(
-              readOnly: true,
-              onTap: _selectDate,
-              controller: _dateTEController,
-              labelText: 'Date',
-              hintText: 'Date',
-              suffixIcon: const Icon(Icons.date_range_outlined),
-            ),
+              CustomTextField(
+                readOnly: true,
+                onTap: _selectDate,
+                controller: _dateTEController,
+                labelText: 'Date',
+                hintText: 'Date',
+                suffixIcon: const Icon(Icons.date_range_outlined),
+              ),
 
-            SizedBox(height: 44.h),
-            Center(
-                child: CustomButton(
-                    title: 'Submit',
-                    onpress: () {
-                      context.pushNamed(AppRoutes.towTruckBottomNavBar);
-                    })),
-            SizedBox(height: 24.h),
-          ],
+              SizedBox(height: 44.h),
+              Center(
+                  child: CustomButton(
+                      title: 'Submit',
+                      onpress: () {
+                        if(_globalKey.currentState!.validate()) return;
+                        context.pushNamed(AppRoutes.towTruckBottomNavBar);
+                      })),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );
