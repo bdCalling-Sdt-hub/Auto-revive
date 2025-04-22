@@ -110,63 +110,67 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
 
       body: ListView.builder(
         itemCount: 5,
-          itemBuilder: (context,index) => CustomContainer(
-            marginAll: 8.h,
-            color: AppColors.bgColorWhite,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  offset: const Offset(0, 2),
-                  blurRadius: 3)
-            ],
-            bordersColor: AppColors.borderColor,
-        radiusAll: 16.r,
-        paddingLeft: 8.r,
-        child: Row(
-          children: [
-             CustomImageAvatar(image: '',radius: 38.r,),
-            SizedBox(width: 16.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(text: 'David Bryan',fontsize: 16.sp,),
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 10.sp,color: AppColors.pdfButtonColor,height: 1.6),
-                      children: [
-                        WidgetSpan(
-                          child: Icon(Icons.directions_car_filled, size: 14.r,color: AppColors.pdfButtonColor,),
-                        ),
-                        const TextSpan(
-                          text: ' Sedan \n Distance: 23 KM',
-                        ),
-                      ],
-                    ),
+          itemBuilder: (context,index) => _buildJobCard()),
+    );
+  }
+
+  Widget _buildJobCard() {
+    return CustomContainer(
+          marginAll: 8.h,
+          color: AppColors.bgColorWhite,
+      boxShadow: [
+        BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, 2),
+            blurRadius: 13)
+      ],
+          bordersColor: AppColors.borderColor,
+      radiusAll: 16.r,
+      paddingAll: 10.r,
+      child: Row(
+        children: [
+           CustomImageAvatar(image: '',radius: 38.r,),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(text: 'David Bryan',fontsize: 16.sp,),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(fontSize: 10.sp,color: AppColors.pdfButtonColor,height: 1.6),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(Icons.directions_car_filled, size: 14.r,color: AppColors.pdfButtonColor,),
+                      ),
+                      const TextSpan(
+                        text: ' Sedan \n Distance: 23 KM',
+                      ),
+                    ],
                   ),
+                ),
 
 
-                  SizedBox(height: 10.h),
+                SizedBox(height: 10.h),
 
-                  CustomContainer(
-                    alignment: Alignment.center,
-                    width: 188.w,
-                    height: 28.h,
-                    color: AppColors.primaryColor,
-                    radiusAll: 100.r,
-                    child: CustomText(
-                      text: 'Request',
-                      fontsize: 10.sp,
-                      color: Colors.white,
-                    ),
+                CustomContainer(
+                  alignment: Alignment.center,
+                  width: 188.w,
+                  height: 28.h,
+                  color: AppColors.primaryColor,
+                  radiusAll: 100.r,
+                  child: CustomText(
+                    text: 'Request',
+                    fontsize: 10.sp,
+                    color: Colors.white,
                   ),
+                ),
 
-                ],
-              ),
-            )
-          ],
-        ),
-      )),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
