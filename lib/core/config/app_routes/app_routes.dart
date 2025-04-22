@@ -8,6 +8,8 @@ import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_pr
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_reference_screen/mechanic_reference_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_resume_certificate_screen/mechanic_resume_certificate_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
+import 'package:autorevive/pregentaitions/screens/mechanic/mechanic_bottom_nav/mechanic_bottom_nav.dart';
+import 'package:autorevive/pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_request_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
 import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/business_requirement_screen.dart';
@@ -35,6 +37,10 @@ import '../../../pregentaitions/screens/customer/customer_booking/customer_booki
 import '../../../pregentaitions/screens/customer/customer_bottom_navbar/customer_bottom_nav_bar.dart';
 import '../../../pregentaitions/screens/customer/customer_mechanic/customer_mechanic_screen.dart';
 import '../../../pregentaitions/screens/customer/customer_selecte_car/customer_selecte_car_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_details_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_complete_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_screen.dart';
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 
@@ -46,21 +52,43 @@ class AppRoutes {
   static const String roleScreen = "/SignUpScreen";
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
-  static const String mechanicPersonalInformationScreen =
-      "/MechanicPersonalInformationScreen";
-  static const String mechanicExperienceSkillScreen =
-      "/MechanicExperienceSkillScreen";
-  static const String mechanicToolsEquipmentScreen =
-      "/MechanicToolsEquipmentScreen";
-  static const String mechanicEmploymentHistoryScreen =
-      "/MechanicEmploymentHistoryScreen";
+
+
+
+  static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
+  static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
+  static const String mechanicToolsEquipmentScreen = "/MechanicToolsEquipmentScreen";
+  static const String mechanicEmploymentHistoryScreen = "/MechanicEmploymentHistoryScreen";
   static const String mechanicReferenceScreen = "/MechanicReferenceScreen";
-  static const String mechanicAdditionalInformationScreen =
-      "/MechanicAdditionalInformationScreen";
-  static const String mechanicResumeCertificateScreen =
-      "/MechanicResumeCertificateScreen";
-  static const String mechanicProfileInformationScreen =
-      "/MechanicProfileInformationScreen";
+  static const String mechanicAdditionalInformationScreen = "/MechanicAdditionalInformationScreen";
+  static const String mechanicResumeCertificateScreen = "/MechanicResumeCertificateScreen";
+  static const String mechanicProfileInformationScreen = "/MechanicProfileInformationScreen";
+  static const String mechanicJobScreen = "/MechanicJobScreen";
+  static const String mechanicBottomNavBar = "/MechanicBottomNavBar";
+  static const String mechanicJobRequestScreen = "/MechanicJobRequestScreen";
+  static const String mechanicBookingsScreen = "/MechanicBookingsScreen";
+  static const String mechanicBookingsDetailsScreen = "/MechanicBookingsDetailsScreen";
+  static const String mechanicCompleteDetailsScreen = "/MechanicCompleteDetailsScreen";
+
+
+
+
+  // static const String mechanicPersonalInformationScreen =
+  //     "/MechanicPersonalInformationScreen";
+  // static const String mechanicExperienceSkillScreen =
+  //     "/MechanicExperienceSkillScreen";
+  // static const String mechanicToolsEquipmentScreen =
+  //     "/MechanicToolsEquipmentScreen";
+  // static const String mechanicEmploymentHistoryScreen =
+  //     "/MechanicEmploymentHistoryScreen";
+  // static const String mechanicReferenceScreen = "/MechanicReferenceScreen";
+  // static const String mechanicAdditionalInformationScreen =
+  //     "/MechanicAdditionalInformationScreen";
+  // static const String mechanicResumeCertificateScreen =
+  //     "/MechanicResumeCertificateScreen";
+  // static const String mechanicProfileInformationScreen =
+  //     "/MechanicProfileInformationScreen";
+
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
@@ -69,16 +97,13 @@ class AppRoutes {
   static const String licensingAndComplianceScreen =
       "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
-
   static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
   static const String serviceCoverageScreen = "/serviceCoverageScreen";
   static const String businessRequirementScreen = "/businessRequirementScreen";
   static const String profileDetailsScreen = "/profileDetailsScreen";
-
   static const String customerSelectCarScreen = "/CustomerSelectCarScreen";
   static const String customerMapScreen = "/CustomerMapScreen";
   static const String messageChatScreen = "/MessageChatScreen";
-
   static const String towTruckJobScreen = "/towTruckJobScreen";
   static const String towTruckJobRequestScreen = "/TowTruckJobRequestScreen";
   static const String towTrucksBookingsScreen = "/TowTrucksBookingsScreen";
@@ -423,8 +448,10 @@ class AppRoutes {
         ),
   ]);
 
+
   static Page<dynamic> _customTransitionPage(
       Widget child, GoRouterState state) {
+
     return CustomTransitionPage(
       key: state.pageKey,
       child: child,
