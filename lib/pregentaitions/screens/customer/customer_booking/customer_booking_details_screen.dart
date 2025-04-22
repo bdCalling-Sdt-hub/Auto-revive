@@ -39,10 +39,24 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(
-                        text: "David Bryan",
-                        color: Colors.black,
-                        fontsize: 22.h),
+                    Row(
+                      children: [
+                        CustomText(
+                            text: "David Bryan",
+                            color: Colors.black,
+                            right: 30.w,
+                            fontsize: 22.h),
+
+
+                        Container(decoration: BoxDecoration(
+                          color: AppColors.primaryShade300,
+                          borderRadius: BorderRadius.circular(8.r)
+                        ),child: Padding(
+                          padding:  EdgeInsets.all(4.r),
+                          child: Icon(Icons.location_on, color: Colors.white, size: 16.r),
+                        ))
+                      ],
+                    ),
                     Row(
                       children: [
                         CustomText(text: "New York, USA", color: Colors.black),
@@ -194,7 +208,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
             })  :
             
             CustomTwoButon(
-              width: 168.w,
+              width: 163.w,
               btnNameList: const ["Pending", "Cancel"],
               rightBtnOnTap: () {
 
@@ -255,7 +269,7 @@ class RepairListWidget extends StatelessWidget {
                         height: 16.w,
                         margin: EdgeInsets.only(right: 8.w),
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: AppColors.primaryShade300,
                           borderRadius: BorderRadius.circular(4.r),
                         ),
                       ),
