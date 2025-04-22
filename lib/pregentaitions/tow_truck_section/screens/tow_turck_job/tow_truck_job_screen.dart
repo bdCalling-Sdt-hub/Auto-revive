@@ -38,9 +38,9 @@ class _TowTruckJobScreenState extends State<TowTruckJobScreen> {
           CustomContainer(
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.8),
-                  offset: const Offset(0, 4),
-                  blurRadius: 4)
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 2),
+                  blurRadius: 13)
             ],
             paddingAll: 10.r,
             radiusAll: 100.r,
@@ -84,9 +84,9 @@ class _TowTruckJobScreenState extends State<TowTruckJobScreen> {
             color: AppColors.primaryShade300,
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.8),
-                  offset: const Offset(0, 4),
-                  blurRadius: 4)
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 2),
+                  blurRadius: 13)
             ],
             child: Column(
               children: [
@@ -146,9 +146,9 @@ class _TowTruckJobScreenState extends State<TowTruckJobScreen> {
             color: AppColors.primaryShade300,
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.8),
-                  offset: const Offset(0, 4),
-                  blurRadius: 4)
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 2),
+                  blurRadius: 13)
             ],
             child: CustomText(text: 'Submit',color: Colors.white,fontsize: 20.sp,),
           )

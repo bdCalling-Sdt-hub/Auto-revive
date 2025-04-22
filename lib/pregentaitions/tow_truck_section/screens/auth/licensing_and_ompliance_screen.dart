@@ -23,6 +23,8 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
   final TextEditingController _policyNumberTEController = TextEditingController();
   final TextEditingController _coverageLimitsTEController = TextEditingController();
   final TextEditingController _mCNumberTEController = TextEditingController();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+
 
   bool? validUSDOTNumber;
   bool? coverageNumber;
@@ -38,88 +40,118 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomLinearIndicator(
-              progressValue: 0.2,
-            ),
-            SizedBox(height: 16.h),
-            CustomChecked(
-              title: 'Do you have a valid US-DOT number? *',
-              selected: validUSDOTNumber,
-              onChanged: (val) {
-                setState(() {
-                  validUSDOTNumber = val;
-                });
-              },
-            ),
-            CustomTextField(
-              controller: _uSDOTNumberTEController,
-              labelText: 'US-DOT Number',
-              hintText: 'US-DOT Number',
-            ),
-            CustomUploadButton(
-              topLabel: 'Do you have commercial insurance coverage?*',
-              title: 'DOT registration.pdf',
-              icon: Icons.upload,
-              onTap: () {},
-            ),
-            CustomChecked(
-              title: 'Do you have commercial insurance coverage?*',
-              selected: coverageNumber,
-              onChanged: (val) {
-                setState(() {
-                  coverageNumber = val;
-                });
-              },
-            ),
-            CustomTextField(
-              controller: _policyNumberTEController,
-              labelText: 'Policy Number',
-              hintText: 'Policy Number',
-            ),
-            CustomTextField(
-              controller: _coverageLimitsTEController,
-              labelText: 'Coverage Limits',
-              hintText: 'Coverage Limits',
-            ),
-            CustomUploadButton(
-              topLabel: 'Upload Proof of a Active insurance policy.',
-              title: 'Insurance-policy.pdf',
-              icon: Icons.upload,
-              onTap: () {},
-            ),
-            CustomChecked(
+        child: Form(
+          key: _globalKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomLinearIndicator(
+                progressValue: 0.2,
+              ),
+              SizedBox(height: 16.h),
 
-              title: 'Do you have a valid Motor Carrier (MC) number?*',
-              selected: mCNumber,
-              onChanged: (val) {
-                setState(() {
-                  mCNumber = val;
-                });
-              },
-            ),
-            CustomTextField(
-              controller: _mCNumberTEController,
-              labelText: 'MC Number',
-              hintText: 'MC Number',
-            ),
-            CustomUploadButton(
-              topLabel: 'Upload Proof of MC authority',
-              title: 'mc.pdf',
-              icon: Icons.upload,
-              onTap: () {},
-            ),
-            SizedBox(height: 44.h),
-            Center(
-                child: CustomButton(
-                    title: 'Save and Next',
-                    onpress: () {
-                      context.pushNamed(AppRoutes.vehicleEquipmentScreen);
-                    })),
-            SizedBox(height: 24.h),
-          ],
+
+              CustomChecked(
+                title: 'Do you have a valid US-DOT number? *',
+                selected: validUSDOTNumber,
+                onChanged: (val) {
+                  setState(() {
+                    validUSDOTNumber = val;
+                  });
+                },
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: _uSDOTNumberTEController,
+                labelText: 'US-DOT Number',
+                hintText: 'US-DOT Number',
+              ),
+
+
+              CustomUploadButton(
+                topLabel: 'Do you have commercial insurance coverage?*',
+                title: 'DOT registration.pdf',
+                icon: Icons.upload,
+                onTap: () {},
+              ),
+
+
+              CustomChecked(
+                title: 'Do you have commercial insurance coverage?*',
+                selected: coverageNumber,
+                onChanged: (val) {
+                  setState(() {
+                    coverageNumber = val;
+                  });
+                },
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: _policyNumberTEController,
+                labelText: 'Policy Number',
+                hintText: 'Policy Number',
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: _coverageLimitsTEController,
+                labelText: 'Coverage Limits',
+                hintText: 'Coverage Limits',
+              ),
+
+
+              CustomUploadButton(
+                topLabel: 'Upload Proof of a Active insurance policy.',
+                title: 'Insurance-policy.pdf',
+                icon: Icons.upload,
+                onTap: () {},
+              ),
+
+
+              CustomChecked(
+                title: 'Do you have a valid Motor Carrier (MC) number?*',
+                selected: mCNumber,
+                onChanged: (val) {
+                  setState(() {
+                    mCNumber = val;
+                  });
+                },
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: _mCNumberTEController,
+                labelText: 'MC Number',
+                hintText: 'MC Number',
+              ),
+
+
+
+              CustomUploadButton(
+                topLabel: 'Upload Proof of MC authority',
+                title: 'mc.pdf',
+                icon: Icons.upload,
+                onTap: () {},
+              ),
+
+
+              SizedBox(height: 44.h),
+              Center(
+                  child: CustomButton(
+                      title: 'Save and Next',
+                      onpress: () {
+                        if(_globalKey.currentState!.validate()) return;
+                        context.pushNamed(AppRoutes.vehicleEquipmentScreen);
+                      })),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );

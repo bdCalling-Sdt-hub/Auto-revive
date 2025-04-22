@@ -61,7 +61,9 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                   },
                   certificates: const ["ASE", "OEM"],
                   onTap: (){
-                    context.pushNamed(AppRoutes.customerBookingDetailsScreen);
+                    context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
+                      "title" : "Complete"
+                    });
                   },
                   rating: rating,
                   name: 'David Bryan',
@@ -83,7 +85,11 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                   onTapDetails: () {
                     context.pushNamed(AppRoutes.towTruckDetailsScreen);
                   },
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
+                      "title" : "Details"
+                    });
+                  },
                   title: r'Price: $108',
                   name: 'David Bryan',
                   certificates: const ["ASE", "OEM"],

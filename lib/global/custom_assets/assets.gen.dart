@@ -144,6 +144,14 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/balance_bg.png
+  AssetGenImage get balanceBg =>
+      const AssetGenImage('assets/images/balance_bg.png');
+
+  /// File path: assets/images/balance_card_icon.png
+  AssetGenImage get balanceCardIcon =>
+      const AssetGenImage('assets/images/balance_card_icon.png');
+
   /// File path: assets/images/customerHomeScreenImage.png
   AssetGenImage get customerHomeScreenImage =>
       const AssetGenImage('assets/images/customerHomeScreenImage.png');
@@ -180,8 +188,13 @@ class $AssetsImagesGen {
       SvgGenImage('assets/icons/delete.svg');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [customerHomeScreenImage, onboardingImage, splashImage];
+  List<AssetGenImage> get values => [
+        balanceBg,
+        balanceCardIcon,
+        customerHomeScreenImage,
+        onboardingImage,
+        splashImage
+      ];
 }
 
 class $AssetsLottieGen {
