@@ -19,7 +19,7 @@ class MechanicBottomNavBarState extends State<MechanicBottomNavBar> {
     MechanicHomeScreen(),
     MechanicBookingsScreen(),
     UsersScreen(),
-     TowTruckProfileScreen(),
+    TowTruckProfileScreen(),
 
   ];
 

@@ -39,9 +39,12 @@ import '../../../pregentaitions/screens/customer/customer_selecte_car/customer_s
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_details_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_complete_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_map_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_screen.dart';
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
+import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
+import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
@@ -68,6 +71,10 @@ class AppRoutes {
   static const String mechanicBookingsScreen = "/MechanicBookingsScreen";
   static const String mechanicBookingsDetailsScreen = "/MechanicBookingsDetailsScreen";
   static const String mechanicCompleteDetailsScreen = "/MechanicCompleteDetailsScreen";
+  static const String mechanicMapScreen = "/MechanicMapScreen";
+  static const String notificationsScreen = "/NotificationsScreen";
+  static const String settingsScreen = "/SettingsScreen";
+  static const String changePasswordScreen = "/ChangePasswordScreen";
 
 
 
@@ -140,6 +147,13 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
       ),
 
+      ///<<<=============>>> CHANGE PASSWORD  SCREEN <<<===============>>>
+
+      GoRoute(
+        path: changePasswordScreen,
+        name: changePasswordScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
+      ),
 
       ///<<<=============>>> LOGIN SCREEN <<<===============>>>
 
@@ -147,6 +161,14 @@ class AppRoutes {
         path: logInScreen,
         name: logInScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(LogInScreen(), state),
+      ),
+
+      ///<<<=============>>> NOTIFICATIONS SCREEN <<<===============>>>
+
+      GoRoute(
+        path: notificationsScreen,
+        name: notificationsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(NotificationScreen(), state),
       ),
 
 
@@ -167,7 +189,14 @@ class AppRoutes {
         pageBuilder: (context, state) =>  _customTransitionPage(OtpScreen(), state),
       ),
 
+      ///<<<=============>>> SETTINGS SCREEN <<<===============>>>
 
+
+      GoRoute(
+        path: settingsScreen,
+        name: settingsScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(SettingScreen(), state),
+      ),
 
       ///<<<=============>>> RESET PASSWORD SCREEN <<<===============>>>
 
@@ -259,14 +288,14 @@ class AppRoutes {
       ),
 
 
-      ///<<<=============>>> MECHANIC JOB Request SCREEN <<<===============>>>
+      ///<<<=============>>> MECHANIC JOB REQUEST SCREEN <<<===============>>>
       GoRoute(
         path: mechanicJobRequestScreen,
         name: mechanicJobRequestScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MechanicJobRequestScreen(), state),
       ),
 
-      ///<<<=============>>> MECHANIC JOB Request SCREEN <<<===============>>>
+      ///<<<=============>>> MECHANIC JOB REQUEST SCREEN <<<===============>>>
       GoRoute(
         path: mechanicBookingsScreen,
         name: mechanicBookingsScreen,
@@ -281,12 +310,18 @@ class AppRoutes {
       ),
 
 
-
-      ///<<<=============>>> MECHANIC Complete DETAILS SCREEN <<<===============>>>
+      ///<<<=============>>> MECHANIC COMPLETE DETAILS SCREEN <<<===============>>>
       GoRoute(
         path: mechanicCompleteDetailsScreen,
         name: mechanicCompleteDetailsScreen,
         pageBuilder: (context, state) =>  _customTransitionPage(MechanicCompleteDetailsScreen(), state),
+      ),
+
+      ///<<<=============>>> MECHANIC MAP SCREEN <<<===============>>>
+      GoRoute(
+        path: mechanicMapScreen,
+        name: mechanicMapScreen,
+        pageBuilder: (context, state) =>  _customTransitionPage(MechanicMapScreen(), state),
       ),
 
       ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>

@@ -5,6 +5,9 @@ import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../core/config/app_routes/app_routes.dart';
 
 class BookingCardWidget extends StatelessWidget {
   const BookingCardWidget({
@@ -67,7 +70,11 @@ class BookingCardWidget extends StatelessWidget {
                             ? AppColors.cancelButtonColor
                             : AppColors.primaryColor,
                       )),
-                  Assets.icons.location.svg(),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.mechanicMapScreen);
+                    },
+                      child: Assets.icons.location.svg()),
                 ],
               ),
               SizedBox(height: 10.h),
