@@ -27,6 +27,7 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
   final TextEditingController _modelNumberTEController = TextEditingController();
   final TextEditingController _vehicleWeightTEController = TextEditingController();
   final TextEditingController _typeTowTruckTEController = TextEditingController();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
 
   final List<String> towTruckList = [
@@ -65,94 +66,98 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomLinearIndicator(
-              progressValue: 0.3,
-            ),
-            SizedBox(height: 24.h),
-            CustomText(
-              text: 'List of all tow trucks in your fleet.',
-              bottom: 6.h,
-            ),
-            CustomTextField(
-              onTap: _selectDate,
-              readOnly: true,
-              controller: _makingYearTEController,
-              labelText: 'Making of the year..',
-              hintText: 'Making of the year..',
-              suffixIcon: IconButton(
-                  onPressed: _selectDate,
-                  icon: const Icon(
-                    Icons.date_range_outlined,
-                    color: Colors.black,
-                  )),
-            ),
-            CustomTextField(
-              controller: _manufacturerTEController,
-              labelText: 'The brand of manufacturer..',
-              hintText: 'The brand of manufacturer..',
-            ),
-            CustomTextField(
-              controller: _modelNumberTEController,
-              labelText: 'Model number of truck..',
-              hintText: 'Model number of truck..',
-            ),
-            CustomTextField(
-              controller: _vehicleWeightTEController,
-              labelText: 'Gross Vehicle Weight Rating (GVWR)',
-              hintText: 'Gross Vehicle Weight Rating (GVWR)',
-            ),
-
-            CustomTextField(
-              readOnly: true,
-              controller: _typeTowTruckTEController,
-              labelText: 'Type of tow truck',
-              hintText: 'Type of tow truck',
-              suffixIcon: CustomPopupMenu(
-                items: towTruckList,
-                onSelected: (val) {
-                  _typeTowTruckTEController.text = val;
-                },
+        child: Form(
+          key: _globalKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomLinearIndicator(
+                progressValue: 0.3,
               ),
-            ),
-            CustomUploadButton(
-              topLabel: 'Upload walk around video of your tow truck',
-              title: 'towtruck.mp4',
-              icon: Icons.upload,
-              onTap: () {},
-            ),
-            SizedBox(height: 16.h),
-
-            /// ++++++++++++++  Add more field ************************
-            CustomContainer(
-              onTap: () {},
-              bordersColor: AppColors.pdfButtonColor,
-              radiusAll: 8.r,
-              width: double.infinity,
-              height: 108.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: AppColors.primaryColor,
-                    size: 32.r,
-                  ),
-                  CustomText(text: 'Add more', top: 10.h),
-                ],
+              SizedBox(height: 24.h),
+              CustomText(
+                text: 'List of all tow trucks in your fleet.',
+                bottom: 6.h,
               ),
-            ),
-            SizedBox(height: 44.h),
-            Center(
-                child: CustomButton(
-                    title: 'Save and Next',
-                    onpress: () {
-                      context.pushNamed(AppRoutes.serviceCoverageScreen);
-                    })),
-            SizedBox(height: 24.h),
-          ],
+              CustomTextField(
+                onTap: _selectDate,
+                readOnly: true,
+                controller: _makingYearTEController,
+                labelText: 'Making of the year..',
+                hintText: 'Making of the year..',
+                suffixIcon: IconButton(
+                    onPressed: _selectDate,
+                    icon: const Icon(
+                      Icons.date_range_outlined,
+                      color: Colors.black,
+                    )),
+              ),
+              CustomTextField(
+                controller: _manufacturerTEController,
+                labelText: 'The brand of manufacturer..',
+                hintText: 'The brand of manufacturer..',
+              ),
+              CustomTextField(
+                controller: _modelNumberTEController,
+                labelText: 'Model number of truck..',
+                hintText: 'Model number of truck..',
+              ),
+              CustomTextField(
+                controller: _vehicleWeightTEController,
+                labelText: 'Gross Vehicle Weight Rating (GVWR)',
+                hintText: 'Gross Vehicle Weight Rating (GVWR)',
+              ),
+
+              CustomTextField(
+                readOnly: true,
+                controller: _typeTowTruckTEController,
+                labelText: 'Type of tow truck',
+                hintText: 'Type of tow truck',
+                suffixIcon: CustomPopupMenu(
+                  items: towTruckList,
+                  onSelected: (val) {
+                    _typeTowTruckTEController.text = val;
+                  },
+                ),
+              ),
+              CustomUploadButton(
+                topLabel: 'Upload walk around video of your tow truck',
+                title: 'towtruck.mp4',
+                icon: Icons.upload,
+                onTap: () {},
+              ),
+              SizedBox(height: 16.h),
+
+              /// ++++++++++++++  Add more field ************************
+              CustomContainer(
+                onTap: () {},
+                bordersColor: AppColors.pdfButtonColor,
+                radiusAll: 8.r,
+                width: double.infinity,
+                height: 108.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: AppColors.primaryColor,
+                      size: 32.r,
+                    ),
+                    CustomText(text: 'Add more', top: 10.h),
+                  ],
+                ),
+              ),
+              SizedBox(height: 44.h),
+              Center(
+                  child: CustomButton(
+                      title: 'Save and Next',
+                      onpress: () {
+                        if(_globalKey.currentState!.validate()) return;
+                        context.pushNamed(AppRoutes.serviceCoverageScreen);
+                      })),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );

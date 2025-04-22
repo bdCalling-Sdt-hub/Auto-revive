@@ -24,46 +24,55 @@ class TowTruckDetailsScreen extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 44.w),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            CustomImageAvatar(image: '',radius: 44.r,),
-            SizedBox(width: 10.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  text: 'David Bryan',fontsize: 20.sp,bottom: 6.h,),
-                RichText(text: TextSpan(
-                  style: const TextStyle(color: Colors.black),
-                  children: [
-                    TextSpan(text: 'New York, USA   |   '),
-                    WidgetSpan(
-                      child: Icon(Icons.star,
+              CustomImageAvatar(
+                image: '',
+                radius: 44.r,
+              ),
+              SizedBox(width: 10.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 200.w,
+                    child: CustomText(
+                      textAlign: TextAlign.start,
+                      text: 'David Bryan',
+                      fontsize: 20.sp,
+                      bottom: 6.h,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                          width: 120.w,
+                          child: CustomText(
+                            text: 'New York, USA  |  ',
+                          )),
+                      Icon(
+                        Icons.star,
                         size: 16.r,
                         color: Colors.amber,
                       ),
-                    ),
-                    TextSpan(text: ' 4.85'),
-                  ]
-                )),
-
-
-                SizedBox(height: 10.w),
-                Row(
-                  children: [
-                    Assets.icons.detailsMessage.svg(),
-                    SizedBox(width: 6.w),
-                    Assets.icons.detailsLocation.svg(),
-                  ],
-                ),
-              ],
-            )
-          ],),
-
-
-
+                      CustomText(
+                        text: ' 4.85',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.w),
+                  Row(
+                    children: [
+                      Assets.icons.detailsMessage.svg(),
+                      SizedBox(width: 6.w),
+                      Assets.icons.detailsLocation.svg(),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
           SizedBox(height: 44.w),
           CustomContainer(
             paddingAll: 32.r,
@@ -74,32 +83,50 @@ class TowTruckDetailsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.circle_rounded,size: 14.r,color: Colors.white,),
-                    CustomText(text: 'New York, USA',color: Colors.white,left: 2.w,fontsize: 12.sp,),
+                    Icon(
+                      Icons.circle_rounded,
+                      size: 14.r,
+                      color: Colors.white,
+                    ),
+                    Flexible(
+                      child: CustomText(
+                        text: 'New York, USA',
+                        color: Colors.white,
+                        left: 2.w,
+                        fontsize: 12.sp,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 8.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.circle_rounded,size: 14.r,color: Colors.white,),
-                    CustomText(text: 'California, USA',color: Colors.white,left: 2.w,fontsize: 12.sp),
+                    Icon(
+                      Icons.circle_rounded,
+                      size: 14.r,
+                      color: Colors.white,
+                    ),
+                    Flexible(
+                      child: CustomText(
+                          text: 'California, USA',
+                          color: Colors.white,
+                          left: 2.w,
+                          fontsize: 12.sp),
+                    ),
                   ],
                 ),
-
                 SizedBox(height: 16.h),
-                CustomText(text: 'California, USA',color: Colors.white,fontsize: 20.sp,),
-
-
+                CustomText(
+                  text: 'Total Distance: 23 KM',
+                  color: Colors.white,
+                  fontsize: 20.sp,
+                ),
               ],
             ),
           ),
-
-
-
           const Spacer(),
-          CustomButton(title: 'Complete', onpress: (){}),
-
+          CustomButton(title: 'Complete', onpress: () {}),
         ],
       ),
     );

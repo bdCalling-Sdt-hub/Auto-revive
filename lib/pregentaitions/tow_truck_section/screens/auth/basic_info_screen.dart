@@ -1,10 +1,14 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_linear_indicator.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_phone_number_picker.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +29,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
   final TextEditingController _priceTEController = TextEditingController();
   final TextEditingController _phoneTEController = TextEditingController();
   final TextEditingController _lLCTEController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,81 +41,78 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             fontsize: 20.sp,
           )),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomLinearIndicator(
-              progressValue: 0.03,
-              label: 0,
-            ),
-            SizedBox(height: 16.h),
-            Center(
-              child: CustomImageAvatar(
-                radius: 60.r,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomLinearIndicator(
+                progressValue: 0.03,
+                label: 0,
               ),
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              controller: _nameTEController,
-              labelText: 'Full Name',
-              hintText: 'Enter your name',
-            ),
-            CustomTextField(
-              controller: _addressTEController,
-              labelText: 'Business Address',
-              hintText: 'USA, New York',
-            ),
-            CustomTextField(
-              controller: _emailTEController,
-              labelText: 'Email',
-              hintText: 'Enter your email',
-            ),
-            CustomTextField(
-              controller: _priceTEController,
-              labelText: 'Price Per Mile',
-              hintText: 'Enter your price',
-            ),
-            CustomText(text: 'Phone No.'),
-            Row(
-              children: [
-                CountryPickerDropdown(
-                  initialValue: 'US',
-                  itemBuilder: _buildDropdownItem,
-                  onValuePicked: (Country country) {
-                    print("${country.name} +${country.phoneCode}");
-                  },
+              SizedBox(height: 16.h),
+              Center(
+                child: CustomImageAvatar(
+                  radius: 60.r,
                 ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: CustomTextField(
-                    controller: _phoneTEController,
-                    hintText: 'Enter your number',
-                  ),
-                ),
-              ],
-            ),
-            CustomTextField(
-              controller: _lLCTEController,
-              labelText: 'Partner with LLC for Reliable Towing Service',
-              hintText: 'David William LLC',
-            ),
-        
-            SizedBox(height: 44.h),
-            Center(child: CustomButton(title: 'Save and Next', onpress: (){
-              context.pushNamed(AppRoutes.companyInformationScreen);
-            })),
-            SizedBox(height: 24.h),
-          ],
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                controller: _nameTEController,
+                labelText: 'Full Name',
+                hintText: 'name',
+              ),
+
+
+              CustomTextField(
+                controller: _addressTEController,
+                labelText: 'Business Address',
+                hintText: 'USA, New York',
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.emailAddress,
+                isEmail: true,
+                controller: _emailTEController,
+                labelText: 'Email',
+                hintText: 'email',
+              ),
+
+
+              CustomTextField(
+                keyboardType: TextInputType.number,
+                controller: _priceTEController,
+                labelText: 'Price Per Mile',
+                hintText: 'price',
+              ),
+
+
+
+              /// ++++++++++++++++++++++  phone number  ==================>
+              CustomPhoneNumberPicker(controller: _phoneTEController, lebelText: 'Phone No.',),
+
+
+              CustomTextField(
+                controller: _lLCTEController,
+                labelText: 'Partner with LLC for Reliable Towing Service',
+                hintText: 'David William LLC',
+              ),
+
+              SizedBox(height: 44.h),
+
+
+              Center(child: CustomButton(title: 'Save and Next',
+                  onpress: (){
+                if(_formKey.currentState!.validate()) return;
+                context.pushNamed(AppRoutes.companyInformationScreen);
+
+              })),
+              SizedBox(height: 24.h),
+            ],
+          ),
         ),
       ),
     );
   }
-
-  Widget _buildDropdownItem(Country country) => Row(
-        children: <Widget>[
-          CountryPickerUtils.getDefaultFlagImage(country),
-          SizedBox(width: 8.0.w),
-          Text("+${country.phoneCode}"),
-        ],
-      );
 }

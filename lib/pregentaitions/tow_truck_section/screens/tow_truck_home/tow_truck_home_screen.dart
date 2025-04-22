@@ -61,7 +61,7 @@ class TowTruckHomeScreen extends StatelessWidget {
 
                   Row(
                     children: [
-                      Assets.icons.logoSVG.svg(color: AppColors.primaryColor, height: 50.h),
+                      Assets.icons.logoSVG.svg(color: AppColors.bgColorWhite, height: 50.h),
                       const  Spacer(),
                       Assets.icons.timeProgress.svg(),
                       SizedBox(width: 20.w),

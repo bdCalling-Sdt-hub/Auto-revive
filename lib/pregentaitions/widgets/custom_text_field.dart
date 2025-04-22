@@ -74,7 +74,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if(widget.labelText != null)
-          CustomText(text: widget.labelText ?? '',bottom: 6.h,left: 2.w,),
+          CustomText(text: widget.labelText ?? '',bottom: 6.h,left: 2.w,color: Colors.black,),
           TextFormField(
             onChanged: widget.onChanged,
             onTap:widget. onTap,

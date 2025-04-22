@@ -28,24 +28,32 @@ class ProfileDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomImageAvatar(
-                    radius: 60.r,
+                    radius: 56.r,
                   ),
-                  SizedBox(width: 10.w,),
-                  RichText(
-                      text: TextSpan(
-                          style:
-                              TextStyle(color: Colors.black, fontSize: 20.sp),
-                          text: 'Bryan  ',
-                          children: [
-                        TextSpan(
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Flexible(
+                    child: RichText(
+                        text: TextSpan(
                             style: TextStyle(
-                                color: AppColors.primaryColor, fontSize: 20.sp),
-                            text: '(\$25)'),
-                        TextSpan(
-                            style: TextStyle(fontSize: 10.sp),
-                            text:
-                                '\n Tow truck owner \n +784 8954958     ||   bryan@gmail.com \n USA, New York'),
-                      ]))
+                                color: Colors.black,
+                                fontSize: 20.sp,
+                                height: 1.4),
+                            text: 'Bryan  ',
+                            children: [
+                          TextSpan(
+                              style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontSize: 20.sp),
+                              text: '(\$25)'),
+                          TextSpan(
+                              style: TextStyle(fontSize: 10.sp),
+                              text: '\n Tow truck owner '
+                                  '\n +784 8954958     ||   bryan@gmail.com '
+                                  '\n USA, New York'),
+                        ])),
+                  ),
                 ],
               ),
               SizedBox(height: 16.h),
@@ -68,9 +76,11 @@ class ProfileDetailsScreen extends StatelessWidget {
                     )),
                     CustomText(
                       bottom: 20.h,
-                      maxline: 3,
+                      maxline: 10,
                       text:
-                          'Contact: +784 8954958 | bryan@gmail.com | www.davidwilliams.com \nYears of business: 7 year | Number of tow trucks: 13 \nEIN number: 86640275',
+                          'Contact: +784 8954958 | bryan@gmail.com | www.davidwilliams.com '
+                          '\nYears of business: 7 year | Number of tow trucks: 13 '
+                          '\nEIN number: 86640275',
                       fontsize: 10.sp,
                     ),
                     const Divider(
@@ -83,9 +93,10 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 20.sp,
                     ),
                     CustomText(
+                        maxline: 2,
                         textAlign: TextAlign.start,
-                        text:
-                            'Have a valid US-DOT number \n US-DOT number: 67363748374'),
+                        text: 'Have a valid US-DOT number '
+                            '\n US-DOT number: 67363748374'),
                     CustomUploadButton(
                       title: 'DOT registration.pdf',
                       onTap: () {},
@@ -94,10 +105,12 @@ class ProfileDetailsScreen extends StatelessWidget {
 
                     /// ++++++++++++++++ 2st Step +++++++++++++++++++++++
                     CustomText(
+                        maxline: 10,
                         top: 16.h,
                         textAlign: TextAlign.start,
-                        text:
-                            'Have commercial insurance coverage \nPolicy Number : 85873 7384 \nCoverage Limits : 833 KM'),
+                        text: 'Have commercial insurance coverage '
+                            '\nPolicy Number : 85873 7384 '
+                            '\nCoverage Limits : 833 KM'),
                     CustomUploadButton(
                       title: 'insurancePolicy.pdf',
                       onTap: () {},
@@ -106,10 +119,12 @@ class ProfileDetailsScreen extends StatelessWidget {
 
                     /// ++++++++++++++++ 3th Step +++++++++++++++++++++++
                     CustomText(
+                        maxline: 10,
                         top: 16.h,
                         textAlign: TextAlign.start,
-                        text:
-                            'Have a valid Motor Carrier (MC) number. \nMC Number : 85873 7384 \nCoverage Limits : 833 KM'),
+                        text: 'Have a valid Motor Carrier (MC) number. '
+                            '\nMC Number : 85873 7384 '
+                            '\nCoverage Limits : 833 KM'),
                     CustomUploadButton(
                       title: 'mc.pdf',
                       onTap: () {},
@@ -126,9 +141,13 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 20.sp,
                     ),
                     CustomText(
+                        maxline: 10,
                         textAlign: TextAlign.start,
-                        text:
-                            'Making Year: 2023 \nBrand: Ford \nModel: T-376237 \nGVWR: 500 Ton \nType of tow truck: Flatbet'),
+                        text: 'Making Year: 2023 '
+                            '\nBrand: Ford '
+                            '\nModel: T-376237 '
+                            '\nGVWR: 500 Ton '
+                            '\nType of tow truck: Flatbet'),
                     CustomUploadButton(
                       title: 'towtruck.mp4',
                       onTap: () {},
@@ -150,6 +169,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 16.sp,
                     ),
                     CustomText(
+                      maxline: 20,
                       textAlign: TextAlign.start,
                       text: 'Light-Duty Towing (Cars & Small Trucks) '
                           '\nMedium-Duty Towing (Box Trucks & RVs) '
@@ -160,6 +180,7 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 10.sp,
                     ),
                     CustomText(
+                      maxline: 10,
                       textAlign: TextAlign.start,
                       text: 'Primary service area: USA, New York '
                           '\nRegions Covered: Full USA '
@@ -181,13 +202,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 20.sp,
                     ),
                     CustomText(
-                      maxline: 2,
+                      maxline: 5,
                       textAlign: TextAlign.start,
                       text:
                           'By applying to work with Fix It LLC, you agree to the following.',
                       fontsize: 16.sp,
                     ),
                     CustomText(
+                      maxline: 20,
                       textAlign: TextAlign.start,
                       text:
                           'Maintain active DOT registration & insurance coverage at all times. '
@@ -199,13 +221,13 @@ class ProfileDetailsScreen extends StatelessWidget {
                       fontsize: 10.sp,
                     ),
                     CustomText(
-                      maxline: 2,
+                      maxline: 5,
                       textAlign: TextAlign.start,
                       text: 'Authorized or Representative name : David Hook',
                       fontsize: 16.sp,
                     ),
                     CustomText(
-                      maxline: 2,
+                      maxline: 5,
                       textAlign: TextAlign.start,
                       text:
                           'Authorized or Representative title : General manager ',
@@ -213,13 +235,13 @@ class ProfileDetailsScreen extends StatelessWidget {
                     ),
 
                     SizedBox(height: 16.h),
-                    CustomUploadButton(title: 'Signature.jpg', onTap: (){}),
+                    CustomUploadButton(title: 'Signature.jpg', onTap: () {}),
 
                     CustomText(
+                      maxline: 5,
                       bottom: 24.h,
                       textAlign: TextAlign.start,
-                      text:
-                      'Date: 15 March 2025 ',
+                      text: 'Date: 15 March 2025 ',
                       fontsize: 16.sp,
                     ),
                   ],

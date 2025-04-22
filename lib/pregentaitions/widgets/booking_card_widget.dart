@@ -88,58 +88,56 @@ class BookingCardWidget extends StatelessWidget {
                     image: image,
                   ),
                   SizedBox(width: 16.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: name,
-                        fontsize: 20.sp,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                              fontSize: 10.sp,
-                              color: AppColors.pdfButtonColor,
-                              height: 1.6),
-                          children: [
-                            if (title != null)
-                              TextSpan(
-                                style: TextStyle(
-                                    fontSize: 14.sp, color: Colors.black),
-                                text: ' $title \n',
-                              ),
-                            if (rating != null) ...[
-                              ...List.generate(5, (index) {
-                                return WidgetSpan(
-                                  child: Icon(
-                                    index < rating!
-                                        ? Icons.star
-                                        : Icons.star_border,
-                                    size: 14.r,
-                                    color: Colors.amber,
-                                  ),
-                                );
-                              }),
-                              TextSpan(
-                                text: ' ($rating.0) \n',
-                              ),
-                            ],
-                            WidgetSpan(
-                              child: Icon(
-                                Icons.directions_car_filled,
-                                size: 14.r,
-                                color: AppColors.pdfButtonColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: ' $subTitle'
-                            ),
-
-                          ],
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: name,
+                          fontsize: 20.sp,
                         ),
-                      ),
-
-                    ],
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                                fontSize: 10.sp,
+                                color: AppColors.pdfButtonColor,
+                                height: 1.6),
+                            children: [
+                              if (title != null)
+                                TextSpan(
+                                  style: TextStyle(
+                                      fontSize: 14.sp, color: Colors.black),
+                                  text: '$title \n',
+                                ),
+                              if (rating != null) ...[
+                                ...List.generate(5, (index) {
+                                  return WidgetSpan(
+                                    child: Icon(
+                                      index < rating!
+                                          ? Icons.star
+                                          : Icons.star_border,
+                                      size: 14.r,
+                                      color: Colors.amber,
+                                    ),
+                                  );
+                                }),
+                                TextSpan(
+                                  text: ' ($rating.0) \n',
+                                ),
+                              ],
+                              WidgetSpan(
+                                child: Icon(
+                                  Icons.directions_car_filled,
+                                  size: 14.r,
+                                  color: AppColors.pdfButtonColor,
+                                ),
+                              ),
+                              TextSpan(text: ' $subTitle'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
