@@ -36,12 +36,12 @@ class CustomButton extends StatelessWidget {
       onTap: loading?(){} : onpress,
       child: Container(
         width:width?.w ?? double.infinity,
-        height: height ?? 52.h,
+        height: height ?? 50.h,
         padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
         decoration: BoxDecoration(
           borderRadius:BorderRadius.circular(borderRadius ?? 100.r),
-          border: Border.all(color: AppColors.primaryColor),
-          color: color ?? AppColors.primaryColor,
+          border: Border.all(color: AppColors.primaryShade300),
+          color: color ?? AppColors.primaryShade300,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
