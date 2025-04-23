@@ -532,11 +532,6 @@ class AppRoutes {
 
 
 
-
-
-
-
-
   static Page<dynamic> _customTransitionPage(
       Widget child, GoRouterState state) {
 

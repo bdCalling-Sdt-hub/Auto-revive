@@ -16,8 +16,19 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/ArrowLongDown.svg
+  SvgGenImage get arrowLongDown =>
+      const SvgGenImage('assets/icons/ArrowLongDown.svg');
+
   /// File path: assets/icons/Logo SVG.svg
   SvgGenImage get logoSVG => const SvgGenImage('assets/icons/Logo SVG.svg');
+
+  /// File path: assets/icons/about.svg
+  SvgGenImage get about => const SvgGenImage('assets/icons/about.svg');
+
+  /// File path: assets/icons/arrow_right.svg
+  SvgGenImage get arrowRight =>
+      const SvgGenImage('assets/icons/arrow_right.svg');
 
   /// File path: assets/icons/atrachfileIcon.svg
   SvgGenImage get atrachfileIcon =>
@@ -25,6 +36,13 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/carIcon.svg
   SvgGenImage get carIcon => const SvgGenImage('assets/icons/carIcon.svg');
+
+  /// File path: assets/icons/changePass.svg
+  SvgGenImage get changePass =>
+      const SvgGenImage('assets/icons/changePass.svg');
+
+  /// File path: assets/icons/delete.svg
+  SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
 
   /// File path: assets/icons/details_location.svg
   SvgGenImage get detailsLocation =>
@@ -65,9 +83,16 @@ class $AssetsIconsGen {
   /// File path: assets/icons/message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
 
+  /// File path: assets/icons/notification.svg
+  SvgGenImage get notification =>
+      const SvgGenImage('assets/icons/notification.svg');
+
   /// File path: assets/icons/notificationIcon.svg
   SvgGenImage get notificationIcon =>
       const SvgGenImage('assets/icons/notificationIcon.svg');
+
+  /// File path: assets/icons/privacy.svg
+  SvgGenImage get privacy => const SvgGenImage('assets/icons/privacy.svg');
 
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
@@ -89,35 +114,23 @@ class $AssetsIconsGen {
   /// File path: assets/icons/support.svg
   SvgGenImage get support => const SvgGenImage('assets/icons/support.svg');
 
+  /// File path: assets/icons/terms.svg
+  SvgGenImage get terms => const SvgGenImage('assets/icons/terms.svg');
+
   /// File path: assets/icons/time_progress.svg
   SvgGenImage get timeProgress =>
       const SvgGenImage('assets/icons/time_progress.svg');
 
-  /// File path: assets/icons/password.svg
-  SvgGenImage get changePass => const SvgGenImage('assets/icons/changePass.svg');
-
-  /// File path: assets/icons/password.svg
-  SvgGenImage get arrowRight => const SvgGenImage('assets/icons/arrow_right.svg');
-
-  /// File path: assets/icons/privacy.svg
-  SvgGenImage get privacy => const SvgGenImage('assets/icons/privacy.svg');
-
-
-  /// File path: assets/icons/terms.svg
-  SvgGenImage get terms => const SvgGenImage('assets/icons/terms.svg');
-
-  /// File path: assets/icons/about.svg
-  SvgGenImage get about => const SvgGenImage('assets/icons/about.svg');
-
-  /// File path: assets/icons/delete.svg
-  SvgGenImage get delete => const SvgGenImage('assets/icons/delete.svg');
-
-
   /// List of all assets
   List<SvgGenImage> get values => [
+        arrowLongDown,
         logoSVG,
+        about,
+        arrowRight,
         atrachfileIcon,
         carIcon,
+        changePass,
+        delete,
         detailsLocation,
         detailsMessage,
         earnings,
@@ -130,13 +143,16 @@ class $AssetsIconsGen {
         meneyIcon,
         menu,
         message,
+        notification,
         notificationIcon,
+        privacy,
         profile,
         profileIcon,
         profileInfo,
         select,
         settings,
         support,
+        terms,
         timeProgress
       ];
 }
@@ -156,6 +172,10 @@ class $AssetsImagesGen {
   AssetGenImage get customerHomeScreenImage =>
       const AssetGenImage('assets/images/customerHomeScreenImage.png');
 
+  /// File path: assets/images/mapprofile.png
+  AssetGenImage get mapprofile =>
+      const AssetGenImage('assets/images/mapprofile.png');
+
   /// File path: assets/images/onboardingImage.png
   AssetGenImage get onboardingImage =>
       const AssetGenImage('assets/images/onboardingImage.png');
@@ -164,34 +184,12 @@ class $AssetsImagesGen {
   AssetGenImage get splashImage =>
       const AssetGenImage('assets/images/splashImage.png');
 
-  /// File path: assets/icons/changePass.svg
-  SvgGenImage get changePass =>
-       SvgGenImage('assets/icons/changePass.svg');
-
-  /// File path: assets/icons/arrow_right.svg
-  SvgGenImage get arrowRight =>
-       SvgGenImage('assets/icons/arrow_right.svg');
-
-  /// File path:assets/icons/privacy.svg
-  SvgGenImage get privacy =>
-       SvgGenImage('assets/icons/privacy.svg');
-
-  /// File path: assets/icons/terms.svg
-  SvgGenImage get terms =>
-       SvgGenImage('assets/icons/terms.svg');
-  /// File path: assets/icons/about.svg
-  SvgGenImage get about =>
-      SvgGenImage('assets/icons/about.svg');
-
-  /// File path: assets/icons/delete.svg
-  SvgGenImage get delete =>
-      SvgGenImage('assets/icons/delete.svg');
-
   /// List of all assets
   List<AssetGenImage> get values => [
         balanceBg,
         balanceCardIcon,
         customerHomeScreenImage,
+        mapprofile,
         onboardingImage,
         splashImage
       ];
@@ -214,7 +212,6 @@ class Assets {
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
-
 }
 
 class AssetGenImage {
