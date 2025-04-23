@@ -123,21 +123,26 @@ class CustomerHomeScreen extends StatelessWidget {
                   SizedBox(height: 10.h),
 
 
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.r),
-                        color: Colors.white
-                    ),
-                    child: Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                      child: Row(
-                        children: [
-                          CustomText(text: "Tow truck", color: Colors.black),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.customerSelectCarScreen, extra: {"title" : "Tow Truck"});
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: Colors.white
+                      ),
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                        child: Row(
+                          children: [
+                            CustomText(text: "Tow truck", color: Colors.black),
 
-                          const Spacer(),
+                            const Spacer(),
 
-                          const Icon(Icons.keyboard_arrow_right_rounded)
-                        ],
+                            const Icon(Icons.keyboard_arrow_right_rounded)
+                          ],
+                        ),
                       ),
                     ),
                   )

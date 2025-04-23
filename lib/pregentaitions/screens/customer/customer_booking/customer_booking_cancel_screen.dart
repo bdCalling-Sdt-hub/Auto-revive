@@ -3,6 +3,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +14,7 @@ class CustomerBookingCancelScreen extends StatelessWidget {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController reasonCtrl = TextEditingController();
+  final TextEditingController ratingCommentCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,68 @@ class CustomerBookingCancelScreen extends StatelessWidget {
           
           
               CustomButton(title: "Submit", onpress: () {
-          
+
+
+
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: CustomText(
+                              text: "Kindly Give Feedback",
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                         GestureDetector(
+                             onTap: () {
+
+                             },
+                             child: const Icon(Icons.cancel_outlined, color: Colors.red)),
+                      ],
+                    ),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 50.w),
+                            child: RatingBar(
+                              filledIcon: Icons.star,
+                              emptyIcon: Icons.star_border,
+                              onRatingChanged: (value) => debugPrint('$value'),
+                              initialRating: 3,
+                              maxRating: 5,
+                            ),
+                          ),
+                          SizedBox(height: 35.h),
+                          CustomText(text: "Leave A Comment For User.", color: Colors.black),
+                          SizedBox(height: 15.h),
+                          CustomTextField(
+                            controller: ratingCommentCtrl,
+                            hintText: "Enter Your Valuable Comment",
+                          ),
+                          SizedBox(height: 16.h),
+                          CustomButton(
+                            title: "Submit",
+                            onpress: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                              // Handle your submit logic here
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+
+
+
               }),
           
           
