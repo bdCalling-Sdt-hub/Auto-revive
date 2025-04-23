@@ -1,11 +1,11 @@
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/screens/message/users/users_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_home/tow_truck_home_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/tow_truck_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/app_colors.dart';
+import '../../../tow_truck_profile/tow_truck_profile_screen.dart';
+import '../tow_truck_bookings/tow_trucks_bookings_screen.dart';
+import '../tow_truck_home/tow_truck_home_screen.dart';
 
 class TowTruckBottomNavBar extends StatefulWidget {
   const TowTruckBottomNavBar({super.key});

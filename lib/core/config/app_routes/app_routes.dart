@@ -9,23 +9,7 @@ import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_pr
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_reference_screen/mechanic_reference_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_resume_certificate_screen/mechanic_resume_certificate_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
-import 'package:autorevive/pregentaitions/screens/mechanic/mechanic_bottom_nav/mechanic_bottom_nav.dart';
-import 'package:autorevive/pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_request_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/basic_info_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/business_requirement_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/company_information_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/profile_details/profile_details_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/service_coverage_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/custom_bottom_nav/tow_truck_bottom_nav_bar.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_truck_details_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/earning/earning_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_truck_profile/earning/withdraw_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_request_screen.dart';
-import 'package:autorevive/pregentaitions/tow_truck_section/screens/tow_turck_job/tow_truck_job_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_employment_history_screen/mechanic_employment_history_screen.dart';
@@ -42,12 +26,29 @@ import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechan
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_complete_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_booking_on_site/mechanic_bookings_screen/mechanic_map_screen.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_bottom_nav/mechanic_bottom_nav.dart';
+import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_request_screen.dart';
 import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_job_screen.dart';
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 import '../../../pregentaitions/screens/privacy_policy_Allscreen/privacy_policy_allscreen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_profile/earning/withdraw_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_profile/personal_info_customer/personal_info_customer_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/basic_info_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/business_requirement_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/company_information_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/profile_details/profile_details_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/service_coverage_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/vehicle_equipment_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/custom_bottom_nav/tow_truck_bottom_nav_bar.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/tow_truck_bookings/tow_truck_details_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/tow_turck_job/tow_truck_job_request_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/tow_turck_job/tow_truck_job_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
@@ -57,9 +58,6 @@ class AppRoutes {
   static const String roleScreen = "/SignUpScreen";
   static const String otpScreen = "/OtpScreen";
   static const String resetPasswordScreen = "/ResetPasswordScreen";
-
-
-
   static const String mechanicPersonalInformationScreen = "/MechanicPersonalInformationScreen";
   static const String mechanicExperienceSkillScreen = "/MechanicExperienceSkillScreen";
   static const String mechanicToolsEquipmentScreen = "/MechanicToolsEquipmentScreen";
@@ -79,8 +77,6 @@ class AppRoutes {
   static const String settingsScreen = "/SettingsScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
   static const String privacyAllScreen = "/PrivacyAllScreen";
-
-
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
@@ -103,6 +99,7 @@ class AppRoutes {
   static const String withdrawScreen = "/withdrawScreen";
   static const String customerBookingDetailsScreen = "/CustomerBookingDetailsScreen";
   static const String customerBookingCancelScreen = "/CustomerBookingCancelScreen";
+  static const String personalInfoCustomerScreen = "/PersonalInfoCustomerScreen";
 
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
@@ -525,6 +522,22 @@ class AppRoutes {
           name: customerBookingCancelScreen,
           pageBuilder: (context, state) =>
               _customTransitionPage(CustomerBookingCancelScreen(), state),
+        ),
+
+
+
+        ///<<<=============>>> PROFILE PERSONAL INFORMATION SCREEN <<<===============>>>
+
+        GoRoute(
+          path: personalInfoCustomerScreen,
+          name: personalInfoCustomerScreen,
+          pageBuilder: (context, state) {
+            final isEditable = state.extra as bool? ?? false;
+            return _customTransitionPage(
+              PersonalInfoCustomerScreen(isEditable: isEditable),
+              state,
+            );
+          },
         ),
   ]);
 
