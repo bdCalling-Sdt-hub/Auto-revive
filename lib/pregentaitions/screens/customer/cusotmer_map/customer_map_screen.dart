@@ -5,6 +5,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CustomerMapScreen extends StatefulWidget {
@@ -46,9 +47,10 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Map routerData = GoRouterState.of(context).extra as Map;
     return Scaffold(
       appBar: CustomAppBar(
-        title: "On-site",
+        title: routerData["title"].toString(),
         actions: [
           GestureDetector(
             onTap: () {

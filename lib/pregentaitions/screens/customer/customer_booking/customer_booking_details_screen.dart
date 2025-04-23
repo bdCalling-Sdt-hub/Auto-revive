@@ -211,10 +211,10 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
               width: 163.w,
               btnNameList: const ["Pending", "Cancel"],
               rightBtnOnTap: () {
-
+                context.pushNamed(AppRoutes.customerBookingCancelScreen);
               },
               leftBtnOnTap: () {
-                context.pushNamed(AppRoutes.customerBookingCancelScreen);
+
               },
             ),
 
