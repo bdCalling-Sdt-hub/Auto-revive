@@ -15,6 +15,7 @@ import '../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
+import '../../../../widgets/custom_phone_number_picker.dart';
 import '../../../../widgets/custom_popup_menu.dart';
 
 class MechanicPersonalInformationScreen extends StatefulWidget {
@@ -29,7 +30,9 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController currentAddressCtrl = TextEditingController();
-  bool? validUSDOTNumber;
+
+  bool hasDriversLicense = false;
+  bool hasCDL = false;
 
 
   final List<String> platForm = [
@@ -87,7 +90,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                             ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
                             : CustomNetworkImage(
                           boxShape: BoxShape.circle,
-                          imageUrl: "",
+                          imageUrl: "https://randomuser.me/api/portraits/men/10.jpg",
                           height: 128.h,
                           width: 128.w,
                         ),
@@ -163,34 +166,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
               CustomText(
                   text: "Phone No."),
               SizedBox(height: 8.h),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(left: 12, right: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.primaryColor,
-                        width: 0.3,
-                      ),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: CountryPickerDropdown(
-                      initialValue: 'US',
-                      itemBuilder: _buildDropdownItem,
-                      onValuePicked: (Country country) {
-                        print("${country.name} +${country.phoneCode}");
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    child: CustomTextField(
-                      controller: phoneNoCtrl,
-                      hintText: 'Enter your number',
-                    ),
-                  ),
-                ],
-              ),
+              /// ++++++++++++++++++++++  phone number  ==================>
+              CustomPhoneNumberPicker(controller: phoneNoCtrl, lebelText: 'Phone No.',),
               SizedBox(height: 11.h),
 
               ///<<<=============>>> Address Filed <<<===============>>>
@@ -202,22 +179,23 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                 hintText: "Enter Current Address",
               ),
               SizedBox(height: 19.h),
+              ///<<<=============>>> Checked <<<===============>>>
               CustomText(text: 'Do you have a valid driver’s license?'),
               CustomChecked(
-                selected: validUSDOTNumber,
+                selected: hasDriversLicense ,
                 onChanged: (val) {
                   setState(() {
-                    validUSDOTNumber = val;
+                    hasDriversLicense  = val!;
                   });
                 },
               ),
               SizedBox(height: 11.h),
               CustomText(text: 'Do you have a CDL?'),
               CustomChecked(
-                selected: validUSDOTNumber,
+                selected: hasCDL,
                 onChanged: (val) {
                   setState(() {
-                    validUSDOTNumber = val;
+                    hasCDL = val!;
                   });
                 },
               ),
@@ -239,13 +217,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
     );
   }
 
-  Widget _buildDropdownItem(Country country) => Row(
-    children: <Widget>[
-      CountryPickerUtils.getDefaultFlagImage(country),
-      SizedBox(width: 8.0.w),
-      Text("+${country.phoneCode}"),
-    ],
-  );
+
 
 
 //==================================> ShowImagePickerOption Function <===============================

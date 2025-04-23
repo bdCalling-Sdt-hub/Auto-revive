@@ -7,9 +7,17 @@ import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text.dart';
 
-class MechanicAdditionalInformationScreen extends StatelessWidget {
+class MechanicAdditionalInformationScreen extends StatefulWidget {
   const MechanicAdditionalInformationScreen({super.key});
 
+  @override
+  State<MechanicAdditionalInformationScreen> createState() => _MechanicAdditionalInformationScreenState();
+}
+
+
+final TextEditingController additionController = TextEditingController();
+
+class _MechanicAdditionalInformationScreenState extends State<MechanicAdditionalInformationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,15 +57,21 @@ class MechanicAdditionalInformationScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.all(8.h),
-                  child: CustomText(
-                    text: 'I want to work at On-Site Fleet Services because of its commitment to quality maintenance and customer satisfaction. I am eager to apply my skills in a dynamic environment, contribute to the team, and grow professionally in the fleetservices industry........................',
-                    fontsize: 14.sp,
-                    maxline: 15,
-                    textAlign: TextAlign.start,
+                  padding: EdgeInsets.all(8.h),
+                  child: TextField(
+                    controller: additionController,
+                    maxLines: 15,
+                    style: TextStyle(fontSize: 14.sp),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'I want to work at On-Site Fleet Services because of its commitment to quality maintenance and customer satisfaction. I am eager to apply my skills in a dynamic environment, contribute to the team, and grow professionally in the fleetservices industry...',
+                      hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.textColor151515),
+                      isCollapsed: true,
+                    ),
                   ),
                 ),
               ),
+
               SizedBox(height: 400.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
@@ -68,7 +82,7 @@ class MechanicAdditionalInformationScreen extends StatelessWidget {
                   context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
                 },
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 25.h),
             ],
           ),
         ),
