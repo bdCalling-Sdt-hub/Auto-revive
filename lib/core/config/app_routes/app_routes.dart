@@ -1,3 +1,4 @@
+import 'package:autorevive/pregentaitions/screens/auth/change_password/change_password.dart';
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
@@ -487,7 +488,7 @@ class AppRoutes {
       GoRoute(
         path: changePasswordScreen,
         name: changePasswordScreen,
-        pageBuilder: (context, state) =>  _customTransitionPage(const OnboardingScreen(), state),
+        pageBuilder: (context, state) =>  _customTransitionPage(ChangePasswordScreen(), state),
       ),
 
       ///<<<=============>>> LOGIN SCREEN <<<===============>>>
