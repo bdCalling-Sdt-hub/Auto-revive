@@ -48,7 +48,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ///=============Privacy app===============>>>
             GestureDetector(
               onTap: (){
-                // context.pushNamed(AppRoutes.privacyAllScreen, extra: "About Us");
+                context.pushNamed(AppRoutes.privacyAllScreen, extra: "Privacy Policy");
               },
               child:    _customTile(
                   Assets.icons.privacy.svg(),
@@ -63,7 +63,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
             GestureDetector(
               onTap: (){
-                // context.pushNamed(AppRoutes.privacyAllScreen, extra: "Terms & Conditions");
+                context.pushNamed(AppRoutes.privacyAllScreen, extra: "Terms & Conditions");
               },
               child: _customTile(
                   Assets.icons.terms.svg(),
@@ -79,7 +79,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
             GestureDetector(
               onTap: (){
-                // context.pushNamed(AppRoutes.privacyAllScreen, extra: "Privacy Policy");
+                 context.pushNamed(AppRoutes.privacyAllScreen, extra: "About Us");
               },
               child: _customTile(
                   Assets.icons.about.svg(),
