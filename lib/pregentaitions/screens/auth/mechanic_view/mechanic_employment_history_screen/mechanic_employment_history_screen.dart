@@ -18,7 +18,7 @@ class MechanicEmploymentHistoryScreen extends StatefulWidget {
 class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHistoryScreen> {
 
 
-
+  final TextEditingController reasonLeavingCtrl = TextEditingController();
 
   final TextEditingController companyNameCtrl = TextEditingController();
   final TextEditingController jobTitleCtrl = TextEditingController();
@@ -33,12 +33,12 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
     'On-Site': false,
     'Both': false,
   };
-
+  final TextEditingController fromDateCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(
@@ -75,7 +75,6 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                   text: "Job Title:",color: AppColors.textColor151515,fontsize: 14.sp),
               SizedBox(height: 8.h),
               CustomTextField(
-                readOnly: true,
                 controller: jobTitleCtrl,
                 hintText: "Job Title",
               ),
@@ -115,14 +114,14 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                               );
                               if (pickedDate != null) {
                                 final formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                                dateCtrl.text = formattedDate;
+                                fromDateCtrl.text = formattedDate;
                               }
                             },
                             child: AbsorbPointer(
                               child: CustomTextField(
                                 readOnly: true,
-                                controller: dateCtrl,
-                                hintText: "Select Date",
+                                controller: fromDateCtrl,
+                                hintText: "From Date",
                                 suffixIcon: const Icon(Icons.calendar_today),
                               ),
                             ),
@@ -130,6 +129,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                         ],
                       ),
                     ),
+
                     SizedBox(width: 16.h),
                     // CustomText(text: 'To',fontsize: 14.sp,fontWeight: FontWeight.bold,),
                     Expanded(
@@ -183,15 +183,21 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.all(8.h),
-                  child: CustomText(
-                    text: 'Leaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity....',
-                    fontsize: 10.sp,
-                    maxline: 5,
-                    textAlign: TextAlign.start,
+                  padding: EdgeInsets.all(8.h),
+                  child: TextField(
+                    controller: reasonLeavingCtrl,
+                    maxLines: 5,
+                    style: TextStyle(fontSize: 10.sp),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Leaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
+                      hintStyle: TextStyle(fontSize: 10.sp, color:AppColors.textColor151515),
+                      isCollapsed: true,
+                    ),
                   ),
                 ),
               ),
+
               SizedBox(height: 77.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>

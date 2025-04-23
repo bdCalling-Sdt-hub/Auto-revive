@@ -154,7 +154,8 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                             borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: TextField(
-                            controller: experienceControllers[index],
+                            keyboardType: TextInputType.number,
+                            controller: experienceControllers[index]..text = experienceControllers[index].text.isEmpty ? " Years" : experienceControllers[index].text,
                             style: TextStyle(fontSize: 12.sp),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
@@ -166,6 +167,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   );

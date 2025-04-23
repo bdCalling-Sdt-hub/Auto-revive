@@ -77,7 +77,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(
@@ -154,7 +154,12 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
               CustomText(
                   text: "List any additional  tools you own",fontsize: 16.sp),
               SizedBox(height: 8.h),
-              CustomTextField(controller: additionalToolsCtrl, hintText: "Additional Tools"),
+              CustomTextField(
+                  controller: additionalToolsCtrl,
+                  hintText: "Additional Tools",
+
+
+              ),
               SizedBox(height: 87.h),
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               CustomButton(
