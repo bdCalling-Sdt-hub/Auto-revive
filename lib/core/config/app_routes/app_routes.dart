@@ -46,6 +46,7 @@ import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_jo
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
+import '../../../pregentaitions/screens/privacy_policy_Allscreen/privacy_policy_allscreen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 
 class AppRoutes {
@@ -77,33 +78,15 @@ class AppRoutes {
   static const String notificationsScreen = "/NotificationsScreen";
   static const String settingsScreen = "/SettingsScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
+  static const String privacyAllScreen = "/PrivacyAllScreen";
 
-
-
-
-  // static const String mechanicPersonalInformationScreen =
-  //     "/MechanicPersonalInformationScreen";
-  // static const String mechanicExperienceSkillScreen =
-  //     "/MechanicExperienceSkillScreen";
-  // static const String mechanicToolsEquipmentScreen =
-  //     "/MechanicToolsEquipmentScreen";
-  // static const String mechanicEmploymentHistoryScreen =
-  //     "/MechanicEmploymentHistoryScreen";
-  // static const String mechanicReferenceScreen = "/MechanicReferenceScreen";
-  // static const String mechanicAdditionalInformationScreen =
-  //     "/MechanicAdditionalInformationScreen";
-  // static const String mechanicResumeCertificateScreen =
-  //     "/MechanicResumeCertificateScreen";
-  // static const String mechanicProfileInformationScreen =
-  //     "/MechanicProfileInformationScreen";
 
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
   static const String basicInfoScreen = "/basicInfoScreen";
   static const String companyInformationScreen = "/companyInformationScreen";
-  static const String licensingAndComplianceScreen =
-      "/licensingAndComplianceScreen";
+  static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
   static const String vehicleEquipmentScreen = "/vehicleEquipmentScreen";
   static const String serviceCoverageScreen = "/serviceCoverageScreen";
@@ -154,7 +137,16 @@ class AppRoutes {
           _customTransitionPage(LogInScreen(), state),
     ),
 
-    ///<<<=============>>> EMAIL VERIFY SCREEN <<<===============>>>
+
+        ///<<<=============>>> CHANGE PASSWORD  SCREEN <<<===============>>>
+
+        GoRoute(
+          path: changePasswordScreen,
+          name: changePasswordScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(ChangePasswordScreen(), state),
+        ),
+
+        ///<<<=============>>> EMAIL VERIFY SCREEN <<<===============>>>
     GoRoute(
       path: emailVerifyScreen,
       name: emailVerifyScreen,
@@ -254,7 +246,73 @@ class AppRoutes {
           _customTransitionPage(MechanicProfileInformationScreen(), state),
     ),
 
-    ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
+        ///<<<=============>>> MECHANIC BOTTOM NAVBAR SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicBottomNavBar,
+          name: mechanicBottomNavBar,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicBottomNavBar(), state),
+        ),
+
+        ///<<<=============>>> MECHANIC JOB SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicJobScreen,
+          name: mechanicJobScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicJobScreen(), state),
+        ),
+
+
+        ///<<<=============>>> MECHANIC JOB REQUEST SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicJobRequestScreen,
+          name: mechanicJobRequestScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicJobRequestScreen(), state),
+        ),
+
+        ///<<<=============>>> MECHANIC BOOKINGS SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicBookingsScreen,
+          name: mechanicBookingsScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicBookingsScreen(), state),
+        ),
+
+        ///<<<=============>>> MECHANIC BOOKINGS DETAILS SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicBookingsDetailsScreen,
+          name: mechanicBookingsDetailsScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicBookingsDetailsScreen(), state),
+        ),
+
+
+        ///<<<=============>>> MECHANIC COMPLETE DETAILS SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicCompleteDetailsScreen,
+          name: mechanicCompleteDetailsScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicCompleteDetailsScreen(), state),
+        ),
+
+        ///<<<=============>>> MECHANIC MAP SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicMapScreen,
+          name: mechanicMapScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicMapScreen(), state),
+        ),
+
+
+        ///=========Privacy All Screen========>>
+
+        GoRoute(
+          path: privacyAllScreen,
+          name: privacyAllScreen,
+          builder: (context, state) {
+            return PrivacyAllScreen();
+          },
+        ),
+
+
+
+
+
+        ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
 
     GoRoute(
       path: customerSignupScreen,
@@ -433,7 +491,14 @@ class AppRoutes {
       pageBuilder: (context, state) =>
           _customTransitionPage(WithdrawScreen(), state),
     ),
+        ///<<<=============>>> SETTINGS SCREEN <<<===============>>>
 
+
+        GoRoute(
+          path: settingsScreen,
+          name: settingsScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(SettingScreen(), state),
+        ),
 
 
         ///<<<=============>>> CUSTOMER BOOKING DETAILS SCREEN <<<===============>>>
@@ -445,6 +510,13 @@ class AppRoutes {
               _customTransitionPage(CustomerBookingDetailsScreen(), state),
         ),
 
+        ///<<<=============>>> NOTIFICATIONS SCREEN <<<===============>>>
+
+        GoRoute(
+          path: notificationsScreen,
+          name: notificationsScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(NotificationScreen(), state),
+        ),
 
         ///<<<=============>>> CUSTOMER BOOKING Cancel SCREEN <<<===============>>>
 
@@ -455,7 +527,6 @@ class AppRoutes {
               _customTransitionPage(CustomerBookingCancelScreen(), state),
         ),
   ]);
-
 
 
 
