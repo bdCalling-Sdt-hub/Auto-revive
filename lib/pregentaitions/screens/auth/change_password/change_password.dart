@@ -38,8 +38,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           children: [
             SizedBox(height: 17.h),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 20.h, vertical: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -50,7 +49,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor151515,
                   ),
-                  SizedBox(height: 11.h),
+                  SizedBox(height: 8.h),
                   CustomTextField(
                     controller: currentPasswordCTRl,
                     hintText: 'Enter current password',
@@ -66,7 +65,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     contentPaddingHorizontal: 20.w,
                     contentPaddingVertical: 18.h,
                   ),
-                  SizedBox(height: 15.h),
                   /// =====================================> New Password ===================================>
                   CustomText(
                     text: 'New Password',
@@ -74,7 +72,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor151515,
                   ),
-                  SizedBox(height: 11.h),
+                  SizedBox(height: 8.h),
                   CustomTextField(
                     controller: newPasswordCTRl,
                     hintText: 'Enter new password',
@@ -90,7 +88,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     contentPaddingHorizontal: 20.w,
                     contentPaddingVertical: 18.h,
                   ),
-                  SizedBox(height: 15.h),
                   /// =====================================> Confirm New Password ===================================>
                   CustomText(
                     text: 'Confirm New Password',
@@ -98,7 +95,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor151515,
                   ),
-                  SizedBox(height: 11.h),
+                  SizedBox(height: 8.h),
                   CustomTextField(
                     controller: conformPasswordCTRl,
                     hintText: 'Enter confirm password',
@@ -113,6 +110,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                     contentPaddingHorizontal: 20.w,
                     contentPaddingVertical: 18.h,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomText(
+                      textAlign: TextAlign.end,
+                        fontsize: 16.sp ,
+                        color: AppColors.redColors,
+                        text: 'Forget Password?'),
                   ),
 
                   SizedBox(height: 300.h),

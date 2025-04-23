@@ -58,8 +58,8 @@ class RoleScreen extends StatelessWidget {
                 title: "Mechanic or automotive shop",
                 onpress: (){
                   PrefsHelper.setString(AppConstants.role, "Mechanic or automotive shop");
-                  // context.pushNamed(AppRoutes.mechanicPersonalInformationScreen);
-                  context.pushNamed(AppRoutes.mechanicBottomNavBar);
+                  context.pushNamed(AppRoutes.mechanicPersonalInformationScreen);
+                  // context.pushNamed(AppRoutes.mechanicBottomNavBar);
 
             }),
             SizedBox(height: 10.h),

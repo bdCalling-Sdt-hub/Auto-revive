@@ -126,7 +126,9 @@ class CustomerSignupScreen extends StatelessWidget {
           
               CustomButton(title: "Sign Up", onpress: () {
                 context.pushNamed(AppRoutes.customerBottomNavBar);
-              },)
+              },),
+
+              SizedBox(height: 20.h)
             ],
           ),
         ),
