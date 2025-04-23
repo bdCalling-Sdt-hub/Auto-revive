@@ -1,5 +1,7 @@
+import 'package:autorevive/core/app_constants/app_constants.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/helpers/prefs_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -48,12 +50,14 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Customer",
                 onpress: (){
+                  PrefsHelper.setString(AppConstants.role, "Customer");
                   context.pushNamed(AppRoutes.customerSignupScreen);
             }),
            SizedBox(height: 10.h),
             CustomButton(
                 title: "Mechanic or automotive shop",
                 onpress: (){
+                  PrefsHelper.setString(AppConstants.role, "Mechanic or automotive shop");
                   // context.pushNamed(AppRoutes.mechanicPersonalInformationScreen);
                   context.pushNamed(AppRoutes.mechanicBottomNavBar);
 
@@ -62,6 +66,7 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Tow Truck Operator",
                 onpress: (){
+                  PrefsHelper.setString(AppConstants.role, "Tow Truck Operator");
                   context.pushNamed(AppRoutes.basicInfoScreen);
 
 

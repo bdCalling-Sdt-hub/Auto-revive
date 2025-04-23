@@ -2,8 +2,8 @@ import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../tow_truck_section/screens/tow_truck_profile/tow_truck_profile_screen.dart';
 import '../../message/users/users_screen.dart';
+import '../../tow_truck_profile/tow_truck_profile_screen.dart';
 import '../mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
 import '../mechanic_home_screen/mechanic_home_screen.dart';
 

@@ -1,4 +1,6 @@
+import 'package:autorevive/core/app_constants/app_constants.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'package:autorevive/helpers/prefs_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_profile_list_tile.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
@@ -6,12 +8,33 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../global/custom_assets/assets.gen.dart';
-import '../../../widgets/custom_button.dart';
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../../global/custom_assets/assets.gen.dart';
 
-class TowTruckProfileScreen extends StatelessWidget {
+
+class TowTruckProfileScreen extends StatefulWidget {
   const TowTruckProfileScreen({super.key});
+
+  @override
+  State<TowTruckProfileScreen> createState() => _TowTruckProfileScreenState();
+}
+
+class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
+
+  String userRole = "";
+
+  @override
+  void initState() {
+    getLocalData();
+    super.initState();
+  }
+
+  getLocalData()async{
+    userRole = await PrefsHelper.getString(AppConstants.role);
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +70,7 @@ class TowTruckProfileScreen extends StatelessWidget {
                   title: 'Profile Information',
                   icon: Assets.icons.profileInfo.svg(),
                   onTap: () {
+                   userRole == "Customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) :
                     context.pushNamed(AppRoutes.profileDetailsScreen);
                   }),
 
