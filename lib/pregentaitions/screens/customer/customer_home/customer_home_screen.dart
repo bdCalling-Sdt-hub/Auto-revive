@@ -63,9 +63,17 @@ class CustomerHomeScreen extends StatelessWidget {
                     children: [
                       Assets.icons.logoSVG.svg(color: AppColors.primaryColor, height: 50.h),
                      const  Spacer(),
-                      Assets.icons.timeProgress.svg(),
+                      GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoutes.progressScreen);
+                          },
+                          child: Assets.icons.timeProgress.svg()),
                       SizedBox(width: 20.w),
-                      Assets.icons.notificationIcon.svg()
+                      GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoutes.notificationsScreen);
+                          },
+                          child: Assets.icons.notificationIcon.svg())
                     ],
                   ),
 

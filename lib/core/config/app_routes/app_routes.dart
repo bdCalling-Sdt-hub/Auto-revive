@@ -33,6 +33,7 @@ import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
 import '../../../pregentaitions/screens/privacy_policy_Allscreen/privacy_policy_allscreen.dart';
+import '../../../pregentaitions/screens/progress/progress_screen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/withdraw_screen.dart';
@@ -100,6 +101,7 @@ class AppRoutes {
   static const String customerBookingDetailsScreen = "/CustomerBookingDetailsScreen";
   static const String customerBookingCancelScreen = "/CustomerBookingCancelScreen";
   static const String personalInfoCustomerScreen = "/PersonalInfoCustomerScreen";
+  static const String progressScreen = "/ProgressScreen";
 
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
@@ -539,6 +541,23 @@ class AppRoutes {
             );
           },
         ),
+
+
+        ///<<<=============>>> PROFILE PERSONAL INFORMATION SCREEN <<<===============>>>
+
+        GoRoute(
+          path: progressScreen,
+          name: progressScreen,
+          pageBuilder: (context, state) {
+            return _customTransitionPage(
+              ProgressScreen(),
+              state,
+            );
+          },
+        ),
+
+
+
   ]);
 
 

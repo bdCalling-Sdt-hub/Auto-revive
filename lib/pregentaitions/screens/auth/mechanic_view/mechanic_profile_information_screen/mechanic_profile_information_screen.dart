@@ -475,7 +475,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                     SizedBox(height: 16.h),
                     CustomButton(
-                      title: "Edit Profile",
+                      title: "Go To Home",
                       onpress: () {
                         context.pushNamed(AppRoutes.mechanicBottomNavBar);
                       },

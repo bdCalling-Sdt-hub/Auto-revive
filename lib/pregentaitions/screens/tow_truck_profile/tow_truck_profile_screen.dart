@@ -5,6 +5,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_profile_list_tile.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -113,7 +114,7 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 26.h),
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 26.h),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -136,52 +137,60 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // Cancel Button
+
+
                                   SizedBox(
-                                    width: 110.w,
-                                    height: 44.h,
-                                    child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25.r),
-                                        ),
-                                        side: BorderSide(color: Colors.pinkAccent, width: 1.5),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        "Cancel",
-                                        style: TextStyle(
-                                          color: Colors.pinkAccent,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
+                                    width: 250.w,
+                                    child: CustomTwoBtnWidget(
+                                      btnNameList: ["Cancel", "Logout"],
+                                      width: 110.w,
                                     ),
-                                  ),
-                                  // Logout Button
-                                  SizedBox(
-                                    width: 110.w,
-                                    height: 44.h,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.redAccent,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25.r),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        context.go(AppRoutes.roleScreen);
-                                      },
-                                      child: Text(
-                                        "Logout",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.sp,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  )
+
+
+                                  // // Cancel Button
+                                  // SizedBox(
+                                  //   width: 110.w,
+                                  //   height: 44.h,
+                                  //   child: OutlinedButton(
+                                  //     style: OutlinedButton.styleFrom(
+                                  //       shape: RoundedRectangleBorder(
+                                  //         borderRadius: BorderRadius.circular(25.r),
+                                  //       ),
+                                  //       side: const BorderSide(color: Colors.red, width: 1.5),
+                                  //     ),
+                                  //     onPressed: () {
+                                  //       Navigator.pop(context);
+                                  //     },
+                                  //     child: Text(
+                                  //       "Cancel",
+                                  //       style: TextStyle(
+                                  //         color: Colors.red,
+                                  //         fontSize: 14.sp,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // // Logout Button
+                                  // SizedBox(
+                                  //   width: 110.w,
+                                  //   height: 44.h,
+                                  //   child: ElevatedButton(
+                                  //     style: ElevatedButton.styleFrom(
+                                  //       // backgroundColor: Colors.green,
+                                  //       shape: RoundedRectangleBorder(
+                                  //         borderRadius: BorderRadius.circular(25.r),
+                                  //       ),
+                                  //     ),
+                                  //     onPressed: () {
+                                  //       context.go(AppRoutes.roleScreen);
+                                  //     },
+                                  //     child: CustomText(
+                                  //       text: "Logout",
+                                  //       color: Colors.white,
+                                  //     )
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],
@@ -199,6 +208,49 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+
+
+
+
+class CustomTwoBtnWidget extends StatelessWidget {
+  final List? btnNameList;
+  final VoidCallback? leftBtnOnTap;
+  final double? width;
+  final double? height;
+  final VoidCallback? rightBtnOnTap;
+
+  const CustomTwoBtnWidget(
+      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width, this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: List.generate(btnNameList!.length, (index) {
+        return GestureDetector(
+          onTap: index == 0 ? leftBtnOnTap : rightBtnOnTap,
+
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: index == 0 ? AppColors.redColors : Colors.red),
+                borderRadius: BorderRadius.circular(8.r),
+                color: index == 0 ? Colors.transparent : Colors.red),
+            width: width,
+            height: height,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 7.w),
+              child: CustomText(
+                  text: btnNameList![index],
+                  color: index == 0 ? Colors.black87 : Colors.white,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        );
+      }),
     );
   }
 }

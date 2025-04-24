@@ -126,18 +126,14 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
               ),
               SizedBox(height: 8.h),
               ///<<<=============>>> Name Filed <<<===============>>>
-              CustomText(
-                  text: "Full Name"),
-              SizedBox(height: 8.h),
-              CustomTextField(controller: fullNameCtrl, hintText: "Enter your name"),
+
+
+              CustomTextField(controller: fullNameCtrl, hintText: "Enter your name", labelText: "Full Name"),
 
               ///<<<=============>>> Platform Filed <<<===============>>>
-              SizedBox(height: 11.h),
-              CustomText(
-                  text: "Platform"),
-              SizedBox(height: 8.h),
-              // Platform dropdown or text field
+
               CustomTextField(
+                labelText: "Platform",
                 readOnly: true,
                 controller: platformCtrl,
                 hintText: "Enter Platform",
@@ -148,35 +144,31 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                       setState(() {});
                     }),
               ),
-              SizedBox(height: 11.h),
+
 
 
               ///<<<=============>>> Email Filed <<<===============>>>
-              CustomText(
-                  text: "Email"),
-              SizedBox(height: 8.h),
+
               CustomTextField(
                   controller: emailCtrl,
                   hintText: "Enter E-mail",
+                  labelText: "Email",
                   // prefixIcon: Assets.icons.mail.svg(),
                   isEmail: true),
-              SizedBox(height: 11.h),
+
 
               ///<<<=============>>> Phone Filed <<<===============>>>
-              CustomText(
-                  text: "Phone No."),
-              SizedBox(height: 8.h),
+
               /// ++++++++++++++++++++++  phone number  ==================>
               CustomPhoneNumberPicker(controller: phoneNoCtrl, lebelText: 'Phone No.',),
               SizedBox(height: 11.h),
 
               ///<<<=============>>> Address Filed <<<===============>>>
-              CustomText(
-                  text: "Current Address"),
-              SizedBox(height: 8.h),
+
               CustomTextField(
                 controller: currentAddressCtrl,
                 hintText: "Enter Current Address",
+                labelText: "Current Address",
               ),
               SizedBox(height: 19.h),
               ///<<<=============>>> Checked <<<===============>>>

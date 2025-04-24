@@ -22,6 +22,7 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawerEnableOpenDragGesture: false,
       endDrawerEnableOpenDragGesture: false,
       endDrawer: endDrawer,
