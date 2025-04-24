@@ -190,7 +190,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                     style: TextStyle(fontSize: 10.sp),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Leaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
+                      hintText: 'Write leaving reason...',
                       hintStyle: TextStyle(fontSize: 10.sp, color:AppColors.textColor151515),
                       isCollapsed: true,
                     ),

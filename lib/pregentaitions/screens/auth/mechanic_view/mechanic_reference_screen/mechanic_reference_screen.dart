@@ -91,6 +91,7 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                           CustomTextField(
                             controller: ref.phoneNoCtrl,
                             hintText: "Phone No",
+                            keyboardType: TextInputType.number,
                             readOnly: false,
                           ),
                           CustomText(

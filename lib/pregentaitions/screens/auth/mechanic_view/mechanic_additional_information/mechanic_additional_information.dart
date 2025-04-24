@@ -64,7 +64,7 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                     style: TextStyle(fontSize: 14.sp),
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'I want to work at On-Site Fleet Services because of its commitment to quality maintenance and customer satisfaction. I am eager to apply my skills in a dynamic environment, contribute to the team, and grow professionally in the fleetservices industry...',
+                      hintText: 'Write some things...',
                       hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.textColor151515),
                       isCollapsed: true,
                     ),

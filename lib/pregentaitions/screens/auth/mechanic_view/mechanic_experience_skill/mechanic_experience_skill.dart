@@ -155,7 +155,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                           ),
                           child: TextField(
                             keyboardType: TextInputType.number,
-                            controller: experienceControllers[index]..text = experienceControllers[index].text.isEmpty ? " Years" : experienceControllers[index].text,
+                            controller: experienceControllers[index]..text = experienceControllers[index].text.isEmpty ? "" : experienceControllers[index].text,
                             style: TextStyle(fontSize: 12.sp),
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
@@ -196,7 +196,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
 
 
 
-              SizedBox(height: 94.h),
+              SizedBox(height: 50.h),
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               CustomButton(
                 title: "Save and Next",
