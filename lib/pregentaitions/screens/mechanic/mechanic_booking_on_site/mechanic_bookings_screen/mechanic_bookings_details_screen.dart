@@ -53,7 +53,12 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
                     children: [
                       Assets.icons.detailsMessage.svg(),
                       SizedBox(width: 6.w),
-                      Assets.icons.detailsLocation.svg(),
+                      GestureDetector
+                        (
+                        onTap: () {
+                          context.pushNamed(AppRoutes.mechanicMapScreen);
+                        },
+                          child: Assets.icons.detailsLocation.svg()),
                     ],
                   ),
                 ],

@@ -6,6 +6,9 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../../core/config/app_routes/app_routes.dart';
 
 class MechanicCompleteDetailsScreen extends StatelessWidget {
    MechanicCompleteDetailsScreen({super.key});
@@ -57,7 +60,11 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
                     children: [
                       Assets.icons.detailsMessage.svg(),
                       SizedBox(width: 6.w),
-                      Assets.icons.detailsLocation.svg(),
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed(AppRoutes.mechanicMapScreen);
+                        },
+                          child: Assets.icons.detailsLocation.svg()),
                     ],
                   ),
                 ],

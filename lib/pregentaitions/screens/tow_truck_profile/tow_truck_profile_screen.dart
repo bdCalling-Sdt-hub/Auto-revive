@@ -70,7 +70,7 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                   title: 'Profile Information',
                   icon: Assets.icons.profileInfo.svg(),
                   onTap: () {
-                   userRole == "Customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) :
+                   userRole == "Customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) :userRole == "Mechanic or automotive shop" ?  context.pushNamed(AppRoutes.mechanicProfileInformationScreen) :
                     context.pushNamed(AppRoutes.profileDetailsScreen);
                   }),
 

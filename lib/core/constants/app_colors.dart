@@ -24,4 +24,5 @@ class AppColors{
   static const Color cancelButtonColor = Color(0xffE65759);
   static const Color switchColor = Color(0xffD9D9D9);
   static const Color logColor = Color(0xffDD3663);
+  static const Color redColors = Color(0xffFF3333);
 }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/app_routes/app_routes.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../global/custom_assets/assets.gen.dart';
+import '../../widgets/custom_profile_list_tile.dart';
 import '../../widgets/custom_text.dart';
 
 
@@ -88,101 +89,120 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
 
 
+            SizedBox(height: 400.h),
 
-            // CustomProfileListTile(
-            //   title: 'Logout',
-            //   icon: Assets.icons.delete.svg(),
-            //   onTap: (){
-            //     showDialog(
-            //       context: context,
-            //       builder: (context) {
-            //         return Dialog(
-            //           backgroundColor: Colors.white,
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(20.r),
-            //           ),
-            //           child: Padding(
-            //             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.h),
-            //             child: Column(
-            //               mainAxisSize: MainAxisSize.min,
-            //               children: [
-            //                 CustomText(
-            //                     textAlign: TextAlign.center,
-            //                     text: 'Delete', fontsize: 20.sp,  color: AppColors.logColor,
-            //                     fontWeight: FontWeight.w400),
-            //                 SizedBox(height: 10.h),
-            //                 Divider(thickness: 1, color: Colors.grey.withOpacity(0.4)),
-            //                 SizedBox(height: 24.h),
-            //                 Text(
-            //                   "Are you sure you want to sure\Delete?",
-            //                   textAlign: TextAlign.center,
-            //                   style: TextStyle(
-            //                     fontSize: 15.sp,
-            //                     color: Colors.black87,
-            //                   ),
-            //                 ),
-            //                 SizedBox(height: 30.h),
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //                   children: [
-            //                     // Cancel Button
-            //                     SizedBox(
-            //                       width: 110.w,
-            //                       height: 44.h,
-            //                       child: OutlinedButton(
-            //                         style: OutlinedButton.styleFrom(
-            //                           shape: RoundedRectangleBorder(
-            //                             borderRadius: BorderRadius.circular(25.r),
-            //                           ),
-            //                           side: BorderSide(color: Colors.pinkAccent, width: 1.5),
-            //                         ),
-            //                         onPressed: () {
-            //                           Navigator.pop(context);
-            //                         },
-            //                         child: Text(
-            //                           "Cancel",
-            //                           style: TextStyle(
-            //                             color: Colors.pinkAccent,
-            //                             fontSize: 14.sp,
-            //                           ),
-            //                         ),
-            //                       ),
-            //                     ),
-            //                     // Logout Button
-            //                     SizedBox(
-            //                       width: 110.w,
-            //                       height: 44.h,
-            //                       child: ElevatedButton(
-            //                         style: ElevatedButton.styleFrom(
-            //                           backgroundColor: Colors.redAccent,
-            //                           shape: RoundedRectangleBorder(
-            //                             borderRadius: BorderRadius.circular(25.r),
-            //                           ),
-            //                         ),
-            //                         onPressed: () {
-            //                           context.go(AppRoutes.roleScreen);
-            //                         },
-            //                         child: Text(
-            //                           "Logout",
-            //                           style: TextStyle(
-            //                             color: Colors.white,
-            //                             fontSize: 14.sp,
-            //                           ),
-            //                         ),
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ],
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: 48.h,
+            //   child: ElevatedButton.icon(
+            //     onPressed: () {
+            //       showDialog(
+            //         context: context,
+            //         builder: (context) {
+            //           return Dialog(
+            //             backgroundColor: Colors.white,
+            //             shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(20.r),
             //             ),
-            //           ),
-            //         );
-            //       },
-            //     );
-            //
-            //
-            //
-            //   },)
+            //             child: Padding(
+            //               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 26.h),
+            //               child: Column(
+            //                 mainAxisSize: MainAxisSize.min,
+            //                 children: [
+            //                   CustomText(
+            //                     textAlign: TextAlign.center,
+            //                     text: 'Delete Account',
+            //                     fontsize: 20.sp,
+            //                     color: AppColors.logColor,
+            //                     fontWeight: FontWeight.w400,
+            //                   ),
+            //                   SizedBox(height: 10.h),
+            //                   Divider(thickness: 1, color: Colors.grey.withOpacity(0.4)),
+            //                   SizedBox(height: 24.h),
+            //                   Text(
+            //                     "Are you sure you want to delete your account?",
+            //                     textAlign: TextAlign.center,
+            //                     style: TextStyle(
+            //                       fontSize: 15.sp,
+            //                       color: Colors.black87,
+            //                     ),
+            //                   ),
+            //                   SizedBox(height: 30.h),
+            //                   Row(
+            //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //                     children: [
+            //                       // Cancel Button
+            //                       SizedBox(
+            //                         width: 110.w,
+            //                         height: 44.h,
+            //                         child: OutlinedButton(
+            //                           style: OutlinedButton.styleFrom(
+            //                             shape: RoundedRectangleBorder(
+            //                               borderRadius: BorderRadius.circular(25.r),
+            //                             ),
+            //                             side: BorderSide(color: Colors.pinkAccent, width: 1.5),
+            //                           ),
+            //                           onPressed: () {
+            //                             Navigator.pop(context);
+            //                           },
+            //                           child: Text(
+            //                             "Cancel",
+            //                             style: TextStyle(
+            //                               color: Colors.pinkAccent,
+            //                               fontSize: 14.sp,
+            //                             ),
+            //                           ),
+            //                         ),
+            //                       ),
+            //                       // Confirm Delete Button
+            //                       SizedBox(
+            //                         width: 110.w,
+            //                         height: 44.h,
+            //                         child: ElevatedButton(
+            //                           style: ElevatedButton.styleFrom(
+            //                             backgroundColor: Colors.redAccent,
+            //                             shape: RoundedRectangleBorder(
+            //                               borderRadius: BorderRadius.circular(25.r),
+            //                             ),
+            //                           ),
+            //                           onPressed: () {
+            //                             context.go(AppRoutes.roleScreen);
+            //                           },
+            //                           child: Text(
+            //                             "Delete",
+            //                             style: TextStyle(
+            //                               color: Colors.white,
+            //                               fontSize: 14.sp,
+            //                             ),
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     ],
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       );
+            //     },
+            //     icon: Assets.icons.delete.svg(width: 20.w, height: 20.h),
+            //     label: Text(
+            //       'Delete Account',
+            //       style: TextStyle(
+            //         fontSize: 14.sp,
+            //         fontWeight: FontWeight.w500,
+            //       ),
+            //     ),
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.redAccent,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(25.r),
+            //       ),
+            //     ),
+            //   ),
+            // )
+
 
 
           ],
