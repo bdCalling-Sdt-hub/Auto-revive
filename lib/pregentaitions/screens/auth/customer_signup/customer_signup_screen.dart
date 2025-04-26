@@ -22,7 +22,7 @@ class CustomerSignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: CustomText(text: "As a Customer", fontsize: 18.h),
       ),
