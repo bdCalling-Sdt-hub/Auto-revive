@@ -35,26 +35,12 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
     "Wrecker",
     'Heavy - Duty',
     'Medium - Duty',
-    'Light - Duty'
+    'Light - Duty',
+    'Other',
   ];
 
 
-  Future<void> _selectDate() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
-    );
 
-    if (pickedDate != null) {
-      String formattedDate =
-          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-      setState(() {
-        _makingYearTEController.text = formattedDate;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,5 +147,22 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      String formattedDate =
+          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      setState(() {
+        _makingYearTEController.text = formattedDate;
+      });
+    }
   }
 }
