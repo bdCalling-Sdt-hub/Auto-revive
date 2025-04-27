@@ -76,7 +76,7 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
                   textAlign: TextAlign.start,
                   fontsize: 20.sp,
                   color: AppColors.textColor151515,
-                  text: 'Problem which need to solve..',
+                  text: 'Problem(s) need to be solved',
                 ),
                 SizedBox(height: 18.h),
                 // Search Box
@@ -123,22 +123,22 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
                     radius: Radius.circular(8.r),
                     child: ListView(
                       children: [
-                        _buildServiceTile('Diesel Engine Repair', '\$27'),
-                        _buildServiceTile('Gasoline Engine Repair', '\$27'),
-                        _buildServiceTile('Semi-Truck Repair', '\$27'),
-                        _buildServiceTile('Trailer Repair', '\$27'),
-                        _buildServiceTile('RV Repair', '\$23', checked: true),
-                        _buildServiceTile('Brake Systems', '', isEnabled: true),
-                        _buildServiceTile('Welding/Fabrication', '', isEnabled: true),
-                        _buildServiceTile('Other', '', isEnabled: true),
-                      ],
-                    ),
-                  ),
+                        _buildServiceTile(context, 'Diesel Engine Repair', '\$27',checked: true),
+                  _buildServiceTile(context, 'Gasoline Engine Repair', '\$27',checked: true),
+                  _buildServiceTile(context, 'Semi-Truck Repair', '\$27',checked: true),
+                  _buildServiceTile(context, 'Trailer Repair', '\$27',checked: true),
+                  _buildServiceTile(context, 'RV Repair', '\$23', checked: true),
+                  _buildServiceTile(context, 'Brake Systems', '', isEnabled: true),
+                  _buildServiceTile(context, 'Welding/Fabrication', '', isEnabled: true),
+                  _buildServiceTile(context, 'Other', '', isEnabled: true),
+                  ],
+                ),
+
+          ),
                 ),
               ],
             ),
           ),
-
           const Spacer(),
           CustomButton(title: 'Submit',
               onpress: () {
@@ -152,15 +152,27 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildServiceTile(String name, String price, {bool checked = false, bool isEnabled = true}) {
+
+
+  Widget _buildServiceTile(BuildContext context, String name, String price, {bool checked = false, bool isEnabled = true}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
         children: [
-          Checkbox(
-            value: checked,
-            onChanged: isEnabled ? (v) {} : null,
-            activeColor: Colors.blue,
+          Theme(
+            data: Theme.of(context).copyWith(
+              unselectedWidgetColor: Colors.blue, // Unchecked box color (for disabled)
+            ),
+            child: Checkbox(
+              value: checked,
+              onChanged: isEnabled ? (v) {} : null,
+              activeColor: AppColors.primaryColor, // Checked box color
+              checkColor: AppColors.primaryColor, // Tick mark color
+              side: BorderSide(
+                color: AppColors.primaryColor, // Border color
+                width: 2,
+              ),
+            ),
           ),
           Expanded(
             child: Text(
@@ -184,5 +196,39 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
       ),
     );
   }
+
+
+// Widget _buildServiceTile(String name, String price, {bool checked = false, bool isEnabled = true}) {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(vertical: 6.h),
+  //     child: Row(
+  //       children: [
+  //         Checkbox(
+  //           value: checked,
+  //           onChanged: isEnabled ? (v) {} : null,
+  //           activeColor: Colors.blue,
+  //         ),
+  //         Expanded(
+  //           child: Text(
+  //             name,
+  //             style: TextStyle(
+  //               color: isEnabled ? Colors.black : Colors.grey,
+  //               decoration: isEnabled ? null : TextDecoration.lineThrough,
+  //             ),
+  //           ),
+  //         ),
+  //         if (price.isNotEmpty)
+  //           Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+  //             decoration: BoxDecoration(
+  //               color: checked ? Colors.grey.shade300 : Colors.transparent,
+  //               borderRadius: BorderRadius.circular(6.r),
+  //             ),
+  //             child: Text(price),
+  //           ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 

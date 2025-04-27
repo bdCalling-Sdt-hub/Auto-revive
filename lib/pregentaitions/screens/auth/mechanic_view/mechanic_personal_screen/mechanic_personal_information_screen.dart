@@ -38,6 +38,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   final List<String> platForm = [
     'In shop',
     'On Site',
+    'Both',
   ];
 
   @override
