@@ -4,8 +4,11 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../controllers/auth_controller.dart';
+import '../../../../helpers/toast_message_helper.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_upload_button.dart';
 
@@ -18,7 +21,8 @@ class CustomerSignupScreen extends StatelessWidget {
   final TextEditingController addressCtrl = TextEditingController();
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
-
+  AuthController authController = Get.put(AuthController());
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,107 +33,118 @@ class CustomerSignupScreen extends StatelessWidget {
       body: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 48.h),
-          
-              ///<<<=============>>> Name Filed <<<===============>>>
-          
-              CustomText(
-                  text: "Your Name",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: nameCtrl, hintText: "Enter your name"),
-          
-          
-          
-          
-              ///<<<=============>>> Email Filed <<<===============>>>
-          
-              CustomText(
-                  text: "E-mail",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: emailCtrl, hintText: "Enter your e-mail"),
-          
-          
-          
-              ///<<<=============>>> PHONE FIELD <<<===============>>>
-          
-              CustomText(
-                  text: "Phone No.",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: phoneCtrl, hintText: "Enter your phone"),
-          
-          
-          
-              ///<<<=============>>> ADDRESS Filed <<<===============>>>
-          
-              CustomText(
-                  text: "Address",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: addressCtrl, hintText: "Enter your address"),
-          
-          
-          
-              ///<<<=============>>> DRIVING LICENSE OR PASSPORT Filed <<<===============>>>
-          
-              CustomText(
-                  text: "Upload driving license or passport",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-          
-          
-              CustomUploadButton(
-                topLabel: 'Upload Proof of MC authority',
-                title: 'mc.pdf',
-                icon: Icons.upload,
-                onTap: () {},
-              ),
-          
-          
-          
-          
-              ///<<<=============>>> PASSWORD Filed <<<===============>>>
-          
-              CustomText(
-                  text: "Password",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: passwordCtrl, hintText: "Enter your password", prefixIcon: Assets.icons.key.svg(), isPassword: true),
-          
-          
-          
-          
-              ///<<<=============>>>CONFIRM PASSWORD Filed <<<===============>>>
-          
-              CustomText(
-                  text: "Confirm Password",
-                  fontsize: 16.h,
-                  color: const Color(0xff222222),
-                  bottom: 6.h),
-              CustomTextField(controller: confirmPasswordCtrl, hintText: "Re-enter your password",  prefixIcon: Assets.icons.key.svg(), isPassword: true),
-          
-          
-          
-          
-          
-          
-              CustomButton(title: "Sign Up", onpress: () {
-                context.pushNamed(AppRoutes.customerBottomNavBar);
-              },),
+          child: Form(
+            key: fromKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 48.h),
 
-              SizedBox(height: 20.h)
-            ],
+                ///<<<=============>>> Name Filed <<<===============>>>
+
+                CustomText(
+                    text: "Your Name",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: nameCtrl, hintText: "Enter your name"),
+
+
+
+
+                ///<<<=============>>> Email Filed <<<===============>>>
+
+                CustomText(
+                    text: "E-mail",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: emailCtrl, hintText: "Enter your e-mail"),
+
+
+
+                ///<<<=============>>> PHONE FIELD <<<===============>>>
+
+                CustomText(
+                    text: "Phone No.",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: phoneCtrl, hintText: "Enter your phone"),
+
+
+
+                ///<<<=============>>> ADDRESS Filed <<<===============>>>
+
+                CustomText(
+                    text: "Address",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: addressCtrl, hintText: "Enter your address"),
+
+
+
+                ///<<<=============>>> DRIVING LICENSE OR PASSPORT Filed <<<===============>>>
+
+                CustomText(
+                    text: "Upload driving license or passport",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+
+
+                CustomUploadButton(
+                  topLabel: 'Upload Proof of MC authority',
+                  title: 'mc.pdf',
+                  icon: Icons.upload,
+                  onTap: () {},
+                ),
+
+
+
+
+                ///<<<=============>>> PASSWORD Filed <<<===============>>>
+
+                CustomText(
+                    text: "Password",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: passwordCtrl, hintText: "Enter your password", prefixIcon: Assets.icons.key.svg(), isPassword: true),
+
+
+
+
+                ///<<<=============>>>CONFIRM PASSWORD Filed <<<===============>>>
+
+                CustomText(
+                    text: "Confirm Password",
+                    fontsize: 16.h,
+                    color: const Color(0xff222222),
+                    bottom: 6.h),
+                CustomTextField(controller: confirmPasswordCtrl, hintText: "Re-enter your password",  prefixIcon: Assets.icons.key.svg(), isPassword: true),
+
+                Obx(()=>
+                   CustomButton(
+                     loading: authController.signUpLoading.value,
+                    title: "Sign Up",
+                    onpress: () {
+                      if(fromKey.currentState!.validate()){
+                          authController.handleSignUp(
+                              name: nameCtrl.text,
+                              email: emailCtrl.text,
+                              phone: phoneCtrl.text,
+                              password: passwordCtrl.text.trim(),
+                              confirmPassword: confirmPasswordCtrl.text.trim(),
+                          );
+                      }
+                  },),
+                ),
+
+                SizedBox(height: 20.h)
+              ],
+            ),
           ),
         ),
       ),

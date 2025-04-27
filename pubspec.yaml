@@ -25,6 +25,8 @@ dependencies:
   google_maps_flutter:
   shared_preferences: ^2.5.3
   timeago: ^3.6.1
+  get: ^4.6.6
+  mime_type: ^1.0.1
 
   flutter_switch: ^0.3.2
 
