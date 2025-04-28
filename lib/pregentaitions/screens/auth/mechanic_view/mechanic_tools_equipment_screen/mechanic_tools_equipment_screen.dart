@@ -1,10 +1,14 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/pregentaitions/widgets/CustomChecked.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text_field.dart';
@@ -17,7 +21,7 @@ class MechanicToolsEquipmentScreen extends StatefulWidget {
 }
 class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScreen> {
 
-
+  MechanicController mechanicController = Get.put(MechanicController());
   final TextEditingController additionalToolsCtrl = TextEditingController();
 
   final Map<String, bool> _basicHandTools = {
@@ -74,6 +78,13 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
 
   bool? validUSDOTNumber;
 
+
+  @override
+  void initState() {
+   mechanicController.getAllTools();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,42 +124,53 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   });
                 },
               ),
-              ///<<<=============>>> Basic hand tools <<<===============>>>
-              CustomText(text: 'Basic hand tools...',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _basicHandTools,
-              ),
-              ///<<<=============>>> Sockets & Ratchets <<<===============>>>
-              CustomText(text: 'Sockets & Ratchets...',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _socketRatchets,
-              ),
-              ///<<<=============>>> Power & Pneumatic Tools <<<===============>>>
-              CustomText(text: 'Power & Pneumatic Tools',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _powerPneumatic,
-              ),
-              ///<<<=============>>> Diagnostics Equipment <<<===============>>>
-              CustomText(text: 'Diagnostics Equipment',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _diagnosticsEquipment,
-              ),
-              ///<<<=============>>> Lifting and Support Equipment <<<===============>>>
-              CustomText(text: 'Lifting and Support Equipment',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _liftingSupport,
-              ),
-              ///<<<=============>>> Specialty Tools <<<===============>>>
-              CustomText(text: 'Specialty Tools',fontsize: 16.sp),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _specialtyTools,
-              ),
+
+              /// <<<=============>>> Tools Group List <<<===============>>>
+              Obx(() {
+                if (mechanicController.toolsLoading.value) {
+                  return const Center(child: CustomLoader());
+                } else if (mechanicController.tools.isEmpty) {
+                  return Center(child: CustomText(text: "No Tools Found", fontsize: 16.sp));
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: mechanicController.tools.length,
+                    itemBuilder: (context, groupIndex) {
+                      var group = mechanicController.tools[groupIndex];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: group.groupName ?? "No Group Name",
+                            fontsize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          SizedBox(height: 10.h),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: group.tools.length,
+                            itemBuilder: (context, toolIndex) {
+                              var tool = group.tools[toolIndex];
+                              return CustomCheckboxList(
+                                items: {
+                                  tool.name ?? "Unnamed Tool": false,
+                                },
+                              );
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                        ],
+                      );
+                    },
+                  );
+                }
+              }),
+
+
+
+
               SizedBox(height: 20.h),
               ///<<<=============>>> Additional Tools <<<===============>>>
               CustomText(

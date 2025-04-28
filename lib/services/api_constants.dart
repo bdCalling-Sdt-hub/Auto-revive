@@ -5,5 +5,8 @@ class ApiConstants{
 
 
   static const String signUpEndPoint = "/auth/register";
+  static const String uploadEndPoint = "/upload";
+  static const String getAllToolsEndPoint = "/tool";
+  static const String getAllExperienceEndPoint = "/experience";
 
 }

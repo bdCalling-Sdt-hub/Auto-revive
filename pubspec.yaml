@@ -27,6 +27,8 @@ dependencies:
   timeago: ^3.6.1
   get: ^4.6.6
   mime_type: ^1.0.1
+  file_picker: ^10.1.2
+  flutter_spinkit: ^5.2.1
 
   flutter_switch: ^0.3.2
 

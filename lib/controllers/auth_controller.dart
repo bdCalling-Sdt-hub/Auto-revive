@@ -15,11 +15,11 @@ import '../services/api_constants.dart';
 
 
 class AuthController extends GetxController {
-  ///************************************************************************///
+
 
   RxBool signUpLoading = false.obs;
 
-  ///===============Sing up ================<>
+  ///========================================== Sing up ==================================<>
   handleSignUp({String? name, email, phone, password,confirmPassword,filePath}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     signUpLoading(true);
@@ -31,7 +31,6 @@ class AuthController extends GetxController {
       "confirmPassword": confirmPassword,
       "filePath": filePath,
       "role": "customer",
-
     };
 
     var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
