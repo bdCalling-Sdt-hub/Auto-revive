@@ -24,57 +24,6 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
   MechanicController mechanicController = Get.put(MechanicController());
   final TextEditingController additionalToolsCtrl = TextEditingController();
 
-  final Map<String, bool> _basicHandTools = {
-    'Screwdrivers (Flat, Phillips, Torx).': false,
-    'Pliers (Needle Nose, Slip Joint, Channel Lock,Wire Cutters).': false,
-    'Ratchets (Standard & Flex Head).': false,
-    'Wrenches (Combination, Box-End, Adjustable,Ratcheting).': false,
-    'Allen Wrenches / Hex Keys.': false,
-    'Pry Bars.': false,
-    'Hammers (Ball Peen, Dead Blow, Rubber Mallet).': false,
-    'Tape Measure & Utility Knife.': false,
-  };
-  final Map<String, bool> _socketRatchets = {
-    '1/4” Drive Sockets (Standard & Deep).': false,
-    '3/8” Drive Sockets (Standard & Deep).': false,
-    '1/2” Drive Sockets (Standard & Deep).': false,
-    '3/4” Drive Sockets (Standard & Deep).': false,
-    '1” Drive Sockets (Standard & Deep).': false,
-    'Universal Joints & Extensions (All Drive Sizes).': false,
-    'Torque Wrench (1/4", 3/8", 1/2", 3/4", 1").': false,
-  };
-  final Map<String, bool> _powerPneumatic = {
-    'Cordless Drill & Bits.': false,
-    'Electric Ratchet (1/4", 3/8", 1/2").': false,
-    'Pneumatic Ratchet (1/4", 3/8", 1/2").': false,
-    'Impact Gun (1/4", 3/8", 1/2", 3/4", 1").': false,
-    'Air Compressor & Air Hoses.': false,
-  };
-  final Map<String, bool> _diagnosticsEquipment = {
-    'OBD2 Scanner.': false,
-    'Diesel Engine Diagnostic Scanner (OEM orAftermarket).': false,
-    'Battery Tester & Charger.': false,
-    'Multi meter for Electrical Testing.").': false,
-    'Fuel Pressure Tester.': false,
-    'Cooling System Pressure Tester.': false,
-  };
-  final Map<String, bool> _liftingSupport = {
-    'Hydraulic Jack (2-Ton, 10-Ton, 30-Ton).': false,
-    'Jack Stands (Adjustable Height).': false,
-    'Wheel Chocks.': false,
-    'Creeper & Rolling Seat.").': false,
-  };
-  final Map<String, bool> _specialtyTools = {
-    'Brake Service Tools (Brake Spoon, Brake SpringPliers, Caliper Compressor)': false,
-    'Oil Filter Wrenches & Drain Pan.': false,
-    'Hose Clamp Pliers.': false,
-    'Pick Set (O-Ring & Seal Removal).").': false,
-    'Welding Helmet, Gloves & Equipment.").': false,
-    'Thread Chaser Set.").': false,
-    'Tap & Die Set").': false,
-    'Snap Ring Pliers").': false,
-    'Wheel End Hub Sockets").': false,
-  };
 
   bool? validUSDOTNumber;
 

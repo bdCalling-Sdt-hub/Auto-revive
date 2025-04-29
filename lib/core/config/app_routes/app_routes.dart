@@ -2,6 +2,7 @@ import 'package:autorevive/pregentaitions/screens/auth/change_password/change_pa
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/login/log_in_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_signup/mechanic_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_additional_information/mechanic_additional_information.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_experience_skill/mechanic_experience_skill.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
@@ -74,6 +75,7 @@ class AppRoutes {
   static const String mechanicBookingsDetailsScreen = "/MechanicBookingsDetailsScreen";
   static const String mechanicCompleteDetailsScreen = "/MechanicCompleteDetailsScreen";
   static const String mechanicMapScreen = "/MechanicMapScreen";
+  static const String mechanicSignupScreen = "/MechanicSignupScreen";
   static const String notificationsScreen = "/NotificationsScreen";
   static const String settingsScreen = "/SettingsScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
@@ -158,8 +160,15 @@ class AppRoutes {
     GoRoute(
       path: otpScreen,
       name: otpScreen,
-      pageBuilder: (context, state) =>
-          _customTransitionPage(OtpScreen(), state),
+      builder: (context, state) {
+        String screenType = state.extra as String;
+        return OtpScreen(screenType: screenType);
+      },
+
+      // =>
+      //     _customTransitionPage(OtpScreen(), state),
+
+
     ),
 
     ///<<<=============>>> RESET PASSWORD SCREEN <<<===============>>>
@@ -294,6 +303,13 @@ class AppRoutes {
           path: mechanicMapScreen,
           name: mechanicMapScreen,
           pageBuilder: (context, state) =>  _customTransitionPage(MechanicMapScreen(), state),
+        ),
+
+        ///<<<=============>>> MECHANIC SIGN UP SCREEN <<<===============>>>
+        GoRoute(
+          path: mechanicSignupScreen,
+          name: mechanicSignupScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(MechanicSignupScreen(), state),
         ),
 
 

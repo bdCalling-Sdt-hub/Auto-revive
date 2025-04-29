@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:autorevive/models/get_all_experience_model.dart';
 import 'package:autorevive/models/get_tools_model.dart';
 import 'package:get/get.dart';
 import '../../services/api_client.dart';
+import '../core/app_constants/app_constants.dart';
+import '../helpers/prefs_helper.dart';
 import '../services/api_constants.dart';
 
 class MechanicController extends GetxController{
@@ -38,6 +42,14 @@ class MechanicController extends GetxController{
       toolsLoading(false);
     }
   }
+
+
+
+
+
+
+
+
 
 
 }
