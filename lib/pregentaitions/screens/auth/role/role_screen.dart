@@ -58,7 +58,7 @@ class RoleScreen extends StatelessWidget {
                 title: "Mechanic or automotive shop",
                 onpress: (){
                   PrefsHelper.setString(AppConstants.role, "Mechanic or automotive shop");
-                  context.pushNamed(AppRoutes.mechanicPersonalInformationScreen);
+                  context.pushNamed(AppRoutes.mechanicSignupScreen);
                   // context.pushNamed(AppRoutes.mechanicBottomNavBar);
 
             }),
