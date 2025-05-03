@@ -149,6 +149,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                               phone: phoneCtrl.text,
                               password: passwordCtrl.text.trim(),
                               confirmPassword: confirmPasswordCtrl.text.trim(),
+                            context: context
                           );
                       }
                   },),
