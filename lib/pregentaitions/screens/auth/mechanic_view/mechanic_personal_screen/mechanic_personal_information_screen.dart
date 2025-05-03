@@ -216,7 +216,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
 
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
-        backgroundColor: Colors.white.withOpacity(.5),
+        backgroundColor: Colors.white,
         elevation: 3,
         context: context,
         builder: (builder) {
