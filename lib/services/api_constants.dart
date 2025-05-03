@@ -10,5 +10,8 @@ class ApiConstants{
   static const String getAllToolsEndPoint = "/tool";
   static const String getAllExperienceEndPoint = "/experience";
   static const String resendOtpEndPoint = "/auth/resend-otp";
+  static const String mechanicBasicInfoEndPoint = "/mechanic/basic-info";
+  static const String experienceCertificationsEndPoint = "/mechanic/experience-certifications";
+  static const String getProfileEndPoint = "/user/me";
 
 }

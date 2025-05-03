@@ -146,7 +146,7 @@ class ApiClient extends GetxService {
 
 
 //==========================================> Put Data <======================================
-  Future<Response> putData(String uri, dynamic body,
+  static Future<Response> putData(String uri, dynamic body,
       {Map<String, String>? headers}) async {
     bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
 
