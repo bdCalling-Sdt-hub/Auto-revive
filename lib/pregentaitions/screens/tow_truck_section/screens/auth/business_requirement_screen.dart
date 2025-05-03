@@ -27,7 +27,7 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
   final Map<String, bool> _services = {
     'Maintain active DOT registration & insurance coverage at all times.': false,
     'Adhere to all local, state, and federal regulations for towing operations.': false,
-    'Provide timely and professional service for Fix It LLC customers.': false,
+    'Provide timely and professional service': false,
     'Maintain clean and well-maintained tow trucks and equipment.': false,
     'Communicate accurate ETAs and service updates.': false,
     'Submit a live walk-around video showing that all trucks meet operational standards.': false,

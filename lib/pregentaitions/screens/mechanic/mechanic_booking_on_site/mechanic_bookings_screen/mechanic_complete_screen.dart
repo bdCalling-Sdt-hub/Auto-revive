@@ -71,14 +71,23 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 26.h),
-
-         Container(
+          SizedBox(height: 18.h),
+          Align(
+            alignment: Alignment.topLeft,
+            child: CustomText(
+              textAlign: TextAlign.start,
+              fontsize: 20.sp,
+              color: AppColors.textColor151515,
+              text: 'Problem(s) need to be solved',
+            ),
+          ),
+          SizedBox(height: 18.h),
+          Container(
           width: double.infinity,
           padding: EdgeInsets.only(left: 22.w),
           height: 317.h,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.bgColorWhite,
             borderRadius: BorderRadius.circular(8.r),
             border: Border.all(color: AppColors.primaryShade300, width: 0.4),
           ),
@@ -121,7 +130,6 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
             ),
           ),
         ),
-
           const Spacer(),
           CustomButton(title: 'Complete', onpress: () {}),
           SizedBox(height: 20.h),

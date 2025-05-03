@@ -4,14 +4,13 @@ import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_picker_dropdown.dart';
-import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../global/custom_assets/assets.gen.dart';
+import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
@@ -25,6 +24,8 @@ class MechanicPersonalInformationScreen extends StatefulWidget {
 }
 class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInformationScreen> {
 
+  MechanicController mechanicController = Get.put(MechanicController());
+
   final TextEditingController fullNameCtrl = TextEditingController();
   final TextEditingController platformCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
@@ -34,16 +35,16 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   bool hasDriversLicense = false;
   bool hasCDL = false;
 
-
   final List<String> platForm = [
     'In shop',
     'On Site',
+    'Both',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(

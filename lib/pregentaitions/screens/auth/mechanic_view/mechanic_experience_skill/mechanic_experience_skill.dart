@@ -5,7 +5,10 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
@@ -17,14 +20,14 @@ class MechanicExperienceSkillScreen extends StatefulWidget {
 }
 class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillScreen> {
 
+  MechanicController mechanicController = Get.put(MechanicController());
+
   final Map<String, bool> certificationCheckbox = {
     'ASE': false,
     'OEM': false,
     'DOT': false,
     'Other:': false,
   };
-
-
   final List<String> workSpaceOptions = ['In Shop', 'On site', 'Both'];
 
   // Dummy questions
@@ -53,6 +56,14 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
     }
     super.dispose();
   }
+
+
+  @override
+  void initState() {
+    mechanicController.getAllExperience();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,82 +108,175 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
               ),
               SizedBox(height: 8.h),
               /// ==============================>  Skill rows  =================================>
-              Column(
-                children:
-                List.generate(skills.length, (index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        /// ===================================> Skill label ==============================>
-                        SizedBox(
-                          width: 100.w,
-                          child: CustomText(
-                            text: skills[index],
-                            fontsize: 14.sp,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-
-                        /// ===============================>  Work space dropdown ===============================>
-                        Container(
-                          width: 100.w,
-                          height: 36.h,
-                          padding: EdgeInsets.symmetric(horizontal: 6.w),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.borderColor),
-                            borderRadius: BorderRadius.circular(6.r),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: selectedWorkSpaces[index],
-                              isExpanded: true,
-                              icon: Icon(Icons.keyboard_arrow_down_outlined),
-                              items: workSpaceOptions.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(item, style: TextStyle(fontSize: 12.sp)),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedWorkSpaces[index] = value!;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-
-                        /// =============================> Experience input ==================================>
-                        Container(
-                          width: 80.w,
-                          height: 36.h,
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.borderColor),
-                            borderRadius: BorderRadius.circular(6.r),
-                          ),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            controller: experienceControllers[index]..text = experienceControllers[index].text.isEmpty ? "" : experienceControllers[index].text,
-                            style: TextStyle(fontSize: 12.sp),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'e.g. 4 Year',
-                              hintStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                              isCollapsed: true,
-                              contentPadding: EdgeInsets.only(top: 8.h),
-                            ),
-                          ),
-                        ),
-
-                      ],
-                    ),
+              Obx(() {
+                if (mechanicController.experience.isEmpty) {
+                  return Center(
+                    child: CustomText(text: 'No data available',fontsize: 16.sp,color: AppColors.textColor151515)
                   );
-                }),
-              ),
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: mechanicController.experience.length,
+                  itemBuilder: (context, index) {
+                    var skillName = mechanicController.experience[index];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          /// ===================================> Skill label ==============================>
+                          SizedBox(
+                            width: 100.w,
+                            child: CustomText(
+                              text: "${skillName.name}",
+                              fontsize: 14.sp,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+
+                          /// ===============================> Work space dropdown ===============================>
+                          Container(
+                            width: 100.w,
+                            height: 36.h,
+                            padding: EdgeInsets.symmetric(horizontal: 6.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.borderColor),
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: selectedWorkSpaces.length > index
+                                    ? selectedWorkSpaces[index]
+                                    : workSpaceOptions[0],
+                                isExpanded: true,
+                                icon: Icon(Icons.keyboard_arrow_down_outlined),
+                                items: workSpaceOptions.map((item) {
+                                  return DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(item, style: TextStyle(fontSize: 12.sp)),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (selectedWorkSpaces.length > index) {
+                                      selectedWorkSpaces[index] = value!;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+                          /// =============================> Experience input ==================================>
+                          Container(
+                            width: 80.w,
+                            height: 36.h,
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.borderColor),
+                              borderRadius: BorderRadius.circular(6.r),
+                            ),
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              controller: experienceControllers.length > index
+                                  ? experienceControllers[index]
+                                  : TextEditingController(),
+                              style: TextStyle(fontSize: 12.sp),
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'e.g. 4 Year',
+                                hintStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                                isCollapsed: true,
+                                contentPadding: EdgeInsets.only(top: 8.h),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+
+              }),
+
+              // Column(
+              //   children:
+              //   List.generate(skills.length, (index) {
+              //     return Padding(
+              //       padding: EdgeInsets.symmetric(vertical: 8.h),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           /// ===================================> Skill label ==============================>
+              //           SizedBox(
+              //             width: 100.w,
+              //             child: CustomText(
+              //               text: skills[index],
+              //               fontsize: 14.sp,
+              //               textAlign: TextAlign.start,
+              //             ),
+              //           ),
+              //
+              //           /// ===============================>  Work space dropdown ===============================>
+              //           Container(
+              //             width: 100.w,
+              //             height: 36.h,
+              //             padding: EdgeInsets.symmetric(horizontal: 6.w),
+              //             decoration: BoxDecoration(
+              //               border: Border.all(color: AppColors.borderColor),
+              //               borderRadius: BorderRadius.circular(6.r),
+              //             ),
+              //             child: DropdownButtonHideUnderline(
+              //               child: DropdownButton<String>(
+              //                 value: selectedWorkSpaces[index],
+              //                 isExpanded: true,
+              //                 icon: Icon(Icons.keyboard_arrow_down_outlined),
+              //                 items: workSpaceOptions.map((item) {
+              //                   return DropdownMenuItem<String>(
+              //                     value: item,
+              //                     child: Text(item, style: TextStyle(fontSize: 12.sp)),
+              //                   );
+              //                 }).toList(),
+              //                 onChanged: (value) {
+              //                   setState(() {
+              //                     selectedWorkSpaces[index] = value!;
+              //                   });
+              //                 },
+              //               ),
+              //             ),
+              //           ),
+              //
+              //           /// =============================> Experience input ==================================>
+              //           Container(
+              //             width: 80.w,
+              //             height: 36.h,
+              //             padding: EdgeInsets.symmetric(horizontal: 8.w),
+              //             decoration: BoxDecoration(
+              //               border: Border.all(color: AppColors.borderColor),
+              //               borderRadius: BorderRadius.circular(6.r),
+              //             ),
+              //             child: TextField(
+              //               keyboardType: TextInputType.number,
+              //               controller: experienceControllers[index]..text = experienceControllers[index].text.isEmpty ? "" : experienceControllers[index].text,
+              //               style: TextStyle(fontSize: 12.sp),
+              //               textAlignVertical: TextAlignVertical.center,
+              //               decoration: InputDecoration(
+              //                 border: InputBorder.none,
+              //                 hintText: 'e.g. 4 Year',
+              //                 hintStyle: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              //                 isCollapsed: true,
+              //                 contentPadding: EdgeInsets.only(top: 8.h),
+              //               ),
+              //             ),
+              //           ),
+              //
+              //         ],
+              //       ),
+              //     );
+              //   }),
+              // ),
               SizedBox(height: 17.h),
               /// =================================> Certification ==============================>
               CustomText(text: 'Certification',fontsize: 16.sp),
@@ -193,11 +297,8 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                   });
                 },
               ),
-
-
-
-              SizedBox(height: 50.h),
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+              SizedBox(height: 50.h),
               CustomButton(
                 title: "Save and Next",
                 onpress: () {

@@ -35,6 +35,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       appBar: AppBar(
+          forceMaterialTransparency: true,
           centerTitle: false,
           title: CustomText(
             text: "Basic Info...",

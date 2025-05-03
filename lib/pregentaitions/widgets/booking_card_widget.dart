@@ -44,7 +44,7 @@ class BookingCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 32.h),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: CustomContainer(
         boxShadow: [
           BoxShadow(
