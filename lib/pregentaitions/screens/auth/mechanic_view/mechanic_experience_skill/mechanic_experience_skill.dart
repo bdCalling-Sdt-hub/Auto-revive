@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../widgets/certification_custom_checkbox_list.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
@@ -30,19 +31,6 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
   };
   final List<String> workSpaceOptions = ['In Shop', 'On site', 'Both'];
 
-  // Dummy questions
-  final List<String> skills = [
-    'Diesel Engine Repair',
-    'Gasoline Engine Repair',
-    'Semi Truck Repair',
-    'Trailer Repair',
-    'RV Repair',
-    'Hydraulic Systems',
-    'Electrical Diagnostics',
-    'Brake Systems',
-    'Welding/Fabrication',
-    'Computer Diagnostics',
-  ];
 
   bool? validUSDOTNumber;
   // State
@@ -281,30 +269,66 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
               /// =================================> Certification ==============================>
               CustomText(text: 'Certification',fontsize: 16.sp),
               SizedBox(height: 14.sp),
-              CustomCheckboxList(
+              ExperienceCustomCheckboxList(
                 items: certificationCheckbox,
               ),
-              CustomText(text: 'Are you comfortable working on-site (roadside, fleet yards, job sites)?',
-                textAlign: TextAlign.start,
-                maxline: 2,
-                fontsize: 16.sp,
-              ),
-              CustomChecked(
-                selected: validUSDOTNumber,
-                onChanged: (val) {
-                  setState(() {
-                    validUSDOTNumber = val;
-                  });
-                },
-              ),
+              // CustomText(text: 'Are you comfortable working on-site (roadside, fleet yards, job sites)?',
+              //   textAlign: TextAlign.start,
+              //   maxline: 2,
+              //   fontsize: 16.sp,
+              // ),
+              // CustomChecked(
+              //   selected: validUSDOTNumber,
+              //   onChanged: (val) {
+              //     setState(() {
+              //       validUSDOTNumber = val;
+              //     });
+              //   },
+              // ),
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               SizedBox(height: 50.h),
-              CustomButton(
-                title: "Save and Next",
-                onpress: () {
-                  // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
-                },
+              Obx(()=>
+                 CustomButton(
+                   loading: mechanicController.experienceCertificationsLoading.value,
+                  title: "Save and Next",
+                     onpress: () async {
+                       // Build experiences data
+                       final experienceList = <Map<String, dynamic>>[];
+                       for (int i = 0; i < mechanicController.experience.length; i++) {
+                         final experienceId = mechanicController.experience[i].id;
+                         final workspace = selectedWorkSpaces.length > i ? selectedWorkSpaces[i].toLowerCase() : 'in shop';
+                         final timeText = experienceControllers[i].text.trim();
+                         final time = int.tryParse(timeText) ?? 0;
+
+                         if (time > 0) {
+                           experienceList.add({
+                             "experienceId": experienceId,
+                             "platform": workspace,
+                             "time": time,
+                           });
+                         }
+                       }
+
+                       // Build certifications data
+                       final selectedCertifications = certificationCheckbox.entries
+                           .where((entry) => entry.value)
+                           .map((entry) => entry.key)
+                           .toList();
+
+                       // Call API
+                       final success = await mechanicController.experienceCertifications(
+                         experiences: experienceList,
+                         certifications: selectedCertifications,
+                         context: context,
+                       );
+
+                       // Navigate only if success
+                       if (success) {
+                         context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
+                       }
+                     }
+
+                 ),
               ),
               SizedBox(height: 20.h),
             ],

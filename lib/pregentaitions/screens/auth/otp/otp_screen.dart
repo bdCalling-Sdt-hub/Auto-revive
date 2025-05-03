@@ -64,22 +64,16 @@ class OtpScreen extends StatelessWidget {
               () => CustomButton(
                   loading: authController.verfyLoading.value,
                   width: double.infinity,
-                  title: screenType == "Sign Up" ||
-                          screenType == "user" ||
-                          screenType == "mechanic"
-                      ? "Verify"
-                      : "Change Password",
+                  title: "Verify",
                   onpress: () {
-
                     print("--------------------------- ${otpTEController.text}");
 
                     // if(screenType == "Sign Up"){
                     //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
                     // }
-                    if (screenType == "mechanic") {
-                      authController.verfyEmail(otpTEController.text,
-                          screenType: "mechanic", context: context);
-                    }
+                    // if (screenType == "mechanic") {
+                      authController.verfyEmail(otpTEController.text, screenType: "mechanic", context: context);
+                    // }
 
                     // else if(screenType == "track"){
                     //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
