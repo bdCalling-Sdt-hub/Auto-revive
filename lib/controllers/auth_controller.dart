@@ -64,6 +64,7 @@ class AuthController extends GetxController {
   RxBool mechanicSignUpLoading = false.obs;
 
   ///========================================== Mechanic Sing up ==================================<>
+
   mechanicHandleSignUp({String? name, email, password,confirmPassword,required BuildContext context}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     mechanicSignUpLoading(true);
