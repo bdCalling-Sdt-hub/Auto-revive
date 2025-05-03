@@ -1,6 +1,6 @@
 class ApiConstants{
-  static const String baseUrl = "http://192.168.40.192:8080/api/v1";
-  static const String imageBaseUrl = "http://192.168.40.192:8080";
+  static const String baseUrl = "https://auto-revive-mamun.sarv.live/api/v1";
+  static const String imageBaseUrl = "https://auto-revive-mamun.sarv.live";
 
 
 
@@ -9,5 +9,6 @@ class ApiConstants{
   static const String uploadEndPoint = "/upload";
   static const String getAllToolsEndPoint = "/tool";
   static const String getAllExperienceEndPoint = "/experience";
+  static const String resendOtpEndPoint = "/auth/resend-otp";
 
 }

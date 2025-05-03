@@ -7,18 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../controllers/auth_controller.dart';
-import '../../../../core/config/app_routes/app_routes.dart';
 
 class OtpScreen extends StatelessWidget {
   final String screenType;
+
   OtpScreen({super.key, required this.screenType});
 
-  final TextEditingController otpTEController = TextEditingController();
-  AuthController authController = Get.find<AuthController>();
+   TextEditingController otpTEController = TextEditingController();
+ final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,60 +30,64 @@ class OtpScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           children: [
-
             SizedBox(height: 16.h),
 
             ///<<<=============>>> LOGO <<<===============>>>
 
             Assets.icons.logoSVG.svg(),
 
-
             SizedBox(height: 38.h),
 
-
             ///<<<=============>>> OTP FILED <<<===============>>>
-
 
             CustomPinCodeTextField(textEditingController: otpTEController),
 
             SizedBox(height: 10.h),
 
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: "Didn't got the code?"),
-
-                CustomText(text: "Resend", color: Colors.red)
+                GestureDetector(
+                    onTap: () {
+                      authController.reSendOtp();
+                    },
+                    child: CustomText(text: "Resend", color: Colors.red))
               ],
             ),
 
-
             SizedBox(height: 70.h),
-
 
             ///<<<=============>>> VERIFY <<<===============>>>
 
-            Obx(() =>
-                CustomButton(
-                    loading: authController.verfyLoading.value,
-                    width: double.infinity,
-                    title: screenType == "Sign Up" || screenType == "user" || screenType == "mechanic" ? "Verify" : "Change Password", onpress: (){
-                  // if(screenType == "Sign Up"){
-                  //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
-                  // }
-                   if(screenType == "mechanic"){
-                    authController.verfyEmail(otpTEController.text, screenType: "mechanic", context: context);
-                  }
+            Obx(
+              () => CustomButton(
+                  loading: authController.verfyLoading.value,
+                  width: double.infinity,
+                  title: screenType == "Sign Up" ||
+                          screenType == "user" ||
+                          screenType == "mechanic"
+                      ? "Verify"
+                      : "Change Password",
+                  onpress: () {
 
-                  // else if(screenType == "track"){
-                  //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
-                  // } else{
-                  //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
-                  // }
-                }),),
+                    print("--------------------------- ${otpTEController.text}");
 
+                    // if(screenType == "Sign Up"){
+                    //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+                    // }
+                    if (screenType == "mechanic") {
+                      authController.verfyEmail(otpTEController.text,
+                          screenType: "mechanic", context: context);
+                    }
 
+                    // else if(screenType == "track"){
+                    //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
+                    // } else{
+                    //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
+                    // }
+                  }),
+            ),
           ],
         ),
       ),
@@ -92,19 +95,14 @@ class OtpScreen extends StatelessWidget {
   }
 }
 
-
-
-
 class CustomPinCodeTextField extends StatelessWidget {
   final TextEditingController? textEditingController;
 
-
-  const CustomPinCodeTextField({super.key,this.textEditingController});
-
+  const CustomPinCodeTextField({super.key, this.textEditingController});
 
   @override
   Widget build(BuildContext context) {
-    return  PinCodeTextField(
+    return PinCodeTextField(
       backgroundColor: Colors.transparent,
       cursorColor: AppColors.primaryColor,
       controller: textEditingController,
@@ -126,6 +124,9 @@ class CustomPinCodeTextField extends StatelessWidget {
       obscureText: false,
       keyboardType: TextInputType.number,
       onChanged: (value) {},
+      onCompleted: (value) {
+        textEditingController?.text = value;
+      },
     );
   }
 }

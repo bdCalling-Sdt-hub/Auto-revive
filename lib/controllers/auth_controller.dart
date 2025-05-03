@@ -24,7 +24,7 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
 
   ///========================================== Sing up ==================================<>
-  handleSignUp({String? name, email, phone, password,confirmPassword,filePath}) async {
+  handleSignUp({String? name, email, phone, password,confirmPassword,filePath,required BuildContext context}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     signUpLoading(true);
     var body = {
@@ -41,11 +41,11 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
-      if(role == "user"){
-        // context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
-      }else{
-        // context.pushNamed(AppRoutes.otpScreen, extra: "track");
-      }
+      // if(role == "user"){
+        context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
+      // }else{
+      //   // context.pushNamed(AppRoutes.otpScreen, extra: "track");
+      // }
 
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       signUpLoading(false);
@@ -115,7 +115,7 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
-      await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
+      // await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
       await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
       await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
       if (screenType == 'Sign Up') {
@@ -142,8 +142,9 @@ class AuthController extends GetxController {
       verfyLoading(false);
       // ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     }
-    ToastMessageHelper.showToastMessage("${response.body["message"]}");
     verfyLoading(false);
+    ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
 
   }
 
@@ -267,29 +268,29 @@ class AuthController extends GetxController {
   // }
   //
   //
-  // ///===============Resend================<>
-  //
-  // RxBool resendLoading = false.obs;
-  //
-  // reSendOtp() async {
-  //   resendLoading(true);
-  //   var body = {};
-  //
-  //   var response = await ApiClient.postData(
-  //       ApiConstants.resendOtpEndPoint, jsonEncode(body));
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     ToastMessageHelper.showToastMessage(
-  //         'You have got an one time code to your email');
-  //     print("======>>> successful");
-  //     resendLoading(false);
-  //   }else{
-  //     ToastMessageHelper.showToastMessage("${response.body["message"]}");
-  //     resendLoading(false);
-  //   }
-  // }
-  //
-  //
+  ///===============Resend================<>
+
+  RxBool resendLoading = false.obs;
+
+  reSendOtp() async {
+    resendLoading(true);
+
+
+    var response = await ApiClient.getData(
+        ApiConstants.resendOtpEndPoint);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage(
+          'You have got an one time code to your email');
+      print("======>>> successful");
+      resendLoading(false);
+    }else{
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      resendLoading(false);
+    }
+  }
+
+
   // ///===============Change Password================<>
   //
   // RxBool changePasswordLoading = false.obs;
