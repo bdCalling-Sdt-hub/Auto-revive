@@ -130,8 +130,106 @@ class MechanicController extends GetxController{
     }
   }
 
+  /// ================================> Tools Equipment ==============================>
 
 
+  var mechanicToolsLoading = false.obs;
+
+  Future<bool> mechanicTools({
+    required List<String> tools,
+    required List<String> toolsCustom,
+    required BuildContext context,
+  }) async {
+    var body = {
+      'tools': tools,
+      'toolsCustom': toolsCustom,
+    };
+    mechanicToolsLoading(true);
+    var response = await ApiClient.putData(
+      ApiConstants.mechanicToolsEndPoint,
+      body,
+    );
+    mechanicToolsLoading(false);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      return true;
+    } else {
+      ToastMessageHelper.showToastMessage("Failed to tools data.");
+      return false;
+    }
+  }
+
+
+  /// ================================> Employment History ==============================>
+
+  var employmentHistoriesLoading = false.obs;
+
+  employmentHistories({
+    String? companyName,
+    String? jobName,
+    String? supervisorsName,
+    String? supervisorsContact,
+    String? durationFrom,
+    String? durationTo,
+    String? platform,
+    String? reason,
+    required BuildContext context,
+  }) async {
+    var body = {
+      'employmentHistories': [
+        {
+          'companyName': companyName,
+          'jobName': jobName,
+          'supervisorsName': supervisorsName,
+          'supervisorsContact': supervisorsContact,
+          'durationFrom': durationFrom,
+          'durationTo': durationTo,
+          'platform': platform,
+          'reason': reason,
+        }
+      ]
+    };
+    employmentHistoriesLoading(true);
+    var response = await ApiClient.putData(
+        ApiConstants.mechanicEmploymentHistoriesEndPoint,
+        body);
+    employmentHistoriesLoading(false);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      return true;
+    } else {
+      ToastMessageHelper.showToastMessage("Failed employment histories data.");
+      return false;
+    }
+  }
+
+
+
+  /// ================================> Reference ==============================>
+
+  var referenceLoading = false.obs;
+
+  Future<bool> referencesList({
+    required List<Map<String, String>> references,
+    required BuildContext context,
+  }) async {
+    var body = {'references': references};
+
+    referenceLoading(true);
+    var response = await ApiClient.putData(
+      ApiConstants.referenceEndPoint,
+      body,
+    );
+    referenceLoading(false);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      return true;
+    } else {
+      ToastMessageHelper.showToastMessage("Failed to submit references.");
+      return false;
+    }
+  }
 
 
 

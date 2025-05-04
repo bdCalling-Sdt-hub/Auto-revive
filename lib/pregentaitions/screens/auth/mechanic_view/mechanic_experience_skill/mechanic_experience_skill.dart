@@ -56,7 +56,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(

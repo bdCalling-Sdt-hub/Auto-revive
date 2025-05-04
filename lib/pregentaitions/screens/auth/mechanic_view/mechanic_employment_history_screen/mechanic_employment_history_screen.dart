@@ -5,9 +5,14 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../widgets/certification_custom_checkbox_list.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
+import 'package:intl/intl.dart';
 
 
 class MechanicEmploymentHistoryScreen extends StatefulWidget {
@@ -25,13 +30,16 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
   final TextEditingController supervisorsNameCtrl = TextEditingController();
   final TextEditingController supervisorsContactCtrl = TextEditingController();
 
+  MechanicController mechanicController = Get.put(MechanicController());
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+
 
   TextEditingController dateCtrl = TextEditingController();
 
   final Map<String, bool> workSettingCheckbox = {
-    'In-Shop': false,
-    'On-Site': false,
-    'Both': false,
+    'in shop': false,
+    'on site': false,
+    'both': false,
   };
   final TextEditingController fromDateCtrl = TextEditingController();
 
@@ -51,165 +59,190 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.h),
-              ///<<<=============>>> LinearIndicator <<<===============>>>
-              const CustomLinearIndicator(
-                progressValue: 0.4,
-              ),
-              SizedBox(height: 20.h),
-              CustomText(text: "Most recent employers",
-                  fontsize: 20.sp,
-                  color: AppColors.textColor151515),
-              SizedBox(height: 8.h),
-              ///<<<=============>>> Company Name Field <<<===============>>>
-              CustomText(
-                  text: "Company Name:",color: AppColors.textColor151515,fontsize: 14.sp),
-              SizedBox(height: 8.h),
-              CustomTextField(controller: companyNameCtrl, hintText: "Company name"),
+          child: Form(
+            key: fromKey,
+            child:
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8.h),
+                  ///<<<=============>>> LinearIndicator <<<===============>>>
+                  const CustomLinearIndicator(
+                    progressValue: 0.4,
+                  ),
+                  SizedBox(height: 20.h),
+                  CustomText(text: "Most recent employers",
+                      fontsize: 20.sp,
+                      color: AppColors.textColor151515),
+                  SizedBox(height: 8.h),
+                  ///<<<=============>>> Company Name Field <<<===============>>>
+                  CustomText(
+                      text: "Company Name:",color: AppColors.textColor151515,fontsize: 14.sp),
+                  SizedBox(height: 8.h),
+                  CustomTextField(controller: companyNameCtrl, hintText: "Company name"),
 
-              ///<<<=============>>> Job Title Field <<<===============>>>
-              CustomText(
-                  text: "Job Title:",color: AppColors.textColor151515,fontsize: 14.sp),
-              SizedBox(height: 8.h),
-              CustomTextField(
-                controller: jobTitleCtrl,
-                hintText: "Job Title",
-              ),
-              ///<<<=============>>> Supervisors Name Field <<<===============>>>
-              CustomText(
-                  text: "Supervisors Name:",color: AppColors.textColor151515,fontsize: 14.sp),
-              SizedBox(height: 8.h),
-              CustomTextField(
-                  controller: supervisorsNameCtrl,
-                  hintText: "Supervisors Name"),
-              ///<<<=============>>> Supervisors Contact <<<===============>>>
-              CustomText(
-                  text: "Supervisors Contact:",color: AppColors.textColor151515,fontsize: 14.sp),
-              SizedBox(height: 8.h),
-              CustomTextField(
-                  controller: supervisorsContactCtrl,
-                  hintText: "Supervisors Contact"),
-              ///<<<=============>>> Employment Duration <<<===============>>>
-              CustomText(text: 'Employment Duration:',color: AppColors.textColor151515,fontsize: 14.sp),
-              Padding(
-                padding:  EdgeInsets.symmetric(vertical: 18.h,horizontal: 25.w),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (pickedDate != null) {
-                                final formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                                fromDateCtrl.text = formattedDate;
-                              }
-                            },
-                            child: AbsorbPointer(
-                              child: CustomTextField(
-                                readOnly: true,
-                                controller: fromDateCtrl,
-                                hintText: "From Date",
-                                suffixIcon: const Icon(Icons.calendar_today),
+                  ///<<<=============>>> Job Title Field <<<===============>>>
+                  CustomText(
+                      text: "Job Title:",color: AppColors.textColor151515,fontsize: 14.sp),
+                  SizedBox(height: 8.h),
+                  CustomTextField(
+                    controller: jobTitleCtrl,
+                    hintText: "Job Title",
+                  ),
+                  ///<<<=============>>> Supervisors Name Field <<<===============>>>
+                  CustomText(
+                      text: "Supervisors Name:",color: AppColors.textColor151515,fontsize: 14.sp),
+                  SizedBox(height: 8.h),
+                  CustomTextField(
+                      controller: supervisorsNameCtrl,
+                      hintText: "Supervisors Name"),
+                  ///<<<=============>>> Supervisors Contact <<<===============>>>
+                  CustomText(
+                      text: "Supervisors Contact:",color: AppColors.textColor151515,fontsize: 14.sp),
+                  SizedBox(height: 8.h),
+                  CustomTextField(
+                      controller: supervisorsContactCtrl,
+                      hintText: "Supervisors Contact"),
+                  ///<<<=============>>> Employment Duration <<<===============>>>
+                  CustomText(text: 'Employment Duration:',color: AppColors.textColor151515,fontsize: 14.sp),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 18.h,horizontal: 25.w),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (pickedDate != null) {
+                                    final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    fromDateCtrl.text = formattedDate; // or dateCtrl.text = formattedDate
+                                  }
+                                },
+                                child: AbsorbPointer(
+                                  child: CustomTextField(
+                                    readOnly: true,
+                                    controller: fromDateCtrl,
+                                    hintText: "From Date",
+                                    suffixIcon: const Icon(Icons.calendar_today),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
 
-                    SizedBox(width: 16.h),
-                    // CustomText(text: 'To',fontsize: 14.sp,fontWeight: FontWeight.bold,),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (pickedDate != null) {
-                                final formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                                dateCtrl.text = formattedDate;
-                              }
-                            },
-                            child: AbsorbPointer(
-                              child: CustomTextField(
-                                readOnly: true,
-                                controller: dateCtrl,
-                                hintText: "Select Date",
-                                suffixIcon: const Icon(Icons.calendar_today),
+                        SizedBox(width: 16.h),
+                        // CustomText(text: 'To',fontsize: 14.sp,fontWeight: FontWeight.bold,),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100),
+                                  );
+                                  if (pickedDate != null) {
+                                    final formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+                                    dateCtrl.text = formattedDate;
+                                  }
+                                },
+                                child: AbsorbPointer(
+                                  child: CustomTextField(
+                                    readOnly: true,
+                                    controller: dateCtrl,
+                                    hintText: "Select Date",
+                                    suffixIcon: const Icon(Icons.calendar_today),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ///<<<=============>>> Work Setting <<<===============>>>
-              CustomText(text: 'Work Setting:',color: AppColors.textColor151515,fontsize: 14.sp),
-              Padding(
-                padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
-                child: CustomCheckboxList(
-                  items: workSettingCheckbox,
-                ),
-              ),
-              ///<<<=============>>> Reason for leaving <<<===============>>>
-              CustomText(text: 'Reason for leaving:',color: AppColors.textColor151515,fontsize: 14.sp ),
-              SizedBox(height: 10.h),
-              Container(
-                width: 342,
-                height: 107,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.textColor151515, width: 0.8),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.h),
-                  child: TextField(
-                    controller: reasonLeavingCtrl,
-                    maxLines: 5,
-                    style: TextStyle(fontSize: 10.sp),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Write leaving reason...',
-                      hintStyle: TextStyle(fontSize: 10.sp, color:AppColors.textColor151515),
-                      isCollapsed: true,
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                  ///<<<=============>>> Work Setting <<<===============>>>
+                  CustomText(text: 'Work Setting:',color: AppColors.textColor151515,fontsize: 14.sp),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+                    child: ExperienceCustomCheckboxList(
+                      items: workSettingCheckbox,
+                    ),
+                  ),
+                  ///<<<=============>>> Reason for leaving <<<===============>>>
+                  CustomText(text: 'Reason for leaving:',color: AppColors.textColor151515,fontsize: 14.sp ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    width: 342,
+                    height: 107,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.textColor151515, width: 0.8),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.h),
+                      child: TextField(
+                        controller: reasonLeavingCtrl,
+                        maxLines: 5,
+                        style: TextStyle(fontSize: 10.sp),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Write leaving reason...',
+                          hintStyle: TextStyle(fontSize: 10.sp, color:AppColors.textColor151515),
+                          isCollapsed: true,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 77.h),
+
+                  /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+                  Obx(()=>
+                  CustomButton(
+                    loading: mechanicController.employmentHistoriesLoading.value,
+                      title: "Save and Next",
+                      onpress: () {
+                        if (fromKey.currentState!.validate()) {
+                          String? selectedPlatform;
+                          workSettingCheckbox.forEach((key, value) {
+                            if (value) selectedPlatform = key;
+                          });
+                          mechanicController.employmentHistories(
+                            companyName: companyNameCtrl.text,
+                            jobName: jobTitleCtrl.text,
+                            supervisorsName: supervisorsNameCtrl.text,
+                            supervisorsContact: supervisorsContactCtrl.text,
+                            durationFrom: fromDateCtrl.text,
+                            durationTo: dateCtrl.text,
+                            platform: selectedPlatform,
+                            reason: reasonLeavingCtrl.text,
+                            context: context,
+                          );
+                        }
+
+                        context.pushNamed(AppRoutes.mechanicReferenceScreen);
+                      }
+
+                  ),),
+                  SizedBox(height: 20.h),
+                ],
               ),
 
-              SizedBox(height: 77.h),
-
-              /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              CustomButton(
-                title: "Save and Next",
-                onpress: () {
-                  // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.mechanicReferenceScreen);
-                },
-              ),
-              SizedBox(height: 20.h),
-            ],
           ),
         ),
       ),

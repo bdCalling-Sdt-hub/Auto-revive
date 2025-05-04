@@ -18,8 +18,13 @@ class GetAllToolsModel {
 class ToolModel {
   final String? id;
   final String? name;
+  bool isSelected; // <-- added this field
 
-  ToolModel({this.id, this.name});
+  ToolModel({
+    this.id,
+    this.name,
+    this.isSelected = false, // <-- initialize with default value
+  });
 
   factory ToolModel.fromJson(Map<String, dynamic> json) {
     return ToolModel(
