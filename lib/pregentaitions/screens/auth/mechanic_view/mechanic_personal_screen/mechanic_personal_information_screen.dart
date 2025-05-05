@@ -11,6 +11,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../../controllers/upload_controller.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
@@ -24,6 +26,8 @@ class MechanicPersonalInformationScreen extends StatefulWidget {
 }
 class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInformationScreen> {
 
+
+  UploadController uploadController = Get.put(UploadController());
   MechanicController mechanicController = Get.put(MechanicController());
 
   final TextEditingController fullNameCtrl = TextEditingController();
@@ -36,10 +40,22 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   bool hasCDL = false;
 
   final List<String> platForm = [
-    'In shop',
-    'On Site',
-    'Both',
+    'in shop',
+    'on site',
+    'both',
   ];
+
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    mechanicController.getProfile().then((_) {
+      final profile = mechanicController.profile.value;
+      fullNameCtrl.text = profile.name ?? '';
+      emailCtrl.text = profile.email ?? '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,153 +73,173 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.h),
-              ///<<<=============>>> LinearIndicator <<<===============>>>
-              const CustomLinearIndicator(
-                progressValue: 0.03,
-                label: 0,
-              ),
-              SizedBox(height: 30.h),
-              /// <<<=============>>> Image and camera upload section <<<=============>>>
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    showImagePickerOption(context);
-                  },
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Profile image with border
-                      Container(
-                        width: 104.w,
-                        height: 104.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.primaryColor,
-                            width: 3,
-                          ),
-                        ),
-                        child: selectedImage != null
-                            ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
-                            : CustomNetworkImage(
-                          boxShape: BoxShape.circle,
-                          imageUrl: "https://randomuser.me/api/portraits/men/10.jpg",
-                          height: 128.h,
-                          width: 128.w,
-                        ),
-                      ),
-                      /// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
-                      Positioned(
-                        top: 67.h,
-                        left: 42.w,
-                        child: Container(
-                          width: 26.58.w,
-                          height: 26.58.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.2),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 10,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            color:AppColors.fontColorFFFFFF,
-                            size: 16.sp,
-                          ),
-                        ),
-                      ),
-                    ],
+          child: Form(
+            key: fromKey,
+            child: Obx(()=>
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8.h),
+                  ///<<<=============>>> LinearIndicator <<<===============>>>
+                  const CustomLinearIndicator(
+                    progressValue: 0.03,
+                    label: 0,
                   ),
-                ),
+                  SizedBox(height: 30.h),
+                  /// <<<=============>>> Image and camera upload section <<<=============>>>
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        showImagePickerOption(context);
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Profile image with border
+                          Container(
+                            width: 104.w,
+                            height: 104.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 3,
+                              ),
+                            ),
+                            child: selectedImage != null
+                                ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
+                                : CustomNetworkImage(
+                              boxShape: BoxShape.circle,
+                              imageUrl: uploadedUrl ?? "https://randomuser.me/api/portraits/men/10.jpg",
+                              height: 128.h,
+                              width: 128.w,
+                            ),
+                          ),
+                          /// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
+                          Positioned(
+                            top: 67.h,
+                            left: 42.w,
+                            child: Container(
+                              width: 26.58.w,
+                              height: 26.58.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(0.2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 10,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color:AppColors.fontColorFFFFFF,
+                                size: 16.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+
+                  ///<<<=============>>> Name Filed <<<===============>>>
+                  CustomTextField(
+                    readOnly: true,
+                      controller: fullNameCtrl,
+                      labelText: "Full Name"),
+
+                  ///<<<=============>>> Platform Filed <<<===============>>>
+
+                  CustomTextField(
+                    labelText: "Platform",
+                    readOnly: true,
+                    controller: platformCtrl,
+                    suffixIcon: CustomPopupMenu(
+                        items: platForm,
+                        onSelected: (p0) {
+                          platformCtrl.text = p0;
+                          setState(() {});
+                        }),
+                  ),
+
+
+
+                  ///<<<=============>>> Email Filed <<<===============>>>
+
+                  CustomTextField(
+                    readOnly: true,
+                      controller: emailCtrl,
+                      hintText: "${mechanicController.profile.value.email}",
+                      labelText: "Email",
+                      // prefixIcon: Assets.icons.mail.svg(),
+                      isEmail: true),
+
+
+                  ///<<<=============>>> Phone Filed <<<===============>>>
+                  CustomPhoneNumberPicker(
+                    controller: phoneNoCtrl,
+                    lebelText: 'Phone No.',),
+                  SizedBox(height: 11.h),
+
+                  ///<<<=============>>> Address Filed <<<===============>>>
+
+                  CustomTextField(
+                    controller: currentAddressCtrl,
+                    hintText: "Enter Current Address",
+                    labelText: "Current Address",
+                  ),
+                  SizedBox(height: 19.h),
+                  ///<<<=============>>> Checked <<<===============>>>
+                  CustomText(text: 'Do you have a valid driver’s license?'),
+                  CustomChecked(
+                    selected: hasDriversLicense,
+                    onChanged: (val) {
+                      setState(() {
+                        hasDriversLicense  = val!;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 11.h),
+                  CustomText(text: 'Do you have a CDL?'),
+                  CustomChecked(
+                    selected: hasCDL,
+                    onChanged: (val) {
+                      setState(() {
+                        hasCDL = val!;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 31.h),
+
+                  /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+                  Obx(()=>
+                     CustomButton(
+                       loading: mechanicController.basicInfoLoading.value,
+                      title: "Save and Next",
+                      onpress: () {
+                        if(fromKey.currentState!.validate()){
+                          mechanicController.mechanicBasicInfo(
+                              profileImage: uploadedUrl,
+                              platform: platformCtrl.text.trim().toLowerCase(),
+                              phone:phoneNoCtrl.text,
+                              address: currentAddressCtrl.text,
+                              haveLicense: hasDriversLicense,
+                              haveCdl: hasCDL,
+                              context: context
+                          );
+                        }
+                        context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
+
+                      },
+                    ),),
+                  SizedBox(height: 20.h),
+                ],
               ),
-              SizedBox(height: 8.h),
-              ///<<<=============>>> Name Filed <<<===============>>>
-
-
-              CustomTextField(controller: fullNameCtrl, hintText: "Enter your name", labelText: "Full Name"),
-
-              ///<<<=============>>> Platform Filed <<<===============>>>
-
-              CustomTextField(
-                labelText: "Platform",
-                readOnly: true,
-                controller: platformCtrl,
-                hintText: "Enter Platform",
-                suffixIcon: CustomPopupMenu(
-                    items: platForm,
-                    onSelected: (p0) {
-                      platformCtrl.text = p0;
-                      setState(() {});
-                    }),
-              ),
-
-
-
-              ///<<<=============>>> Email Filed <<<===============>>>
-
-              CustomTextField(
-                  controller: emailCtrl,
-                  hintText: "Enter E-mail",
-                  labelText: "Email",
-                  // prefixIcon: Assets.icons.mail.svg(),
-                  isEmail: true),
-
-
-              ///<<<=============>>> Phone Filed <<<===============>>>
-
-              /// ++++++++++++++++++++++  phone number  ==================>
-              CustomPhoneNumberPicker(controller: phoneNoCtrl, lebelText: 'Phone No.',),
-              SizedBox(height: 11.h),
-
-              ///<<<=============>>> Address Filed <<<===============>>>
-
-              CustomTextField(
-                controller: currentAddressCtrl,
-                hintText: "Enter Current Address",
-                labelText: "Current Address",
-              ),
-              SizedBox(height: 19.h),
-              ///<<<=============>>> Checked <<<===============>>>
-              CustomText(text: 'Do you have a valid driver’s license?'),
-              CustomChecked(
-                selected: hasDriversLicense ,
-                onChanged: (val) {
-                  setState(() {
-                    hasDriversLicense  = val!;
-                  });
-                },
-              ),
-              SizedBox(height: 11.h),
-              CustomText(text: 'Do you have a CDL?'),
-              CustomChecked(
-                selected: hasCDL,
-                onChanged: (val) {
-                  setState(() {
-                    hasCDL = val!;
-                  });
-                },
-              ),
-              SizedBox(height: 31.h),
-
-              /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              CustomButton(
-                title: "Save and Next",
-                onpress: () {
-                  // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
-                },
-              ),
-              SizedBox(height: 20.h),
-            ],
+            ),
           ),
         ),
       ),
@@ -280,31 +316,43 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   }
 
 
-  //==================================> Gallery <===============================
-
   File? selectedImage;
+  String? uploadedUrl;
 
   Future<void> _pickImageFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        selectedImage = File(pickedFile.path);
-      });
+      File file = File(pickedFile.path);
+      String? path = await uploadController.uploadFile(file: file);
+      if (path != null) {
+        setState(() {
+          selectedImage = file;
+          uploadedUrl = path;
+        });
+      } else {
+        ToastMessageHelper.showToastMessage("File upload failed.");
+      }
       Navigator.pop(context);
     }
   }
-
-//==================================> Camera <===============================
 
   Future<void> _pickImageFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      setState(() {
-        selectedImage = File(pickedFile.path);
-      });
+      File file = File(pickedFile.path);
+      String? path = await uploadController.uploadFile(file: file);
+      if (path != null) {
+        setState(() {
+          selectedImage = file;
+          uploadedUrl = path;
+        });
+      } else {
+        ToastMessageHelper.showToastMessage("File upload failed.");
+      }
       Navigator.pop(context);
     }
   }
+
 
 
 

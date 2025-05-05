@@ -64,6 +64,7 @@ class AuthController extends GetxController {
   RxBool mechanicSignUpLoading = false.obs;
 
   ///========================================== Mechanic Sing up ==================================<>
+
   mechanicHandleSignUp({String? name, email, password,confirmPassword,required BuildContext context}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     mechanicSignUpLoading(true);
@@ -79,11 +80,11 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
-      if(role == "mechanic"){
+      // if(role == "mechanic"){
         context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
-      }else{
-        // context.pushNamed(AppRoutes.otpScreen, extra: "track");
-      }
+      // }else{
+      //   // context.pushNamed(AppRoutes.otpScreen, extra: "track");
+      // }
 
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       mechanicSignUpLoading(false);
@@ -118,6 +119,7 @@ class AuthController extends GetxController {
       // await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
       // await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
       // await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
+
       if (screenType == 'Sign Up') {
 
         if(role == "mechanic"){
@@ -129,14 +131,27 @@ class AuthController extends GetxController {
         }
       }
 
+      // if (screenType == 'Sign Up') {
+      //
+      //   if(role == "mechanic"){
+      //     _dialog(context, "mechanic");
+          context.go(AppRoutes.mechanicPersonalInformationScreen);
+        // }
+
+        // else{
+        //   _dialog(context, "track");
+        //   // context.go(AppRoutes.loginScreen);
+        // }
+      // }
+
+
       // else if(screenType == "user"){
       //   _dialog(context, "user");
-      // }else if(screenType == "manager"){
-      //   _dialog(context, "manager");
+      // }else if(screenType == "mechanic"){
+      //   _dialog(context, "mechanic");
       // } else {
       //   // context.go(AppRoutes.setPasswordScreen);
       // }
-
       verfyLoading(false);
     } else if(response.statusCode == 1){
       verfyLoading(false);
@@ -274,10 +289,10 @@ class AuthController extends GetxController {
 
   reSendOtp() async {
     resendLoading(true);
+    var body = {};
 
-
-    var response = await ApiClient.getData(
-        ApiConstants.resendOtpEndPoint);
+    var response = await ApiClient.postData(
+        ApiConstants.resendOtpEndPoint,jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       ToastMessageHelper.showToastMessage(

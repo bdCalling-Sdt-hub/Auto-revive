@@ -6,12 +6,13 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text_field.dart';
+import '../../../../widgets/equipment_check_box_list.dart';
 
 
 class MechanicToolsEquipmentScreen extends StatefulWidget {
@@ -21,12 +22,14 @@ class MechanicToolsEquipmentScreen extends StatefulWidget {
 }
 class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScreen> {
 
+
   MechanicController mechanicController = Get.put(MechanicController());
+
   final TextEditingController additionalToolsCtrl = TextEditingController();
 
 
   bool? validUSDOTNumber;
-
+  List<String> customTools = [];
 
   @override
   void initState() {
@@ -102,9 +105,14 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                             itemCount: group.tools.length,
                             itemBuilder: (context, toolIndex) {
                               var tool = group.tools[toolIndex];
-                              return CustomCheckboxList(
+                              return EquipmentCustomCheckboxList(
                                 items: {
-                                  tool.name ?? "Unnamed Tool": false,
+                                  tool.name ?? "Unnamed Tool": tool.isSelected ?? false,
+                                },
+                                onChanged: (key, value) {
+                                  setState(() {
+                                    tool.isSelected = value;
+                                  });
                                 },
                               );
                             },
@@ -123,22 +131,80 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
               SizedBox(height: 20.h),
               ///<<<=============>>> Additional Tools <<<===============>>>
               CustomText(
-                  text: "List any additional  tools you own",fontsize: 16.sp),
-              SizedBox(height: 8.h),
-              CustomTextField(
-                  controller: additionalToolsCtrl,
-                  hintText: "Additional Tools",
-
-
+                text: "List any additional tools you own",
+                fontsize: 16.sp,
               ),
+              SizedBox(height: 10.h),
+
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: customTools.map((tool) {
+                  return Chip(
+                    label: Text(tool),
+                    deleteIcon: const Icon(Icons.close),
+                    onDeleted: () {
+                      setState(() {
+                        customTools.remove(tool);
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+
+              SizedBox(height: 8.h),
+
+              CustomTextField(
+                controller: additionalToolsCtrl,
+                hintText: "Additional Tools",
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.add, color: AppColors.primaryColor),
+                  onPressed: () {
+                    String newTool = additionalToolsCtrl.text.trim();
+                    if (newTool.isNotEmpty && !customTools.contains(newTool)) {
+                      setState(() {
+                        customTools.add(newTool);
+                        // additionalToolsCtrl.clear();
+                      });
+                    }
+                  },
+                ),
+              ),
+
+              // CustomTextField(
+              //     controller: additionalToolsCtrl,
+              //     hintText: "Additional Tools",
+              //
+              //
+              // ),
               SizedBox(height: 87.h),
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              CustomButton(
+              Obx(() => CustomButton(
+                loading: mechanicController.mechanicToolsLoading.value,
                 title: "Save and Next",
                 onpress: () {
-                  context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+
+                  List<String> selectedToolIds = [];
+                  mechanicController.tools.forEach((group) {
+                    group.tools.forEach((tool) {
+                      if (tool.isSelected == true) {
+                        selectedToolIds.add(tool.id!);
+                      }
+                    });
+                  });
+
+                  mechanicController.mechanicTools(
+                    tools: selectedToolIds,
+                    toolsCustom: customTools,
+                    context: context,
+                  ).then((success) {
+                    if (success) {
+                      context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                    }
+                  });
                 },
-              ),
+              )),
+
               SizedBox(height: 20.h),
             ],
           ),

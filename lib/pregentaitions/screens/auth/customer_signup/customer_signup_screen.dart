@@ -190,7 +190,8 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
       } else {
         ToastMessageHelper.showToastMessage("File upload failed.");
       }
-    } else {
+    }
+    else {
       ToastMessageHelper.showToastMessage("No file selected.");
     }
   }

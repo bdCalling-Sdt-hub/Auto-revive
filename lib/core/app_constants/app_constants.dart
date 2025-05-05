@@ -2,6 +2,7 @@ class AppConstants{
   static const String bearerToken = "bearerToken";
   static const String email = "email";
   static const String phone = "phone";
+  static const String address = "address";
   static const String name = "name";
   static const String image = "image";
   static const String role = "role";

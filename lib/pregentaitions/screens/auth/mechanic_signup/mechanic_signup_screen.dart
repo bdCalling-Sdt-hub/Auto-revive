@@ -80,7 +80,7 @@ class _MechanicSignupScreenState extends State<MechanicSignupScreen> {
                 SizedBox(height: 240.h),
                 Obx(()=>
                     CustomButton(
-                      loading: authController.signUpLoading.value,
+                      loading: authController.mechanicSignUpLoading.value,
                       title: "Sign Up",
                       onpress: () {
                         if(fromKey.currentState!.validate()){
