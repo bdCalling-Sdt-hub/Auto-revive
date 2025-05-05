@@ -116,8 +116,8 @@ class AuthController extends GetxController {
       debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
       // await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
-      await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
-      await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
+      // await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
+      // await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
       if (screenType == 'Sign Up') {
 
         if(role == "mechanic"){
