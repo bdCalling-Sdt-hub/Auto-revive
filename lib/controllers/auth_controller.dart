@@ -24,7 +24,7 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
 
   ///========================================== Sing up ==================================<>
-  handleSignUp({String? name, email, phone, password,confirmPassword,filePath,required BuildContext context}) async {
+  handleSignUp({String? name, email, phone, password,confirmPassword,filePath,required BuildContext context, required String screenType}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
     signUpLoading(true);
     var body = {
@@ -41,11 +41,14 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
-      // if(role == "user"){
-        context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
-      // }else{
-      //   // context.pushNamed(AppRoutes.otpScreen, extra: "track");
-      // }
+       if(screenType == "user"){
+        context.pushNamed(AppRoutes.otpScreen, extra: "user");
+       }else if(screenType == "mechanic"){
+         context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
+
+       }else{
+         context.pushNamed(AppRoutes.otpScreen, extra: "track");
+       }
 
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       signUpLoading(false);
@@ -106,9 +109,8 @@ class AuthController extends GetxController {
   ///===============Verify Email================<>
   RxBool verfyLoading = false.obs;
 
-  verfyEmail(String otpCode, {String screenType = '', required BuildContext context}) async {
+  verfyEmail(String otpCode, {String screenType = '',String type = '', required BuildContext context}) async {
     verfyLoading(true);
-    var role = await PrefsHelper.getString(AppConstants.role);
     var body = {"otp": otpCode};
     var response = await ApiClient.postData(
         ApiConstants.verifyEmailEndPoint, jsonEncode(body));
@@ -120,29 +122,17 @@ class AuthController extends GetxController {
       // await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
       // await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
 
-      if (screenType == 'Sign Up') {
 
-        if(role == "mechanic"){
-          _dialog(context, "mechanic");
-          // context.go(AppRoutes.loginScreen);
+      if (type == 'Sign Up') {
+
+        if(screenType == "user"){
+          context.go(AppRoutes.logInScreen);
+        } else if(screenType == "mechanic"){
+          context.go(AppRoutes.mechanicPersonalInformationScreen);
         }else{
-          _dialog(context, "track");
-          // context.go(AppRoutes.loginScreen);
+
         }
       }
-
-      // if (screenType == 'Sign Up') {
-      //
-      //   if(role == "mechanic"){
-      //     _dialog(context, "mechanic");
-          context.go(AppRoutes.mechanicPersonalInformationScreen);
-        // }
-
-        // else{
-        //   _dialog(context, "track");
-        //   // context.go(AppRoutes.loginScreen);
-        // }
-      // }
 
 
       // else if(screenType == "user"){

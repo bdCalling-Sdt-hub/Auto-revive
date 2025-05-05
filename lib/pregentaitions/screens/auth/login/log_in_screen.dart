@@ -6,86 +6,94 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../controllers/auth_controller.dart';
 
 class LogInScreen extends StatelessWidget {
   LogInScreen({super.key});
 
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passCtrl = TextEditingController();
+  // final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            SizedBox(height: 138.h),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 138.h),
 
-            ///<<<=============>>>   Logo Icon   <<<===============>>>
+              ///<<<=============>>>   Logo Icon   <<<===============>>>
 
-            Assets.icons.logoSVG.svg(),
-
-
-            SizedBox(height: 38.h),
+              Assets.icons.logoSVG.svg(),
 
 
-            ///<<<=============>>>   Email Filed   <<<===============>>>
-
-            CustomTextField(
-                controller: emailCtrl,
-                hintText: "Enter E-mail",
-                prefixIcon: Assets.icons.mail.svg(),
-                isEmail: true),
+              SizedBox(height: 38.h),
 
 
+              ///<<<=============>>>   Email Filed   <<<===============>>>
 
-            ///<<<=============>>>   Password Filed   <<<===============>>>
-
-            CustomTextField(
-                controller: passCtrl,
-                hintText: "Enter Password",
-                prefixIcon: Assets.icons.key.svg(),
-                isPassword: true),
-
-
-            ///<<<=============>>> Forgot filed <<<===============>>>
-
-            Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                  onTap: () {
-                    context.pushNamed(AppRoutes.emailVerifyScreen);
-                  },
-                  child: CustomText(text: "Forgot Password", color: Colors.red, bottom: 20.h, top: 8.h)),
-            ),
+              CustomTextField(
+                  controller: emailCtrl,
+                  hintText: "Enter E-mail",
+                  prefixIcon: Assets.icons.mail.svg(),
+                  isEmail: true),
 
 
 
-            ///<<<=============>>> BUTTON <<<===============>>>
+              ///<<<=============>>>   Password Filed   <<<===============>>>
 
-            CustomButton(title: "Let's Go", onpress: (){
+              CustomTextField(
+                  controller: passCtrl,
+                  hintText: "Enter Password",
+                  prefixIcon: Assets.icons.key.svg(),
+                  isPassword: true),
 
-            }),
 
+              ///<<<=============>>> Forgot filed <<<===============>>>
 
-            SizedBox(height: 40.h),
-
-            ///<<<=============>>> DO NOT HAVE ACCOUNT <<<===============>>>
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomText(text: "Don't have an account?"),
-                GestureDetector(
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
                     onTap: () {
-                      context.pushNamed(AppRoutes.roleScreen);
+                      context.pushNamed(AppRoutes.emailVerifyScreen);
                     },
-                    child: CustomText(text: "  Sign Up", color: AppColors.primaryColor)),
-              ],
-            )
-          ],
+                    child: CustomText(text: "Forgot Password", color: Colors.red, bottom: 20.h, top: 8.h)),
+              ),
+
+
+
+              ///<<<=============>>> BUTTON <<<===============>>>
+
+              CustomButton(title: "Let's Go", onpress: (){
+
+
+
+              }),
+
+
+              SizedBox(height: 40.h),
+
+              ///<<<=============>>> DO NOT HAVE ACCOUNT <<<===============>>>
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomText(text: "Don't have an account?"),
+                  GestureDetector(
+                      onTap: () {
+                        context.pushNamed(AppRoutes.roleScreen);
+                      },
+                      child: CustomText(text: "  Sign Up", color: AppColors.primaryColor)),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
