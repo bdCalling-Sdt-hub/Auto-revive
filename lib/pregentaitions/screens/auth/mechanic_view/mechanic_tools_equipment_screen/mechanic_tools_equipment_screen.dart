@@ -22,7 +22,7 @@ class MechanicToolsEquipmentScreen extends StatefulWidget {
 }
 class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScreen> {
 
-
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
   MechanicController mechanicController = Get.put(MechanicController());
 
   final TextEditingController additionalToolsCtrl = TextEditingController();
@@ -53,160 +53,171 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.h),
-              ///<<<=============>>> LinearIndicator <<<===============>>>
-              const CustomLinearIndicator(
-                progressValue: 0.3,
-              ),
-              SizedBox(height: 29.h),
-              ///<<<=============>>> CHECKED <<<===============>>>
-              CustomText(
-                text: 'Do you have own tools?',
-                fontsize: 16.sp,
-                textAlign: TextAlign.left,
-              ),
-              CustomChecked(
-                selected: validUSDOTNumber,
-                onChanged: (val) {
-                  setState(() {
-                    validUSDOTNumber = val;
-                  });
-                },
-              ),
-
-              /// <<<=============>>> Tools Group List <<<===============>>>
-              Obx(() {
-                if (mechanicController.toolsLoading.value) {
-                  return const Center(child: CustomLoader());
-                } else if (mechanicController.tools.isEmpty) {
-                  return Center(child: CustomText(text: "No Tools Found", fontsize: 16.sp));
-                } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: mechanicController.tools.length,
-                    itemBuilder: (context, groupIndex) {
-                      var group = mechanicController.tools[groupIndex];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: group.groupName ?? "No Group Name",
-                            fontsize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(height: 10.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: group.tools.length,
-                            itemBuilder: (context, toolIndex) {
-                              var tool = group.tools[toolIndex];
-                              return EquipmentCustomCheckboxList(
-                                items: {
-                                  tool.name ?? "Unnamed Tool": tool.isSelected ?? false,
-                                },
-                                onChanged: (key, value) {
-                                  setState(() {
-                                    tool.isSelected = value;
-                                  });
-                                },
-                              );
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                        ],
-                      );
-                    },
-                  );
-                }
-              }),
-
-
-
-
-              SizedBox(height: 20.h),
-              ///<<<=============>>> Additional Tools <<<===============>>>
-              CustomText(
-                text: "List any additional tools you own",
-                fontsize: 16.sp,
-              ),
-              SizedBox(height: 10.h),
-
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: customTools.map((tool) {
-                  return Chip(
-                    label: Text(tool),
-                    deleteIcon: const Icon(Icons.close),
-                    onDeleted: () {
-                      setState(() {
-                        customTools.remove(tool);
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-
-              SizedBox(height: 8.h),
-
-              CustomTextField(
-                controller: additionalToolsCtrl,
-                hintText: "Additional Tools",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.add, color: AppColors.primaryColor),
-                  onPressed: () {
-                    String newTool = additionalToolsCtrl.text.trim();
-                    if (newTool.isNotEmpty && !customTools.contains(newTool)) {
-                      setState(() {
-                        customTools.add(newTool);
-                        // additionalToolsCtrl.clear();
-                      });
-                    }
+          child: Form(
+            key: fromKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h),
+                ///<<<=============>>> LinearIndicator <<<===============>>>
+                const CustomLinearIndicator(
+                  progressValue: 0.3,
+                ),
+                SizedBox(height: 29.h),
+                ///<<<=============>>> CHECKED <<<===============>>>
+                CustomText(
+                  text: 'Do you have own tools?',
+                  fontsize: 16.sp,
+                  textAlign: TextAlign.left,
+                ),
+                CustomChecked(
+                  selected: validUSDOTNumber,
+                  onChanged: (val) {
+                    setState(() {
+                      validUSDOTNumber = val;
+                    });
                   },
                 ),
-              ),
 
-              // CustomTextField(
-              //     controller: additionalToolsCtrl,
-              //     hintText: "Additional Tools",
-              //
-              //
-              // ),
-              SizedBox(height: 87.h),
-              /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              Obx(() => CustomButton(
-                loading: mechanicController.mechanicToolsLoading.value,
-                title: "Save and Next",
-                onpress: () {
+                /// <<<=============>>> Tools Group List <<<===============>>>
+                Obx(() {
+                  if (mechanicController.toolsLoading.value) {
+                    return const Center(child: CustomLoader());
+                  } else if (mechanicController.tools.isEmpty) {
+                    return Center(child: CustomText(text: "No Tools Found", fontsize: 16.sp));
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: mechanicController.tools.length,
+                      itemBuilder: (context, groupIndex) {
+                        var group = mechanicController.tools[groupIndex];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: group.groupName ?? "No Group Name",
+                              fontsize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            SizedBox(height: 10.h),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: group.tools.length,
+                              itemBuilder: (context, toolIndex) {
+                                var tool = group.tools[toolIndex];
+                                return EquipmentCustomCheckboxList(
+                                  items: {
+                                    tool.name ?? "Unnamed Tool": tool.isSelected ?? false,
+                                  },
+                                  onChanged: (key, value) {
+                                    setState(() {
+                                      tool.isSelected = value;
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                }),
 
-                  List<String> selectedToolIds = [];
-                  mechanicController.tools.forEach((group) {
-                    group.tools.forEach((tool) {
-                      if (tool.isSelected == true) {
-                        selectedToolIds.add(tool.id!);
+
+
+
+                SizedBox(height: 20.h),
+                ///<<<=============>>> Additional Tools <<<===============>>>
+                CustomText(
+                  text: "List any additional tools you own",
+                  fontsize: 16.sp,
+                ),
+                SizedBox(height: 10.h),
+
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: customTools.map((tool) {
+                    return Chip(
+                      label: Text(tool),
+                      deleteIcon: const Icon(Icons.close),
+                      onDeleted: () {
+                        setState(() {
+                          customTools.remove(tool);
+                        });
+                      },
+                    );
+                  }).toList(),
+                ),
+
+                SizedBox(height: 8.h),
+
+                CustomTextField(
+                  controller: additionalToolsCtrl,
+                  hintText: "Additional Tools",
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.add, color: AppColors.primaryColor),
+                    onPressed: () {
+                      String newTool = additionalToolsCtrl.text.trim();
+                      if (newTool.isNotEmpty && !customTools.contains(newTool)) {
+                        setState(() {
+                          customTools.add(newTool);
+                          // additionalToolsCtrl.clear();
+                        });
                       }
-                    });
-                  });
+                    },
+                  ),
+                ),
 
-                  mechanicController.mechanicTools(
-                    tools: selectedToolIds,
-                    toolsCustom: customTools,
-                    context: context,
-                  ).then((success) {
-                    if (success) {
-                      context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                // CustomTextField(
+                //     controller: additionalToolsCtrl,
+                //     hintText: "Additional Tools",
+                //
+                //
+                // ),
+                SizedBox(height: 87.h),
+                /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+                Obx(() => CustomButton(
+                  loading: mechanicController.mechanicToolsLoading.value,
+                  title: "Save and Next",
+                    onpress: () {
+                      // Validate the form first
+                      if (fromKey.currentState!.validate()) {
+                        // Form is valid, proceed with collecting selected tools
+                        List<String> selectedToolIds = [];
+
+                        // Loop through each tool group and collect selected tool IDs
+                        mechanicController.tools.forEach((group) {
+                          group.tools.forEach((tool) {
+                            if (tool.isSelected == true) {
+                              selectedToolIds.add(tool.id!);
+                            }
+                          });
+                        });
+
+                        // Call the API to submit the selected tools
+                        mechanicController.mechanicTools(
+                          tools: selectedToolIds,
+                          toolsCustom: customTools,
+                          context: context,
+                        ).then((success) {
+                          if (success) {
+                            // Navigate to the next screen if successful
+                            context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                          }
+                        });
+                      }
                     }
-                  });
-                },
-              )),
 
-              SizedBox(height: 20.h),
-            ],
+                )),
+
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ),
       ),

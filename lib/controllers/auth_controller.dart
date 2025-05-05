@@ -153,71 +153,66 @@ class AuthController extends GetxController {
 
   }
 
-  //
-  //
-  //
-  //
-  // ///************************************************************************///
-  // ///===============Log in================<>
-  // RxBool logInLoading = false.obs;
-  // handleLogIn(String email, String password, {required BuildContext context}) async {
-  //   logInLoading.value = true;
-  //   var fcmToken = await FirebaseNotificationService.getFCMToken();
-  //   var role = await PrefsHelper.getString(AppConstants.role);
-  //   var headers = {'Content-Type': 'application/json'};
-  //   var body = {
-  //     "email": email,
-  //     "password": password,
-  //     "role": role.toString(),
-  //     "fcmToken" : "$fcmToken"
-  //   };
-  //   var response = await ApiClient.postData(
-  //       ApiConstants.signInEndPoint, jsonEncode(body),
-  //       headers: headers);
-  //   print("========================${response.statusCode} \n ${response.body}");
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     var data = response.body['data']["user"];
-  //     await PrefsHelper.setString(AppConstants.role, data['role']);
-  //     await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
-  //     await PrefsHelper.setString(AppConstants.email, email);
-  //     await PrefsHelper.setString(AppConstants.name, data['name']);
-  //     await PrefsHelper.setString(AppConstants.phone, data['phone']);
-  //     await PrefsHelper.setString(AppConstants.image, data['image']);
-  //
-  //     await PrefsHelper.setString(AppConstants.userId, data['_id']);
-  //     await PrefsHelper.setBool(AppConstants.isLogged, true);
-  //
-  //
-  //     final fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
-  //     // FirebaseNotificationService.sendSocketEvent('fcmToken',
-  //     //     {'userId': data['_id'], 'fcmToken': fcmToken});
-  //
-  //     var role = data['role'];
-  //
-  //     if (role == "user") {
-  //       context.go(AppRoutes.userHomeScreen);
-  //     }else{
-  //       context.go(AppRoutes.managerHomeScreen);
-  //       await PrefsHelper.setString(AppConstants.managerType, data['type']);
-  //     }
-  //     ToastMessageHelper.showToastMessage('Your are logged in');
-  //     logInLoading(false);
-  //   }else{
-  //     ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
-  //     if (response.body["message"] == "We've sent an OTP to your email to verify your profile.") {
-  //       var role = response.body["data"]["role"];
-  //       context.go(AppRoutes.otpScreen, extra: role.toString());
-  //       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
-  //       ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your profile.");
-  //     }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
-  //       ToastMessageHelper.showToastMessage(response.body["message"]);
-  //     }
-  //     logInLoading(false);
-  //     ToastMessageHelper.showToastMessage(response.body['message']);
-  //   }
-  // }
-  //
-  //
+
+  ///************************************************************************///
+  ///===============Log in================<>
+  RxBool logInLoading = false.obs;
+  handleLogIn(String email, String password, {required BuildContext context}) async {
+    logInLoading.value = true;
+    var role = await PrefsHelper.getString(AppConstants.role);
+    var headers = {'Content-Type': 'application/json'};
+    var body = {
+      "email": email,
+      "password": password,
+      "role": role.toString(),
+    };
+    var response = await ApiClient.postData(
+        ApiConstants.loginUpEndPoint, jsonEncode(body),
+        headers: headers);
+    print("========================${response.statusCode} \n ${response.body}");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var data = response.body['data']["user"];
+      await PrefsHelper.setString(AppConstants.role, data['role']);
+      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["tokens"]["accessToken"]);
+      await PrefsHelper.setString(AppConstants.email, email);
+      await PrefsHelper.setString(AppConstants.name, data['name']);
+      // await PrefsHelper.setString(AppConstants.phone, data['phone']);
+      // await PrefsHelper.setString(AppConstants.image, data['image']);
+
+      // await PrefsHelper.setString(AppConstants.userId, data['_id']);
+      await PrefsHelper.setBool(AppConstants.isLogged, true);
+
+
+      final fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
+      // FirebaseNotificationService.sendSocketEvent('fcmToken',
+      //     {'userId': data['_id'], 'fcmToken': fcmToken});
+
+      var role = data['role'];
+
+      if (role == "user") {
+        context.go(AppRoutes.customerBottomNavBar);
+      }else{
+        context.go(AppRoutes.mechanicBottomNavBar);
+        // await PrefsHelper.setString(AppConstants.mechanicType, data['type']);
+      }
+      ToastMessageHelper.showToastMessage('Your are logged in');
+      logInLoading(false);
+    }else{
+      ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
+      if (response.body["message"] == "We've sent an OTP to your email to verify your profile.") {
+        var role = response.body["data"]["role"];
+        context.go(AppRoutes.otpScreen, extra: role.toString());
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']);
+        ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your profile.");
+      }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
+        ToastMessageHelper.showToastMessage(response.body["message"]);
+      }
+      logInLoading(false);
+      ToastMessageHelper.showToastMessage(response.body['message']);
+    }
+  }
+
+
   //
   // ///************************************************************************///
   //

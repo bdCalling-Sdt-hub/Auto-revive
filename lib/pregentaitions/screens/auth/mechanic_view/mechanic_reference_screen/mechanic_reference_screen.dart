@@ -171,13 +171,13 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                            references: referencesData,
                            context: context,
                          );
-                         context.pushNamed(AppRoutes.mechanicAdditionalInformationScreen);
+
                        }
                      },
 
                    ),
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: 30.h),
               ],
             ),
           ),

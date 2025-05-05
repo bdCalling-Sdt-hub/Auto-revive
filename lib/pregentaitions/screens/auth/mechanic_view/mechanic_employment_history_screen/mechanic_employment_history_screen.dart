@@ -235,7 +235,6 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                           );
                         }
 
-                        context.pushNamed(AppRoutes.mechanicReferenceScreen);
                       }
 
                   ),),

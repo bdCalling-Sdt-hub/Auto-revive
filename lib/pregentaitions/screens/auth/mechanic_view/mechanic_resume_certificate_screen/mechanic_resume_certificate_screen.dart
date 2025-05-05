@@ -1,15 +1,36 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text.dart';
 import '../../../../widgets/custom_upload_button.dart';
 
-class MechanicResumeCertificateScreen extends StatelessWidget {
+class MechanicResumeCertificateScreen extends StatefulWidget {
   const MechanicResumeCertificateScreen({super.key});
+
+  @override
+  State<MechanicResumeCertificateScreen> createState() => _MechanicResumeCertificateScreenState();
+}
+
+class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertificateScreen> {
+
+  UploadController uploadController = Get.put(UploadController());
+  MechanicController mechanicController = Get.put(MechanicController());
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+
+  RxString resumeUrl = ''.obs;
+  RxString certificateUrl = ''.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -27,49 +48,87 @@ class MechanicResumeCertificateScreen extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 8.h),
-              ///<<<=============>>> LinearIndicator <<<===============>>>
-              const CustomLinearIndicator(
-                progressValue: 0.9,
-              ),
-              SizedBox(height: 20.h),
-              CustomText(text: "Upload your resume and certificates to complete your mechanic profile. Showcase your skills, experience, and certifications to attract more customers. A complete profile increases trust and boosts your chances of getting hired. Get started now and stand out as a professional mechanic! ",
-                  maxline: 15,
-                  textAlign: TextAlign.start,
-                  fontsize: 13.sp,
-                  color: AppColors.textColor151515),
-              SizedBox(height: 29.h),
-              CustomUploadButton(
-                // topLabel: 'Upload Resume',
-                title: 'Upload Resume',
-                icon: Icons.upload,
-                onTap: () {},
-              ),
-              SizedBox(height: 5.h),
-              CustomUploadButton(
-                // topLabel: 'Upload Resume',
-                title: 'Upload Certificate',
-                icon: Icons.upload,
-                onTap: () {},
-              ),
-              SizedBox(height: 350.h),
+          child: Form(
+            key: fromKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h),
+                ///<<<=============>>> LinearIndicator <<<===============>>>
+                const CustomLinearIndicator(
+                  progressValue: 0.9,
+                ),
+                SizedBox(height: 20.h),
+                CustomText(text: "Upload your resume and certificates to complete your mechanic profile. Showcase your skills, experience, and certifications to attract more customers. A complete profile increases trust and boosts your chances of getting hired. Get started now and stand out as a professional mechanic! ",
+                    maxline: 15,
+                    textAlign: TextAlign.start,
+                    fontsize: 13.sp,
+                    color: AppColors.textColor151515),
+                SizedBox(height: 29.h),
+                CustomUploadButton(
+                  // topLabel: 'Upload Resume',
+                  title: 'Upload Resume',
+                  icon: Icons.upload,
+                  onTap: () => importPdf(isResume: true),
+                ),
+                SizedBox(height: 5.h),
+                CustomUploadButton(
+                  // topLabel: 'Upload Resume',
+                  title: 'Upload Certificate',
+                  icon: Icons.upload,
+                  onTap: () => importPdf(isResume: false),
+                ),
+                SizedBox(height: 350.h),
 
-              /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              CustomButton(
-                title: "Submit",
-                onpress: () {
-                  // Action after saving data and moving to next screen
-                  context.pushNamed(AppRoutes.mechanicProfileInformationScreen );
-                },
-              ),
-              SizedBox(height: 20.h),
-            ],
+                /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+                Obx(() => CustomButton(
+                  loading: mechanicController.resumeCertificateLoading.value,
+                  title: "Submit",
+                  onpress: () {
+                    if (fromKey.currentState!.validate()) {
+                      if (resumeUrl.value.isEmpty || certificateUrl.value.isEmpty) {
+                        ToastMessageHelper.showToastMessage("Please upload both resume and certificate.");
+                        return;
+                      }
+
+                      mechanicController.resumeCertificate(
+                        resume: resumeUrl.value,
+                        certificate: certificateUrl.value,
+                        context: context,
+                      );
+                    }
+                  },
+                )),
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  Future<void> importPdf({required bool isResume}) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      File selectedFile = File(result.files.single.path!);
+      String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
+      if (uploadedPath != null) {
+        if (isResume) {
+          resumeUrl.value = uploadedPath;
+        } else {
+          certificateUrl.value = uploadedPath;
+        }
+      } else {
+        ToastMessageHelper.showToastMessage("File upload failed.");
+      }
+    } else {
+      ToastMessageHelper.showToastMessage("No file selected.");
+    }
+  }
+
 }

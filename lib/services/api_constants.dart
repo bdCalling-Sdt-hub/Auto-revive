@@ -1,14 +1,15 @@
 class ApiConstants{
-  static const String baseUrl = "http://192.168.10.80:8080/api/v1";
-  static const String imageBaseUrl = "http://192.168.10.80:8080";
-  // static const String baseUrl = "https://auto-revive-mamun.sarv.live/api/v1";
-  // static const String imageBaseUrl = "https://auto-revive-mamun.sarv.live";
+  // static const String baseUrl = "http://192.168.10.80:8080/api/v1";
+  // static const String imageBaseUrl = "http://192.168.10.80:8080";
+  static const String baseUrl = "https://auto-revive-mamun.sarv.live/api/v1";
+  static const String imageBaseUrl = "https://auto-revive-mamun.sarv.live";
 
 
 
 
 
   static const String signUpEndPoint = "/auth/register";
+  static const String loginUpEndPoint = "/auth/login";
   static const String verifyEmailEndPoint = "/auth/verify-email";
   static const String uploadEndPoint = "/upload";
   static const String getAllToolsEndPoint = "/tool";
@@ -19,6 +20,8 @@ class ApiConstants{
   static const String mechanicToolsEndPoint = "/mechanic/tools";
   static const String mechanicEmploymentHistoriesEndPoint = "/mechanic/employment-history";
   static const String referenceEndPoint = "/mechanic/reference";
+  static const String additionalInformationEndPoint = "/mechanic/why-on-site";
+  static const String mechanicResumeCertificateEndPoint = "/mechanic/resume-certificate";
   static const String getProfileEndPoint = "/user/me";
 
 }

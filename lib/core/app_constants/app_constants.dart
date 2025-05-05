@@ -9,6 +9,8 @@ class AppConstants{
   static const String userId = "userId";
   static const String isLogged = "isLogged";
   static const String fcmToken = "fcmToken";
+  static const String mechanicType = "mechanicType";
+
 
 
   static RegExp emailValidate = RegExp(
