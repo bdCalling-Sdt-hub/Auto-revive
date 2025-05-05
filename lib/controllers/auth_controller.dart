@@ -119,6 +119,18 @@ class AuthController extends GetxController {
       // await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
       // await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
       // await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
+
+      if (screenType == 'Sign Up') {
+
+        if(role == "mechanic"){
+          _dialog(context, "mechanic");
+          // context.go(AppRoutes.loginScreen);
+        }else{
+          _dialog(context, "track");
+          // context.go(AppRoutes.loginScreen);
+        }
+      }
+
       // if (screenType == 'Sign Up') {
       //
       //   if(role == "mechanic"){
@@ -131,6 +143,7 @@ class AuthController extends GetxController {
         //   // context.go(AppRoutes.loginScreen);
         // }
       // }
+
 
       // else if(screenType == "user"){
       //   _dialog(context, "user");
