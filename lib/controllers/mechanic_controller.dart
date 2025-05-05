@@ -89,6 +89,7 @@ class MechanicController extends GetxController{
         ApiConstants.mechanicBasicInfoEndPoint,
         body);
     if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     }
@@ -195,6 +196,7 @@ class MechanicController extends GetxController{
         body);
     employmentHistoriesLoading(false);
     if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.mechanicReferenceScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
@@ -223,6 +225,7 @@ class MechanicController extends GetxController{
     referenceLoading(false);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.mechanicAdditionalInformationScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
@@ -230,6 +233,69 @@ class MechanicController extends GetxController{
       return false;
     }
   }
+
+
+  /// ================================> Additional Information ==============================>
+
+
+  var additionalInformationLoading = false.obs;
+
+  additionalInformation(
+      {String? whyOnSite,
+        required BuildContext context}) async {
+    var body = {
+      'whyOnSite': whyOnSite,
+    };
+    additionalInformationLoading(true);
+    var response = await ApiClient.putData(
+        ApiConstants.additionalInformationEndPoint,
+        body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      return true;
+    }
+    additionalInformationLoading(false);
+  }
+
+
+  /// ================================> Resume Certificate ==============================>
+
+
+  var resumeCertificateLoading = false.obs;
+
+  resumeCertificate(
+      {String? resume,
+        String? certificate,
+        required BuildContext context}) async {
+    var body = {
+      'resume': resume,
+      'certificate': certificate,
+    };
+    resumeCertificateLoading(true);
+    var response = await ApiClient.putData(
+        ApiConstants.mechanicResumeCertificateEndPoint,
+        body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      return true;
+    }
+    resumeCertificateLoading(false);
+  }
+
+
+  /// ================================> Mechanic Profile ==============================>
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -73,10 +73,10 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Form(
-            key: fromKey,
-            child: Obx(()=>
-            Column(
+          child: Obx(()=>
+           Form(
+             key: fromKey,
+             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 8.h),
@@ -232,14 +232,13 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                               context: context
                           );
                         }
-                        context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
 
                       },
                     ),),
                   SizedBox(height: 20.h),
                 ],
               ),
-            ),
+           ),
           ),
         ),
       ),
