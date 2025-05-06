@@ -9,9 +9,12 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../models/get_profile_model.dart';
 import '../../../../../services/api_constants.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_upload_button.dart';
+import 'package:intl/intl.dart';
+
 
 class MechanicProfileInformationScreen extends StatefulWidget {
    MechanicProfileInformationScreen({super.key});
@@ -25,6 +28,9 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
   MechanicController mechanicController = Get.put(MechanicController());
 
 
+
+
+
   @override
   void initState() {
     mechanicController.getProfile();
@@ -33,6 +39,9 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
   @override
   Widget build(BuildContext context) {
+    final toolsMap = mechanicController.profile.value.toolsGroup != null
+        ? toolsGroupToMap(mechanicController.profile.value.toolsGroup!)
+        : {};
     return CustomScaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -45,6 +54,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
       body: SingleChildScrollView(
         child: Center(
           child: Obx(()=>
+
             Column(
               children: [
                 /// ==================================> Profile ====================================>
@@ -179,215 +189,149 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       /// ==================================> Tools and Equipment ====================================>
                       CustomText(text: 'Tools and Equipment',fontsize: 16.sp,color: AppColors.textColor151515,),
                       SizedBox(height: 13.h),
-                      /// ==================================> Basic hand tools. ====================================>
-                      CustomText(
-                        text: 'Basic hand tools...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
+
+                      ListView.builder(
+                        itemCount: toolsMap.keys.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, groupIndex) {
+                          final groupName = toolsMap.keys.elementAt(groupIndex);
+                          final tools = toolsMap[groupName]!;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: groupName,
+                                fontWeight: FontWeight.bold,
+                                fontsize: 16.sp,
+                              ),
+                              ListView.builder(
+                                itemCount: tools.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  final tool = tools[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 8.h),
+                                    child: CustomText(
+                                      textAlign: TextAlign.start,
+                                      text: '${nameValues.reverse[tool.name] ?? ''}\n${groupValues.reverse[tool.group] ?? ''}',
+                                      fontsize: 10.sp,
+                                    ),
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 12.h),
+                            ],
+                          );
+                        },
                       ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        'Screwdrivers (Flat, Phillips, Torx).'
-                            '\nPliers (Needle Nose, Slip Joint, Channel Lock, Wire Cutters).'
-                            '\nRatchets (Standard & Flex Head).'
-                            '\nWrenches (Combination, Box-End, Adjustable, Ratcheting).'
-                            '\nAllen Wrenches / Hex Keys.'
-                            '\nPry Bars.'
-                            '\nHammers (Ball Peen, Dead Blow, Rubber Mallet)'
-                            '\nTape Measure & Utility Knife.',
-                        fontsize: 10.sp,
-                      ),
+
+
                       SizedBox(height: 15.h),
-                      /// ==================================> Sockets & Ratchets ====================================>
-                      CustomText(
-                        text: 'Sockets & Ratchets...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        "1/4\" Drive Sockets (Standard & Deep)."
-                            '\n3/8\" Drive Sockets (Standard & Deep).'
-                            '\n1/2\" Drive Sockets (Standard & Deep).'
-                            '\n3/4\" Drive Sockets (Standard & Deep).'
-                            '\n1\" Drive Sockets (Standard & Deep).'
-                            '\nUniversal Joints & Extensions (All Drive Sizes).'
-                            '\nTorque Wrench (1/4\", 3/8\", 1/2\", 3/4\", 1\").',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
-                      /// ==================================> Power & Pneumatic Tools ====================================>
-                      CustomText(
-                        text: 'Power & Pneumatic Tools...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        'Cordless Drill & Bits.'
-                            '\nElectric Ratchet (1/4\", 3/8\", 1/2\").'
-                            '\nPneumatic Ratchet (1/4\", 3/8\", 1/2\").'
-                            '\nImpact Gun (1/4\", 3/8\", 1/2\", 3/4\", 1\").'
-                            '\nAir Compressor & Air Hoses.',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
-                      /// ==================================> Diagnostics Equipment ====================================>
-                      CustomText(
-                        text: 'Diagnostics Equipment...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        'OBD2 Scanner.'
-                            '\nDiesel Engine Diagnostic Scanner (OEM or Aftermarket).'
-                            '\nBattery Tester & Charger.'
-                            '\nMulti meter for Electrical Testing.'
-                            '\nFuel Pressure Tester.'
-                            '\nCooling System Pressure Tester.',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 16.h),
-                      /// ==================================> Lifting and Support Equipment ====================================>
-                      CustomText(
-                        text: 'Lifting and Support Equipment...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        'Hydraulic Jack (2-Ton, 10-Ton, 30-Ton).'
-                            '\nJack Stands (Adjustable Height).'
-                            '\nWheel Chocks.'
-                            '\nCreeper & Rolling Seat.',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
-                      /// ==================================> Specialty Tools ====================================>
-                      CustomText(
-                        text: 'Specialty Tools...',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text:
-                        'Brake Service Tools (Brake Spoon, Brake Spring Pliers.'
-                            '\nOil Filter Wrenches & Drain Pan.'
-                            '\nHose Clamp Pliers.'
-                            '\nPick Set (O-Ring & Seal Removal).'
-                            '\nThread Chaser Set.'
-                            '\nTap & Die Set.'
-                            '\nSnap Ring Pliers.'
-                            '\nWheel End Hub Sockets.',
-                        fontsize: 10.sp,
-                      ),
+                      // /// ==================================> Sockets & Ratchets ====================================>
+                      // CustomText(
+                      //   text: 'Sockets & Ratchets...',
+                      //   fontsize: 16.sp,
+                      //   fontWeight: FontWeight.bold,
+                      // ),
+                      // CustomText(
+                      //   textAlign: TextAlign.start,
+                      //   text:
+                      //   "1/4\" Drive Sockets (Standard & Deep)."
+                      //       '\n3/8\" Drive Sockets (Standard & Deep).'
+                      //       '\n1/2\" Drive Sockets (Standard & Deep).'
+                      //       '\n3/4\" Drive Sockets (Standard & Deep).'
+                      //       '\n1\" Drive Sockets (Standard & Deep).'
+                      //       '\nUniversal Joints & Extensions (All Drive Sizes).'
+                      //       '\nTorque Wrench (1/4\", 3/8\", 1/2\", 3/4\", 1\").',
+                      //   fontsize: 10.sp,
+                      // ),
                       SizedBox(height: 15.h),
                       /// ==================================> Employment History ====================================>
-                      CustomText(
-                        text: 'Employment History',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Grease Monkey',
-                        fontWeight: FontWeight.bold,
-                        fontsize: 18.sp,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Sr. Mechanic, On-site',
-                        fontsize: 10.sp,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'David Bryan',  // Make this bold
-                        fontsize: 18.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\n17 March 2023 to 12 Feb 2024'
-                            '\nLeaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
+                      ListView.builder(
+                        itemCount: mechanicController.profile.value.employmentHistories?.length ?? 0,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final history = mechanicController.profile.value.employmentHistories![index];
 
-                      /// ==================================> Grease Monkey ====================================>
-                      CustomText(
-                        text: 'Grease Monkey',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Sr. Mechanic, On-site',
-                        fontsize: 10.sp,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'David Brayan',
-                        fontsize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\n17 March 2023 to 12 Feb 2024'
-                            '\nLeaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
+                          final fromDate = DateFormat('dd MMM yyyy').format(DateTime.parse('${history.durationFrom}'));
+                          final toDate = DateFormat('dd MMM yyyy').format(DateTime.parse('${history.durationTo}'));
 
-                      /// ==================================> Reference 1 ====================================>
-                      CustomText(
-                        text: 'Reference 1',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Thomas David',  // Make this bold
-                        fontsize: 18.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\nDavid Brayan',
-                        fontsize: 10.sp,
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 15.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: "${history.companyName}",
+                                  fontWeight: FontWeight.bold,
+                                  fontsize: 18.sp,
+                                ),
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: '${history.jobName}',
+                                  fontsize: 10.sp,
+                                ),
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: '${history.supervisorsName}',
+                                  fontsize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: '${history.supervisorsContact}'
+                                      '\n$fromDate to $toDate'
+                                      '\n${history.reason}',
+                                  fontsize: 10.sp,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(height: 15.h),
+                      /// ==================================> Reference ====================================>
 
-                      /// ==================================> Reference 2 ====================================>
-                      CustomText(
-                        text: 'Reference 2',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                      ListView.builder(
+                        itemCount: mechanicController.profile.value.references?.length ?? 0,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final reference = mechanicController.profile.value.references![index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 15.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: 'Reference ${index + 1}',
+                                  fontsize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: reference.name ?? 'N/A',
+                                  fontsize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: '${reference.phone ?? 'N/A'}\n${reference.relation ?? 'N/A'}',
+                                  fontsize: 10.sp,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Thomas David',  // Make this bold
-                        fontsize: 18.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\nDavid Brayan',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
 
                       SizedBox(height: 15.h),
+
                       CustomText(
                         textAlign: TextAlign.start,
                         maxline: 2,
@@ -397,108 +341,26 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       CustomText(
                         textAlign: TextAlign.start,
                           maxline: 10,
-                          text: 'I want to work at On-Site Fleet Services because of its commitment to quality maintenance and customer satisfaction. I am eager to apply my skills in a dynamic environment, contribute to the team, and grow professionally in the fleet services industry.',
+                          text: mechanicController.profile.value.whyOnSite ?? 'N/A',
                           fontsize: 10.sp,
                           color: AppColors.textColor151515),
                       SizedBox(height: 24.h),
-                      /// ==================================> Employment History ====================================>
-                      CustomText(
-                        text: 'Employment History',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                      CustomUploadButton(
+                        title: getFileName(mechanicController.profile.value.resume),
+                        onTap: () {
+                          // Handle resume tap
+                        },
                       ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Grease Monkey'
-                            '\nSr. Mechanic, On-site'
-                            '\n', // Empty line for spacing
-                        fontsize: 10.sp,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'David Bryan',  // Make this bold
-                        fontsize: 10.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\n17 March 2023 to 12 Feb 2024'
-                            '\nLeaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
 
-                      /// ==================================> Grease Monkey ====================================>
-                      CustomText(
-                        text: 'Grease Monkey',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Sr. Mechanic, On-site'
-                            '\n', // Empty line for spacing
-                        fontsize: 10.sp,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'David Brayan',  // Make this bold
-                        fontsize: 10.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\n17 March 2023 to 12 Feb 2024'
-                            '\nLeaving a job can be a tough decision, whether for growth, work-life balance, or a new opportunity...',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
+                      SizedBox(height: 12.h),
 
-                      /// ==================================> Reference 1 ====================================>
-                      CustomText(
-                        text: 'Reference 1',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                      CustomUploadButton(
+                        title: getFileName(mechanicController.profile.value.certificate),
+                        onTap: () {
+                          // Handle certificate tap
+                        },
                       ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Thomas David',  // Make this bold
-                        fontsize: 10.sp,
-                        fontWeight: FontWeight.bold,  // Bold for name
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\nDavid Brayan',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
 
-                      /// ==================================> Pdf ====================================>
-                      CustomText(
-                        text: 'Reference 2',
-                        fontsize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: 'Thomas David',
-                        fontsize: 10.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: '+746 478574'
-                            '\nDavid Brayan',
-                        fontsize: 10.sp,
-                      ),
-                      SizedBox(height: 15.h),
-
-                      CustomUploadButton(title: 'Resume.pdf', onTap: (){}),
-                      SizedBox(height: 10.h),
-                      CustomUploadButton(title: 'Certificate.pdf', onTap: (){}),
 
                       SizedBox(height: 16.h),
                       CustomButton(
@@ -519,6 +381,35 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
     );
   }
 
+
+  Map<String, List<Tool>> toolsGroupToMap(ToolsGroup toolsGroup) {
+    final Map<String, List<Tool>> groupedTools = {};
+
+    if (toolsGroup.basicHand != null && toolsGroup.basicHand!.isNotEmpty) {
+      groupedTools["Basic hand"] = toolsGroup.basicHand!;
+    }
+
+    if (toolsGroup.group2 != null && toolsGroup.group2!.isNotEmpty) {
+      groupedTools["Group 2"] = toolsGroup.group2!;
+    }
+
+    if (toolsGroup.group3 != null && toolsGroup.group3!.isNotEmpty) {
+      groupedTools["Group 3"] = toolsGroup.group3!;
+    }
+
+    return groupedTools;
+  }
+
+
+  String getFileName(String? path) {
+    if (path == null || path.trim().isEmpty) return 'Not uploaded';
+
+    // Normalize path separators
+    path = path.replaceAll('\\', '/');
+
+    // Extract file name after last slash
+    return path.split('/').last;
+  }
   Widget _buildTag(String text) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),

@@ -78,7 +78,7 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                   icon: Icons.upload,
                   onTap: () => importPdf(isResume: false),
                 ),
-                SizedBox(height: 350.h),
+                SizedBox(height: 330.h),
 
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
                 Obx(() => CustomButton(

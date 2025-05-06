@@ -23,7 +23,7 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(
