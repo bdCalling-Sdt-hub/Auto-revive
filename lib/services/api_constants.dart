@@ -23,5 +23,6 @@ class ApiConstants{
   static const String additionalInformationEndPoint = "/mechanic/why-on-site";
   static const String mechanicResumeCertificateEndPoint = "/mechanic/resume-certificate";
   static const String getProfileEndPoint = "/user/me";
+  static const String carModel = "/car-model";
 
 }

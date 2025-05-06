@@ -1,3 +1,4 @@
+import 'package:autorevive/controllers/customer/customer_home_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
@@ -8,6 +9,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomerSelectCarScreen extends StatefulWidget {
@@ -19,18 +21,10 @@ class CustomerSelectCarScreen extends StatefulWidget {
 }
 
 class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
-  final List<String> carTypes = [
-    'Sedan',
-    'Car',
-    'SUV',
-    'Truck',
-    'Semi Truck',
-    'Semi Trailer',
-    'Pull Trailer',
-    'RV',
-    'Heavy Equipment',
-    'Other',
-  ];
+
+  CustomerHomeController customerHomeController = Get.find<CustomerHomeController>();
+
+
 
   String selectedType = 'Sedan';
   TextEditingController carCtrl = TextEditingController();
@@ -278,11 +272,15 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
 
 
             const Spacer(),
-            CustomButton(
-                title: "Submit",
-                onpress: () {
-                  context.pushNamed(AppRoutes.customerMapScreen, extra: {"title" : routerData["title"]});
-                }),
+            Obx(() =>
+               CustomButton(
+                 loading: customerHomeController.carModelLoading.value,
+                  title: "Submit",
+                  onpress: () {
+                    customerHomeController.selectCarModel(selectedType.toString(), context: context, routeData: routerData["title"]);
+
+                  }),
+            ),
             SizedBox(height: 50.h)
 
 
@@ -291,4 +289,17 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
       ),
     );
   }
+
+  final List<String> carTypes = [
+    'Sedan',
+    'Car',
+    'SUV',
+    'Truck',
+    'Semi Truck',
+    'Semi Trailer',
+    'Pull Trailer',
+    'RV',
+    'Heavy Equipment',
+    'Other',
+  ];
 }
