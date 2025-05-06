@@ -159,12 +159,10 @@ class AuthController extends GetxController {
   RxBool logInLoading = false.obs;
   handleLogIn(String email, String password, {required BuildContext context}) async {
     logInLoading.value = true;
-    var role = await PrefsHelper.getString(AppConstants.role);
     var headers = {'Content-Type': 'application/json'};
     var body = {
       "email": email,
-      "password": password,
-      "role": role.toString(),
+      "password": password
     };
     var response = await ApiClient.postData(
         ApiConstants.loginUpEndPoint, jsonEncode(body),
@@ -176,34 +174,23 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["tokens"]["accessToken"]);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
-      // await PrefsHelper.setString(AppConstants.phone, data['phone']);
-      // await PrefsHelper.setString(AppConstants.image, data['image']);
-
-      // await PrefsHelper.setString(AppConstants.userId, data['_id']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
-
-
-      final fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
-      // FirebaseNotificationService.sendSocketEvent('fcmToken',
-      //     {'userId': data['_id'], 'fcmToken': fcmToken});
 
       var role = data['role'];
 
-      if (role == "user") {
+      if (role == "customer") {
         context.go(AppRoutes.customerBottomNavBar);
       }else{
         context.go(AppRoutes.mechanicBottomNavBar);
-        // await PrefsHelper.setString(AppConstants.mechanicType, data['type']);
       }
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);
     }else{
       ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
-      if (response.body["message"] == "We've sent an OTP to your email to verify your profile.") {
-        var role = response.body["data"]["role"];
-        context.go(AppRoutes.otpScreen, extra: role.toString());
+      if (response.body["message"] == "Email not verified. Please verify your email.") {
+        context.go(AppRoutes.otpScreen, extra: "");
         await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']);
-        ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your profile.");
+        ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your email.");
       }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
         ToastMessageHelper.showToastMessage(response.body["message"]);
       }

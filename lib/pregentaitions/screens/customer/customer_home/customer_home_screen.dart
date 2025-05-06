@@ -57,11 +57,11 @@ class CustomerHomeScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 44.h),
 
                   Row(
                     children: [
-                      Assets.icons.logoSVG.svg(color: AppColors.primaryColor, height: 50.h),
+                      Assets.icons.logoSVG.svg(color: Colors.white, height: 50.h),
                      const  Spacer(),
                       GestureDetector(
                           onTap: () {
