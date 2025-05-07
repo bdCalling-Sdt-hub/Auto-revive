@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../helpers/toast_message_helper.dart';
+import '../../../../../models/car_model.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
@@ -159,7 +160,11 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                     readOnly: true,
                     controller: platformCtrl,
                     suffixIcon: CustomPopupMenu(
-                        items: platForm,
+                        items: [
+                          CarModel(id: '1', adminId: 'admin123', name: 'Tow Truck A', v: 0),
+                          CarModel(id: '2', adminId: 'admin123', name: 'Tow Truck B', v: 0),
+                          CarModel(id: '3', adminId: 'admin456', name: 'Tow Truck C', v: 0),
+                        ],
                         onSelected: (p0) {
                           platformCtrl.text = p0;
                           setState(() {});

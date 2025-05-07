@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/config/app_routes/app_routes.dart';
+import '../../models/car_model.dart';
 import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 
@@ -21,10 +22,28 @@ class CustomerHomeController extends GetxController {
         await ApiClient.postData(ApiConstants.carModel, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.customerMapScreen, extra: {"title" : routeData});
+
 
       carModelLoading(false);
     }
     carModelLoading(false);
   }
+  
+  
+
+  RxList<CarModel> carModels = <CarModel>[].obs;
+  RxBool fetchCarModelLoading = false.obs;
+
+  fetchCarModel()async{
+    fetchCarModelLoading(true);
+    var response = await ApiClient.getData(ApiConstants.carModel);
+
+    if(response.statusCode == 200){
+
+      carModels.value = List<CarModel>.from(response.body["data"].map((x)=> CarModel.fromJson(x)));
+
+      fetchCarModelLoading(false);
+    }fetchCarModelLoading(false);
+  }
+  
 }

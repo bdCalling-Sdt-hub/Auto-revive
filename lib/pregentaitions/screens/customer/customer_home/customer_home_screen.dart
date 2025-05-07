@@ -2,10 +2,7 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
-import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 
 class CustomerHomeScreen extends StatelessWidget {

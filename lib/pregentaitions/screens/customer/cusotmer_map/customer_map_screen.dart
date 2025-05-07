@@ -5,73 +5,70 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../widgets/custom_container.dart';
+import '../../../widgets/custom_slider.dart';
+
 class CustomerMapScreen extends StatefulWidget {
+  const CustomerMapScreen({super.key});
+
   @override
   _CustomerMapScreenState createState() => _CustomerMapScreenState();
 }
 
 class _CustomerMapScreenState extends State<CustomerMapScreen> {
+  double _miles = 4;
 
-  final LatLng _center = const LatLng(37.7749, -122.4194);
-  Set<Circle> _circles = {};
-  bool _isFilterVisible = false;
-  double _distance = 4; // Default distance in miles
+  final CustomerMapController customerMapController =
+  Get.put(CustomerMapController());
 
   @override
   void initState() {
     super.initState();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    _updateCircle(_distance);
-  }
-
-  void _updateCircle(double miles) {
-    final radiusInMeters = miles * 1609.34;
-    setState(() {
-      _circles = {
-        Circle(
-          circleId: const CircleId('radius'),
-          center: _center,
-          radius: radiusInMeters,
-          fillColor: Colors.blue.withOpacity(0.2),
-          strokeColor: AppColors.primaryColor,
-          strokeWidth: 2,
-        ),
-      };
+    Future.delayed(Duration.zero, () async {
+      await customerMapController.setInitialLocation();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Map routerData = GoRouterState.of(context).extra as Map;
+    final Map routerData = GoRouterState.of(context).extra as Map;
+
     return Scaffold(
       appBar: CustomAppBar(
         title: routerData["title"].toString(),
         actions: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _isFilterVisible = !_isFilterVisible;
-              });
-            },
-            child: Assets.icons.filterIcons.svg(),
-          ),
-          SizedBox(width: 20.w),
+          Builder(builder: (context) {
+            return GestureDetector(
+              onTap: () => Scaffold.of(context).openEndDrawer(),
+              child: Assets.icons.menu.svg(),
+            );
+          }),
+          SizedBox(width: 24.w),
         ],
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 14.0,
-            ),
-            circles: _circles,
+          GetBuilder<CustomerMapController>(
+            builder: (controller) {
+              if (controller.isLoading ||
+                  controller.initialCameraPosition == null) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              return GoogleMap(
+                myLocationEnabled: true,
+                initialCameraPosition: controller.initialCameraPosition!,
+                circles: controller.circles,
+                onMapCreated: (GoogleMapController mapCtrl) {
+                  controller.mapController = mapCtrl;
+                },
+              );
+            },
           ),
           Positioned(
             top: 20,
@@ -90,7 +87,6 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                   SizedBox(width: 8),
                   Expanded(
                     child: TextField(
-
                       decoration: InputDecoration(
                         hintText: "Search",
                         hintStyle: TextStyle(color: Color(0xff9D9D9D)),
@@ -101,92 +97,161 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                   CircleAvatar(
                     radius: 23,
                     backgroundColor: AppColors.primaryColor,
-                    child: Icon(Icons.search, color: Colors.white,),
+                    child: Icon(Icons.search, color: Colors.white),
                   ),
-                ],
-              ),
-            ),
-          ),
-
-          // Filter Side Panel
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            top: 0,
-            bottom: 0,
-            right: _isFilterVisible ? 0 : -250.w,
-            child: Container(
-              width: 250.w,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.horizontal(left: Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 10.r),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: CustomText(text: "Filter", fontsize: 22.h, color: AppColors.primaryColor),
-                  ),
-                  SizedBox(height: 20.h),
-
-                  CustomText(text: "Miles From Me", fontsize: 20.h, color: AppColors.textColor151515),
-
-
-                  SizedBox(height: 10.h),
-
-
-
-                  Slider(
-                    value: _distance,
-                    min: 1,
-                    max: 5,
-                    divisions: 5,
-                    label: "${_distance.toInt()}",
-                    activeColor: AppColors.primaryColor,
-                    inactiveColor: Colors.grey.shade300,
-                    onChanged: (value) {
-                      setState(() {
-                        _distance = value;
-                      });
-                    },
-                  ),
-
-
-
-
-                  Center(child: CustomText(text: "Maximum", fontsize: 12.h, color: const Color(0xff262626), bottom: 4.h)),
-
-                  Center(
-                    child: Container(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor,),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        "${_distance.toInt()}",
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-
-                  CustomButton(title: "Apply", onpress: () {
-                    setState(() {
-                      _isFilterVisible = false;
-                    });
-                  },)
                 ],
               ),
             ),
           ),
         ],
       ),
+      endDrawer: Drawer(
+        backgroundColor: AppColors.bgColorWhite,
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 60.h, 16.w, 8.h),
+            child: Column(
+              children: [
+                CustomText(
+                  text: 'Filter',
+                  color: AppColors.primaryColor,
+                  fontsize: 22.sp,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: CustomText(
+                    text: 'Miles From Me',
+                    fontsize: 20.sp,
+                    left: 16.w,
+                    top: 16.h,
+                  ),
+                ),
+                CustomSlider(
+                  activeColor: AppColors.primaryShade300,
+                  inactiveColor: AppColors.switchColor,
+                  thumbColor: Colors.grey.shade300,
+                  value: _miles,
+                  onChanged: (val) {
+                    setState(() => _miles = val);
+                  },
+                ),
+                CustomText(text: 'Maximum', fontsize: 12.sp, bottom: 4.h),
+                CustomContainer(
+                  alignment: Alignment.center,
+                  radiusAll: 12.r,
+                  width: 95.w,
+                  height: 42.h,
+                  bordersColor: AppColors.primaryShade300,
+                  child: CustomText(
+                    text: _miles.toInt().toString(),
+                    fontsize: 16.sp,
+                  ),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    customerMapController.updateCircle(_miles);
+                    context.pop();
+                  },
+                  child: CustomContainer(
+                    color: AppColors.primaryShade300,
+                    paddingAll: 10.r,
+                    radiusAll: 100.r,
+                    width: double.infinity,
+                    bordersColor: Colors.red,
+                    child: CustomText(
+                      text: 'Apply',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomerMapController extends GetxController {
+  GoogleMapController? mapController;
+  CameraPosition? initialCameraPosition;
+  LatLng center = const LatLng(0, 0);
+
+  double miles = 5.0;
+  Set<Circle> circles = {};
+  bool isLoading = true;
+
+  void updateCircle(double miles) {
+    final radiusInMeters = miles * 1609.34;
+
+    circles = {
+      Circle(
+        circleId: const CircleId('radius'),
+        center: center,
+        radius: radiusInMeters,
+        fillColor: Colors.blue.withOpacity(0.2),
+        strokeColor: Colors.blue,
+        strokeWidth: 2,
+      ),
+    };
+
+    update(); // Notifies GetBuilder
+  }
+
+  void updateCenter(LatLng newCenter) {
+    center = newCenter;
+    update();
+  }
+
+  Future<void> setInitialLocation() async {
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    debugPrint("========================permission : $permission");
+
+    try {
+      final position = await determinePosition();
+      debugPrint('Got location: ${position.latitude}, ${position.longitude}');
+
+      center = LatLng(position.latitude, position.longitude);
+      initialCameraPosition = CameraPosition(target: center, zoom: 14.0);
+    } catch (e) {
+      debugPrint('Location error: $e');
+
+      // Fallback to Dhaka if real location fails
+      center = const LatLng(23.8103, 90.4125);
+      initialCameraPosition = CameraPosition(target: center, zoom: 12.0);
+      Get.snackbar("Location Error", "Using fallback location in Dhaka.");
+    }
+
+    updateCircle(miles);
+    isLoading = false;
+    update();
+  }
+
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
     );
   }
 }

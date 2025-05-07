@@ -1,3 +1,4 @@
+import 'package:autorevive/models/car_model.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class CustomPopupMenu extends StatelessWidget {
     required this.onSelected,
   });
 
-  final List<String> items;
+  final List<CarModel> items;
   final Function(String) onSelected;
 
   @override
@@ -21,16 +22,16 @@ class CustomPopupMenu extends StatelessWidget {
       color: Colors.white,
       onSelected: onSelected,
       itemBuilder: (BuildContext context) {
-        return items.map((String item) {
+        return items.map((CarModel item) {
           return PopupMenuItem<String>(
             padding: EdgeInsets.zero,
             height: 24.h,
-            value: item,
+            value: item.id,
             child: CustomContainer(
                 width: double.infinity,
                 border: const Border(
                     bottom: BorderSide(color: Colors.black, width: 0.7)),
-                child: CustomText(text: item, fontsize: 12.sp)),
+                child: CustomText(text: item.name.toString(), fontsize: 12.sp)),
           );
         }).toList();
       },
