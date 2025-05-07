@@ -8,6 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../widgets/custom_container.dart';
+import '../../../widgets/custom_slider.dart';
+
 class CustomerMapScreen extends StatefulWidget {
   @override
   _CustomerMapScreenState createState() => _CustomerMapScreenState();
@@ -17,8 +20,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
 
   final LatLng _center = const LatLng(37.7749, -122.4194);
   Set<Circle> _circles = {};
-  bool _isFilterVisible = false;
-  double _distance = 4; // Default distance in miles
+  double _miles = 4;
 
   @override
   void initState() {
@@ -26,7 +28,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _updateCircle(_distance);
+    _updateCircle(_miles);
   }
 
   void _updateCircle(double miles) {
@@ -52,15 +54,17 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
       appBar: CustomAppBar(
         title: routerData["title"].toString(),
         actions: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _isFilterVisible = !_isFilterVisible;
-              });
-            },
-            child: Assets.icons.filterIcons.svg(),
+          Builder(
+              builder: (context) {
+                return GestureDetector(
+                    onTap: (){
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    child: Assets.icons.menu.svg());
+              }
           ),
-          SizedBox(width: 20.w),
+
+          SizedBox(width: 24.w)
         ],
       ),
       body: Stack(
@@ -108,84 +112,76 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
             ),
           ),
 
-          // Filter Side Panel
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            top: 0,
-            bottom: 0,
-            right: _isFilterVisible ? 0 : -250.w,
-            child: Container(
-              width: 250.w,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 40.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.horizontal(left: Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 10.r),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: CustomText(text: "Filter", fontsize: 22.h, color: AppColors.primaryColor),
-                  ),
-                  SizedBox(height: 20.h),
 
-                  CustomText(text: "Miles From Me", fontsize: 20.h, color: AppColors.textColor151515),
+        ],
+      ),
 
 
-                  SizedBox(height: 10.h),
+      endDrawer: Drawer(
+        backgroundColor: AppColors.bgColorWhite,
+        child: SafeArea(
+          child: Padding(
+            padding:  EdgeInsets.fromLTRB(16.w,60.h,16.w,8.h),
+            child: Column(
+              children: [
+                CustomText(text: 'Filter',color: AppColors.primaryColor,fontsize: 22.sp,),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomText(text: 'Miles From Me',fontsize: 20.sp,left: 16.w,top: 16.h,)),
 
-
-
-                  Slider(
-                    value: _distance,
-                    min: 1,
-                    max: 5,
-                    divisions: 5,
-                    label: "${_distance.toInt()}",
-                    activeColor: AppColors.primaryColor,
-                    inactiveColor: Colors.grey.shade300,
-                    onChanged: (value) {
-                      setState(() {
-                        _distance = value;
-                      });
-                    },
-                  ),
-
-
-
-
-                  Center(child: CustomText(text: "Maximum", fontsize: 12.h, color: const Color(0xff262626), bottom: 4.h)),
-
-                  Center(
-                    child: Container(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor,),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        "${_distance.toInt()}",
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-
-                  CustomButton(title: "Apply", onpress: () {
+                CustomSlider(
+                  activeColor: AppColors.primaryShade300,
+                  inactiveColor: AppColors.switchColor,
+                  thumbColor: Colors.grey.shade300,
+                  value: _miles,
+                  onChanged: (val){
+                    _miles = val;
                     setState(() {
-                      _isFilterVisible = false;
+
                     });
-                  },)
-                ],
-              ),
+                  },
+                ),
+                CustomText(
+                    text: 'Maximum',
+                    fontsize: 12.sp,
+                    bottom: 4.h),
+
+
+
+
+                CustomContainer(
+                  alignment: Alignment.center,
+                  radiusAll: 12.r,
+                  width: 95.w,
+                  height: 42.h,
+                  bordersColor: AppColors.primaryShade300,
+                  child: CustomText(
+                    text: _miles.toInt().toString(),
+                    fontsize: 16.sp,
+                  ),
+                ),
+
+
+
+
+                const Spacer(),
+                GestureDetector(
+                  onTap: (){
+                    context.pop();
+                  },
+                  child: CustomContainer(
+                    color: AppColors.primaryShade300,
+                    paddingAll: 10.r,
+                    radiusAll: 100.r,
+                    width: double.infinity,
+                    bordersColor: Colors.red,
+                    child: CustomText(text: 'Apply',color: Colors.white,),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

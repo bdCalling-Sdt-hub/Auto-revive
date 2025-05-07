@@ -115,17 +115,6 @@ class TowTruckHomeScreen extends StatelessWidget {
             ),
           ),
 
-
-
-
-
-
-
-
-
-
-
-
         ],
       ),
     );

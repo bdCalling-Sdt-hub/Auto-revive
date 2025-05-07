@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../models/car_model.dart';
+
 class VehicleEquipmentScreen extends StatefulWidget {
   const VehicleEquipmentScreen({super.key});
 
@@ -100,7 +102,11 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 labelText: 'Type of tow truck',
                 hintText: 'Type of tow truck',
                 suffixIcon: CustomPopupMenu(
-                  items: towTruckList,
+                  items: [
+                    CarModel(id: '1', adminId: 'admin123', name: 'Tow Truck A', v: 0),
+                    CarModel(id: '2', adminId: 'admin123', name: 'Tow Truck B', v: 0),
+                    CarModel(id: '3', adminId: 'admin456', name: 'Tow Truck C', v: 0),
+                  ],
                   onSelected: (val) {
                     _typeTowTruckTEController.text = val;
                   },

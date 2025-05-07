@@ -25,9 +25,15 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
   CustomerHomeController customerHomeController = Get.find<CustomerHomeController>();
 
 
+  @override
+  void initState() {
+    customerHomeController.fetchCarModel();
+    super.initState();
+  }
 
   String selectedType = 'Sedan';
   TextEditingController carCtrl = TextEditingController();
+  TextEditingController carSelectIdCtrl = TextEditingController();
   TextEditingController timeCtrl = TextEditingController();
   TextEditingController dateCtrl = TextEditingController();
 
@@ -179,9 +185,11 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                   hintText: "Select car",
                   controller: carCtrl,
                   suffixIcon: CustomPopupMenu(
-                      items: carTypes,
+                      items: customerHomeController.carModels,
                       onSelected: (p0) {
-                        carCtrl.text = p0;
+                        carSelectIdCtrl.text = p0;
+                       final selectCarThis = customerHomeController.carModels.firstWhere((x) => x.id == p0);
+                        carCtrl.text = selectCarThis.name!;
                         setState(() {});
                       }),
                 ),
@@ -277,7 +285,8 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                  loading: customerHomeController.carModelLoading.value,
                   title: "Submit",
                   onpress: () {
-                    customerHomeController.selectCarModel(selectedType.toString(), context: context, routeData: routerData["title"]);
+                    context.pushNamed(AppRoutes.customerMapScreen, extra: {"title" : routerData["title"]});
+                    // customerHomeController.selectCarModel(selectedType.toString(), context: context, routeData: routerData["title"]);
 
                   }),
             ),
@@ -290,16 +299,4 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
     );
   }
 
-  final List<String> carTypes = [
-    'Sedan',
-    'Car',
-    'SUV',
-    'Truck',
-    'Semi Truck',
-    'Semi Trailer',
-    'Pull Trailer',
-    'RV',
-    'Heavy Equipment',
-    'Other',
-  ];
 }
