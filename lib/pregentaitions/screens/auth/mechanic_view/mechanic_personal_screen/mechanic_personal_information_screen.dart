@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/app_constants/app_constants.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
@@ -191,6 +192,12 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                     controller: currentAddressCtrl,
                     hintText: "Enter Current Address",
                     labelText: "Current Address",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your address";
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(height: 19.h),
                   ///<<<=============>>> Checked <<<===============>>>
@@ -221,7 +228,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                        loading: mechanicController.basicInfoLoading.value,
                       title: "Save and Next",
                       onpress: () {
-                        if(fromKey.currentState!.validate()){
+                        if(!fromKey.currentState!.validate()){
                           mechanicController.mechanicBasicInfo(
                               profileImage: uploadedUrl,
                               platform: platformCtrl.text.trim().toLowerCase(),

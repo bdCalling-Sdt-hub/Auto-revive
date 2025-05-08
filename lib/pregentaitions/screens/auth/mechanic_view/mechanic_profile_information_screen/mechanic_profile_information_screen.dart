@@ -95,7 +95,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         spacing: 20.w,
                         runSpacing: 15.h,
                         children: [
-                          // Have Section
+                          /// =============================================> Have Section =======================================>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -124,7 +124,8 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                             ],
                           ),
 
-                          // Certificate Section
+                          /// ============================================> Certificate Section =================================>
+
                           if (mechanicController.profile.value.certifications != null &&
                               mechanicController.profile.value.certifications!.isNotEmpty)
                             Column(
@@ -148,8 +149,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         ],
                       ),
                       SizedBox(height: 10.h),
-
-
                       CustomText(
                           text:
                           'Comfortable working on-site (roadside, fleet yards, job sites)'),
@@ -185,15 +184,13 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         ),
                       ),
 
-
                       /// ==================================> Tools and Equipment ====================================>
                       CustomText(text: 'Tools and Equipment',fontsize: 16.sp,color: AppColors.textColor151515,),
                       SizedBox(height: 13.h),
-
                       ListView.builder(
                         itemCount: toolsMap.keys.length,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, groupIndex) {
                           final groupName = toolsMap.keys.elementAt(groupIndex);
                           final tools = toolsMap[groupName]!;
@@ -209,14 +206,14 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                               ListView.builder(
                                 itemCount: tools.length,
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   final tool = tools[index];
                                   return Padding(
                                     padding: EdgeInsets.only(bottom: 8.h),
                                     child: CustomText(
                                       textAlign: TextAlign.start,
-                                      text: '${nameValues.reverse[tool.name] ?? ''}\n${groupValues.reverse[tool.group] ?? ''}',
+                                      text: '${groupValues.reverse[tool.name] ?? 'N/A'}\n${groupValues.reverse[tool.group] ?? 'N/A'}',
                                       fontsize: 10.sp,
                                     ),
                                   );
@@ -253,7 +250,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       ListView.builder(
                         itemCount: mechanicController.profile.value.employmentHistories?.length ?? 0,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           final history = mechanicController.profile.value.employmentHistories![index];
 
@@ -267,7 +264,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                               children: [
                                 CustomText(
                                   textAlign: TextAlign.start,
-                                  text: "${history.companyName}",
+                                  text: history.companyName ?? 'N/A',
                                   fontWeight: FontWeight.bold,
                                   fontsize: 18.sp,
                                 ),
@@ -278,13 +275,13 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                 ),
                                 CustomText(
                                   textAlign: TextAlign.start,
-                                  text: '${history.supervisorsName}',
+                                  text: history.supervisorsName ?? 'N/A',
                                   fontsize: 18.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 CustomText(
                                   textAlign: TextAlign.start,
-                                  text: '${history.supervisorsContact}'
+                                  text: '${history.supervisorsContact ?? 'N/A'}'
                                       '\n$fromDate to $toDate'
                                       '\n${history.reason}',
                                   fontsize: 10.sp,
@@ -295,8 +292,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         },
                       ),
                       SizedBox(height: 15.h),
-                      /// ==================================> Reference ====================================>
-
+                      /// ==================================> Reference =============================================>
                       ListView.builder(
                         itemCount: mechanicController.profile.value.references?.length ?? 0,
                         shrinkWrap: true,
@@ -329,9 +325,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                           );
                         },
                       ),
-
                       SizedBox(height: 15.h),
-
                       CustomText(
                         textAlign: TextAlign.start,
                         maxline: 2,
@@ -345,22 +339,26 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                           fontsize: 10.sp,
                           color: AppColors.textColor151515),
                       SizedBox(height: 24.h),
+
+                      /// ================================> Pdf Button ==============================================>
+
                       CustomUploadButton(
-                        title: getFileName(mechanicController.profile.value.resume),
+                        title: 'Resume',
+                        // getFileName(mechanicController.profile.value.resume),
                         onTap: () {
                           // Handle resume tap
                         },
                       ),
-
                       SizedBox(height: 12.h),
-
                       CustomUploadButton(
-                        title: getFileName(mechanicController.profile.value.certificate),
+                        title: 'Certificate',
+                        // getFileName(mechanicController.profile.value.certificate),
                         onTap: () {
                           // Handle certificate tap
                         },
                       ),
 
+                      /// ==============================================> Go to Home Button ============================================>
 
                       SizedBox(height: 16.h),
                       CustomButton(
@@ -403,11 +401,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
   String getFileName(String? path) {
     if (path == null || path.trim().isEmpty) return 'Not uploaded';
-
-    // Normalize path separators
     path = path.replaceAll('\\', '/');
-
-    // Extract file name after last slash
     return path.split('/').last;
   }
   Widget _buildTag(String text) {

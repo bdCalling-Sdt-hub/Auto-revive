@@ -10,6 +10,7 @@ class AppConstants{
   static const String isLogged = "isLogged";
   static const String fcmToken = "fcmToken";
   static const String mechanicType = "mechanicType";
+  static const String emailValidator = "emailValidator";
 
 
 
