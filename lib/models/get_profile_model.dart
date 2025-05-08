@@ -1,14 +1,3 @@
-
-// To parse this JSON data, do
-//
-//     final getProfileModel = getProfileModelFromJson(jsonString);
-
-import 'dart:convert';
-
-GetProfileModel getProfileModelFromJson(String str) => GetProfileModel.fromJson(json.decode(str));
-
-String getProfileModelToJson(GetProfileModel data) => json.encode(data.toJson());
-
 class GetProfileModel {
   final String? id;
   final String? userId;
@@ -240,27 +229,13 @@ class Tool {
     this.group,
   });
 
-  factory Tool.fromJson(Map<String, dynamic> json) {
-    // Safely access adminId, checking for null or non-existent values
-    final adminId = json["adminId"];
-    final adminIdMapped = adminId != null && adminIdValues.map.containsKey(adminId)
-        ? adminIdValues.map[adminId]
-        : null;
-
-    // Safely access group, checking for null or non-existent values
-    final group = json["group"];
-    final groupMapped = group != null && groupValues.map.containsKey(group)
-        ? groupValues.map[group]
-        : null;
-
-    return Tool(
-      id: json["_id"],
-      adminId: adminIdMapped, // No null check operator used here
-      name: json["name"],
-      v: json["__v"],
-      group: groupMapped, // No null check operator used here
-    );
-  }
+  factory Tool.fromJson(Map<String, dynamic> json) => Tool(
+    id: json["_id"],
+    adminId: adminIdValues.map[json["adminId"]]!,
+    name: json["name"],
+    v: json["__v"],
+    group: groupValues.map[json["group"]]!,
+  );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
@@ -291,20 +266,6 @@ final groupValues = EnumValues({
   "Group 3": Group.GROUP_3
 });
 
-
-enum Name {
-  EXPERIENCE_X,
-  GASOLINE_ENGINE_REPAIR,
-  GROUP_3_TOOLS,
-  RATCHETS_STANDARD_FLEX_HEAD
-}
-
-final nameValues = EnumValues({
-  "Experience x": Name.EXPERIENCE_X,
-  "Gasoline Engine Repair": Name.GASOLINE_ENGINE_REPAIR,
-  "Group 3 Tools": Name.GROUP_3_TOOLS,
-  "Ratchets (Standard & Flex Head)": Name.RATCHETS_STANDARD_FLEX_HEAD
-});
 class Location {
   final String? type;
   final List<int>? coordinates;
@@ -384,6 +345,7 @@ class EnumValues<T> {
     return reverseMap;
   }
 }
+
 
 
 // class GetProfileModel {
