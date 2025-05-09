@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
-import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/equipment_check_box_list.dart';
@@ -185,12 +184,8 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   loading: mechanicController.mechanicToolsLoading.value,
                   title: "Save and Next",
                     onpress: () {
-                      // Validate the form first
                       if (fromKey.currentState!.validate()) {
-                        // Form is valid, proceed with collecting selected tools
                         List<String> selectedToolIds = [];
-
-                        // Loop through each tool group and collect selected tool IDs
                         mechanicController.tools.forEach((group) {
                           group.tools.forEach((tool) {
                             if (tool.isSelected == true) {
@@ -198,15 +193,12 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                             }
                           });
                         });
-
-                        // Call the API to submit the selected tools
                         mechanicController.mechanicTools(
                           tools: selectedToolIds,
                           toolsCustom: customTools,
                           context: context,
                         ).then((success) {
                           if (success) {
-                            // Navigate to the next screen if successful
                             context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
                           }
                         });

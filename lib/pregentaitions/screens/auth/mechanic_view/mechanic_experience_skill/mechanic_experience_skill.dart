@@ -294,18 +294,13 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                      loading: mechanicController.experienceCertificationsLoading.value,
                     title: "Save and Next",
                        onpress: () async {
-                         // Validate the form first
                          if (fromKey.currentState!.validate()) {
-                           // Form is valid, proceed with experience and certification data
-
-                           // Build experiences data
                            final experienceList = <Map<String, dynamic>>[];
                            for (int i = 0; i < mechanicController.experience.length; i++) {
                              final experienceId = mechanicController.experience[i].id;
                              final workspace = selectedWorkSpaces.length > i ? selectedWorkSpaces[i].toLowerCase() : 'in shop';
                              final timeText = experienceControllers[i].text.trim();
                              final time = int.tryParse(timeText) ?? 0;
-
                              if (time > 0) {
                                experienceList.add({
                                  "experienceId": experienceId,
@@ -314,21 +309,15 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                                });
                              }
                            }
-
-                           // Build certifications data
                            final selectedCertifications = certificationCheckbox.entries
                                .where((entry) => entry.value)
                                .map((entry) => entry.key)
                                .toList();
-
-                           // Call the API with the experience and certifications data
                            final success = await mechanicController.experienceCertifications(
                              experiences: experienceList,
                              certifications: selectedCertifications,
                              context: context,
                            );
-
-                           // Navigate only if the API call is successful
                            if (success) {
                              context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
                            }

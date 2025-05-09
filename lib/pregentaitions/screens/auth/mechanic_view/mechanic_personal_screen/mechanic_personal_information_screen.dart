@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -8,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
-import '../../../../../core/app_constants/app_constants.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 import '../../../../widgets/CustomChecked.dart';
@@ -163,11 +160,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                     suffixIcon: CustomPopupMenu(
                         items: platForm,
                         onSelected: (p0) {
-                          // platformCtrl.text = p0;
-
                           final selectCarThis = platForm.firstWhere((x) => x.id == p0);
                           platformCtrl.text = selectCarThis.name!;
-                          setState(() {});
                           setState(() {});
                         }),
                   ),
@@ -241,16 +235,13 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                                 address: currentAddressCtrl.text,
                                 haveLicense: hasDriversLicense,
                                 haveCdl: hasCDL,
-                                context: context
+                                context: context,
                             );
                           } else {
                             ToastMessageHelper.showToastMessage("Please fill all required fields correctly.");
                           }
                         },
-                      ),
-
-
-                  ),
+                      ),),
 
                   SizedBox(height: 20.h),
                 ],
