@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:autorevive/helpers/dependancy_injaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +7,8 @@ import 'core/config/app_routes/app_routes.dart';
 import 'core/config/app_themes/app_themes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  PlatformDispatcher.instance.onAccessibilityFeaturesChanged = (){};
   DependencyInjection di = DependencyInjection();
   di.dependencies();
   runApp(const MyApp());

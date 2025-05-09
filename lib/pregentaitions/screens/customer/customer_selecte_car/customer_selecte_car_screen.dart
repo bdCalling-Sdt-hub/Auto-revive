@@ -2,6 +2,7 @@ import 'package:autorevive/controllers/customer/customer_home_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_app_bar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_popup_menu.dart';
@@ -280,16 +281,20 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
 
 
             const Spacer(),
-            Obx(() =>
-               CustomButton(
-                 loading: customerHomeController.carModelLoading.value,
-                  title: "Submit",
-                  onpress: () {
-                    context.pushNamed(AppRoutes.customerMapScreen, extra: {"title" : routerData["title"]});
-                    // customerHomeController.selectCarModel(selectedType.toString(), context: context, routeData: routerData["title"]);
+            CustomButton(
+                title: "Submit",
+                onpress: () {
 
-                  }),
-            ),
+                  if(carSelectIdCtrl.text != ""){
+                    context.pushNamed(AppRoutes.customerMapScreen, extra: {"title" : routerData["title"], "carModelId" : carSelectIdCtrl.text});
+
+                  }else{
+                    ToastMessageHelper.showToastMessage("Please select your car model!");
+                  }
+
+                  // customerHomeController.selectCarModel(selectedType.toString(), context: context, routeData: routerData["title"]);
+
+                }),
             SizedBox(height: 50.h)
 
 

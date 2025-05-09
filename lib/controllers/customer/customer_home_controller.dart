@@ -10,26 +10,7 @@ import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 
 class CustomerHomeController extends GetxController {
-  ///===============Select Car Model================<>
 
-  RxBool carModelLoading = false.obs;
-
-  selectCarModel(String model, {required BuildContext context, String routeData = ''}) async {
-    carModelLoading(true);
-    var body = {"name": "$model"};
-
-    var response =
-        await ApiClient.postData(ApiConstants.carModel, jsonEncode(body));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-
-
-      carModelLoading(false);
-    }
-    carModelLoading(false);
-  }
-  
-  
 
   RxList<CarModel> carModels = <CarModel>[].obs;
   RxBool fetchCarModelLoading = false.obs;
@@ -45,5 +26,29 @@ class CustomerHomeController extends GetxController {
       fetchCarModelLoading(false);
     }fetchCarModelLoading(false);
   }
-  
+
+
+
+
+  ///====================Post Job =====================>>>
+
+  RxBool postJobLoading = false.obs;
+  postJob({String? carModelId, required BuildContext context, String? platForm, List<String>? targets}) async {
+    postJobLoading(true);
+    var body = {
+      "platform": platForm?.toLowerCase().toString(),
+      "targets": targets,
+      "carModelId": "$carModelId"
+    };
+    var response = await ApiClient.postData(ApiConstants.postJob, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      postJobLoading(false);
+    }
+    postJobLoading(false);
+  }
+
+
+
+
 }

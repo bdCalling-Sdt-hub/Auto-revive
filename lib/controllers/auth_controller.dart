@@ -26,18 +26,21 @@ class AuthController extends GetxController {
   ///========================================== Sing up ==================================<>
   handleSignUp({String? name, email, phone, password,confirmPassword,filePath,required BuildContext context, required String screenType}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
+
+    List<MultipartBody> multipartBody =
+    filePath == null ? [] : [MultipartBody("file", filePath)];
+
     signUpLoading(true);
     var body = {
-      "name": name,
-      "email": email,
-      "phone": phone,
-      "password": password,
-      "confirmPassword": confirmPassword,
-      "filePath": filePath,
-      "role": "customer",
+      "name": "$name",
+      "email": "$email",
+      // "phone": phone,
+      "password": "$password",
+      "confirmPassword": "$confirmPassword",
+      "role": "$role",
     };
 
-    var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
+    var response = await ApiClient.postMultipartData(ApiConstants.signUpEndPoint, body, multipartBody: multipartBody);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
