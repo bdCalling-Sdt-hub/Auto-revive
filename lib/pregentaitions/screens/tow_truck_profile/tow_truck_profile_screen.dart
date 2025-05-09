@@ -88,7 +88,9 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
               CustomProfileListTile(
                   title: 'Admin Support',
                   icon: Assets.icons.support.svg(),
-                  onTap: () {}),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.adminSupportScreen);
+                  }),
 
 
               CustomProfileListTile(
