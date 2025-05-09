@@ -10,6 +10,7 @@ class ApiConstants{
 
   static const String signUpEndPoint = "/auth/register";
   static const String loginUpEndPoint = "/auth/login";
+  static const String changePassword = "/auth/change-password";
   static const String verifyEmailEndPoint = "/auth/verify-email";
   static const String uploadEndPoint = "/upload";
   static const String getAllToolsEndPoint = "/tool";
@@ -24,5 +25,7 @@ class ApiConstants{
   static const String mechanicResumeCertificateEndPoint = "/mechanic/resume-certificate";
   static const String getProfileEndPoint = "/user/me";
   static const String carModel = "/car-model";
+  static const String privacyPolicy = "/setting";
+  static const String adminSupport = "/setting/support";
 
 }

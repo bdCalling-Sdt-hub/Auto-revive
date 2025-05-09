@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/config/app_routes/app_routes.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../global/custom_assets/assets.gen.dart';
-import '../../widgets/custom_profile_list_tile.dart';
 import '../../widgets/custom_text.dart';
 
 

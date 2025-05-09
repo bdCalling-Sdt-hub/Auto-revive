@@ -11,6 +11,7 @@ import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_re
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_resume_certificate_screen/mechanic_resume_certificate_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
+import 'package:autorevive/pregentaitions/screens/tow_truck_profile/admin_support/admin_support_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_employment_history_screen/mechanic_employment_history_screen.dart';
@@ -33,7 +34,7 @@ import '../../../pregentaitions/screens/mechanic/mechanic_job_screen/mechanic_jo
 import '../../../pregentaitions/screens/message/chat/chat_screen.dart';
 import '../../../pregentaitions/screens/notifications_screen/notifications_screen.dart';
 import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart';
-import '../../../pregentaitions/screens/privacy_policy_Allscreen/privacy_policy_allscreen.dart';
+import '../../../pregentaitions/screens/settings_screen/privacy_policy_allscreen.dart';
 import '../../../pregentaitions/screens/progress/progress_screen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
@@ -80,6 +81,7 @@ class AppRoutes {
   static const String settingsScreen = "/SettingsScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
   static const String privacyAllScreen = "/PrivacyAllScreen";
+  static const String termsConditionsScreen = "/TermsConditionsScreen";
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
@@ -104,6 +106,7 @@ class AppRoutes {
   static const String customerBookingCancelScreen = "/CustomerBookingCancelScreen";
   static const String personalInfoCustomerScreen = "/PersonalInfoCustomerScreen";
   static const String progressScreen = "/ProgressScreen";
+  static const String adminSupportScreen = "/AdminSupportScreen";
 
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
@@ -129,7 +132,18 @@ class AppRoutes {
           _customTransitionPage(const OnboardingScreen(), state),
     ),
 
-    ///<<<=============>>> LOGIN SCREEN <<<===============>>>
+        ///<<<=============>>> ADMIN SUPPORT SCREEN <<<===============>>>
+
+        GoRoute(
+          path: adminSupportScreen,
+          name: adminSupportScreen,
+          pageBuilder: (context, state) =>
+              _customTransitionPage(const AdminSupportScreen(), state),
+        ),
+
+
+
+        ///<<<=============>>> LOGIN SCREEN <<<===============>>>
 
     GoRoute(
       path: logInScreen,
@@ -325,8 +339,6 @@ class AppRoutes {
 
 
 
-
-
         ///<<<=============>>> Customer Sign Up SCREEN <<<===============>>>
 
     GoRoute(
@@ -428,12 +440,12 @@ class AppRoutes {
 
     ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
 
-    GoRoute(
-      path: customerMapScreen,
-      name: customerMapScreen,
-      pageBuilder: (context, state) =>
-          _customTransitionPage(CustomerMapScreen(), state),
-    ),
+    // GoRoute(
+    //   path: customerMapScreen,
+    //   name: customerMapScreen,
+    //   pageBuilder: (context, state) =>
+    //       _customTransitionPage(CustomerMapScreen(), state),
+    // ),
 
     ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
 
