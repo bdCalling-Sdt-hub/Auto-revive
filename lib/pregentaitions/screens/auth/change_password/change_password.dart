@@ -2,7 +2,10 @@
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../../../../controllers/auth_controller.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
@@ -21,7 +24,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController newPasswordCTRl = TextEditingController();
   final TextEditingController conformPasswordCTRl = TextEditingController();
   final TextEditingController currentPasswordCTRl = TextEditingController();
-
+  AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +124,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
 
                   SizedBox(height: 300.h),
-                 CustomButton(title: 'Change Password', onpress: () {
+                 Obx(()=>
+                   CustomButton(
+                     loading: authController.changePasswordLoading.value,
+                     title: 'Change Password', onpress: () {
+                       authController.changePassword(
+                           newPasswordCTRl.text,
+                           currentPasswordCTRl.text,
+                           conformPasswordCTRl.text);
 
-                 },),
+                   },),
+                 ),
                   SizedBox(height: 24.h),
                 ],
               ),

@@ -164,6 +164,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/admin_support.png
+  AssetGenImage get adminSupport =>
+      const AssetGenImage('assets/images/admin_support.png');
+
   /// File path: assets/images/balance_bg.png
   AssetGenImage get balanceBg =>
       const AssetGenImage('assets/images/balance_bg.png');
@@ -190,6 +194,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        adminSupport,
         balanceBg,
         balanceCardIcon,
         customerHomeScreenImage,

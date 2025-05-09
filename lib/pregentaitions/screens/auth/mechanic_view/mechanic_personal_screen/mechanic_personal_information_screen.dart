@@ -41,10 +41,10 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   bool hasDriversLicense = false;
   bool hasCDL = false;
 
-  final List<String> platForm = [
-    'in shop',
-    'on site',
-    'both',
+  final List<CarModel> platForm =  [
+    CarModel(id: '1', adminId: 'admin123', name: 'in shop', v: 0),
+    CarModel(id: '2', adminId: 'admin123', name: 'on site', v: 0),
+    CarModel(id: '3', adminId: 'admin456', name: 'both', v: 0),
   ];
 
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
@@ -161,20 +161,20 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                     readOnly: true,
                     controller: platformCtrl,
                     suffixIcon: CustomPopupMenu(
-                        items: [
-                          CarModel(id: '1', adminId: 'admin123', name: 'Tow Truck A', v: 0),
-                          CarModel(id: '2', adminId: 'admin123', name: 'Tow Truck B', v: 0),
-                          CarModel(id: '3', adminId: 'admin456', name: 'Tow Truck C', v: 0),
-                        ],
+                        items: platForm,
                         onSelected: (p0) {
-                          platformCtrl.text = p0;
+                          // platformCtrl.text = p0;
+
+                          final selectCarThis = platForm.firstWhere((x) => x.id == p0);
+                          platformCtrl.text = selectCarThis.name!;
+                          setState(() {});
                           setState(() {});
                         }),
                   ),
 
 
 
-                  ///<<<=============>>> Email Filed <<<===============>>>
+                  ///<<<=============>>> Email Failed <<<===============>>>
 
                   CustomTextField(
                     readOnly: true,
@@ -229,24 +229,29 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
 
                   /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
                   Obx(()=>
-                     CustomButton(
-                       loading: mechanicController.basicInfoLoading.value,
-                      title: "Save and Next",
-                      onpress: () {
-                        if(!fromKey.currentState!.validate()){
-                          mechanicController.mechanicBasicInfo(
-                              profileImage: uploadedUrl,
-                              platform: platformCtrl.text.trim().toLowerCase(),
-                              phone:phoneNoCtrl.text,
-                              address: currentAddressCtrl.text,
-                              haveLicense: hasDriversLicense,
-                              haveCdl: hasCDL,
-                              context: context
-                          );
-                        }
+                      CustomButton(
+                        loading: mechanicController.basicInfoLoading.value,
+                        title: "Save and Next",
+                        onpress: () {
+                          if (fromKey.currentState!.validate()) {
+                            mechanicController.mechanicBasicInfo(
+                                profileImage: uploadedUrl,
+                                platform: platformCtrl.text.trim().toLowerCase(),
+                                phone: phoneNoCtrl.text,
+                                address: currentAddressCtrl.text,
+                                haveLicense: hasDriversLicense,
+                                haveCdl: hasCDL,
+                                context: context
+                            );
+                          } else {
+                            ToastMessageHelper.showToastMessage("Please fill all required fields correctly.");
+                          }
+                        },
+                      ),
 
-                      },
-                    ),),
+
+                  ),
+
                   SizedBox(height: 20.h),
                 ],
               ),

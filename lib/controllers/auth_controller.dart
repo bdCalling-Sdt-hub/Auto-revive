@@ -281,38 +281,38 @@ class AuthController extends GetxController {
   }
 
 
-  // ///===============Change Password================<>
-  //
-  // RxBool changePasswordLoading = false.obs;
-  // changePassword(String oldPassword, newPassword) async {
-  //   changePasswordLoading(true);
-  //   var body = {
-  //     "oldPassword": "$oldPassword",
-  //     "newPassword": "$newPassword",
-  //     "confirmPassword" : "$newPassword"
-  //   };
-  //
-  //   var response =
-  //   await ApiClient.postData(ApiConstants.changePassword, jsonEncode(body));
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     ToastMessageHelper.showToastMessage('Password Changed Successful');
-  //     print("======>>> successful");
-  //     changePasswordLoading(false);
-  //   } else if(response.statusCode == 1){
-  //     changePasswordLoading(false);
-  //     ToastMessageHelper.showToastMessage("Server error! \n Please try later");
-  //   } else {
-  //     ToastMessageHelper.showToastMessage(response.body['message']);
-  //     changePasswordLoading(false);
-  //   }
-  // }
-  //
-  //
-  //
-  //
-  //
-  //
+  ///===============Change Password================<>
+
+  RxBool changePasswordLoading = false.obs;
+  changePassword(String currentPassword, password ,confirmPassword ) async {
+    changePasswordLoading(true);
+    var body = {
+      "currentPassword": "$currentPassword",
+      "password": "$password",
+      "confirmPassword" : "$confirmPassword"
+    };
+
+    var response =
+    await ApiClient.postData(ApiConstants.changePassword, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage('Password Changed Successful');
+      print("======>>> successful");
+      changePasswordLoading(false);
+    } else if(response.statusCode == 1){
+      changePasswordLoading(false);
+      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+    } else {
+      ToastMessageHelper.showToastMessage(response.body['message']);
+      changePasswordLoading(false);
+    }
+  }
+
+
+
+
+
+
   // final RxInt countdown = 180.obs;
   // final RxBool isCountingDown = false.obs;
   //

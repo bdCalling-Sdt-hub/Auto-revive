@@ -27,6 +27,7 @@ dependencies:
   permission_handler:
   location:
 
+
   shared_preferences: ^2.5.3
   timeago: ^3.6.1
   get: ^4.6.6
