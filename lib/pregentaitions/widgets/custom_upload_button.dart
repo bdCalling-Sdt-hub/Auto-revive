@@ -46,22 +46,29 @@ class CustomUploadButton extends StatelessWidget {
           width: double.infinity,
           height: 45.h,
           color: AppColors.pdfButtonColor,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (displayIcon != null) ...[
-                Icon(
-                  displayIcon,
-                  color: Colors.white,
-                  size: 20.sp,
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+                if (displayIcon != null) ...[
+                  Icon(
+                    displayIcon,
+                    color: Colors.white,
+                    size: 20.sp,
+                  ),
+                  SizedBox(width: 8.w),
+                ],
+                Expanded(
+                  child: CustomText(
+                    text: title,
+                    color: Colors.white,
+                  ),
                 ),
-                SizedBox(width: 8.w),
+
               ],
-              CustomText(
-                text: title,
-                color: Colors.white,
-              ),
-            ],
+            ),
           ),
         ),
       ],

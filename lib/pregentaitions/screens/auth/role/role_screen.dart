@@ -50,14 +50,14 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Customer",
                 onpress: (){
-                  PrefsHelper.setString(AppConstants.role, "Customer");
+                  PrefsHelper.setString(AppConstants.role, "customer");
                   context.pushNamed(AppRoutes.customerSignupScreen);
             }),
            SizedBox(height: 10.h),
             CustomButton(
                 title: "Mechanic or automotive shop",
                 onpress: (){
-                  PrefsHelper.setString(AppConstants.role, "Mechanic or automotive shop");
+                  PrefsHelper.setString(AppConstants.role, "mechanic");
                   context.pushNamed(AppRoutes.mechanicSignupScreen);
                   // context.pushNamed(AppRoutes.mechanicBottomNavBar);
 
@@ -66,7 +66,7 @@ class RoleScreen extends StatelessWidget {
             CustomButton(
                 title: "Tow Truck Operator",
                 onpress: (){
-                  PrefsHelper.setString(AppConstants.role, "Tow Truck Operator");
+                  PrefsHelper.setString(AppConstants.role, "tow_truck");
                   context.pushNamed(AppRoutes.basicInfoScreen);
 
 

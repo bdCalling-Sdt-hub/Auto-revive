@@ -83,6 +83,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
 
+  /// File path: assets/icons/not_found.svg
+  SvgGenImage get notFound => const SvgGenImage('assets/icons/not_found.svg');
+
   /// File path: assets/icons/notification.svg
   SvgGenImage get notification =>
       const SvgGenImage('assets/icons/notification.svg');
@@ -143,6 +146,7 @@ class $AssetsIconsGen {
         meneyIcon,
         menu,
         message,
+        notFound,
         notification,
         notificationIcon,
         privacy,

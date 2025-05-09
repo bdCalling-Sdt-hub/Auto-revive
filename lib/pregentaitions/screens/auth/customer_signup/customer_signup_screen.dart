@@ -108,7 +108,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                     bottom: 6.h),
 
                 CustomUploadButton(
-                  title: 'Upload.pdf',
+                  title: pdfFile?.toString() ?? 'Upload.pdf',
                   icon: Icons.upload,
                   onTap: importPdf,
                 ),
@@ -149,6 +149,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                               phone: phoneCtrl.text,
                               password: passwordCtrl.text.trim(),
                               confirmPassword: confirmPasswordCtrl.text.trim(),
+                            filePath: pdfFile,
                             context: context,
                             screenType: "user"
                           );
@@ -176,6 +177,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
   //   }
   // }
 
+  File? pdfFile;
 
   Future<void> importPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -185,12 +187,17 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
 
     if (result != null && result.files.isNotEmpty) {
       File selectedFile = File(result.files.single.path!);
-      String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
-      if (uploadedPath != null) {
-        // ToastMessageHelper.showToastMessage("File uploaded: ${uploadedPath.split('/').last}");
-      } else {
-        ToastMessageHelper.showToastMessage("File upload failed.");
-      }
+
+      pdfFile = selectedFile;
+      setState(() {
+
+      });
+      // // String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
+      // if (uploadedPath != null) {
+      //   // ToastMessageHelper.showToastMessage("File uploaded: ${uploadedPath.split('/').last}");
+      // } else {
+      //   ToastMessageHelper.showToastMessage("File upload failed.");
+      // }
     }
     else {
       ToastMessageHelper.showToastMessage("No file selected.");
