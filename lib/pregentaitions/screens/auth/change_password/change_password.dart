@@ -26,6 +26,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController currentPasswordCTRl = TextEditingController();
   AuthController authController = Get.find<AuthController>();
 
+  final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,112 +38,117 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
 
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 17.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// =====================================> Current Password ===================================>
-                  CustomText(
-                    text: 'Current Password',
-                    fontsize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor151515,
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomTextField(
-                    controller: currentPasswordCTRl,
-                    hintText: 'Enter current password',
-                    // prefixIcon: 'assets/icons/lock.svg',
-                    isObscureText: true,
-                    isPassword: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your current password";
-                      }
-                      return null;
-                    },
-                    contentPaddingHorizontal: 20.w,
-                    contentPaddingVertical: 18.h,
-                  ),
-                  /// =====================================> New Password ===================================>
-                  CustomText(
-                    text: 'New Password',
-                    fontsize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor151515,
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomTextField(
-                    controller: newPasswordCTRl,
-                    hintText: 'Enter new password',
-                    // prefixIcon: 'assets/icons/lock.svg',
-                    isObscureText: true,
-                    isPassword: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your new password";
-                      }
-                      return null;
-                    },
-                    contentPaddingHorizontal: 20.w,
-                    contentPaddingVertical: 18.h,
-                  ),
-                  /// =====================================> Confirm New Password ===================================>
-                  CustomText(
-                    text: 'Confirm New Password',
-                    fontsize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textColor151515,
-                  ),
-                  SizedBox(height: 8.h),
-                  CustomTextField(
-                    controller: conformPasswordCTRl,
-                    hintText: 'Enter confirm password',
-                    // prefixIcon: 'assets/icons/lock.svg',
-                    isObscureText: true,
-                    isPassword: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your confirm password";
-                      }
-                      return null;
-                    },
-                    contentPaddingHorizontal: 20.w,
-                    contentPaddingVertical: 18.h,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: CustomText(
-                      textAlign: TextAlign.end,
-                        fontsize: 16.sp ,
-                        color: AppColors.redColors,
-                        text: 'Forget Password?'),
-                  ),
+        child: Form(
+          key: fromKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 17.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// =====================================> Current Password ===================================>
+                    CustomText(
+                      text: 'Current Password',
+                      fontsize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textColor151515,
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: currentPasswordCTRl,
+                      hintText: 'Enter current password',
+                      // prefixIcon: 'assets/icons/lock.svg',
+                      isObscureText: true,
+                      isPassword: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your current password";
+                        }
+                        return null;
+                      },
+                      contentPaddingHorizontal: 20.w,
+                      contentPaddingVertical: 18.h,
+                    ),
+                    /// =====================================> New Password ===================================>
+                    CustomText(
+                      text: 'New Password',
+                      fontsize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textColor151515,
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: newPasswordCTRl,
+                      hintText: 'Enter new password',
+                      // prefixIcon: 'assets/icons/lock.svg',
+                      isObscureText: true,
+                      isPassword: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your new password";
+                        }
+                        return null;
+                      },
+                      contentPaddingHorizontal: 20.w,
+                      contentPaddingVertical: 18.h,
+                    ),
+                    /// =====================================> Confirm New Password ===================================>
+                    CustomText(
+                      text: 'Confirm New Password',
+                      fontsize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textColor151515,
+                    ),
+                    SizedBox(height: 8.h),
+                    CustomTextField(
+                      controller: conformPasswordCTRl,
+                      hintText: 'Enter confirm password',
+                      // prefixIcon: 'assets/icons/lock.svg',
+                      isObscureText: true,
+                      isPassword: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your confirm password";
+                        }
+                        return null;
+                      },
+                      contentPaddingHorizontal: 20.w,
+                      contentPaddingVertical: 18.h,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomText(
+                        textAlign: TextAlign.end,
+                          fontsize: 16.sp ,
+                          color: AppColors.redColors,
+                          text: 'Forget Password?'),
+                    ),
 
-                  SizedBox(height: 300.h),
-                 Obx(()=>
-                   CustomButton(
-                     loading: authController.changePasswordLoading.value,
-                     title: 'Change Password', onpress: () {
+                    SizedBox(height: 300.h),
+                   Obx(()=>
+                     CustomButton(
+                       loading: authController.changePasswordLoading.value,
+                       title: 'Change Password',
+                       onpress: () {
+                     if(fromKey.currentState!.validate()){
                        authController.changePassword(
                            newPasswordCTRl.text,
                            currentPasswordCTRl.text,
                            conformPasswordCTRl.text);
-
-                   },),
-                 ),
-                  SizedBox(height: 24.h),
-                ],
+                     }
+                     },),
+                   ),
+                    SizedBox(height: 24.h),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20.h),
+              SizedBox(height: 20.h),
 
-          ],
+            ],
+          ),
         ),
       ),
     );

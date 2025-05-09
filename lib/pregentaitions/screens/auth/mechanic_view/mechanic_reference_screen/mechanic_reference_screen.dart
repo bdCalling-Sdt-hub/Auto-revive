@@ -149,7 +149,6 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                      onpress: () {
                        if (fromKey.currentState!.validate()) {
                          List<Map<String, String>> referencesData = [];
-
                          for (var ref in referenceList) {
                            String? selectedRelation = ref.relationshipMap.entries
                                .firstWhere((element) => element.value, orElse: () => MapEntry('', false))
