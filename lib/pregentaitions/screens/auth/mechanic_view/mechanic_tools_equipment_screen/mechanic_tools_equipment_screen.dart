@@ -28,7 +28,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
 
 
   bool? validUSDOTNumber;
-  List<String> customTools = [];
+  final  List<String> customTools = [];
 
   @override
   void initState() {
@@ -136,7 +136,6 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   fontsize: 16.sp,
                 ),
                 SizedBox(height: 10.h),
-
                 Wrap(
                   spacing: 8,
                   runSpacing: 4,
@@ -152,33 +151,45 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                     );
                   }).toList(),
                 ),
-
-                SizedBox(height: 8.h),
-
-                CustomTextField(
-                  controller: additionalToolsCtrl,
-                  hintText: "Additional Tools",
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.add, color: AppColors.primaryColor),
-                    onPressed: () {
-                      String newTool = additionalToolsCtrl.text.trim();
-                      if (newTool.isNotEmpty && !customTools.contains(newTool)) {
-                        setState(() {
-                          customTools.add(newTool);
-                          // additionalToolsCtrl.clear();
-                        });
-                      }
-                    },
+                SizedBox(height: 12.h),
+                Container(
+                  width: 344,
+                  height: 46,
+                  padding:  EdgeInsets.symmetric(horizontal: 15.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: AppColors.primaryColor,
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: additionalToolsCtrl,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10.r),
+                        hintText: "Additional Tools",
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.add, color: Colors.blue),
+                          onPressed: () {
+                            String newTool = additionalToolsCtrl.text.trim();
+                            if (newTool.isEmpty) return;
+                            if (!customTools.contains(newTool)) {
+                              setState(() {
+                                customTools.add(newTool);
+                              });
+                            }
+                            additionalToolsCtrl.clear();
+                          },
+                        ),
+                        border: InputBorder.none,
+                      ),
+                    ),
                   ),
                 ),
 
-                // CustomTextField(
-                //     controller: additionalToolsCtrl,
-                //     hintText: "Additional Tools",
-                //
-                //
-                // ),
-                SizedBox(height: 87.h),
+
+                SizedBox(height: 85.h),
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
                 Obx(() => CustomButton(
                   loading: mechanicController.mechanicToolsLoading.value,

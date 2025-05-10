@@ -4,6 +4,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -100,7 +101,23 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                               hintText: "Phone No",
                               keyboardType: TextInputType.number,
                               readOnly: false,
+                              maxLength: 11,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(11),
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter phone number';
+                                } else if (value.length < 11) {
+                                  return 'Phone number must be 11 digits';
+                                } else if (value.length > 11) {
+                                  return 'Phone number cannot exceed 11 digits';
+                                }
+                                return null;
+                              },
                             ),
+
                             CustomText(
                               text: "Relationship:",
                               fontsize: 14.sp,

@@ -4,6 +4,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -98,11 +99,34 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                       hintText: "Supervisors Name"),
                   ///<<<=============>>> Supervisors Contact <<<===============>>>
                   CustomText(
-                      text: "Supervisors Contact:",color: AppColors.textColor151515,fontsize: 14.sp),
+                      text: "Supervisors Contact:",
+                      color: AppColors.textColor151515,
+                      fontsize: 14.sp,
+
+                  ),
                   SizedBox(height: 8.h),
                   CustomTextField(
-                      controller: supervisorsContactCtrl,
-                      hintText: "Supervisors Contact"),
+                    controller: supervisorsContactCtrl,
+                    hintText: "Supervisors Contact",
+                    keyboardType: TextInputType.phone,
+                    maxLength: 11,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(11),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
+                      } else if (value.length < 11) {
+                        return 'Phone number must be 11 digits';
+                      } else if (value.length > 11) {
+                        return 'Phone number cannot exceed 11 digits';
+                      }
+                      return null;
+                    },
+                  ),
+
+
                   ///<<<=============>>> Employment Duration <<<===============>>>
                   CustomText(text: 'Employment Duration:',color: AppColors.textColor151515,fontsize: 14.sp),
                   Padding(
@@ -140,9 +164,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                             ],
                           ),
                         ),
-
                         SizedBox(width: 16.h),
-                        // CustomText(text: 'To',fontsize: 14.sp,fontWeight: FontWeight.bold,),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,

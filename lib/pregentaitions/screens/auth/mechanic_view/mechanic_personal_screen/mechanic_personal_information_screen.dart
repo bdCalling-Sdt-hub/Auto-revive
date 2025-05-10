@@ -162,7 +162,9 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                         onSelected: (p0) {
                           final selectCarThis = platForm.firstWhere((x) => x.id == p0);
                           platformCtrl.text = selectCarThis.name!;
-                          setState(() {});
+                          setState(() {
+
+                          });
                         }),
                   ),
 
@@ -238,7 +240,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                                 context: context,
                             );
                           } else {
-                            ToastMessageHelper.showToastMessage("Please fill all required fields correctly.");
+                            ToastMessageHelper.showToastMessage("Please fill all required fields");
                           }
                         },
                       ),),

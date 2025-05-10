@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/app_constants/app_constants.dart';
@@ -29,6 +30,8 @@ class CustomTextField extends StatefulWidget {
   final double? borderRadio;
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
 
 
   const CustomTextField(
@@ -51,7 +54,10 @@ class CustomTextField extends StatefulWidget {
         this.hintextSize,
         this.labelText,
         this.isPassword = false,
-        this.readOnly = false, this.borderRadio, this.onTap, this.onChanged});
+        this.readOnly = false, this.borderRadio, this.onTap, this.onChanged,
+        this.maxLength,
+        this.inputFormatters,
+      });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -84,6 +90,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             obscuringCharacter: widget.obscure!,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLines: widget.maxLine ?? 1,
+            maxLength: widget.maxLength,
+            inputFormatters: widget.inputFormatters,
             // validator: widget.validator,
             validator: widget.validator ??
                     (value) {
@@ -112,6 +120,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         obscureText: widget.isPassword ? obscureText : false,
         style: TextStyle(color: widget.hintextColor ?? Colors.black, fontSize: widget.hintextSize ?? 12.h),
         decoration: InputDecoration(
+            counterText: '',
             contentPadding: EdgeInsets.symmetric(
                 horizontal: widget.contentPaddingHorizontal ?? 20.w,
                 vertical: widget.contentPaddingVertical ?? 10.h),

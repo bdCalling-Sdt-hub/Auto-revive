@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/auth_controller.dart';
-import '../../../../controllers/upload_controller.dart';
 import '../../../widgets/custom_text.dart';
 
 class MechanicSignupScreen extends StatefulWidget {
@@ -21,8 +20,17 @@ class _MechanicSignupScreenState extends State<MechanicSignupScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passwordCtrl = TextEditingController();
   final TextEditingController confirmPasswordCtrl = TextEditingController();
+
   AuthController authController = Get.put(AuthController());
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
+
+  RxBool isMatched = false.obs;
+  RxBool isObscureConfirmPassword = true.obs;
+  toggleIsObscureConfirmPassword() {
+    isObscureConfirmPassword.value = !isObscureConfirmPassword.value;
+  }
+  ismMatchedColor() {isMatched.value = !isMatched.value;}
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +83,33 @@ class _MechanicSignupScreenState extends State<MechanicSignupScreen> {
                     fontsize: 16.h,
                     color: const Color(0xff222222),
                     bottom: 6.h),
-                CustomTextField(controller: confirmPasswordCtrl, hintText: "Re-enter your password",  prefixIcon: Assets.icons.key.svg(), isPassword: true),
+                CustomTextField(
+                    controller: confirmPasswordCtrl,
+                    hintText: "Re-enter your password",
+                    prefixIcon: Assets.icons.key.svg(),
+                    isPassword: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      Future.delayed(Duration.zero, () => isMatched.value = false);
+                      return "Please enter your confirm password";
+                    } else if (passwordCtrl.text == value) {
+                      Future.delayed(Duration.zero, () => isMatched.value = true);
+                      return null;
+                    } else {
+                      Future.delayed(Duration.zero, () => isMatched.value = false);
+                      return "Password Not Matching";
+                    }
+                  },
+                  onChanged: (value) {
+                    isMatched.value = passwordCtrl.text == value;
+                  },
+                ),
+                Obx(() => Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding:  EdgeInsets.only(top: 15.h),
+                      child: CustomText(text: isMatched.value ? "Password Matched" : "",color: Colors.green,fontsize: 14.sp,),
+                    ))),
 
                 SizedBox(height: 240.h),
                 Obx(()=>
