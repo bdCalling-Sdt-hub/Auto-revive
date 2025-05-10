@@ -75,7 +75,7 @@ class _AdminSupportScreenState extends State<AdminSupportScreen> {
                     Icon(Icons.phone, color: Colors.blue, size: 20.sp),
                     SizedBox(width: 10.w),
                     CustomText(
-                      text: '${settingsController.adminSupport.value.value?.phone}',
+                      text: settingsController.adminSupport.value.value?.phone ?? 'N/A',
                       textAlign: TextAlign.start,
                       fontsize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -89,7 +89,7 @@ class _AdminSupportScreenState extends State<AdminSupportScreen> {
                     Icon(Icons.email, color: Colors.blue, size: 20.sp),
                     SizedBox(width: 10.w),
                     CustomText(
-                      text: '${settingsController.adminSupport.value.value?.email}',
+                      text: settingsController.adminSupport.value.value?.email ?? 'N/A',
                       textAlign: TextAlign.center,
                       fontsize: 16.sp,
                       fontWeight: FontWeight.w400,
@@ -97,8 +97,7 @@ class _AdminSupportScreenState extends State<AdminSupportScreen> {
                   ],
                 ),
               ],
-            ),
-          )
+            ),)
 
 
 

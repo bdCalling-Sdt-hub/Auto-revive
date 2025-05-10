@@ -102,7 +102,6 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
 
                   }),
 
-
               CustomProfileListTile(
                   title: 'Logout',
                   icon: Assets.icons.logout.svg(),
@@ -139,8 +138,6 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-
-
                                   SizedBox(
                                     width: 250.w,
                                     child: CustomTwoBtnWidget(

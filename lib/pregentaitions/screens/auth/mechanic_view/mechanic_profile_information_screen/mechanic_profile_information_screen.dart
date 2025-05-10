@@ -39,6 +39,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
   @override
   Widget build(BuildContext context) {
+    print("================================================>Test Image${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}");
     final toolsMap = mechanicController.profile.value.toolsGroup != null
         ? toolsGroupToMap(mechanicController.profile.value.toolsGroup!)
         : {};
@@ -61,9 +62,10 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+
                     CustomNetworkImage(
                       boxShape: BoxShape.circle,
-                      imageUrl: "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}" ?? "https://randomuser.me/api/portraits/men/10.jpg",
+                      imageUrl: "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
                       height: 128.h,
                       width: 128.w,
                     ),

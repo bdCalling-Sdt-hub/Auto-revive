@@ -68,14 +68,15 @@ class MechanicController extends GetxController{
 
   var basicInfoLoading = false.obs;
 
-  mechanicBasicInfo(
-      {String? profileImage,
-      String? platform,
-      String? phone,
-      String? address,
-      bool? haveLicense,
-      bool? haveCdl,
-        required BuildContext context}) async {
+  Future<void> mechanicBasicInfo({
+    String? profileImage,
+    String? platform,
+    String? phone,
+    String? address,
+    bool? haveLicense,
+    bool? haveCdl,
+    required BuildContext context,
+  }) async {
     var body = {
       'profileImage': profileImage,
       'platform': platform,
@@ -84,17 +85,28 @@ class MechanicController extends GetxController{
       'haveLicense': haveLicense,
       'haveCdl': haveCdl,
     };
+
     basicInfoLoading(true);
-    var response = await ApiClient.putData(
+
+    try {
+      var response = await ApiClient.putData(
         ApiConstants.mechanicBasicInfoEndPoint,
-        body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
-      return true;
+        body,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+        context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
+      } else {
+        ToastMessageHelper.showToastMessage("Failed to save basic info.");
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Something went wrong.");
+    } finally {
+      basicInfoLoading(false);
     }
-    basicInfoLoading(false);
   }
+
 
 
 
@@ -240,22 +252,33 @@ class MechanicController extends GetxController{
 
   var additionalInformationLoading = false.obs;
 
-  additionalInformation(
-      {String? whyOnSite,
-        required BuildContext context}) async {
+  Future<void> additionalInformation({
+    String? whyOnSite,
+    required BuildContext context,
+  }) async {
     var body = {
       'whyOnSite': whyOnSite,
     };
+
     additionalInformationLoading(true);
-    var response = await ApiClient.putData(
+
+    try {
+      var response = await ApiClient.putData(
         ApiConstants.additionalInformationEndPoint,
-        body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
-      return true;
+        body,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+        context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
+      } else {
+        ToastMessageHelper.showToastMessage("Something went wrong.");
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Failed to submit additional information.");
+    } finally {
+      additionalInformationLoading(false);
     }
-    additionalInformationLoading(false);
   }
 
 
@@ -264,25 +287,38 @@ class MechanicController extends GetxController{
 
   var resumeCertificateLoading = false.obs;
 
-  resumeCertificate(
-      {String? resume,
-        String? certificate,
-        required BuildContext context}) async {
+  Future<void> resumeCertificate({
+    String? resume,
+    String? certificate,
+    required BuildContext context,
+  }) async {
     var body = {
       'resume': resume,
       'certificate': certificate,
     };
+
     resumeCertificateLoading(true);
-    var response = await ApiClient.putData(
+
+    try {
+      var response = await ApiClient.putData(
         ApiConstants.mechanicResumeCertificateEndPoint,
-        body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
-      return true;
+        body,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+        context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+      } else {
+        ToastMessageHelper.showToastMessage("Failed to upload resume/certificate.");
+      }
+    } catch (e) {
+
+      ToastMessageHelper.showToastMessage("Something went wrong.");
+    } finally {
+      resumeCertificateLoading(false);
     }
-    resumeCertificateLoading(false);
   }
+
 
 
 
