@@ -1,14 +1,18 @@
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../helpers/network_connection.dart';
 import '../../message/users/users_screen.dart';
 import '../../tow_truck_profile/tow_truck_profile_screen.dart';
 import '../mechanic_booking_on_site/mechanic_bookings_screen/mechanic_bookings_screen.dart';
 import '../mechanic_home_screen/mechanic_home_screen.dart';
 
 class MechanicBottomNavBar extends StatefulWidget {
-  const MechanicBottomNavBar({super.key});
+   MechanicBottomNavBar({super.key});
+  final NetworkController networkController = Get.put(NetworkController());
 
   @override
   State<MechanicBottomNavBar> createState() => MechanicBottomNavBarState();

@@ -8,6 +8,8 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../global/custom_assets/assets.gen.dart';
@@ -98,8 +100,6 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                   icon: Assets.icons.settings.svg(),
                   onTap: () {
                     context.pushNamed(AppRoutes.settingsScreen);
-
-
                   }),
 
               CustomProfileListTile(
@@ -141,57 +141,21 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                                   SizedBox(
                                     width: 250.w,
                                     child: CustomTwoBtnWidget(
-                                      btnNameList: ["Cancel", "Logout"],
+                                      btnNameList: const ["Cancel", "Logout"],
                                       width: 110.w,
+                                      height: 45.h,
+                                      leftBtnOnTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      rightBtnOnTap: () {
+                                        context.go(AppRoutes.logInScreen);
+                                      },
                                     ),
-                                  )
-
-
-                                  // // Cancel Button
-                                  // SizedBox(
-                                  //   width: 110.w,
-                                  //   height: 44.h,
-                                  //   child: OutlinedButton(
-                                  //     style: OutlinedButton.styleFrom(
-                                  //       shape: RoundedRectangleBorder(
-                                  //         borderRadius: BorderRadius.circular(25.r),
-                                  //       ),
-                                  //       side: const BorderSide(color: Colors.red, width: 1.5),
-                                  //     ),
-                                  //     onPressed: () {
-                                  //       Navigator.pop(context);
-                                  //     },
-                                  //     child: Text(
-                                  //       "Cancel",
-                                  //       style: TextStyle(
-                                  //         color: Colors.red,
-                                  //         fontSize: 14.sp,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  // // Logout Button
-                                  // SizedBox(
-                                  //   width: 110.w,
-                                  //   height: 44.h,
-                                  //   child: ElevatedButton(
-                                  //     style: ElevatedButton.styleFrom(
-                                  //       // backgroundColor: Colors.green,
-                                  //       shape: RoundedRectangleBorder(
-                                  //         borderRadius: BorderRadius.circular(25.r),
-                                  //       ),
-                                  //     ),
-                                  //     onPressed: () {
-                                  //       context.go(AppRoutes.roleScreen);
-                                  //     },
-                                  //     child: CustomText(
-                                  //       text: "Logout",
-                                  //       color: Colors.white,
-                                  //     )
-                                  //   ),
-                                  // ),
+                                  ),
                                 ],
                               ),
+
+
                             ],
                           ),
                         ),
