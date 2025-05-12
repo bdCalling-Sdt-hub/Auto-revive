@@ -55,6 +55,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/earnings.svg
   SvgGenImage get earnings => const SvgGenImage('assets/icons/earnings.svg');
 
+  /// File path: assets/icons/edit_icon.svg
+  SvgGenImage get editIcon => const SvgGenImage('assets/icons/edit_icon.svg');
+
   /// File path: assets/icons/filterIcons.svg
   SvgGenImage get filterIcons =>
       const SvgGenImage('assets/icons/filterIcons.svg');
@@ -137,6 +140,7 @@ class $AssetsIconsGen {
         detailsLocation,
         detailsMessage,
         earnings,
+        editIcon,
         filterIcons,
         homeIcon,
         key,

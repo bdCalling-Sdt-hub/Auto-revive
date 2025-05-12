@@ -1,3 +1,4 @@
+import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../../models/get_profile_model.dart';
 import '../../../../../services/api_constants.dart';
 import '../../../../widgets/cachanetwork_image.dart';
@@ -39,7 +41,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
   @override
   Widget build(BuildContext context) {
-    print("================================================>Test Image${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}");
     final toolsMap = mechanicController.profile.value.toolsGroup != null
         ? toolsGroupToMap(mechanicController.profile.value.toolsGroup!)
         : {};
@@ -48,7 +49,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
         centerTitle: false,
         title: CustomText(
           textAlign: TextAlign.start,
-          text: "Personal Information",
+          text: "Profile Information",
           fontsize: 20.sp,
         ),
       ),
@@ -61,8 +62,8 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                 /// ==================================> Profile ====================================>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     CustomNetworkImage(
                       boxShape: BoxShape.circle,
                       imageUrl: "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
@@ -70,22 +71,81 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       width: 128.w,
                     ),
                     SizedBox(width: 10.w),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(color: Colors.black, fontSize: 20.sp),
-                        text: "${mechanicController.profile.value.name}",
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextSpan(
-                            style: TextStyle(fontSize: 10.sp),
-                            text:
-                            '\n ${mechanicController.profile.value.role ?? 'N/A'} \n ${mechanicController.profile.value.phone ?? 'N/A'}     ||  ${mechanicController.profile.value.email ?? 'N/A'} \n ${mechanicController.profile.value.address ?? 'N/A'}',
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: mechanicController.profile.value.name ?? 'N/A',
+                                fontsize: 25.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor151515,
+                              ),
+                              SizedBox(width: 40.w),
+
+                              GestureDetector(
+                                onTap: () {
+                                  // context.pushNamed(AppRoutes.mechanicProfileInformationScreen,);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MechanicPersonalInformationScreen()));
+                                },
+                                child: Assets.icons.editIcon.svg(),
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(height: 4.h),
+                          CustomText(text:
+                            mechanicController.profile.value.role ?? 'N/A',
+                            fontsize: 15.sp,
+                            fontWeight: FontWeight.w300,
+                            color: AppColors.textColor151515,
+                          ),
+                          SizedBox(height: 2.h),
+                          CustomText(
+                           text:  '${mechanicController.profile.value.phone ?? 'N/A'}  |  ${mechanicController.profile.value.email ?? 'N/A'}',
+                            fontsize: 11.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor151515,
+                          ),
+                          SizedBox(height: 2.h),
+                          CustomText(text:
+                            mechanicController.profile.value.address ?? 'N/A',
+                           fontsize: 12.sp,
+                          ),
+                          SizedBox(height: 8.h),
+                          CustomText(
+                            text: 'Have:',
+                            fontsize: 14.sp,
+                            color: AppColors.textColor151515,
+                          ),
+                          SizedBox(height: 4.h),
+                          // Have section below address
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (mechanicController.profile.value.haveLicense == true)
+                                _buildTag('License'),
+                              if (mechanicController.profile.value.haveCdl == true)
+                                ...[
+                                  SizedBox(width: 10.w),
+                                  _buildTag('CDL'),
+                                ],
+                              if (mechanicController.profile.value.haveLicense != true &&
+                                  mechanicController.profile.value.haveCdl != true)
+                                _buildTag('N/A'),
+                            ],
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 16.h),
+
+                SizedBox(height: 18.h),
                 CustomContainer(
                   paddingAll: 16.h,
                   radiusAll: 8.r,
@@ -97,34 +157,34 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         spacing: 20.w,
                         runSpacing: 15.h,
                         children: [
-                          /// =============================================> Have Section =======================================>
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: 'Have:',
-                                fontsize: 16.sp,
-                                color: AppColors.textColor151515,
-                              ),
-                              SizedBox(height: 13.h),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (mechanicController.profile.value.haveLicense == true)
-                                    _buildTag('License'),
-                                  if (mechanicController.profile.value.haveCdl == true)
-                                    ...[
-                                      SizedBox(width: 10.w),
-                                      _buildTag('CDL'),
-                                    ],
-                                  if (mechanicController.profile.value.haveLicense != true &&
-                                      mechanicController.profile.value.haveCdl != true)
-                                    _buildTag('N/A'),
-                                ],
-                              ),
-
-                            ],
-                          ),
+                          // /// =============================================> Have Section =======================================>
+                          // Column(
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     CustomText(
+                          //       text: 'Have:',
+                          //       fontsize: 16.sp,
+                          //       color: AppColors.textColor151515,
+                          //     ),
+                          //     SizedBox(height: 13.h),
+                          //     Row(
+                          //       mainAxisSize: MainAxisSize.min,
+                          //       children: [
+                          //         if (mechanicController.profile.value.haveLicense == true)
+                          //           _buildTag('License'),
+                          //         if (mechanicController.profile.value.haveCdl == true)
+                          //           ...[
+                          //             SizedBox(width: 10.w),
+                          //             _buildTag('CDL'),
+                          //           ],
+                          //         if (mechanicController.profile.value.haveLicense != true &&
+                          //             mechanicController.profile.value.haveCdl != true)
+                          //           _buildTag('N/A'),
+                          //       ],
+                          //     ),
+                          //
+                          //   ],
+                          // ),
 
                           /// ============================================> Certificate Section =================================>
 
@@ -206,21 +266,43 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                 fontsize: 16.sp,
                               ),
                               ListView.builder(
-                                itemCount: tools.length,
+                                itemCount: toolsMap.keys.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  final tool = tools[index];
-                                  return Padding(
-                                    padding: EdgeInsets.only(bottom: 8.h),
-                                    child: CustomText(
-                                      textAlign: TextAlign.start,
-                                      text: '${groupValues.reverse[tool.name] ?? 'N/A'}\n${groupValues.reverse[tool.group] ?? 'N/A'}',
-                                      fontsize: 10.sp,
-                                    ),
+                                itemBuilder: (context, groupIndex) {
+                                  final groupName = toolsMap.keys.elementAt(groupIndex);
+                                  final tools = toolsMap[groupName]!;
+
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      CustomText(
+                                        text: groupName,
+                                        fontWeight: FontWeight.bold,
+                                        fontsize: 16.sp,
+                                      ),
+                                      ListView.builder(
+                                        itemCount: tools.length,
+                                        shrinkWrap: true,
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          final tool = tools[index];
+                                          return Padding(
+                                            padding: EdgeInsets.only(bottom: 8.h),
+                                            child: CustomText(
+                                              textAlign: TextAlign.start,
+                                              text: '${tool.name ?? 'N/A'}\n${groupValues.reverse[tool.group] ?? 'N/A'}',
+                                              fontsize: 10.sp,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: 12.h),
+                                    ],
                                   );
                                 },
                               ),
+
                               SizedBox(height: 12.h),
                             ],
                           );
@@ -345,16 +427,14 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       /// ================================> Pdf Button ==============================================>
 
                       CustomUploadButton(
-                        title: 'Resume',
-                        // getFileName(mechanicController.profile.value.resume),
+                        title: getFileName(mechanicController.profile.value.resume),
                         onTap: () {
                           // Handle resume tap
                         },
                       ),
                       SizedBox(height: 12.h),
                       CustomUploadButton(
-                        title: 'Certificate',
-                        // getFileName(mechanicController.profile.value.certificate),
+                        title: getFileName(mechanicController.profile.value.certificate),
                         onTap: () {
                           // Handle certificate tap
                         },

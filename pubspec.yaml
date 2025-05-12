@@ -26,6 +26,7 @@ dependencies:
   google_maps_flutter:
   permission_handler:
   location:
+  internet_connection_checker_plus: ^2.5.2
 
 
   shared_preferences: ^2.5.3
