@@ -7,7 +7,6 @@ class ApiConstants{
 
 
 
-
   static const String signUpEndPoint = "/auth/register";
   static const String loginUpEndPoint = "/auth/login";
   static const String changePassword = "/auth/change-password";
@@ -29,6 +28,9 @@ class ApiConstants{
   static const String findMechanicRadius = "/user/radius/mechanic";
   static const String privacyPolicy = "/setting";
   static const String adminSupport = "/setting/support";
+  static const String radiusLimits = "/setting/radius-limits";
+  static const String jobRequest = "/job-process/provider/do-request";
+  static  String getAllJobProvider(String page, sortField,  sortOrder,radius) => "/job/provider/$radius?page=$page&limit=10&sortField=$sortField&sortOrder=$sortOrder";
 
 
 }

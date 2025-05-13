@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSlider extends StatelessWidget {
-  const CustomSlider(
-      {super.key,
-      required this.value,
-      this.onChanged,
-      this.max = 5,
-      this.activeColor,
-      this.inactiveColor,
-      this.thumbColor});
+  const CustomSlider({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.min = 0,
+    this.max = 5,
+    this.activeColor,
+    this.inactiveColor,
+    this.thumbColor,
+  });
 
   final double value;
-  final ValueChanged<double>? onChanged;
+  final double min;
   final double max;
+  final ValueChanged<double>? onChanged;
   final Color? activeColor;
   final Color? inactiveColor;
   final Color? thumbColor;
@@ -28,14 +31,16 @@ class CustomSlider extends StatelessWidget {
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
       ),
       child: Slider(
-          value: value,
-          min: 0,
-          max: max,
-          divisions: 5,
-          activeColor: activeColor ?? Colors.white,
-          inactiveColor: inactiveColor ?? const Color(0xffB0B0FF),
-          thumbColor: thumbColor ?? Colors.white,
-          onChanged: onChanged),
+        value: value.clamp(min, max),
+        min: min,
+        max: max,
+        divisions: (max - min).toInt(),
+        activeColor: activeColor ?? Colors.white,
+        inactiveColor: inactiveColor ?? const Color(0xffB0B0FF),
+        thumbColor: thumbColor ?? Colors.white,
+        onChanged: onChanged,
+      ),
     );
   }
 }
+
