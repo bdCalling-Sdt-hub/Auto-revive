@@ -1,3 +1,4 @@
+import 'package:autorevive/controllers/payment_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/cachanetwork_image.dart';
@@ -29,7 +30,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomNetworkImage(
-                    imageUrl: "https://randomuser.me/api/portraits/men/20.jpg",
+                    imageUrl: "${routeData["image"]}",
                     boxShape: BoxShape.circle,
                     height: 110.h,
                     width: 110.w,
@@ -206,6 +207,9 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
 
             routeData["title"] ==  "Complete" ?
             CustomButton(title: "Pay Now", onpress: () {
+              StripePayment stripePayment = StripePayment();
+
+              stripePayment.makePayment(amount: "100", subscriptionId: "123");
 
             })  :
             

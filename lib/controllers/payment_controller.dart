@@ -11,10 +11,10 @@ import 'package:http/http.dart' as http;
 
 
 
-class PaymentController {
+class StripePayment {
   Map<String, dynamic>? paymentIntentData;
 
-  PaymentController() {
+  StripePayment() {
     Stripe.publishableKey = Config.publishableKey;
   }
 
@@ -46,10 +46,10 @@ class PaymentController {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             billingDetails: const BillingDetails(
-                name: 'Raenir',
-                email: 'edelevatedaily@gmail.com'),
+                name: 'sagor',
+                email: 'sagor@gmail.com'),
             googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-            merchantDisplayName: 'Raenir',
+            merchantDisplayName: 'sagor',
             paymentIntentClientSecret: clientSecret,
             style: ThemeMode.dark,
           ),

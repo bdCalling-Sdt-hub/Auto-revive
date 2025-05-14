@@ -101,6 +101,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                         "address" : booking.providerId?.address ?? "",
                         "rating" : booking.providerId?.avgRating ?? 0,
                         "certifications" :  booking.providerId?.certifications ?? [],
+                        "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                         "price" : booking.transportPrice ?? 0
                       });
                     },
