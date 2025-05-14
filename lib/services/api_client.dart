@@ -59,7 +59,7 @@ class ApiClient extends GetxService {
 
       http.Response response = await client.post(
         Uri.parse(ApiConstants.baseUrl + uri),
-        body: jsonEncode(body),
+        body: body,
         headers: headers ?? mainHeaders,
       ).timeout(const Duration(seconds: timeoutInSeconds));
 
