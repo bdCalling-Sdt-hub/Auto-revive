@@ -445,12 +445,12 @@ class AppRoutes {
 
     ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
 
-    // GoRoute(
-    //   path: customerMapScreen,
-    //   name: customerMapScreen,
-    //   pageBuilder: (context, state) =>
-    //       _customTransitionPage(CustomerMapScreen(), state),
-    // ),
+    GoRoute(
+      path: customerMapScreen,
+      name: customerMapScreen,
+      pageBuilder: (context, state) =>
+          _customTransitionPage(CustomerMapScreen(), state),
+    ),
 
     ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>
 

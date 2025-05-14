@@ -168,7 +168,7 @@ class AuthController extends GetxController {
       "password": password
     };
     var response = await ApiClient.postData(
-        ApiConstants.loginUpEndPoint, jsonEncode(body),
+        ApiConstants.loginUpEndPoint, body,
         headers: headers);
     print("========================${response.statusCode} \n ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
