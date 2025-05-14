@@ -30,7 +30,9 @@ class ApiConstants{
   static const String adminSupport = "/setting/support";
   static const String radiusLimits = "/setting/radius-limits";
   static const String jobRequest = "/job-process/provider/do-request";
-  static  String getAllJobProvider(String page, sortField,  sortOrder,radius) => "/job/provider/$radius?page=$page&limit=10&sortField=$sortField&sortOrder=$sortOrder";
+  static  String changeStatus (String id) => "/job-process/provider/$id";
+  static  String bookingAllPaginationFilters (String page,limit,status) => "/job-process/provider?page=1&limit=11&status=${status ?? ''}";
+  static  String getAllJobProvider(String page, sortField,  sortOrder, radius) => "/job/provider/$radius?page=$page&limit=10&sortField=$sortField&sortOrder=$sortOrder";
 
 
 }

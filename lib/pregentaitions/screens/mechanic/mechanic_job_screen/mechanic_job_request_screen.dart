@@ -121,10 +121,10 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                  CustomButton(
                   title: 'Apply',
                   onpress: () {
-                    context.pushNamed(
-                      AppRoutes.mechanicJobRequestScreen,
-                      extra: _miles.value.toInt().toString(),
-                    );
+                    // context.pushNamed(
+                    //   AppRoutes.mechanicJobRequestScreen,
+                    //   extra: _miles.value.toInt().toString(),
+                    // );
                   },
                 ),
                 SizedBox(height: 10.h),
@@ -147,6 +147,7 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
             ),
           );
         }
+
         return ListView.builder(
           itemCount: mechanicJobController.jobProvider.length,
           itemBuilder: (context, index) {
@@ -224,10 +225,10 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                         SizedBox(height: 10.h),
                         GestureDetector(
                           onTap: () {
-                            // mechanicJobController.
-                            // requestId(
-                            //   jobId: job.id,
-                            //     context: context);
+                            mechanicJobController.
+                            requestId(
+                              jobId: job.id,
+                                context: context);
 
                           },
                           child: CustomContainer(

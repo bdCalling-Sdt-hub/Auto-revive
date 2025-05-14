@@ -25,6 +25,7 @@ class BookingCardWidget extends StatelessWidget {
     this.historyButtonAction,
     this.buttonColor,
     this.onTap,
+    required this.address,
   });
 
   final int? rating;
@@ -40,6 +41,7 @@ class BookingCardWidget extends StatelessWidget {
   final String? status;
   final VoidCallback? historyButtonAction;
   final Color? buttonColor;
+  final String address;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,7 @@ class BookingCardWidget extends StatelessWidget {
                       child: CustomText(
                         text: status ?? '',
                         fontsize: 10.sp,
-                        color: status == 'Cancel'
+                        color: status == 'requested'
                             ? AppColors.cancelButtonColor
                             : AppColors.primaryColor,
                       )),
@@ -94,6 +96,10 @@ class BookingCardWidget extends StatelessWidget {
                       children: [
                         CustomText(
                           text: name,
+                          fontsize: 20.sp,
+                        ),
+                        CustomText(
+                          text: address,
                           fontsize: 20.sp,
                         ),
                         RichText(

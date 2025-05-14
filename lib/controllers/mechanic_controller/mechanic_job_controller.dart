@@ -8,6 +8,7 @@ import '../../models/all_job_provider_model.dart';
 import '../../models/redius_limits_model.dart';
 
 class MechanicJobController extends GetxController {
+
   RxInt page = 1.obs;
   var totalPages = (-1);
   var currentPage = (-1);
@@ -79,7 +80,7 @@ class MechanicJobController extends GetxController {
     try {
       var response = await ApiClient.postData(
         ApiConstants.jobRequest,
-        body,
+        jsonEncode(body),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -94,6 +95,42 @@ class MechanicJobController extends GetxController {
       jobIdLoading(false);
     }
   }
+
+  /// ===========================================> Mechanic Job Bookings Screen Status Change ==================================>
+
+  var changeStatusLoading = false.obs;
+
+  Future<void> changeStatus({
+    String? status,
+    String? jobId,
+    required BuildContext context,
+  }) async {
+    var body = {
+      'status': status,
+    };
+
+    changeStatusLoading(true);
+
+    try {
+      var response = await ApiClient.putData(
+        ApiConstants.changeStatus(jobId!),
+        body,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
+      } else {
+        ToastMessageHelper.showToastMessage("Failed to change status.");
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Something went wrong.");
+    } finally {
+      changeStatusLoading(false);
+    }
+  }
+
+
 
 
 
