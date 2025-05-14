@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 
 class MechanicBookingsDetailsScreen extends StatelessWidget {
+
   const MechanicBookingsDetailsScreen({super.key});
 
   @override
@@ -165,7 +166,9 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
             ),
             child: Checkbox(
               value: checked,
-              onChanged: isEnabled ? (v) {} : null,
+              onChanged: isEnabled ? (v) {
+
+              } : null,
               activeColor: AppColors.primaryColor, // Checked box color
               checkColor: AppColors.primaryColor, // Tick mark color
               side: BorderSide(
@@ -198,37 +201,5 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
   }
 
 
-// Widget _buildServiceTile(String name, String price, {bool checked = false, bool isEnabled = true}) {
-  //   return Padding(
-  //     padding: EdgeInsets.symmetric(vertical: 6.h),
-  //     child: Row(
-  //       children: [
-  //         Checkbox(
-  //           value: checked,
-  //           onChanged: isEnabled ? (v) {} : null,
-  //           activeColor: Colors.blue,
-  //         ),
-  //         Expanded(
-  //           child: Text(
-  //             name,
-  //             style: TextStyle(
-  //               color: isEnabled ? Colors.black : Colors.grey,
-  //               decoration: isEnabled ? null : TextDecoration.lineThrough,
-  //             ),
-  //           ),
-  //         ),
-  //         if (price.isNotEmpty)
-  //           Container(
-  //             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-  //             decoration: BoxDecoration(
-  //               color: checked ? Colors.grey.shade300 : Colors.transparent,
-  //               borderRadius: BorderRadius.circular(6.r),
-  //             ),
-  //             child: Text(price),
-  //           ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
 
