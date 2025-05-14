@@ -14,7 +14,6 @@ import '../../../widgets/custom_text.dart';
 class CustomerBookingDetailsScreen extends StatelessWidget {
    CustomerBookingDetailsScreen({super.key});
 
-  final List certificateList = ["ASE", "OEM", "DOT"];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                     Row(
                       children: [
                         CustomText(
-                            text: "David Bryan",
+                            text: "${routeData["name"]}",
                             color: Colors.black,
                             right: 30.w,
                             fontsize: 22.h),
@@ -59,7 +58,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        CustomText(text: "New York, USA", color: Colors.black),
+                        CustomText(text: "${routeData["address"]}", color: Colors.black),
                         Container(
                             margin: EdgeInsets.symmetric(horizontal: 6.w),
                             height: 13.h,
@@ -67,7 +66,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                             color: Colors.grey),
                         Icon(Icons.star, color: Colors.amber, size: 20.h),
                         CustomText(
-                            text: "4.10", fontsize: 12.h, color: Colors.black)
+                            text: "${routeData["rating"]}", fontsize: 12.h, color: Colors.black)
                       ],
                     ),
                     SizedBox(height: 8.h),
@@ -78,7 +77,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                       spacing: 10.w,
                       runSpacing: 6.h,
                       children:
-                      List.generate(certificateList.length, (index) {
+                      List.generate(routeData["certifications"].length, (index) {
                         return Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 7.w,
@@ -89,7 +88,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                           ),
                           child: CustomText(
-                            text: certificateList[index].toString(),
+                            text: routeData["certifications"][index],
                             fontsize: 10.sp,
                           ),
                         );
@@ -156,9 +155,12 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
 
 
 
+            SizedBox(height: 12.h),
+
+
             Container(
               width: double.infinity,
-              height: 80.h,
+              height: 70.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.r),
                 color: AppColors.primaryShade300,
@@ -184,7 +186,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: CustomText(
-                        text: r"$ 107",
+                        text: "\$${routeData['price']}",
                         fontsize: 48.h,
                         color: Colors.white,
                       ),

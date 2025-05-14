@@ -25,6 +25,7 @@ class CustomImageAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("=======================image : $image");
     return Padding(
       padding: EdgeInsets.only(
         top: top ?? 0,
@@ -53,7 +54,7 @@ class CustomImageAvatar extends StatelessWidget {
               : CustomNetworkImage(
             boxShape: BoxShape.circle,
             imageUrl: (image != null && image!.isNotEmpty)
-                ? ""
+                ? "$image"
                 : "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
           ),
         ),

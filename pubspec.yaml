@@ -23,9 +23,13 @@ dependencies:
   country_state_city_pro: ^0.0.6
   dropdown_button2: ^2.3.9
 
-  google_maps_flutter:
+  google_maps_flutter: ^2.1.1
   permission_handler:
   location:
+#  geolocator: ^9.0.1
+  geocoding: ^2.1.0
+
+
   internet_connection_checker_plus: ^2.5.2
 
 
