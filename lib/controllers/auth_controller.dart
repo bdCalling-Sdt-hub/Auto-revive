@@ -168,7 +168,7 @@ class AuthController extends GetxController {
       "password": password
     };
     var response = await ApiClient.postData(
-        ApiConstants.loginUpEndPoint, body,
+        ApiConstants.loginUpEndPoint, jsonEncode(body),
         headers: headers);
     print("========================${response.statusCode} \n ${response.body}");
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -189,6 +189,7 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);
     }else{
+      logInLoading(false);
       ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
       if (response.body["message"] == "Email not verified. Please verify your email.") {
         context.go(AppRoutes.otpScreen, extra: "");
