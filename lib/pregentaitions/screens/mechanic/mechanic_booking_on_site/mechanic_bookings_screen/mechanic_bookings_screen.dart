@@ -100,6 +100,11 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                         context.pushNamed(
                             AppRoutes.mechanicBookingsDetailsScreen,
                           extra: {
+                            "title" : "Details",
+                            "name" :  bookingAllFilters.customerId?.name??"",
+                            "address" :  bookingAllFilters.customerId?.address ?? "",
+                            "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+
 
 
                           }
@@ -115,7 +120,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
-                      image:  "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
                 );
@@ -160,7 +165,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
-                      image: "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
                 );
@@ -186,7 +191,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.carModel ?? 'N/A',
                       status: bookingAllFilters.status ?? 'N/A',
-                      image: "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
                 ),

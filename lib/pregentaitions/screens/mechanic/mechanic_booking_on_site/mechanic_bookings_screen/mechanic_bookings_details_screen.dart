@@ -6,65 +6,83 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../controllers/mechanic_controller/mechanic_on_site_controller/booking_all_filters_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../widgets/custom_app_bar.dart';
 
-class MechanicBookingsDetailsScreen extends StatelessWidget {
+class MechanicBookingsDetailsScreen extends StatefulWidget {
 
   const MechanicBookingsDetailsScreen({super.key});
 
   @override
+  State<MechanicBookingsDetailsScreen> createState() => _MechanicBookingsDetailsScreenState();
+}
+
+class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsScreen> {
+
+
+  MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
+
+  @override
+  void initState() {
+    mechanicBookingAllFiltersController.getAllService();
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: CustomText(
-          maxline: 2,
-          text: "Details",
-          fontsize: 20.sp,
-        ),
-      ),
+    Map routeData = GoRouterState.of(context).extra as Map;
+    return Scaffold(
+      appBar:  CustomAppBar(title: "${routeData["title"]}"),
       body: Column(
         children: [
           SizedBox(height: 20.w),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CustomImageAvatar(image: '', radius: 44.r),
-              SizedBox(width: 10.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'David Bryan',
-                    fontsize: 20.sp,
-                    bottom: 6.h,
-                  ),
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(color: Colors.black),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomImageAvatar(image: "${routeData["image"]}", radius: 44.r),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextSpan(text: 'New York, USA '),
+                        CustomText(
+                          text: "${routeData["name"]}",
+                          fontsize: 20.sp,
+                          bottom: 6.h,
+                        ),
+                        CustomText(
+                          text: "${routeData["address"]}",
+                          fontsize: 20.sp,
+                          bottom: 6.h,
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 10.w),
-                  Row(
-                    children: [
-                      Assets.icons.detailsMessage.svg(),
-                      SizedBox(width: 6.w),
-                      GestureDetector
-                        (
-                        onTap: () {
-                          context.pushNamed(AppRoutes.mechanicMapScreen);
-                        },
-                          child: Assets.icons.detailsLocation.svg()),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 10.w),
+                    Row(
+                      children: [
+                        Assets.icons.detailsMessage.svg(),
+                        SizedBox(width: 6.w),
+                        GestureDetector
+                          (
+                          onTap: () {
+                            context.pushNamed(AppRoutes.mechanicMapScreen);
+                          },
+                            child: Assets.icons.detailsLocation.svg()),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 26.h),
           // ============>> Service Search and Selection <<============= //
@@ -111,7 +129,7 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
 
                 SizedBox(height: 16.h),
 
-                // Scrollable Services List
+                /// =====================================> Scrollable Services List ======================================>
                 Container(
                   height: 300.h,
                   padding: EdgeInsets.all(8.w),
@@ -153,8 +171,6 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildServiceTile(BuildContext context, String name, String price, {bool checked = false, bool isEnabled = true}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
@@ -171,7 +187,7 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
               } : null,
               activeColor: AppColors.primaryColor, // Checked box color
               checkColor: AppColors.primaryColor, // Tick mark color
-              side: BorderSide(
+              side: const BorderSide(
                 color: AppColors.primaryColor, // Border color
                 width: 2,
               ),
@@ -199,7 +215,6 @@ class MechanicBookingsDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
 
 }
 

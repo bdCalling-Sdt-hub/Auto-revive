@@ -4,6 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../../../helpers/toast_message_helper.dart';
 import '../../../models/booking_all_filter_model.dart';
+import '../../../models/get_all_model_service.dart';
 import '../../../services/api_client.dart';
 import '../../../services/api_constants.dart';
 
@@ -76,6 +77,24 @@ class MechanicBookingAllFiltersController extends GetxController {
       ToastMessageHelper.showToastMessage("Something went wrong.");
     } finally {
       changeStatusLoading(false);
+    }
+  }
+
+
+
+
+  // ================================> Mechanic Service  ==============================>
+
+  RxBool getAllServiceLoading = false.obs;
+  RxList<GetAllServiceModel> allService = <GetAllServiceModel>[].obs;
+  getAllService()async{
+    getAllServiceLoading(true);
+    var response = await ApiClient.getData(ApiConstants.getAllServiceEndPoint);
+    if(response.statusCode == 200){
+      allService.value = List<GetAllServiceModel>.from(response.body["data"].map((x)=> GetAllServiceModel.fromJson(x)));
+      getAllServiceLoading(false);
+    }else{
+      getAllServiceLoading(false);
     }
   }
 
