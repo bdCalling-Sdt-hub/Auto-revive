@@ -92,41 +92,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
               );
             },
           ),
-          // Positioned(
-          //   top: 20,
-          //   left: 15,
-          //   right: 15,
-          //   child: Container(
-          //     padding: EdgeInsets.only(left: 12.w),
-          //     decoration: BoxDecoration(
-          //       color: Colors.white,
-          //       borderRadius: BorderRadius.circular(100),
-          //       boxShadow: [BoxShadow(blurRadius: 10.r, color: Colors.black12)],
-          //     ),
-          //     child: const Row(
-          //       children: [
-          //         Icon(Icons.location_on_outlined, color: Colors.grey),
-          //         SizedBox(width: 8),
-          //         Expanded(
-          //           child: TextField(
-          //             decoration: InputDecoration(
-          //               hintText: "Search",
-          //               hintStyle: TextStyle(color: Color(0xff9D9D9D)),
-          //               border: InputBorder.none,
-          //             ),
-          //           ),
-          //         ),
-          //         CircleAvatar(
-          //           radius: 23,
-          //           backgroundColor: AppColors.primaryColor,
-          //           child: Icon(Icons.search, color: Colors.white),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
 
-          // Overlay: Mechanic Status
           Obx(() {
             final controller = Get.find<CustomerMapController>();
 

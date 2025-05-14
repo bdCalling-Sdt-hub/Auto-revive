@@ -36,6 +36,7 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
 
     return Scaffold(
       backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
+      extendBody: true,
       body: screens[currentIndex],
       bottomNavigationBar: Container(
         height: sizeH * .07,
