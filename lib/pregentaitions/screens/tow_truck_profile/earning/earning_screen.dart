@@ -33,16 +33,17 @@ class EarningScreen extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              Assets.images.balanceBg
-                  .image(height: 180.h, width: double.infinity),
+              Assets.images.balanceBg.image(height: 220.h, width: double.infinity, fit: BoxFit.cover),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 44.w),
                 child: Column(
                   children: [
+
                     CustomText(
                       text: 'Your balance',
                       color: Colors.white,
                       fontsize: 20.sp,
+                      top: 20,
                     ),
                     SizedBox(height: 8.h),
                     CustomText(
@@ -65,6 +66,29 @@ class EarningScreen extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                     ),
+
+
+
+                    SizedBox(height: 10.h),
+                    CustomContainer(
+                      paddingAll: 8.h,
+                      radiusAll: 100.r,
+                      color: AppColors.bgColorWhite,
+                      width: double.infinity,
+                      onTap: () {
+                        context.pushNamed(AppRoutes.addBalanceScreen);
+                      },
+                      child: CustomText(
+                        text: 'Add Balance',
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+
+
+                    SizedBox(height: 30.h)
+
+
+
                   ],
                 ),
               ),

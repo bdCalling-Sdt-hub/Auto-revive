@@ -33,7 +33,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int rating = 4;
+
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
@@ -102,7 +102,8 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                         "rating" : booking.providerId?.avgRating ?? 0,
                         "certifications" :  booking.providerId?.certifications ?? [],
                         "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
-                        "price" : booking.transportPrice ?? 0
+                        "price" : booking.transportPrice ?? 0,
+                        "id" : "${booking.id}"
                       });
                     },
                     rating: booking.providerId?.avgRating ?? 0,
@@ -131,15 +132,22 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                     },
                     onTap: () {
                       context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
-                        "title" : "Details"
+                      "title" : "Details",
+                      "name" : booking.providerId?.name??"",
+                      "address" : booking.providerId?.address ?? "",
+                      "rating" : booking.providerId?.avgRating ?? 0,
+                      "certifications" :  booking.providerId?.certifications ?? [],
+                      "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
+                      "price" : booking.transportPrice ?? 0,
+                      "id" : "${booking.id}"
                       });
                     },
-                    title: r'Price: $108',
-                    name: 'David Bryan',
-                    certificates: const ["ASE", "OEM"],
-                    rating: rating,
+                    title: 'Price: \$${booking.transportPrice ?? "0"}',
+                    name: '${booking.providerId?.name ?? "N/A"}',
+                    certificates: booking.providerId?.certifications ?? [],
+                    rating: booking.providerId?.avgRating ?? 0,
                     status: 'On-going',
-                    image: '',
+                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
                   );
                 },
               ),
@@ -160,7 +168,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                   name: 'David Bryan',
                   // title: 'New York, USA',
                   status: 'Complete',
-                  rating: rating,
+                  rating: 0,
                   certificates: const ["ASE", "OEM"],
                   image: '',
                 );

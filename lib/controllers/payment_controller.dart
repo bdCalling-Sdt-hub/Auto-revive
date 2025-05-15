@@ -1,20 +1,24 @@
 
+
+
 import 'dart:convert';
 
-import 'package:autorevive/env/config.dart';
+import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../env/config.dart';
+import '../helpers/toast_message_helper.dart';
+import '../services/api_client.dart';
 
 
-
-class StripePayment {
+class PaymentController {
   Map<String, dynamic>? paymentIntentData;
 
-  StripePayment() {
+  PaymentController() {
     Stripe.publishableKey = Config.publishableKey;
   }
 
@@ -29,13 +33,13 @@ class StripePayment {
       if (kDebugMode) {
         print('Error fetching payment intent: $e');
       }
-      throw e;
+      rethrow;
     }
   }
 
-  Future<void> makePayment({String? subscriptionId, amount }) async {
+  Future<void> makePayment({required String price}) async {
     try {
-      paymentIntentData = await createPaymentIntent("$amount", "USD");
+      paymentIntentData = await createPaymentIntent(price, "USD");
       if (paymentIntentData != null) {
         String clientSecret = paymentIntentData!['client_secret'];
 
@@ -46,16 +50,17 @@ class StripePayment {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
             billingDetails: const BillingDetails(
-                name: 'sagor',
-                email: 'sagor@gmail.com'),
+              name: '',
+              email: 'jaimulislam7@gmail.com',
+            ),
             googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-            merchantDisplayName: 'sagor',
+            merchantDisplayName: 'jaimul islam',
             paymentIntentClientSecret: clientSecret,
             style: ThemeMode.dark,
           ),
         );
 
-        displayPaymentSheet(subscriptionId: "$subscriptionId");
+        displayPaymentSheet(price: price);
       }
     } catch (e, s) {
       if (kDebugMode) {
@@ -63,6 +68,7 @@ class StripePayment {
       }
     }
   }
+
 
   Future<Map<String, dynamic>?> createPaymentIntent(String amount, String currency) async {
     try {
@@ -94,18 +100,23 @@ class StripePayment {
   }
 
   String calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100;
-    return a.toString();
+    final doubleAmount = double.tryParse(amount);
+    if (doubleAmount != null) {
+      return (doubleAmount * 100).toInt().toString();
+    } else {
+      throw const FormatException("Invalid amount format");
+    }
   }
 
-  Future<void> displayPaymentSheet({required String subscriptionId}) async {
+
+  Future<void> displayPaymentSheet({required String price}) async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      retrieveTxnId(paymentIntent: paymentIntentData!['id'], subscriptionId: '$subscriptionId'); ///subscription id
+      retrieveTxnId(paymentIntent: paymentIntentData!['id'], price:price );
       if (kDebugMode) {
         print('Payment intent: $paymentIntentData');
       }
-      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(content: Text("Paid successfully")));
+ ToastMessageHelper.showToastMessage("Payment Success");
       paymentIntentData = null;
     } catch (e) {
       if (kDebugMode) {
@@ -114,32 +125,47 @@ class StripePayment {
     }
   }
 
-  Future<void> retrieveTxnId({required String paymentIntent, required String subscriptionId}) async {
+
+  Future<void> retrieveTxnId({required String paymentIntent, required String price}) async {
     try {
+      // Step 1: Retrieve the payment intent details (charges)
       final response = await http.get(
         Uri.parse('https://api.stripe.com/v1/charges?payment_intent=$paymentIntent'),
         headers: {
-          "Authorization": "Bearer ${Config.secretKey}", // Use sk_test_... key here
+          "Authorization": "Bearer ${Config.secretKey}",
           "Content-Type": "application/x-www-form-urlencoded"
         },
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        if (kDebugMode) {
-          print("Transaction Id: ${data['data'][0]['balance_transaction']}");
-        }
-        var transactionId = data['data'][0]['balance_transaction'];
-        print("======================  $subscriptionId");
-        // final  SubscriptionController subscriptionController = Get.put(SubscriptionController());
-        // subscriptionController.payment(subscriptionId: subscriptionId, transactionId: "$transactionId");
+        String transactionId = data['data'][0]['balance_transaction']; // Get the transaction ID
 
-      }else{
-        print("******************************************************************************************************");
+        if (kDebugMode) {
+          print("Transaction Id: $transactionId");
+          print("***********payment data: $data");
+        }
+
+        // Step 2: Send the subscriptionId and transactionId to your custom API
+        Map<String, dynamic> body = {
+          "amount": int.parse(price.toString())
+        };
+
+        ///API URL
+
+        // Step 3: Call the custom API with the transactionId and subscriptionId
+        final apiResponse = await ApiClient.postData(ApiConstants.addBalance, jsonEncode(body));
+
+        if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
+          if (kDebugMode) {
+            print("Payment successfully created: ${apiResponse.body}");
+          }
+        }
       }
     } catch (e) {
-      // Get.toNamed(AppRoutes.failedPayment);
-      throw Exception("Error retrieving transaction ID: $e");
     }
   }
+
+
 }
+
