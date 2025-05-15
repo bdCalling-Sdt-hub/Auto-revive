@@ -2,47 +2,41 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/config/app_routes/app_routes.dart';
 import '../../../helpers/toast_message_helper.dart';
 import '../../../models/booking_all_filter_model.dart';
-import '../../../models/get_all_model_service.dart';
+import '../../../models/get_all_service_model.dart';
 import '../../../services/api_client.dart';
 import '../../../services/api_constants.dart';
 
 class MechanicBookingAllFiltersController extends GetxController {
 
-  RxInt page = 1.obs;
-  var totalPages = (-1);
-  var currentPage = (-1);
-  var total = (-1);
-  void loadMore() {
-    print("==========================================total page ${totalPages} page No: ${page.value} == total result ${total}");
-    if (totalPages > page.value) {
-      page.value += 1;
-      print("**********************print here");
-      update();
-    }
-    print("**********************print here**************");
-  }
-  RxBool loading = false.obs;
+
+
+
   RxList<BookingAllFiltersModel> bookingFilters = <BookingAllFiltersModel>[].obs;
-  mechanicBookingAllFilters({String status = '',limit}) async {
-    if(page.value == 1){
-      loading(true);
+  RxBool loading = false.obs;
+
+  RxString filtersStatus = ''.obs;
+  mechanicBookingAllFilters({String? status})async{
+
+    if(status !=  null){
+      filtersStatus.value = status;
     }
-    loading.value = true;
-    var response = await ApiClient.getData(ApiConstants.bookingAllPaginationFilters("${page.value}",status,limit));
-    if (response.statusCode == 200) {
-      totalPages = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
-      currentPage = jsonDecode(response.body['pagination']['currentPage'].toString()) ?? 0;
-      total = jsonDecode(response.body['pagination']['total'].toString()) ?? 0;
-      var data = List<BookingAllFiltersModel>.from(response.body['data'].map((x) => BookingAllFiltersModel.fromJson(x)));
-      bookingFilters.addAll(data);
-      update();
+
+    loading(true);
+    var response = await ApiClient.getData("${ApiConstants.bookingAllPaginationFilters}?page=1&limit=11&sortField=createdAt&sortOrder=desc&status=${filtersStatus??""}");
+
+    if(response.statusCode == 200){
+
+      bookingFilters.value = List<BookingAllFiltersModel>.from(response.body["data"].map((x)=> BookingAllFiltersModel.fromJson(x)));
+
       loading(false);
-    } else {
-      loading.value = false;
-    }
+    }loading(false);
   }
+
+
 
 
 
@@ -97,6 +91,43 @@ class MechanicBookingAllFiltersController extends GetxController {
       getAllServiceLoading(false);
     }
   }
+
+
+// ================================> Add Service  ==============================>
+
+  var addServiceLoading = false.obs;
+  final List<Map<String, dynamic>> servicesBody = [];
+
+  Future<void> addServiceProvider({
+    required BuildContext context,
+    required String serviceId
+  }) async {
+
+    print("=================================================================>>>  $servicesBody");
+
+
+    addServiceLoading(true);
+
+    try {
+      var response = await ApiClient.postData(
+        ApiConstants.addServiceProvider(serviceId!),
+        jsonEncode(servicesBody),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+        context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen);
+
+      } else {
+        ToastMessageHelper.showToastMessage("Job process not found");
+      }
+    } catch (e) {
+      ToastMessageHelper.showToastMessage("Failed to add service");
+    } finally {
+      addServiceLoading(false);
+    }
+  }
+
 
 
 }

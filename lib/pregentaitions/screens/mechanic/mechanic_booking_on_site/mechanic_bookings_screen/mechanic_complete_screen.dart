@@ -107,7 +107,7 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
                         children: [
                           Container(
                             width: 16.w,
-                            height: 16.w,
+                            height: 16.h,
                             margin: EdgeInsets.only(right: 8.w),
                             decoration: BoxDecoration(
                               color: Colors.blue,
@@ -115,13 +115,9 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           CustomText(text: services[index], color: Colors.black),
-
                         ],
                       ),
-
                       CustomText(text: r"$ 27", right: 22.w, color: Colors.black),
-
-
                     ],
                   ),
                 );
@@ -131,7 +127,8 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
           ),
         ),
           const Spacer(),
-          CustomButton(title: 'Complete', onpress: () {}),
+          CustomButton(title: 'Complete', onpress: () {
+          }),
           SizedBox(height: 20.h),
         ],
       ),
