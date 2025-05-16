@@ -154,25 +154,29 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
             ),
 
             // History Tab
-            ListView.builder(
-              itemCount: 5,
-              padding: EdgeInsets.all(8.r),
-              itemBuilder: (context, index) {
-                return  BookingCardCustomer(
-                  onTapDetails: (){
-                    context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                  },
-                  historyButtonAction: (){
-                  },
-                  isHistory: true,
-                  name: 'David Bryan',
-                  // title: 'New York, USA',
-                  status: 'Complete',
-                  rating: 0,
-                  certificates: const ["ASE", "OEM"],
-                  image: '',
-                );
-              },
+            Obx(() =>
+            bookingController.bookingLoading.value ? const CustomLoader() :
+               ListView.builder(
+                itemCount: bookingController.booking.length,
+                padding: EdgeInsets.all(8.r),
+                itemBuilder: (context, index) {
+                  var booking = bookingController.booking[index];
+                  return  BookingCardCustomer(
+                    onTapDetails: (){
+                      context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                    },
+                    historyButtonAction: (){
+                    },
+                    isHistory: true,
+                    name: '${booking.providerId?.name ?? "N/A"}',
+                    // title: 'New York, USA',
+                    status: 'Complete',
+                    rating: booking.providerId?.avgRating ?? 0,
+                    certificates:  booking.providerId?.certifications ?? [],
+                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                  );
+                },
+              ),
             ),
           ],
         ),
