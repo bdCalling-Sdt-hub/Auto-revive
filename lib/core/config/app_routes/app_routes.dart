@@ -37,6 +37,7 @@ import '../../../pregentaitions/screens/onboarding_screen/onboarding_screen.dart
 import '../../../pregentaitions/screens/settings_screen/privacy_policy_allscreen.dart';
 import '../../../pregentaitions/screens/progress/progress_screen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_profile/earning/add_balace_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/withdraw_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/personal_info_customer/personal_info_customer_screen.dart';
@@ -107,6 +108,7 @@ class AppRoutes {
   static const String personalInfoCustomerScreen = "/PersonalInfoCustomerScreen";
   static const String progressScreen = "/ProgressScreen";
   static const String adminSupportScreen = "/AdminSupportScreen";
+  static const String addBalanceScreen = "/AddBalanceScreen";
 
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
@@ -590,8 +592,23 @@ class AppRoutes {
         ),
 
 
+        ///<<<=============>>> ADD BALANCE SCREEN <<<===============>>>
 
-  ]);
+        GoRoute(
+          path: addBalanceScreen,
+          name: addBalanceScreen,
+          pageBuilder: (context, state) {
+            return _customTransitionPage(
+              AddBalanceScreen(),
+              state,
+            );
+          },
+        ),
+
+
+
+
+      ]);
 
 
 

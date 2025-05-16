@@ -25,10 +25,12 @@ class ApiConstants{
   static const String getProfileEndPoint = "/user/me";
   static const String carModel = "/car-model";
   static const String postJob = "/job";
+  static const String initBookingCustomer = "/job-process/customer";
   static const String findMechanicRadius = "/user/radius/mechanic";
   static const String privacyPolicy = "/setting";
   static const String adminSupport = "/setting/support";
   static const String radiusLimits = "/setting/radius-limits";
+  static const String addBalance = "/payment/add-balance";
   static const String jobRequest = "/job-process/provider/do-request";
   static  String addServiceProvider(String id) => "/job-process/provider/add-services/$id";
   static  String jobProcessCompleteProvider(String id) => "/job-process/provider/$id";

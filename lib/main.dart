@@ -1,13 +1,24 @@
 import 'dart:ui';
 
+import 'package:autorevive/env/config.dart';
 import 'package:autorevive/helpers/dependancy_injaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'core/config/app_routes/app_routes.dart';
 import 'core/config/app_themes/app_themes.dart';
 
-void main() {
+void main() async{
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  Stripe.publishableKey = Config.publishableKey;
+  Stripe.merchantIdentifier = 'MerchantIdentifier';
+  await Stripe.instance.applySettings();
+
+
+
+
   PlatformDispatcher.instance.onAccessibilityFeaturesChanged = (){};
   DependencyInjection di = DependencyInjection();
   di.dependencies();

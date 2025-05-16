@@ -46,8 +46,8 @@ dependencies:
   country_code_picker: ^3.3.0
   custom_rating_bar: ^3.0.0
   fluttertoast: ^8.2.6
-
-
+#  flutter_stripe: ^10.2.0
+  flutter_stripe: ^11.3.0
 
 
   country_pickers: ^3.0.1

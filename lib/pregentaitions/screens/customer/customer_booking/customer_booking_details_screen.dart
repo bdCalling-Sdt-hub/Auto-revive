@@ -1,3 +1,4 @@
+import 'package:autorevive/controllers/payment_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/cachanetwork_image.dart';
@@ -6,8 +7,10 @@ import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../controllers/customer/customer_booking_controller.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../widgets/custom_text.dart';
 
@@ -15,8 +18,11 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
    CustomerBookingDetailsScreen({super.key});
 
 
+   CustomerBookingController bookingController = Get.find<CustomerBookingController>();
+
   @override
   Widget build(BuildContext context) {
+
     Map routeData = GoRouterState.of(context).extra as Map;
     return Scaffold(
       appBar:  CustomAppBar(title: "${routeData["title"]}"),
@@ -29,7 +35,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomNetworkImage(
-                    imageUrl: "https://randomuser.me/api/portraits/men/20.jpg",
+                    imageUrl: "${routeData["image"]}",
                     boxShape: BoxShape.circle,
                     height: 110.h,
                     width: 110.w,
@@ -206,7 +212,7 @@ class CustomerBookingDetailsScreen extends StatelessWidget {
 
             routeData["title"] ==  "Complete" ?
             CustomButton(title: "Pay Now", onpress: () {
-
+              bookingController.customerInitBooking(status: "accepted", id: routeData["id"]);
             })  :
             
             CustomTwoButon(

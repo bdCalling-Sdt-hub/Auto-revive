@@ -33,7 +33,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int rating = 4;
+
     return DefaultTabController(
       length: 3, // Number of tabs
       child: Scaffold(
@@ -101,7 +101,9 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                         "address" : booking.providerId?.address ?? "",
                         "rating" : booking.providerId?.avgRating ?? 0,
                         "certifications" :  booking.providerId?.certifications ?? [],
-                        "price" : booking.transportPrice ?? 0
+                        "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
+                        "price" : booking.transportPrice ?? 0,
+                        "id" : "${booking.id}"
                       });
                     },
                     rating: booking.providerId?.avgRating ?? 0,
@@ -130,40 +132,51 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                     },
                     onTap: () {
                       context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
-                        "title" : "Details"
+                      "title" : "Details",
+                      "name" : booking.providerId?.name??"",
+                      "address" : booking.providerId?.address ?? "",
+                      "rating" : booking.providerId?.avgRating ?? 0,
+                      "certifications" :  booking.providerId?.certifications ?? [],
+                      "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
+                      "price" : booking.transportPrice ?? 0,
+                      "id" : "${booking.id}"
                       });
                     },
-                    title: r'Price: $108',
-                    name: 'David Bryan',
-                    certificates: const ["ASE", "OEM"],
-                    rating: rating,
+                    title: 'Price: \$${booking.transportPrice ?? "0"}',
+                    name: '${booking.providerId?.name ?? "N/A"}',
+                    certificates: booking.providerId?.certifications ?? [],
+                    rating: booking.providerId?.avgRating ?? 0,
                     status: 'On-going',
-                    image: '',
+                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
                   );
                 },
               ),
             ),
 
             // History Tab
-            ListView.builder(
-              itemCount: 5,
-              padding: EdgeInsets.all(8.r),
-              itemBuilder: (context, index) {
-                return  BookingCardCustomer(
-                  onTapDetails: (){
-                    context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                  },
-                  historyButtonAction: (){
-                  },
-                  isHistory: true,
-                  name: 'David Bryan',
-                  // title: 'New York, USA',
-                  status: 'Complete',
-                  rating: rating,
-                  certificates: const ["ASE", "OEM"],
-                  image: '',
-                );
-              },
+            Obx(() =>
+            bookingController.bookingLoading.value ? const CustomLoader() :
+               ListView.builder(
+                itemCount: bookingController.booking.length,
+                padding: EdgeInsets.all(8.r),
+                itemBuilder: (context, index) {
+                  var booking = bookingController.booking[index];
+                  return  BookingCardCustomer(
+                    onTapDetails: (){
+                      context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                    },
+                    historyButtonAction: (){
+                    },
+                    isHistory: true,
+                    name: '${booking.providerId?.name ?? "N/A"}',
+                    // title: 'New York, USA',
+                    status: 'Complete',
+                    rating: booking.providerId?.avgRating ?? 0,
+                    certificates:  booking.providerId?.certifications ?? [],
+                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                  );
+                },
+              ),
             ),
           ],
         ),
