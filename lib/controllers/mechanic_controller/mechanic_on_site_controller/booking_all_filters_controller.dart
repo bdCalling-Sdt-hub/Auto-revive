@@ -7,6 +7,7 @@ import '../../../core/config/app_routes/app_routes.dart';
 import '../../../helpers/toast_message_helper.dart';
 import '../../../models/booking_all_filter_model.dart';
 import '../../../models/get_all_service_model.dart';
+import '../../../models/job_process_complete_model.dart';
 import '../../../services/api_client.dart';
 import '../../../services/api_constants.dart';
 
@@ -116,7 +117,7 @@ class MechanicBookingAllFiltersController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-        context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen);
+        context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen, extra: {"id":"$serviceId"});
 
       } else {
         ToastMessageHelper.showToastMessage("Job process not found");
@@ -127,6 +128,24 @@ class MechanicBookingAllFiltersController extends GetxController {
       addServiceLoading(false);
     }
   }
+
+
+  /// ====================================================> Job process Complete ==================================================>
+
+
+  RxBool getJobProcessCompleteLoading = false.obs;
+  Rx<JobProcessCompleteModel> jobProcessComplete = JobProcessCompleteModel().obs;
+  getJobProcessComplete({required String jobProcessId}) async {
+    getJobProcessCompleteLoading(true);
+    var response = await ApiClient.getData(ApiConstants.jobProcessCompleteProvider(jobProcessId.toString()));
+    if (response.statusCode == 200) {
+      jobProcessComplete.value = JobProcessCompleteModel.fromJson(response.body['data']);
+      getJobProcessCompleteLoading(false);
+    } else if (response.statusCode == 404) {
+      getJobProcessCompleteLoading(false);
+    }
+  }
+
 
 
 

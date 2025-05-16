@@ -87,7 +87,7 @@ class MechanicJobController extends GetxController {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
 
       } else {
-        ToastMessageHelper.showToastMessage("Something went wrong.");
+        ToastMessageHelper.showToastMessage("Please try again later or choose a different job");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Failed to job request");

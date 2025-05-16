@@ -31,6 +31,7 @@ class ApiConstants{
   static const String radiusLimits = "/setting/radius-limits";
   static const String jobRequest = "/job-process/provider/do-request";
   static  String addServiceProvider(String id) => "/job-process/provider/add-services/$id";
+  static  String jobProcessCompleteProvider(String id) => "/job-process/provider/$id";
   static const String customerBookingEndPoint = "/job-process/customer";
   static const String getAllServiceEndPoint = "/service";
   static  String changeStatus (String id) => "/job-process/provider/$id";

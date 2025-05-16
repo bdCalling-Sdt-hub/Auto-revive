@@ -438,7 +438,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
     final Map<String, List<Tool>> groupedTools = {};
 
     if (toolsGroup.basicHand != null && toolsGroup.basicHand!.isNotEmpty) {
-      groupedTools["Basic hand"] = toolsGroup.basicHand!;
+      groupedTools[""] = toolsGroup.basicHand!;
     }
 
     if (toolsGroup.group2 != null && toolsGroup.group2!.isNotEmpty) {
