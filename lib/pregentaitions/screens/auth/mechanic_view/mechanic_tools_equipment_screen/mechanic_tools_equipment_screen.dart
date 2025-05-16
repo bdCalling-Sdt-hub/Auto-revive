@@ -215,10 +215,8 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                         });
                       }
                     }
-
                 )),
-
-                SizedBox(height: 20.h),
+                SizedBox(height: 70.h),
               ],
             ),
           ),

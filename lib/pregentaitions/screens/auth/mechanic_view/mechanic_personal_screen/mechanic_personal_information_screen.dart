@@ -6,7 +6,6 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
@@ -245,7 +244,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                         },
                       ),),
 
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 80.h),
                 ],
               ),
            ),
