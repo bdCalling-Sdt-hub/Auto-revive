@@ -64,7 +64,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                 bookingController.fetchBooking(status: "serviced");
               }else{
                 bookingController.booking.clear();
-                bookingController.fetchBooking(status: "requested");
+                bookingController.fetchBooking(status: "history");
               }
             },
             tabs: const [
@@ -170,7 +170,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                     isHistory: true,
                     name: '${booking.providerId?.name ?? "N/A"}',
                     // title: 'New York, USA',
-                    status: 'Complete',
+                    status:  booking.status, //'Complete',
                     rating: booking.providerId?.avgRating ?? 0,
                     certificates:  booking.providerId?.certifications ?? [],
                     image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',

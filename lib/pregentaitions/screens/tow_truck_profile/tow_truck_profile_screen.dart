@@ -206,10 +206,12 @@ class CustomTwoBtnWidget extends StatelessWidget {
             height: height,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 7.w),
-              child: CustomText(
-                  text: btnNameList![index],
-                  color: index == 0 ? Colors.black87 : Colors.white,
-                  fontWeight: FontWeight.w600),
+              child: Center(
+                child: CustomText(
+                    text: btnNameList![index],
+                    color: index == 0 ? Colors.black87 : Colors.white,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         );
