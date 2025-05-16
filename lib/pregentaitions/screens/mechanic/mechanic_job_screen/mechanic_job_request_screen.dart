@@ -169,8 +169,7 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                 children: [
                   CustomNetworkImage(
                     boxShape: BoxShape.circle,
-                    imageUrl:
-                    "${ApiConstants.imageBaseUrl}/${job.customerId?.profileImage ?? 'N/A'}",
+                    imageUrl: "${ApiConstants.imageBaseUrl}/${job.customerId?.profileImage ?? 'N/A'}",
                     height: 60.h,
                     width: 60.w,
                   ),

@@ -54,9 +54,12 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
             unselectedLabelColor: AppColors.primaryShade300,
             indicatorColor: AppColors.primaryShade300,
             onTap: (value) {
+              print("-------------------------------status = $value");
               if (value == 0) {
+                mechanicBookingAllFiltersController.bookingFilters.clear();
                 mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
               } else if (value == 1) {
+                mechanicBookingAllFiltersController.bookingFilters.clear();
                 mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'accepted');
               } else {
                 mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'confirmed');
@@ -100,8 +103,10 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                         context.pushNamed(
                             AppRoutes.mechanicBookingsDetailsScreen,
                           extra: {
-
-
+                            "title" : "Details",
+                            "name" :  bookingAllFilters.customerId?.name??"",
+                            "address" :  bookingAllFilters.customerId?.address ?? "",
+                            "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                           }
                         );
                       },
@@ -115,7 +120,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
-                      image:  "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
                 );
@@ -148,19 +153,24 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       buttonLabel: 'Confirm',
                       buttonColor: AppColors.primaryShade300,
                       onTapDetails: () {
-                        context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen);
+
                       },
                       onTap: () {
-                        mechanicBookingAllFiltersController.changeStatus(
-                            status: bookingAllFilters.status,
-                            jobId: bookingAllFilters.id,
-                            context: context);
+                        context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen,
+                            extra: {
+                              "title" : "Details",
+                              "name" :  bookingAllFilters.customerId?.name??"",
+                              "address" :  bookingAllFilters.customerId?.address ?? "",
+                              "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                              "id": bookingAllFilters.id
+                            }
+                        );
 
                       },
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
-                      image: "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
                 );
@@ -170,15 +180,27 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
 
               /// ==================================> History Tab =====================================>
 
-              Obx(()=>
-                 ListView.builder(
-                   itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
+              Obx((){
+                if (mechanicBookingAllFiltersController.loading.value) {
+                  return  const Center(child: CustomLoader());
+                }
+
+                if (mechanicBookingAllFiltersController.bookingFilters.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No data available',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
+                }
+               return ListView.builder(
+                  itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
                   padding: EdgeInsets.all(8.r),
                   itemBuilder: (context, index) {
                     var bookingAllFilters = mechanicBookingAllFiltersController.bookingFilters[index];
                     return  BookingCardWidget(
                       onTapDetails: (){
-                        context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen);
+                        // context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen,);
                       },
                       historyButtonAction: (){},
                       isHistory: true,
@@ -186,10 +208,12 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
                       subTitle: bookingAllFilters.carModel ?? 'N/A',
                       status: bookingAllFilters.status ?? 'N/A',
-                      image: "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage ?? 'N/A'}",
+                      image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
-                ),
+                );
+              }
+
               ),
             ],
           ),

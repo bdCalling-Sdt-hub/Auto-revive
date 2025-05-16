@@ -6,22 +6,29 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../controllers/mechanic_controller/mechanic_on_site_controller/booking_all_filters_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../services/api_constants.dart';
 
-class MechanicCompleteDetailsScreen extends StatelessWidget {
-   MechanicCompleteDetailsScreen({super.key});
+class MechanicCompleteDetailsScreen extends StatefulWidget {
+   const MechanicCompleteDetailsScreen({super.key});
 
-  final List<String> services = [
-    "Diesel Engine Repair",
-    "Gasoline Engine Repair",
-    "Semi-Truck Repair",
-    "Trailer Repair",
-  ];
+  @override
+  State<MechanicCompleteDetailsScreen> createState() => _MechanicCompleteDetailsScreenState();
+}
+
+class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsScreen> {
+
+  MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
+
 
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
+    mechanicBookingAllFiltersController.getJobProcessComplete(jobProcessId: '${routeData["id"]}');
     return CustomScaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -31,109 +38,119 @@ class MechanicCompleteDetailsScreen extends StatelessWidget {
           fontsize: 20.sp,
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 20.w),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CustomImageAvatar(image: '', radius: 44.r),
-              SizedBox(width: 10.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: 'David Bryan',
-                    fontsize: 20.sp,
-                    bottom: 6.h,
-                  ),
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(color: Colors.black),
+      body: Obx( () {
+
+       return Column(
+          children: [
+            SizedBox(height: 20.w),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomImageAvatar(
+                    image: "${ApiConstants.imageBaseUrl}/${mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.profileImage ?? ''}",
+                    radius: 44.r),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.name ?? 'N/A',
+                      fontsize: 20.sp,
+                      bottom: 6.h,
+                    ),
+                    CustomText(
+                      text: mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.address ?? 'N/A',
+                      fontsize: 20.sp,
+                      bottom: 6.h,
+                    ),
+                    SizedBox(height: 10.w),
+                    Row(
                       children: [
-                        TextSpan(text: 'New York, USA '),
+                        Assets.icons.detailsMessage.svg(),
+                        SizedBox(width: 6.w),
+                        GestureDetector(
+                            onTap: () {
+                              context.pushNamed(AppRoutes.mechanicMapScreen);
+                            },
+                            child: Assets.icons.detailsLocation.svg()),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 10.w),
-                  Row(
-                    children: [
-                      Assets.icons.detailsMessage.svg(),
-                      SizedBox(width: 6.w),
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed(AppRoutes.mechanicMapScreen);
-                        },
-                          child: Assets.icons.detailsLocation.svg()),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 18.h),
-          Align(
-            alignment: Alignment.topLeft,
-            child: CustomText(
-              textAlign: TextAlign.start,
-              fontsize: 20.sp,
-              color: AppColors.textColor151515,
-              text: 'Problem(s) need to be solved',
+                  ],
+                ),
+              ],
             ),
-          ),
-          SizedBox(height: 18.h),
-          Container(
-          width: double.infinity,
-          padding: EdgeInsets.only(left: 22.w),
-          height: 317.h,
-          decoration: BoxDecoration(
-            color: AppColors.bgColorWhite,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: AppColors.primaryShade300, width: 0.4),
-          ),
-          child: Scrollbar(
-            thickness: 4.w,
-            radius: Radius.circular(4.r),
-            child: ListView.separated(
-              padding: EdgeInsets.all(8.w),
-              itemCount: services.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding:  EdgeInsets.only(top: index == 0 ? 22.h : 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+            SizedBox(height: 18.h),
+            Align(
+              alignment: Alignment.topLeft,
+              child: CustomText(
+                textAlign: TextAlign.start,
+                fontsize: 20.sp,
+                color: AppColors.textColor151515,
+                text: 'Problem(s) need to be solved',
+              ),
+            ),
+            SizedBox(height: 18.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(left: 22.w),
+              height: 317.h,
+              decoration: BoxDecoration(
+                color: AppColors.bgColorWhite,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(
+                    color: AppColors.primaryShade300, width: 0.4),
+              ),
+              child: Scrollbar(
+                thickness: 4.w,
+                radius: Radius.circular(4.r),
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8.w),
+                  itemCount: mechanicBookingAllFiltersController.jobProcessComplete.value.services?.length,
+                  itemBuilder: (context, index) {
+                    var jobData = mechanicBookingAllFiltersController.jobProcessComplete.value.services?[index];
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: index == 0 ? 22.h : 12.h,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 16.w,
-                            height: 16.w,
-                            margin: EdgeInsets.only(right: 8.w),
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                width: 16.w,
+                                height: 16.h,
+                                margin: EdgeInsets.only(right: 8.w),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(4.r),
+                                ),
+                              ),
+                              CustomText(
+                                text: '${jobData?.service}',
+                                color: Colors.black,
+                              ),
+                            ],
                           ),
-                          CustomText(text: services[index], color: Colors.black),
-
+                          CustomText(
+                            text: '${jobData?.amount ?? 'N/A'}',
+                            right: 22.w,
+                            color: Colors.black,
+                          ),
                         ],
                       ),
+                    );
+                  },
+                )
 
-                      CustomText(text: r"$ 27", right: 22.w, color: Colors.black),
-
-
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(height: 12.h),
+              ),
             ),
-          ),
-        ),
-          const Spacer(),
-          CustomButton(title: 'Complete', onpress: () {}),
-          SizedBox(height: 20.h),
-        ],
+            CustomButton(title: 'Complete', onpress: () {}),
+            SizedBox(height: 20.h),
+          ],
+        );
+
+      }
       ),
     );
   }

@@ -157,34 +157,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         spacing: 20.w,
                         runSpacing: 15.h,
                         children: [
-                          // /// =============================================> Have Section =======================================>
-                          // Column(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: [
-                          //     CustomText(
-                          //       text: 'Have:',
-                          //       fontsize: 16.sp,
-                          //       color: AppColors.textColor151515,
-                          //     ),
-                          //     SizedBox(height: 13.h),
-                          //     Row(
-                          //       mainAxisSize: MainAxisSize.min,
-                          //       children: [
-                          //         if (mechanicController.profile.value.haveLicense == true)
-                          //           _buildTag('License'),
-                          //         if (mechanicController.profile.value.haveCdl == true)
-                          //           ...[
-                          //             SizedBox(width: 10.w),
-                          //             _buildTag('CDL'),
-                          //           ],
-                          //         if (mechanicController.profile.value.haveLicense != true &&
-                          //             mechanicController.profile.value.haveCdl != true)
-                          //           _buildTag('N/A'),
-                          //       ],
-                          //     ),
-                          //
-                          //   ],
-                          // ),
 
                           /// ============================================> Certificate Section =================================>
 
@@ -466,7 +438,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
     final Map<String, List<Tool>> groupedTools = {};
 
     if (toolsGroup.basicHand != null && toolsGroup.basicHand!.isNotEmpty) {
-      groupedTools["Basic hand"] = toolsGroup.basicHand!;
+      groupedTools[""] = toolsGroup.basicHand!;
     }
 
     if (toolsGroup.group2 != null && toolsGroup.group2!.isNotEmpty) {
