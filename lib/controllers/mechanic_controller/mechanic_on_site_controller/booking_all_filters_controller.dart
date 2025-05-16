@@ -27,7 +27,7 @@ class MechanicBookingAllFiltersController extends GetxController {
     }
 
     loading(true);
-    var response = await ApiClient.getData("${ApiConstants.bookingAllPaginationFilters}?page=1&limit=11&sortField=createdAt&sortOrder=desc&status=${filtersStatus??""}");
+    var response = await ApiClient.getData("${ApiConstants.bookingAllPaginationFilters}?page=1&limit=11&status=${filtersStatus??""}");
 
     if(response.statusCode == 200){
 

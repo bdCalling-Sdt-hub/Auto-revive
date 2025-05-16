@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller/mechanic_on_site_controller/booking_all_filters_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../services/api_constants.dart';
+import '../../../../widgets/custom_loader.dart';
 
 class MechanicCompleteDetailsScreen extends StatefulWidget {
    const MechanicCompleteDetailsScreen({super.key});
@@ -39,8 +40,7 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
         ),
       ),
       body: Obx( () {
-
-       return Column(
+        return Column(
           children: [
             SizedBox(height: 20.w),
             Row(
@@ -103,49 +103,60 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
               child: Scrollbar(
                 thickness: 4.w,
                 radius: Radius.circular(4.r),
-                child: ListView.builder(
-                  padding: EdgeInsets.all(8.w),
-                  itemCount: mechanicBookingAllFiltersController.jobProcessComplete.value.services?.length,
-                  itemBuilder: (context, index) {
-                    var jobData = mechanicBookingAllFiltersController.jobProcessComplete.value.services?[index];
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        top: index == 0 ? 22.h : 12.h,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 16.w,
-                                height: 16.h,
-                                margin: EdgeInsets.only(right: 8.w),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(4.r),
+                child: Obx((){
+                  if (mechanicBookingAllFiltersController.getJobProcessCompleteLoading.value) {
+                    return const Center(child: CustomLoader());
+                  }
+                 return ListView.builder(
+                    padding: EdgeInsets.all(8.w),
+                    itemCount: mechanicBookingAllFiltersController.jobProcessComplete.value.services?.length,
+                    itemBuilder: (context, index) {
+                      var jobData = mechanicBookingAllFiltersController.jobProcessComplete.value.services?[index];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          top: index == 0 ? 22.h : 12.h,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: 20.w,
+                                  height: 20.h,
+                                  margin: EdgeInsets.only(right: 9.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(4.r),
+                                  ),
                                 ),
-                              ),
-                              CustomText(
-                                text: '${jobData?.service}',
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                          CustomText(
-                            text: '${jobData?.amount ?? 'N/A'}',
-                            right: 22.w,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                                CustomText(
+                                  fontsize: 13.sp,
+                                  text: '${jobData?.service ?? 'N/A'}',
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                            CustomText(
+                              fontsize: 13.sp,
+                              text: '\$ ${jobData?.amount ?? 'N/A'}',
+                              right: 22.w,
+                              color: Colors.black,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
                 )
 
               ),
             ),
-            CustomButton(title: 'Complete', onpress: () {}),
+            SizedBox(height: 93.h),
+            CustomButton(title: 'Complete', onpress: () {
+
+            }),
             SizedBox(height: 20.h),
           ],
         );

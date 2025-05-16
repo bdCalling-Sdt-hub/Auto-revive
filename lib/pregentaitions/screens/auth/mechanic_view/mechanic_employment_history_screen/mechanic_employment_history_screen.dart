@@ -260,7 +260,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                       }
 
                   ),),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 70.h),
                 ],
               ),
 

@@ -98,7 +98,7 @@ class MechanicController extends GetxController{
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
       } else {
-        ToastMessageHelper.showToastMessage("Failed to save basic info.");
+        ToastMessageHelper.showToastMessage("Select profile image!");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong.");

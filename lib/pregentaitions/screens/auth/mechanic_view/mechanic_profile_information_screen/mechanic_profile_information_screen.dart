@@ -19,7 +19,7 @@ import 'package:intl/intl.dart';
 
 
 class MechanicProfileInformationScreen extends StatefulWidget {
-   MechanicProfileInformationScreen({super.key});
+   const MechanicProfileInformationScreen({super.key});
 
   @override
   State<MechanicProfileInformationScreen> createState() => _MechanicProfileInformationScreenState();
@@ -28,9 +28,6 @@ class MechanicProfileInformationScreen extends StatefulWidget {
 class _MechanicProfileInformationScreenState extends State<MechanicProfileInformationScreen> {
 
   MechanicController mechanicController = Get.put(MechanicController());
-
-
-
 
 
   @override
@@ -218,6 +215,8 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         ),
                       ),
 
+
+
                       /// ==================================> Tools and Equipment ====================================>
                       CustomText(text: 'Tools and Equipment',fontsize: 16.sp,color: AppColors.textColor151515,),
                       SizedBox(height: 13.h),
@@ -227,8 +226,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, groupIndex) {
                           final groupName = toolsMap.keys.elementAt(groupIndex);
-                          final tools = toolsMap[groupName]!;
-
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -244,7 +241,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                 itemBuilder: (context, groupIndex) {
                                   final groupName = toolsMap.keys.elementAt(groupIndex);
                                   final tools = toolsMap[groupName]!;
-
                                   return Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [

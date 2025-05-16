@@ -119,7 +119,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       },
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
-                      subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
+                      subTitle: bookingAllFilters.carModel ?? 'N/A',
                       image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },
@@ -169,7 +169,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       },
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',
-                      subTitle: bookingAllFilters.jobId?.carModelId?.name ?? 'N/A',
+                      subTitle: bookingAllFilters.carModel ?? 'N/A',
                       image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
                     );
                   },

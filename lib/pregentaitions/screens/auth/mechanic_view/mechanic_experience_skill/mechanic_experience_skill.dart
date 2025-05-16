@@ -159,6 +159,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                             ),
 
                             /// =============================> Experience input ==================================>
+
                             Container(
                               width: 80.w,
                               height: 36.h,
@@ -167,7 +168,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                                 border: Border.all(color: AppColors.borderColor),
                                 borderRadius: BorderRadius.circular(6.r),
                               ),
-                              child: TextField(
+                              child: TextFormField(
                                 keyboardType: TextInputType.number,
                                 controller: experienceControllers.length > index
                                     ? experienceControllers[index]
@@ -181,8 +182,15 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                                   isCollapsed: true,
                                   contentPadding: EdgeInsets.only(top: 8.h),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return 'Please enter field';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
+
                           ],
                         ),
                       );
@@ -323,11 +331,9 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                            }
                          }
                        }
-
-
                    ),
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: 80.h),
               ],
             ),
           ),
