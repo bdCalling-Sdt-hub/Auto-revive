@@ -47,7 +47,7 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                   progressValue: 0.8,
                 ),
                 SizedBox(height: 20.h),
-                CustomText(text: "Why do you want to work Fix It Pros LLC.",
+                CustomText(text: "Why do you want to work with Fix It Pros LLC.",
                     maxline: 2,
                     textAlign: TextAlign.start,
                     fontsize: 20.sp,

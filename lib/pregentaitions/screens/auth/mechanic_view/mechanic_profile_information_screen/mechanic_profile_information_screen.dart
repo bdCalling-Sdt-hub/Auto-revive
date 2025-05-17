@@ -86,8 +86,18 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                               GestureDetector(
                                 onTap: () {
-                                  // context.pushNamed(AppRoutes.mechanicProfileInformationScreen,);
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MechanicPersonalInformationScreen()));
+                                  context.pushNamed(AppRoutes.mechanicProfileInformationScreen,
+                                    extra: {
+                                      "title" : "Personal Information",
+                                      "name" : mechanicController.profile.value.name ?? '',
+                                      "phone" : mechanicController.profile.value.phone ?? '',
+                                      "address": mechanicController.profile.value.address ?? '',
+                                      "haveLicense": mechanicController.profile.value.haveLicense,
+                                      "haveCdl": mechanicController.profile.value.haveCdl,
+                                      "image": mechanicController.profile.value.profileImage != null ? "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}": "",
+                                    }
+                                  );
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => MechanicPersonalInformationScreen()));
                                 },
                                 child: Assets.icons.editIcon.svg(),
                               ),

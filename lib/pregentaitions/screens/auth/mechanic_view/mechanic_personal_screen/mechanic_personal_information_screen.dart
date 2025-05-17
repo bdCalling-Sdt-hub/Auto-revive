@@ -6,19 +6,22 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 import '../../../../widgets/CustomChecked.dart';
 import '../../../../widgets/cachanetwork_image.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_phone_number_picker.dart';
 import '../../../../widgets/custom_popup_menu.dart';
 
 class MechanicPersonalInformationScreen extends StatefulWidget {
-  MechanicPersonalInformationScreen({super.key});
+  const MechanicPersonalInformationScreen({super.key});
   @override
   State<MechanicPersonalInformationScreen> createState() => _MechanicPersonalInformationScreenState();
 }
@@ -37,6 +40,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
   bool hasDriversLicense = false;
   bool hasCDL = false;
 
+  bool isEditMode = false;
+
   final List<CarModel> platForm =  [
     CarModel(id: '1', adminId: 'admin123', name: 'in shop', v: 0),
     CarModel(id: '2', adminId: 'admin123', name: 'on site', v: 0),
@@ -53,21 +58,40 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
       fullNameCtrl.text = profile.name ?? '';
       emailCtrl.text = profile.email ?? '';
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeData = GoRouterState.of(context).extra as Map;
+      isEditMode = routeData['isEdit'] ?? false;
+
+      fullNameCtrl.text = routeData["name"] ?? '';
+      platformCtrl.text = routeData["platform"] ?? '';
+      phoneNoCtrl.text = routeData["phone"] ?? '';
+      currentAddressCtrl.text = routeData["address"] ?? '';
+      hasDriversLicense = routeData["haveLicense"] ?? false;
+      hasCDL = routeData["haveCdl"] ?? false;
+    });
+
+
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: CustomText(
-          text: "Personal Information",
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w400,
-          textAlign: TextAlign.start,
-        ),
-      ),
+      // appBar: AppBar(
+      //   forceMaterialTransparency: true,
+      //   title: CustomText(
+      //     text: "Personal Information",
+      //     fontsize: 20.sp,
+      //     fontWeight: FontWeight.w400,
+      //     textAlign: TextAlign.start,
+      //   ),
+      // ),
+      appBar:  CustomAppBar(title: "${routeData["title"]}"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -223,26 +247,69 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                   SizedBox(height: 31.h),
 
                   /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+
                   Obx(()=>
-                      CustomButton(
-                        loading: mechanicController.basicInfoLoading.value,
-                        title: "Save and Next",
-                        onpress: () {
+                   CustomButton(
+                      loading: mechanicController.basicInfoLoading.value,
+                      title: isEditMode ? "Save and Next" : "Edit",
+                      onpress: () {
+                        if (isEditMode) {
                           if (fromKey.currentState!.validate()) {
                             mechanicController.mechanicBasicInfo(
-                                profileImage: uploadedUrl,
-                                platform: platformCtrl.text.trim().toLowerCase(),
-                                phone: phoneNoCtrl.text,
-                                address: currentAddressCtrl.text,
-                                haveLicense: hasDriversLicense,
-                                haveCdl: hasCDL,
-                                context: context,
+                              profileImage: uploadedUrl,
+                              platform: platformCtrl.text.trim().toLowerCase(),
+                              phone: phoneNoCtrl.text,
+                              address: currentAddressCtrl.text,
+                              haveLicense: hasDriversLicense,
+                              haveCdl: hasCDL,
+                              context: context,
                             );
+                            context.pop();
                           } else {
                             ToastMessageHelper.showToastMessage("Please fill all required fields");
                           }
-                        },
-                      ),),
+                        } else {
+                          context.pushNamed(AppRoutes.mechanicProfileInformationScreen, extra: {
+                            "isEdit": true,
+                            "title": "Edit Personal Information",
+                            "name": fullNameCtrl.text,
+                            "platform": platformCtrl.text,
+                            "phone": phoneNoCtrl.text,
+                            "address": currentAddressCtrl.text,
+                            "haveLicense": hasDriversLicense,
+                            "haveCdl": hasCDL,
+                          });
+                        }
+                      },
+                    ),
+                  ),
+
+
+
+
+
+
+
+                  // Obx(()=>
+                  //     CustomButton(
+                  //       loading: mechanicController.basicInfoLoading.value,
+                  //       title: "Save and Next",
+                  //       onpress: () {
+                  //         if (fromKey.currentState!.validate()) {
+                  //           mechanicController.mechanicBasicInfo(
+                  //               profileImage: uploadedUrl,
+                  //               platform: platformCtrl.text.trim().toLowerCase(),
+                  //               phone: phoneNoCtrl.text,
+                  //               address: currentAddressCtrl.text,
+                  //               haveLicense: hasDriversLicense,
+                  //               haveCdl: hasCDL,
+                  //               context: context,
+                  //           );
+                  //         } else {
+                  //           ToastMessageHelper.showToastMessage("Please fill all required fields");
+                  //         }
+                  //       },
+                  //     ),),
 
                   SizedBox(height: 80.h),
                 ],

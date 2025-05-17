@@ -121,10 +121,10 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                  CustomButton(
                   title: 'Apply',
                   onpress: () {
-                    // context.pushNamed(
-                    //   AppRoutes.mechanicJobRequestScreen,
-                    //   extra: _miles.value.toInt().toString(),
-                    // );
+                    context.pushNamed(
+                      AppRoutes.mechanicJobRequestScreen,
+                      extra: _miles.value.toInt().toString(),
+                    );
                   },
                 ),
                 SizedBox(height: 10.h),

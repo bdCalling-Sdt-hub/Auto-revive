@@ -62,7 +62,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                 mechanicBookingAllFiltersController.bookingFilters.clear();
                 mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'accepted');
               } else {
-                mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'confirmed');
+                mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'history');
               }
             },
             tabs: const [
