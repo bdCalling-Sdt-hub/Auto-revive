@@ -7,9 +7,13 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+import '../../controllers/customer/customer_booking_controller.dart';
+import '../../helpers/quick_alert.dart';
 
 class BookingCardCustomer extends StatelessWidget {
-  const BookingCardCustomer({
+   BookingCardCustomer({
     super.key,
     this.rating,
     this.buttonLabel,
@@ -25,6 +29,8 @@ class BookingCardCustomer extends StatelessWidget {
     this.buttonColor,
     this.onTap,
     this.certificates,
+     this.id,
+     this.isBtnNeed = false
   });
 
   final int? rating;
@@ -37,10 +43,15 @@ class BookingCardCustomer extends StatelessWidget {
   final String? money;
   final bool isNextPay;
   final bool isHistory;
+  final bool isBtnNeed;
   final String? status;
+  final String? id;
   final List? certificates;
   final VoidCallback? historyButtonAction;
   final Color? buttonColor;
+
+
+  CustomerBookingController bookingController = Get.find<CustomerBookingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +183,7 @@ class BookingCardCustomer extends StatelessWidget {
               ),
               if (!isHistory) ...[
                 SizedBox(height: 16.h),
+                isBtnNeed ? const SizedBox.shrink() :
                 isNextPay
                     ? CustomButton(title: "Pay Now", onpress: () {}, height: 39.h, borderRadius: 10)
                     : Align(
@@ -179,8 +191,20 @@ class BookingCardCustomer extends StatelessWidget {
                         child: CustomTwoButon(
                           width: 130.w,
                           btnNameList: const ["Accept", "Cancel"],
-                          leftBtnOnTap: () {},
-                          rightBtnOnTap: () {},
+                          leftBtnOnTap: () async{
+                          var response = await  bookingController.customerInitBooking(status: "accepted", id: id.toString(), isToast: false);
+
+                            if (response == "completed") {
+                              QuickAlertHelper.showSuccessAlert(
+                                  context, "Your initial payment has been successfully processed.");
+                            } else if (response == "fail") {
+                              QuickAlertHelper.showErrorAlert(context,
+                                  "Sorry, something went wrong \n Please Try Again");
+                            }
+                          },
+                          rightBtnOnTap: () {
+                            bookingController.customerInitBooking(status: "request-canceled", id: id.toString());
+                          },
                         ),
                       ),
               ],

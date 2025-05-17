@@ -1,25 +1,41 @@
+import 'dart:io';
+
 import 'package:autorevive/pregentaitions/widgets/custom_app_bar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
-import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-class CustomerBookingCancelScreen extends StatelessWidget {
+import '../../../../controllers/customer/customer_booking_controller.dart';
+
+class CustomerBookingCancelScreen extends StatefulWidget {
   CustomerBookingCancelScreen({super.key});
+
+  @override
+  State<CustomerBookingCancelScreen> createState() => _CustomerBookingCancelScreenState();
+}
+
+class _CustomerBookingCancelScreenState extends State<CustomerBookingCancelScreen> {
+
 
   final TextEditingController nameCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController phoneNoCtrl = TextEditingController();
   final TextEditingController reasonCtrl = TextEditingController();
   final TextEditingController ratingCommentCtrl = TextEditingController();
+  CustomerBookingController bookingController = Get.find<CustomerBookingController>();
 
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
     return Scaffold(
-      appBar: const CustomAppBar(title: "Cancel"),
+      appBar: const CustomAppBar(title: "Refund Request"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: SingleChildScrollView(
@@ -31,109 +47,92 @@ class CustomerBookingCancelScreen extends StatelessWidget {
                       "\"Cancel the order and initiate the refund process immediately.\"",
                   maxline: 2,
                   color: Colors.black),
-              SizedBox(height: 24.h),
-              CustomTextField(
-                controller: nameCtrl,
-                labelText: "Mechanic Name",
-                hintText: "Enter mechanic name",
-              ),
-              CustomTextField(
-                controller: emailCtrl,
-                labelText: "Mechanic Email",
-                hintText: "Enter mechanic email",
-                isEmail: true,
-              ),
-              CustomTextField(
-                controller: phoneNoCtrl,
-                labelText: "Mechanic Phone No",
-                hintText: "Enter mechanic phone no",
-                keyboardType: TextInputType.number,
-              ),
-          
-          
-          
+              SizedBox(height: 40.h),
+              // CustomTextField(
+              //   controller: nameCtrl,
+              //   labelText: "Mechanic Name",
+              //   hintText: "Enter mechanic name",
+              // ),
+              // CustomTextField(
+              //   controller: emailCtrl,
+              //   labelText: "Mechanic Email",
+              //   hintText: "Enter mechanic email",
+              //   isEmail: true,
+              // ),
+              // CustomTextField(
+              //   controller: phoneNoCtrl,
+              //   labelText: "Mechanic Phone No",
+              //   hintText: "Enter mechanic phone no",
+              //   keyboardType: TextInputType.number,
+              // ),
+              //
+
+
               CustomText(text: "Upload Car Images", color: Colors.black),
-          
-              CustomUploadButton(title: "Images.jpg", onTap: () {
-          
-              }),
-          
-          
+
+              CustomUploadButton(title: "Images.jpg", onTap: ()=> importImage()),
+
+
+              SizedBox(
+                height: carImages.length * 100.h,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: carImages.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.h),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 1,
+                        child: ListTile(
+                          contentPadding:  EdgeInsets.all(10.r),
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(
+                              carImages[index],
+                              width: 80.w,
+                              height: 60.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: CustomText(
+                           text: p.basename(carImages[index].path),
+                            maxline: 1,
+                            fontsize: 18.h,
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => removeImage(index),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+              ),
+
               CustomTextField(
                   labelText: "Write your reason",
                   controller: reasonCtrl,
                   maxLine: 10,
                   hintText: "Write your reason this box. Why cancel and refund...",
               ),
-          
-          
-          
+
+
+
               CustomButton(title: "Submit", onpress: () {
 
 
-
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: CustomText(
-                              text: "Kindly Give Feedback",
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                         GestureDetector(
-                             onTap: () {
-
-                             },
-                             child: const Icon(Icons.cancel_outlined, color: Colors.red)),
-                      ],
-                    ),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 50.w),
-                            child: RatingBar(
-                              filledIcon: Icons.star,
-                              emptyIcon: Icons.star_border,
-                              onRatingChanged: (value) => debugPrint('$value'),
-                              initialRating: 3,
-                              maxRating: 5,
-                            ),
-                          ),
-                          SizedBox(height: 35.h),
-                          CustomText(text: "Leave A Comment For User.", color: Colors.black),
-                          SizedBox(height: 15.h),
-                          CustomTextField(
-                            controller: ratingCommentCtrl,
-                            hintText: "Enter Your Valuable Comment",
-                          ),
-                          SizedBox(height: 16.h),
-                          CustomButton(
-                            title: "Submit",
-                            onpress: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                              // Handle your submit logic here
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-
+                bookingController.cancelPayment(images: carImages, type: "service", jobId: routeData["id"], refundDetails: reasonCtrl.text);
 
 
               }),
-          
-          
+
+
               SizedBox(height: 50.h)
             ],
           ),
@@ -141,4 +140,29 @@ class CustomerBookingCancelScreen extends StatelessWidget {
       ),
     );
   }
+
+  List<File> carImages = [];
+
+  Future<void> importImage() async {
+    final ImagePicker picker = ImagePicker();
+    final List<XFile> pickedFiles = await picker.pickMultiImage();
+
+    if (pickedFiles.isNotEmpty) {
+      List<File> files = pickedFiles.map((xFile) => File(xFile.path)).toList();
+
+      setState(() {
+        carImages.addAll(files);
+        if (carImages.length > 4) {
+          carImages = carImages.sublist(0, 4);
+        }
+      });
+    }
+  }
+
+  void removeImage(int index) {
+    setState(() {
+      carImages.removeAt(index);
+    });
+  }
+
 }

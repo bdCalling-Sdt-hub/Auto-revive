@@ -24,6 +24,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
 
   CustomerBookingController bookingController = Get.find<CustomerBookingController>();
 
+
   @override
   void initState() {
     bookingController.booking.clear();
@@ -104,12 +105,17 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                         "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                         "price" : booking.transportPrice ?? 0,
                         "id" : "${booking.id}"
+                      }).then((_){
+                        bookingController.booking.clear();
+                        bookingController.fetchBooking(status: "requested");
                       });
                     },
                     rating: booking.providerId?.avgRating ?? 0,
                     name: booking.providerId?.name.toString() ?? "",
                     money: booking.transportPrice?.toString() ?? "",
                     image: booking.providerId?.profileImage != null ? '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}' : "",
+                    id: booking.id.toString(),
+
                   );
                 },
               ),
@@ -125,7 +131,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                   var booking = bookingController.booking[index];
                   return BookingCardCustomer(
                     isNextPay: true,
-                    buttonLabel: 'Pay Now',
+                    buttonLabel: booking.status == "serviced" ? 'Pay Now' : "See Details",
                     buttonColor: AppColors.primaryShade300,
                     onTapDetails: () {
                       context.pushNamed(AppRoutes.towTruckDetailsScreen);
@@ -139,8 +145,12 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                       "certifications" :  booking.providerId?.certifications ?? [],
                       "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                       "price" : booking.transportPrice ?? 0,
-                      "id" : "${booking.id}"
-                      });
+                      "id" : "${booking.id}",
+                        "status" : "${booking.status}"
+                      }).then((_){
+                        bookingController.booking.clear();
+                        bookingController.fetchBooking(status: "serviced");
+                      });;
                     },
                     title: 'Price: \$${booking.transportPrice ?? "0"}',
                     name: '${booking.providerId?.name ?? "N/A"}',
@@ -148,6 +158,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                     rating: booking.providerId?.avgRating ?? 0,
                     status: 'On-going',
                     image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                    id: booking.id.toString(),
                   );
                 },
               ),
@@ -174,6 +185,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                     rating: booking.providerId?.avgRating ?? 0,
                     certificates:  booking.providerId?.certifications ?? [],
                     image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                    id: booking.id.toString(),
                   );
                 },
               ),

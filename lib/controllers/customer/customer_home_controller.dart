@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:autorevive/helpers/quick_alert.dart';
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../../core/config/app_routes/app_routes.dart';
 import '../../models/car_model.dart';
@@ -43,6 +46,8 @@ class CustomerHomeController extends GetxController {
     var response = await ApiClient.postData(ApiConstants.postJob, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+
+      QuickAlertHelper.showSuccessAlert(context, "Your job post is success!");
       postJobLoading(false);
     }
     postJobLoading(false);
