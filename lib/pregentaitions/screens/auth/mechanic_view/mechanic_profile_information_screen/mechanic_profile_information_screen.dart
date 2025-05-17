@@ -86,6 +86,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                               GestureDetector(
                                 onTap: () {
+                                  print('======================================Tappppp');
                                   context.pushNamed(AppRoutes.mechanicProfileInformationScreen,
                                     extra: {
                                       "title" : "Personal Information",
