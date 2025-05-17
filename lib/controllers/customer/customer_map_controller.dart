@@ -1,5 +1,7 @@
 
 
+import 'dart:async';
+
 import 'package:autorevive/models/find_mechanic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,16 +13,40 @@ import '../../services/api_client.dart';
 import '../../services/api_constants.dart';
 
 class CustomerMapController extends GetxController {
+
+
   GoogleMapController? mapController;
   CameraPosition? initialCameraPosition;
   LatLng center = const LatLng(0, 0);
-
   double miles = 5.0;
   Set<Circle> circles = {};
   bool isLoading = true;
   final loc.Location location = loc.Location();
+  Set<Marker> markers = {};
+
+  RxInt dotCount = 0.obs;
+  Timer? timer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _listenToLocationChanges();
+    _startDotTimer();
+  }
 
 
+  void _startDotTimer() {
+    timer?.cancel();
+    timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      dotCount.value = (dotCount.value + 1) % 4;
+    });
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
+  }
 
   void updateCircle(double miles) {
     final radiusInMeters = miles * 1609.34;
@@ -36,7 +62,7 @@ class CustomerMapController extends GetxController {
       ),
     };
 
-    update(); // Notifies GetBuilder
+    update();
   }
 
   void updateCenter(LatLng newCenter) {
@@ -89,6 +115,21 @@ class CustomerMapController extends GetxController {
     var response = await ApiClient.getData(ApiConstants.findMechanicRadius+"/$radius");
     if(response.statusCode == 200){
       mechanic.value = List<FindMechanicCustomerModel>.from(response.body["data"].map((x)=> FindMechanicCustomerModel.fromJson(x)));
+      var tempMechanic = List<FindMechanicCustomerModel>.from(response.body["data"].map((x)=> FindMechanicCustomerModel.fromJson(x)));
+
+
+      markers.clear();
+      for (var x in tempMechanic) {
+        markers.add(
+          Marker(
+            markerId: MarkerId(x.id.toString()),
+            position: LatLng(x.location!.coordinates![0].toDouble(), x.location!.coordinates![1].toDouble()),
+            infoWindow: InfoWindow(title: x.name),
+          ),
+        );
+      }
+      update();
+
       mechanicLoading(false);
     }else{
       mechanicLoading(false);
@@ -97,16 +138,8 @@ class CustomerMapController extends GetxController {
 
 
 
-
-  @override
-  void onInit() {
-    super.onInit();
-    _listenToLocationChanges();
-  }
-
-
   ///=====================  Live Location Changing ======================>>>
-
+  bool isMapReady = false;
   void _listenToLocationChanges() {
     location.onLocationChanged.listen((loc.LocationData newLocation) {
       double? lat = newLocation.latitude;
@@ -116,16 +149,23 @@ class CustomerMapController extends GetxController {
         center = LatLng(lat, lng);
         debugPrint("📍 =============================>>>  Location changed: $lat, $lng");
 
-        mapController?.animateCamera(
-          CameraUpdate.newLatLng(center),
-        );
+        if (isMapReady && mapController != null) {
+          try {
+            mapController!.animateCamera(
+              CameraUpdate.newLatLng(center),
+            );
+          } catch (e) {
+            debugPrint("⚠️ Error animating camera: $e");
+          }
+        }
 
         updateCircle(miles);
-
         update();
       }
     });
   }
+
+
 
 
 

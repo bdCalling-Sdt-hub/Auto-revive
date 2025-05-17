@@ -1,4 +1,7 @@
 
+import 'dart:io';
+
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:get/get.dart';
 
 import '../../models/customer_booking_model.dart';
@@ -34,17 +37,28 @@ class CustomerBookingController extends GetxController {
   ///====================Post Job =====================>>>
 
   RxBool customerInitPaymentLoading = false.obs;
-  customerInitBooking({String? status, String? id}) async {
+ Future<String?> customerInitBooking({String? status, String? id, bool? isToast}) async {
     customerInitPaymentLoading(true);
     var body = {
       "status": "$status"
     };
     var response = await ApiClient.putData(ApiConstants.initBookingCustomer+"/${id?? ""}", body);
-
     if (response.statusCode == 200 || response.statusCode == 201) {
+     booking.removeWhere((x) => x.id == id);
+
+     if(isToast??true){
+       ToastMessageHelper.showToastMessage("${response.body["message"]}");
+     }
+
+
+      update();
+
       customerInitPaymentLoading(false);
+     return "completed";
     }
+
     customerInitPaymentLoading(false);
+    return "fail";
   }
 
 
@@ -68,6 +82,35 @@ class CustomerBookingController extends GetxController {
     }
     servicesLoading(false);
   }
+
+
+
+
+  RxBool cancelPaymentLoading = false.obs;
+  cancelPayment({required List<File> images ,String? jobId, String? type, String? refundDetails}) async {
+    cancelPaymentLoading(true);
+
+    List<MultipartBody> photoList = [];
+    for(var photos in images){
+      photoList.add(MultipartBody("files", photos));
+    }
+    List<MultipartBody> multipartBody = photoList ?? [];
+
+    var body = {
+      "jobProcessId": "$jobId",
+      "type": "$type",
+      "refundDetails": "$refundDetails"
+    };
+    var response = await ApiClient.postMultipartData(ApiConstants.paymentRefundRequest, body, multipartBody: multipartBody);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      booking.removeWhere((x) => x.id == jobId);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      update();
+      cancelPaymentLoading(false);
+    }
+    cancelPaymentLoading(false);
+  }
+
 
 
 }

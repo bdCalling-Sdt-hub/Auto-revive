@@ -24,40 +24,26 @@ class CustomerMapScreen extends StatefulWidget {
 }
 
 class _CustomerMapScreenState extends State<CustomerMapScreen> {
-  double _miles = 4;
-  int _dotCount = 0;
-  late Timer _timer;
 
-  final CustomerMapController customerMapController =
-      Get.put(CustomerMapController());
-  CustomerHomeController customerHomeController =
-      Get.find<CustomerHomeController>();
+
+
+  final CustomerMapController customerMapController = Get.put(CustomerMapController());
+  CustomerHomeController customerHomeController = Get.find<CustomerHomeController>();
+
 
   @override
   void initState() {
     super.initState();
-    customerMapController.fetchMechanicWithRadius(radius: "5");
+    customerMapController.fetchMechanicWithRadius(radius: customerMapController.miles.toString());
     Future.delayed(Duration.zero, () async {
       await customerMapController.setInitialLocation();
     });
-
-    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      setState(() {
-        _dotCount = (_dotCount + 1) % 4; // cycles through 0,1,2,3
-      });
-    });
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final Map routerData = GoRouterState.of(context).extra as Map;
-    final dots = '.' * _dotCount;
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -82,25 +68,25 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
               }
 
               return GoogleMap(
-                liteModeEnabled: true,
                 myLocationEnabled: true,
                 initialCameraPosition: controller.initialCameraPosition!,
                 circles: controller.circles,
+                markers: customerMapController.markers,
                 onMapCreated: (GoogleMapController mapCtrl) {
                   controller.mapController = mapCtrl;
+                  controller.isMapReady = true;
                 },
               );
             },
           ),
 
           Obx(() {
-            final controller = Get.find<CustomerMapController>();
 
             return _buildStatusCard(
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  controller.mechanicLoading.value
+                  customerMapController.mechanicLoading.value
                       ? SizedBox(
                           height: 90.h,
                           width: 90.w,
@@ -112,37 +98,39 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                                 Color(0xfff5f5f5)),
                           ),
                         )
-                      : controller.mechanic.isEmpty
+                      : customerMapController.mechanic.isEmpty
                           ? Assets.icons.notFound.svg(height: 90.h)
                           : Assets.icons.logoSVG.svg(height: 90.h),
-                  controller.mechanicLoading.value
+                  customerMapController.mechanicLoading.value
                       ? SizedBox(height: 70.h)
                       : CustomText(
-                          text: controller.mechanic.isEmpty
+                          text: customerMapController.mechanic.isEmpty
                               ? "Could Not Find Any One!"
-                              : "Mechanic's Available (${controller.mechanic.length})",
+                              : "Mechanic's Available (${customerMapController.mechanic.length})",
                           fontsize: 20.h,
                           bottom: 10.h,
-                          color: controller.mechanic.isEmpty
+                          color: customerMapController.mechanic.isEmpty
                               ? Colors.red
                               : Colors.black,
                           top: 5.h),
-                  controller.mechanicLoading.value
-                      ? Text(
-                          'Searching$dots',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
+                  customerMapController.mechanicLoading.value
+                      ? Obx(() =>
+                         Text(
+                            'Searching${'.' * customerMapController.dotCount.value}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                      )
                       : CustomButton(
-                          title: controller.mechanic.isEmpty
+                          title: customerMapController.mechanic.isEmpty
                               ? "Try Again"
                               : "Submit",
                           onpress: () {
                             List<String> carModelList = [];
 
-                            for(var car in controller.mechanic){
+                            for(var car in customerMapController.mechanic){
                               carModelList.add(car.id.toString());
                             }
-                             controller.mechanic.isEmpty
+                            customerMapController.mechanic.isEmpty
                                 ? customerMapController.fetchMechanicWithRadius(
                                     radius: "5")
                                 : customerHomeController.postJob(
@@ -157,6 +145,9 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
           }),
         ],
       ),
+
+
+
       endDrawer: Drawer(
         backgroundColor: AppColors.bgColorWhite,
         child: SafeArea(
@@ -182,9 +173,9 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                   activeColor: AppColors.primaryShade300,
                   inactiveColor: AppColors.switchColor,
                   thumbColor: Colors.grey.shade300,
-                  value: _miles,
+                  value: customerMapController.miles,
                   onChanged: (val) {
-                    setState(() => _miles = val);
+                    setState(() => customerMapController.miles = val);
                   },
                 ),
                 CustomText(text: 'Maximum', fontsize: 12.sp, bottom: 4.h),
@@ -195,17 +186,17 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                   height: 42.h,
                   bordersColor: AppColors.primaryShade300,
                   child: CustomText(
-                    text: _miles.toInt().toString(),
+                    text: customerMapController.miles.toInt().toString(),
                     fontsize: 16.sp,
                   ),
                 ),
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    customerMapController.updateCircle(_miles);
+                    customerMapController.updateCircle(customerMapController.miles);
                     customerMapController.mechanic.clear();
                     customerMapController.fetchMechanicWithRadius(
-                        radius: "${_miles}");
+                        radius: "${customerMapController.miles}");
                     context.pop();
                   },
                   child: CustomContainer(

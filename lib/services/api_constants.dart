@@ -26,6 +26,7 @@ class ApiConstants{
   static const String carModel = "/car-model";
   static const String postJob = "/job";
   static const String initBookingCustomer = "/job-process/customer";
+  static const String paymentRefundRequest = "/payment/refund/request";
   static const String findMechanicRadius = "/user/radius/mechanic";
   static const String privacyPolicy = "/setting";
   static const String adminSupport = "/setting/support";
