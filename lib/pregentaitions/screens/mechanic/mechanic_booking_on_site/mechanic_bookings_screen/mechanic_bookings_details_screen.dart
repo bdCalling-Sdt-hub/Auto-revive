@@ -65,10 +65,18 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                             bottom: 6.h,
                           ),
                           CustomText(
-                            text: "${routeData["address"]}",
+                            text: (routeData["address"] == null || routeData["address"].toString().isEmpty)
+                                ? 'N/A'
+                                : routeData["address"].toString(),
                             fontsize: 20.sp,
                             bottom: 6.h,
                           ),
+
+                          // CustomText(
+                          //   text: "${routeData["address"]}",
+                          //   fontsize: 20.sp,
+                          //   bottom: 6.h,
+                          // ),
                         ],
                       ),
                       SizedBox(height: 10.w),
@@ -274,7 +282,10 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
             SizedBox(height: 12.h,),
             Padding(
               padding:  EdgeInsets.symmetric(horizontal: 20.w),
-              child: CustomButton(title: 'Submit',
+              child:
+              CustomButton(
+                loading: mechanicBookingAllFiltersController.addServiceLoading.value,
+                  title: 'Submit',
                   onpress: () {
                 if(mechanicBookingAllFiltersController.servicesBody.isEmpty){
                   ToastMessageHelper.showToastMessage("Please enter price!");

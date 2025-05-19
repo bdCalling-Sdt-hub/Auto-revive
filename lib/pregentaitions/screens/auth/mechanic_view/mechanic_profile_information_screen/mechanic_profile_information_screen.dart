@@ -88,15 +88,15 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                 onTap: () {
                                   print('======================================Tappppp');
                                   context.pushNamed(AppRoutes.mechanicProfileInformationScreen,
-                                    extra: {
-                                      "title" : "Personal Information",
-                                      "name" : mechanicController.profile.value.name ?? '',
-                                      "phone" : mechanicController.profile.value.phone ?? '',
-                                      "address": mechanicController.profile.value.address ?? '',
-                                      "haveLicense": mechanicController.profile.value.haveLicense,
-                                      "haveCdl": mechanicController.profile.value.haveCdl,
-                                      "image": mechanicController.profile.value.profileImage != null ? "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}": "",
-                                    }
+                                    // extra: {
+                                    //   "title" : "Personal Information",
+                                    //   "name" : mechanicController.profile.value.name ?? '',
+                                    //   "phone" : mechanicController.profile.value.phone ?? '',
+                                    //   "address": mechanicController.profile.value.address ?? '',
+                                    //   "haveLicense": mechanicController.profile.value.haveLicense,
+                                    //   "haveCdl": mechanicController.profile.value.haveCdl,
+                                    //   "image": mechanicController.profile.value.profileImage != null ? "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}": "",
+                                    // }
                                   );
                                   // Navigator.push(context, MaterialPageRoute(builder: (context) => MechanicPersonalInformationScreen()));
                                 },
@@ -173,11 +173,32 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(
-                                  text: 'Certificate:',
-                                  fontsize: 16.sp,
-                                  color: AppColors.textColor151515,
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      text: 'Certificate:',
+                                      fontsize: 16.sp,
+                                      color: AppColors.textColor151515,
+                                    ),
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: () {
+                                        context.pushNamed(
+                                          AppRoutes.mechanicExperienceSkillScreen,
+                                          // extra: {
+                                          //   "title": "Experience and Skill",
+                                          //   "isEdit": true,
+                                          //   "certifications": mechanicController.profile.value.certifications,
+                                          //   "experiences": mechanicController.profile.value.experiences,
+                                          // },
+                                        );
+
+                                      },
+                                      child: Assets.icons.editIcon.svg(),
+                                    ),
+                                  ],
                                 ),
+
                                 SizedBox(height: 13.h),
                                 Wrap(
                                   spacing: 10.w,
@@ -225,6 +246,8 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                           },
                         ),
                       ),
+
+
 
 
 
