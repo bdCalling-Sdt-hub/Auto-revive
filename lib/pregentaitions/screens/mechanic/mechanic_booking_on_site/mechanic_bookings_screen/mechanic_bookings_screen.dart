@@ -100,15 +100,15 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       isAccepted: true,
                       buttonLabel: 'Cancel',
                       onTapDetails: () {
-                        context.pushNamed(
-                            AppRoutes.mechanicBookingsDetailsScreen,
-                          extra: {
-                            "title" : "Details",
-                            "name" :  bookingAllFilters.customerId?.name??"",
-                            "address" :  bookingAllFilters.customerId?.address ?? "",
-                            "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
-                          }
-                        );
+                        // context.pushNamed(
+                        //     AppRoutes.mechanicBookingsDetailsScreen,
+                        //   extra: {
+                        //     "title" : "Details",
+                        //     "name" :  bookingAllFilters.customerId?.name??"",
+                        //     "address" :  bookingAllFilters.customerId?.address ?? "",
+                        //     "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                        //   }
+                        // );
                       },
                       onTap: (){
                         mechanicBookingAllFiltersController.changeStatus(
@@ -202,7 +202,9 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                       onTapDetails: (){
                         // context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen,);
                       },
-                      historyButtonAction: (){},
+                      historyButtonAction: (){
+
+                      },
                       isHistory: true,
                       name: bookingAllFilters.customerId?.name ?? 'N/A',
                       address: bookingAllFilters.customerId?.address ?? 'N/A',

@@ -100,7 +100,7 @@ class BookingCardWidget extends StatelessWidget {
                         ),
                         CustomText(
                           text: address,
-                          fontsize: 20.sp,
+                          fontsize: 12.sp,
                         ),
                         RichText(
                           text: TextSpan(

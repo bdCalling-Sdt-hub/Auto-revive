@@ -66,6 +66,7 @@ class MechanicJobController extends GetxController {
 
 
   var jobIdLoading = false.obs;
+  var requestedJobIds = <String>[].obs;
 
   Future<void> requestId({
     String? jobId,
@@ -85,6 +86,10 @@ class MechanicJobController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
+        if (jobId != null && !requestedJobIds.contains(jobId)) {
+          requestedJobIds.add(jobId);
+        }
 
       } else {
         ToastMessageHelper.showToastMessage("Please try again later or choose a different job");

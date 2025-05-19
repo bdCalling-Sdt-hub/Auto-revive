@@ -65,9 +65,9 @@ class _MechanicJobScreenState extends State<MechanicJobScreen> {
             CustomContainer(
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.8),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4)
+                    color: Colors.grey.withOpacity(0.8),
+                    offset: const Offset(0, 3),
+                    blurRadius: 2)
               ],
               paddingAll: 10.r,
               radiusAll: 100.r,
@@ -110,9 +110,9 @@ class _MechanicJobScreenState extends State<MechanicJobScreen> {
               color: AppColors.primaryShade300,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.8),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4)
+                    color: Colors.grey.withOpacity(0.8),
+                    offset:  Offset(0, 3),
+                    blurRadius: 2)
               ],
               child: Column(
                 children: [

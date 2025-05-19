@@ -121,9 +121,9 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                  CustomButton(
                   title: 'Apply',
                   onpress: () {
-                    context.pushNamed(
-                      AppRoutes.mechanicJobRequestScreen,
-                      extra: _miles.value.toInt().toString(),
+                    Navigator.of(context).pop();
+                    mechanicJobController.mechanicJobAllProvider(
+                      radius: _miles.value.toInt().toString(),
                     );
                   },
                 ),
@@ -158,8 +158,8 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
               color: AppColors.bgColorWhite,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
+                    color: Colors.grey.withOpacity(0.8),
+                    offset: const Offset(0, 3),
                     blurRadius: 3)
               ],
               bordersColor: AppColors.borderColor,
@@ -222,27 +222,53 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                           ],
                         ),
                         SizedBox(height: 10.h),
-                        GestureDetector(
-                          onTap: () {
-                            mechanicJobController.
-                            requestId(
-                              jobId: job.id,
-                                context: context);
-
-                          },
-                          child: CustomContainer(
-                            alignment: Alignment.center,
-                            width: 188.w,
-                            height: 34.h,
-                            color: AppColors.primaryColor,
-                            radiusAll: 100.r,
-                            child: CustomText(
-                              text: 'Request',
-                              fontsize: 10.sp,
-                              color: Colors.white,
+                        Obx(() {
+                          bool isRequested = mechanicJobController.requestedJobIds.contains(job.id);
+                          return GestureDetector(
+                            onTap: () {
+                              if (!isRequested) {
+                                mechanicJobController.requestId(
+                                  jobId: job.id,
+                                  context: context,
+                                );
+                              }
+                            },
+                            child: CustomContainer(
+                              alignment: Alignment.center,
+                              width: 188.w,
+                              height: 34.h,
+                              color: isRequested ? Colors.grey : AppColors.primaryColor,
+                              radiusAll: 100.r,
+                              child: CustomText(
+                                text: isRequested ? 'Requested' : 'Request',
+                                fontsize: 10.sp,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
+
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     mechanicJobController.
+                        //     requestId(
+                        //       jobId: job.id,
+                        //         context: context);
+                        //
+                        //   },
+                        //   child: CustomContainer(
+                        //     alignment: Alignment.center,
+                        //     width: 188.w,
+                        //     height: 34.h,
+                        //     color: AppColors.primaryColor,
+                        //     radiusAll: 100.r,
+                        //     child: CustomText(
+                        //       text: 'Request',
+                        //       fontsize: 10.sp,
+                        //       color: Colors.white,
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(height: 15.h),
                       ],
                     ),

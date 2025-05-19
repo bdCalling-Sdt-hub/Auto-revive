@@ -3,10 +3,29 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:get/get.dart';
 
-class NotificationScreen extends StatelessWidget {
+import '../../../controllers/notifications_controller.dart';
+import '../../widgets/custom_loader.dart';
+
+class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
+
+  @override
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+
+  NotificationsController notificationsController = Get.put(NotificationsController());
+
+
+  @override
+  void initState() {
+    notificationsController.getNotifications();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +44,23 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index)  {
-            return NotificationTile(
-              title: "Hire a tow truck",
-              subtitle: "A tow truck accept your request",
-              time: DateTime.now().subtract(Duration(minutes: 2)),
-              iconAsset: 'assets/icons/notification.svg',
-            );
-          },
+      body: Obx(() =>
+      notificationsController.notificationLoading.value ? const CustomLoader() :
+      notificationsController.notifications.isEmpty ? CustomText(text: "No Notification Found!") :
+         Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: ListView.builder(
+            itemCount: notificationsController.notifications.length,
+            itemBuilder: (context, index)  {
+              var notification = notificationsController.notifications[index];
+              return NotificationTile(
+                title: notification.title,
+                subtitle: notification.message,
+                time: notification.createdAt,
+                iconAsset: 'assets/icons/notification.svg',
+              );
+            },
+          ),
         ),
       ),
     );
@@ -83,9 +107,10 @@ class NotificationTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: title,fontsize: 14.sp,color: AppColors.textColor151515,),
+              CustomText(text: title,fontsize: 14.sp,color: AppColors.textColor151515),
               SizedBox(height: 8.h),
-              CustomText(text: subtitle,fontsize: 12.sp,color: AppColors.textColor151515,),
+              CustomText(text: subtitle,fontsize: 12.sp,color: AppColors.textColor151515),
+              SizedBox(height: 2.h),
               CustomText(text:_formatTime(time),fontsize: 12.sp,color: AppColors.textColor151515,),
               SizedBox(height: 15.sp,)
             ],
@@ -98,4 +123,6 @@ class NotificationTile extends StatelessWidget {
   String _formatTime(DateTime dateTime) {
     return "${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')} ${dateTime.hour < 12 ? "am" : "pm"}";
   }
+
+
 }
