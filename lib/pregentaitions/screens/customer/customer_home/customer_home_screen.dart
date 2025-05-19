@@ -1,28 +1,40 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../controllers/current_location_controller.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../widgets/custom_text.dart';
 
-class CustomerHomeScreen extends StatelessWidget {
+class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({super.key});
+
+  @override
+  State<CustomerHomeScreen> createState() => _CustomerHomeScreenState();
+}
+
+class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+  CurrentLocationController controller = Get.put(CurrentLocationController());
+
+  @override
+  void initState() {
+    controller.getCurrentLocation();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-
-
           Assets.images.customerHomeScreenImage.image(
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
               color: Colors.black.withOpacity(0.7),
               colorBlendMode: BlendMode.darken),
-
-
 
           // Bottom elevation
           Positioned(
@@ -44,132 +56,109 @@ class CustomerHomeScreen extends StatelessWidget {
             ),
           ),
 
-
-
-
-
-
-          Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 44.h),
-
-                  Row(
-                    children: [
-                      Assets.icons.logoSVG.svg(color: Colors.white, height: 50.h),
-                     const  Spacer(),
-                      GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.progressScreen);
-                          },
-                          child: Assets.icons.timeProgress.svg()),
-                      SizedBox(width: 20.w),
-                      GestureDetector(
-                          onTap: () {
-                            context.pushNamed(AppRoutes.notificationsScreen);
-                          },
-                          child: Assets.icons.notificationIcon.svg())
-                    ],
-                  ),
-
-                  SizedBox(height: 90.h),
-                  Assets.icons.logoSVG.svg(color: Colors.white),
-                  SizedBox(height: 27.h),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                        text: "Find the best way",
-                        fontsize: 35.h,
-                        bottom: 24.h,
-                        fontWeight: FontWeight.w700,
+          SingleChildScrollView(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 44.h),
+                    Row(
+                      children: [
+                        Assets.icons.logoSVG
+                            .svg(color: Colors.white, height: 50.h),
+                        const Spacer(),
+                        GestureDetector(
+                            onTap: () {
+                              context.pushNamed(AppRoutes.progressScreen);
+                            },
+                            child: Assets.icons.timeProgress.svg()),
+                        SizedBox(width: 20.w),
+                        GestureDetector(
+                            onTap: () {
+                              context.pushNamed(AppRoutes.notificationsScreen);
+                            },
+                            child: Assets.icons.notificationIcon.svg())
+                      ],
+                    ),
+                    SizedBox(height: 90.h),
+                    Assets.icons.logoSVG.svg(color: Colors.white),
+                    SizedBox(height: 27.h),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomText(
+                          text: "Find the best way",
+                          fontsize: 35.h,
+                          bottom: 24.h,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
+                    CustomText(
+                        text:
+                            "Find a mechanic or tow truck easily with our app—quick, reliable service whenever you need it, wherever you are.",
+                        maxline: 3,
+                        fontsize: 18.h,
+                        textAlign: TextAlign.start,
+                        bottom: 48.h,
                         color: Colors.white),
-                  ),
-
-
-                  CustomText(
-                      text: "Find a mechanic or tow truck easily with our app—quick, reliable service whenever you need it, wherever you are.",
-                      maxline: 3,
-                      fontsize: 18.h,
-                      textAlign: TextAlign.start,
-                      bottom: 48.h, color: Colors.white),
-
-
-
-
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(AppRoutes.customerMechanicScreen);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.r),
-                          color: Colors.white
-                      ),
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                        child: Row(
-                          children: [
-                            CustomText(text: "Mechanic", color: Colors.black),
-
-                            const Spacer(),
-
-                            const Icon(Icons.keyboard_arrow_right_rounded)
-                          ],
+                    GestureDetector(
+                      onTap: () {
+                        context.pushNamed(AppRoutes.customerMechanicScreen);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.r),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 8.h),
+                          child: Row(
+                            children: [
+                              CustomText(text: "Mechanic", color: Colors.black),
+                              const Spacer(),
+                              const Icon(Icons.keyboard_arrow_right_rounded)
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-
-
-
-                  SizedBox(height: 10.h),
-
-
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed(AppRoutes.customerSelectCarScreen, extra: {"title" : "Tow Truck"});
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.r),
-                          color: Colors.white
-                      ),
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                        child: Row(
-                          children: [
-                            CustomText(text: "Tow truck", color: Colors.black),
-
-                            const Spacer(),
-
-                            const Icon(Icons.keyboard_arrow_right_rounded)
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-
-
-
-                ],
+                    SizedBox(height: 10.h),
+                    Obx(
+                      () {
+                        controller.isLoading.value;
+                        return GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoutes.customerSelectCarScreen,
+                                extra: {
+                                  "title": "Tow Truck",
+                                  "address" : "${controller.address.value}"
+                                });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4.r),
+                                color: Colors.white),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 8.h),
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                      text: "Tow truck", color: Colors.black),
+                                  const Spacer(),
+                                  const Icon(Icons.keyboard_arrow_right_rounded)
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-
-
-
-
-
-
-
-
-
-
-
-
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:autorevive/helpers/quick_alert.dart';
+import 'package:autorevive/helpers/time_format.dart';
 import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -36,13 +37,22 @@ class CustomerHomeController extends GetxController {
   ///====================Post Job =====================>>>
 
   RxBool postJobLoading = false.obs;
-  postJob({String? carModelId, required BuildContext context, String? platForm, List<String>? targets}) async {
+  postJob({String? carModelId, required BuildContext context, String? platForm, List<String>? targets, String? time, String? date, List? coordinates, List? destCoordinates}) async {
     postJobLoading(true);
-    var body = {
+
+    var body = platForm?.toLowerCase().toString() != "in-shop" ? {
       "platform": platForm?.toLowerCase().toString(),
       "targets": targets,
       "carModelId": "$carModelId"
+    } : {
+    "platform": platForm?.toLowerCase().toString(),
+      "time" : "$time",
+      "date" : "$date",
+    "targets": "$targets",
+    "carModelId": "$carModelId",
     };
+
+
     var response = await ApiClient.postData(ApiConstants.postJob, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {

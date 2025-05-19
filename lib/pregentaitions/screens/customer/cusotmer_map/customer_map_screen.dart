@@ -135,9 +135,14 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                                     radius: "5")
                                 : customerHomeController.postJob(
                                     context: context,
+                                    time: "${routerData["time"]}",
+                                    date: "${routerData["date"]}",
                                     carModelId: routerData["carModelId"],
                                     platForm: routerData["title"],
-                                    targets: carModelList);
+                                    targets: carModelList,
+                                    coordinates: routerData["coordinates"],
+                                    destCoordinates: routerData["destCoordinates"]
+                            );
                           })
                 ],
               ),
