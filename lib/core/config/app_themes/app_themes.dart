@@ -25,6 +25,8 @@ class Themes {
         ),
       ),
 
+      textTheme: TextTheme(),
+
       ///-----------------app bar theme------------------>
       appBarTheme: const  AppBarTheme(
         scrolledUnderElevation: 0,

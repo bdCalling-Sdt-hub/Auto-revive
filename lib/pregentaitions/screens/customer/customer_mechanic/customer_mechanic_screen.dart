@@ -24,7 +24,7 @@ class CustomerMechanicScreen extends StatelessWidget {
             }),
             SizedBox(height: 11.h),
             CustomButton(title: "In-Shop", onpress: () {
-              context.pushNamed(AppRoutes.customerSelectCarScreen, extra: {"title" : "In-Shop"});
+              context.pushNamed(AppRoutes.customerSelectCarScreen, extra: {"title" : "In Shop"});
             }),
 
             SizedBox(height: 87.h),

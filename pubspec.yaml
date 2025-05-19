@@ -50,6 +50,9 @@ dependencies:
 #  flutter_stripe: ^10.2.0
   flutter_stripe: ^11.3.0
 
+  location_picker_text_field:
+
+
 
   country_pickers: ^3.0.1
 
