@@ -30,7 +30,7 @@ class BookingCardCustomer extends StatelessWidget {
     this.onTap,
     this.certificates,
      this.id,
-     this.isBtnNeed = false
+     this.isBtnNeed = false, this.address = ''
   });
 
   final int? rating;
@@ -45,6 +45,7 @@ class BookingCardCustomer extends StatelessWidget {
   final bool isHistory;
   final bool isBtnNeed;
   final String? status;
+  final String? address;
   final String? id;
   final List? certificates;
   final VoidCallback? historyButtonAction;
@@ -151,8 +152,13 @@ class BookingCardCustomer extends StatelessWidget {
                               ],
                             ),
                           ],
-                          if ((certificates?.isNotEmpty ?? false)) ...[
+
+
+
                             SizedBox(height: 8.h),
+
+                            address == "" ?
+
                             Wrap(
                               spacing: 10.w,
                               runSpacing: 6.h,
@@ -173,9 +179,15 @@ class BookingCardCustomer extends StatelessWidget {
                                   ),
                                 );
                               }),
-                            ),
+                            )
+                                :  Row(
+                              children: [
+                                Icon(Icons.location_on_outlined, size: 16.r),
+                                Expanded(child: CustomText(text: "$address", textAlign: TextAlign.start)),
+                              ],
+                            ) ,
                           ],
-                        ],
+
                       ),
                     ),
                   ],

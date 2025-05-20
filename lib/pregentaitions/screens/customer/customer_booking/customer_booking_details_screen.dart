@@ -212,7 +212,8 @@ class _CustomerBookingDetailsScreenState
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Obx(
                         () => CustomText(
-                          text: bookingController.totalPrice?.value ??
+                          text: bookingController.totalPrice?.value != "null" ?
+                          "${bookingController.totalPrice?.value}":
                               "\$${routeData['price']}",
                           fontsize: 48.h,
                           color: Colors.white,
