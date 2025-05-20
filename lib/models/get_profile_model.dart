@@ -26,6 +26,7 @@ class GetProfileModel {
   final bool? isResetPassword;
   final bool? isDeleted;
   final int? failedLoginAttempts;
+  final int? step;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? userNo;
@@ -60,6 +61,7 @@ class GetProfileModel {
     this.isResetPassword,
     this.isDeleted,
     this.failedLoginAttempts,
+    this.step,
     this.createdAt,
     this.updatedAt,
     this.userNo,
@@ -95,6 +97,7 @@ class GetProfileModel {
     isResetPassword: json["isResetPassword"],
     isDeleted: json["isDeleted"],
     failedLoginAttempts: json["failedLoginAttempts"],
+    step: json["step"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     userNo: json["userNo"],
@@ -130,6 +133,7 @@ class GetProfileModel {
     "isResetPassword": isResetPassword,
     "isDeleted": isDeleted,
     "failedLoginAttempts": failedLoginAttempts,
+    "step": step,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
     "userNo": userNo,
@@ -216,10 +220,10 @@ class Experience {
 
 class Tool {
   final String? id;
-  final AdminId? adminId;
+  final String? adminId;
   final String? name;
   final int? v;
-  final Group? group;
+  final String? group;
 
   Tool({
     this.id,
@@ -231,43 +235,20 @@ class Tool {
 
   factory Tool.fromJson(Map<String, dynamic> json) => Tool(
     id: json["_id"],
-    adminId: adminIdValues.map[json["adminId"]],
+    adminId: json["adminId"],
     name: json["name"],
     v: json["__v"],
-    group: groupValues.map[json["group"]],
+    group: json["group"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "adminId": adminIdValues.reverse[adminId],
+    "adminId": adminId,
     "name": name,
     "__v": v,
-    "group": groupValues.reverse[group],
+    "group": group,
   };
 }
-
-enum AdminId {
-  THE_680_F1_B85_F659_B628_C193_C22_A
-}
-
-final adminIdValues = EnumValues({
-  "680f1b85f659b628c193c22a": AdminId.THE_680_F1_B85_F659_B628_C193_C22_A
-});
-
-enum Group {
-  BASIC_HAND,
-  GROUP_2,
-  GROUP_3
-}
-
-final groupValues = EnumValues({
-  "Basic hand": Group.BASIC_HAND,
-  "Group 2": Group.GROUP_2,
-  "Group 3": Group.GROUP_3
-});
-
-
-
 
 class Location {
   final String? type;
@@ -312,39 +293,49 @@ class Reference {
     "relation": relation,
   };
 }
-
 class ToolsGroup {
-  final List<Tool>? basicHand;
-  final List<Tool>? group2;
-  final List<Tool>? group3;
+  final Map<String, List<String>> groups;
 
-  ToolsGroup({
-    this.basicHand,
-    this.group2,
-    this.group3,
-  });
+  ToolsGroup({required this.groups});
 
-  factory ToolsGroup.fromJson(Map<String, dynamic> json) => ToolsGroup(
-    basicHand: json["Basic hand"] == null ? [] : List<Tool>.from(json["Basic hand"]!.map((x) => Tool.fromJson(x))),
-    group2: json["Group 2"] == null ? [] : List<Tool>.from(json["Group 2"]!.map((x) => Tool.fromJson(x))),
-    group3: json["Group 3"] == null ? [] : List<Tool>.from(json["Group 3"]!.map((x) => Tool.fromJson(x))),
-  );
+  factory ToolsGroup.fromJson(Map<String, dynamic> json) {
+    Map<String, List<String>> parsedGroups = {};
 
-  Map<String, dynamic> toJson() => {
-    "Basic hand": basicHand == null ? [] : List<dynamic>.from(basicHand!.map((x) => x.toJson())),
-    "Group 2": group2 == null ? [] : List<dynamic>.from(group2!.map((x) => x.toJson())),
-    "Group 3": group3 == null ? [] : List<dynamic>.from(group3!.map((x) => x.toJson())),
-  };
-}
+    json.forEach((key, value) {
+      if (value is List) {
+        parsedGroups[key] = List<String>.from(value.map((e) => e.toString()));
+      }
+    });
 
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
+    return ToolsGroup(groups: parsedGroups);
+  }
 
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
+  Map<String, dynamic> toJson() {
+    return groups.map((key, value) => MapEntry(key, value));
   }
 }
+
+
+// class ToolsGroup {
+//   final List<String>? basicHand;
+//   final List<String>? group2;
+//   final List<String>? group3;
+//
+//   ToolsGroup({
+//     this.basicHand,
+//     this.group2,
+//     this.group3,
+//   });
+//
+//   factory ToolsGroup.fromJson(Map<String, dynamic> json) => ToolsGroup(
+//     basicHand: json["Basic hand"] == null ? [] : List<String>.from(json["Basic hand"]!.map((x) => x)),
+//     group2: json["Group 2"] == null ? [] : List<String>.from(json["Group 2"]!.map((x) => x)),
+//     group3: json["Group 3"] == null ? [] : List<String>.from(json["Group 3"]!.map((x) => x)),
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "Basic hand": basicHand == null ? [] : List<dynamic>.from(basicHand!.map((x) => x)),
+//     "Group 2": group2 == null ? [] : List<dynamic>.from(group2!.map((x) => x)),
+//     "Group 3": group3 == null ? [] : List<dynamic>.from(group3!.map((x) => x)),
+//   };
+// }

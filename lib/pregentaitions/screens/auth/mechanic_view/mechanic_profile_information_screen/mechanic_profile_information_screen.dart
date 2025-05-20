@@ -1,4 +1,3 @@
-import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_personal_screen/mechanic_personal_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
@@ -38,9 +37,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
   @override
   Widget build(BuildContext context) {
-    final toolsMap = mechanicController.profile.value.toolsGroup != null
-        ? toolsGroupToMap(mechanicController.profile.value.toolsGroup!)
-        : {};
+
     return CustomScaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -98,7 +95,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                     //   "image": mechanicController.profile.value.profileImage != null ? "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}": "",
                                     // }
                                   );
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => MechanicPersonalInformationScreen()));
+
                                 },
                                 child: Assets.icons.editIcon.svg(),
                               ),
@@ -161,6 +158,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Wrap(
                         spacing: 20.w,
                         runSpacing: 15.h,
@@ -182,23 +180,25 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                     ),
                                     const Spacer(),
                                     GestureDetector(
-                                      onTap: () {
-                                        context.pushNamed(
+                                      onTap: ()  {
+                                         context.pushNamed(
                                           AppRoutes.mechanicExperienceSkillScreen,
-                                          // extra: {
-                                          //   "title": "Experience and Skill",
-                                          //   "isEdit": true,
-                                          //   "certifications": mechanicController.profile.value.certifications,
-                                          //   "experiences": mechanicController.profile.value.experiences,
-                                          // },
-                                        );
-
+                                          extra: {
+                                            "title": "Experience and Skill",
+                                            "isEdit": true,
+                                            "certifications": mechanicController.profile.value.certifications ?? [],
+                                            "experiences": mechanicController.profile.value.experiences ?? [],
+                                          },
+                                        ).then((_) {
+                                          print('===========================================test');
+                                            mechanicController.getProfile();
+                                         });
                                       },
                                       child: Assets.icons.editIcon.svg(),
                                     ),
+
                                   ],
                                 ),
-
                                 SizedBox(height: 13.h),
                                 Wrap(
                                   spacing: 10.w,
@@ -252,87 +252,93 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
 
                       /// ==================================> Tools and Equipment ====================================>
-                      CustomText(text: 'Tools and Equipment',fontsize: 16.sp,color: AppColors.textColor151515,),
-                      SizedBox(height: 13.h),
-                      ListView.builder(
-                        itemCount: toolsMap.keys.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, groupIndex) {
-                          final groupName = toolsMap.keys.elementAt(groupIndex);
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: groupName,
-                                fontWeight: FontWeight.bold,
-                                fontsize: 16.sp,
-                              ),
-                              ListView.builder(
-                                itemCount: toolsMap.keys.length,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, groupIndex) {
-                                  final groupName = toolsMap.keys.elementAt(groupIndex);
-                                  final tools = toolsMap[groupName]!;
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: groupName,
-                                        fontWeight: FontWeight.bold,
-                                        fontsize: 16.sp,
-                                      ),
-                                      ListView.builder(
-                                        itemCount: tools.length,
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          final tool = tools[index];
-                                          return Padding(
-                                            padding: EdgeInsets.only(bottom: 8.h),
-                                            child: CustomText(
-                                              textAlign: TextAlign.start,
-                                              text: '${tool.name ?? 'N/A'}\n${groupValues.reverse[tool.group] ?? 'N/A'}',
-                                              fontsize: 10.sp,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(height: 12.h),
-                                    ],
-                                  );
-                                },
-                              ),
 
-                              SizedBox(height: 12.h),
-                            ],
-                          );
-                        },
+
+                      Row(
+                        children: [
+                          CustomText(text: 'Tools and Equipment',fontsize: 16.sp,color: AppColors.textColor151515,),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen,
+                                extra: {
+                                  "title" : "Tools and Equipment",
+                                  "toolsGroup": mechanicController.profile.value.toolsGroup,
+                                }
+                              ).then((_) {
+                                print('===========================================test');
+                                mechanicController.getProfile();
+                              });
+                            },
+                            child: Assets.icons.editIcon.svg(),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 13.h),
+                      Obx(() {
+                        final toolsGroup = mechanicController.profile.value.toolsGroup;
+
+                        if (toolsGroup == null || toolsGroup.groups.isEmpty) {
+                          return const SizedBox();
+                        }
+
+                        final groupNames = toolsGroup.groups.keys.toList();
+
+                        return ListView.builder(
+                          itemCount: groupNames.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, groupIndex) {
+                            final groupName = groupNames[groupIndex];
+                            final tools = toolsGroup.groups[groupName]!;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: groupName,
+                                  fontWeight: FontWeight.bold,
+                                  fontsize: 16.sp,
+                                ),
+                                SizedBox(height: 8.h),
+                                ListView.builder(
+                                  itemCount: tools.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, toolIndex) {
+                                    final tool = tools[toolIndex];
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 6.h),
+                                      child: CustomText(
+                                        textAlign: TextAlign.start,
+                                        text: '- $tool',
+                                        fontsize: 12.sp,
+                                      ),
+
+                                    );
+                                  },
+                                ),
+                                SizedBox(height: 16.h),
+                                CustomText(
+                                  text: '${mechanicController.profile.value.toolsCustom ?? [] }',
+                                  fontWeight: FontWeight.bold,
+                                  fontsize: 16.sp,
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+
+
+
+
 
 
                       SizedBox(height: 15.h),
-                      // /// ==================================> Sockets & Ratchets ====================================>
-                      // CustomText(
-                      //   text: 'Sockets & Ratchets...',
-                      //   fontsize: 16.sp,
-                      //   fontWeight: FontWeight.bold,
-                      // ),
-                      // CustomText(
-                      //   textAlign: TextAlign.start,
-                      //   text:
-                      //   "1/4\" Drive Sockets (Standard & Deep)."
-                      //       '\n3/8\" Drive Sockets (Standard & Deep).'
-                      //       '\n1/2\" Drive Sockets (Standard & Deep).'
-                      //       '\n3/4\" Drive Sockets (Standard & Deep).'
-                      //       '\n1\" Drive Sockets (Standard & Deep).'
-                      //       '\nUniversal Joints & Extensions (All Drive Sizes).'
-                      //       '\nTorque Wrench (1/4\", 3/8\", 1/2\", 3/4\", 1\").',
-                      //   fontsize: 10.sp,
-                      // ),
-                      SizedBox(height: 15.h),
+
                       /// ==================================> Employment History ====================================>
+
                       ListView.builder(
                         itemCount: mechanicController.profile.value.employmentHistories?.length ?? 0,
                         shrinkWrap: true,
@@ -348,16 +354,46 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(
-                                  textAlign: TextAlign.start,
-                                  text: history.companyName ?? 'N/A',
-                                  fontWeight: FontWeight.bold,
-                                  fontsize: 18.sp,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      textAlign: TextAlign.start,
+                                      text: history.companyName ?? 'N/A',
+                                      fontWeight: FontWeight.bold,
+                                      fontsize: 18.sp,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                          context.pushNamed(
+                                          AppRoutes.mechanicEmploymentHistoryScreen,
+                                          extra: {
+                                            "title": "Employment History",
+                                            "isEdit": true,
+                                            "data": mechanicController.profile.value.employmentHistories?[index],
+                                          },
+                                        ).then((_) {
+                                          print('===========================================test');
+                                          mechanicController.getProfile();
+                                        });
+                                      },
+                                      child: Assets.icons.editIcon.svg(),
+                                    ),
+                                  ],
                                 ),
-                                CustomText(
-                                  textAlign: TextAlign.start,
-                                  text: '${history.jobName}',
-                                  fontsize: 10.sp,
+                                Row(
+                                  children: [
+                                    CustomText(
+                                      textAlign: TextAlign.start,
+                                      text: '${history.jobName}, ',
+                                      fontsize: 10.sp,
+                                    ),
+                                    CustomText(
+                                      textAlign: TextAlign.start,
+                                      text: '${history.platform}',
+                                      fontsize: 10.sp,
+                                    ),
+                                  ],
                                 ),
                                 CustomText(
                                   textAlign: TextAlign.start,
@@ -378,7 +414,9 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         },
                       ),
                       SizedBox(height: 15.h),
+
                       /// ==================================> Reference =============================================>
+
                       ListView.builder(
                         itemCount: mechanicController.profile.value.references?.length ?? 0,
                         shrinkWrap: true,
@@ -390,10 +428,33 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(
-                                  text: 'Reference ${index + 1}',
-                                  fontsize: 16.sp,
-                                  fontWeight: FontWeight.bold,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      text: 'Reference ${index + 1}',
+                                      fontsize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        final result = await context.pushNamed(
+                                          AppRoutes.mechanicReferenceScreen,
+                                          extra: {
+                                            "title": "Reference",
+                                            "isEdit": true,
+                                            "data": reference,
+
+                                          },
+                                        ).then((_) {
+                                          print('===========================================test');
+                                          mechanicController.getProfile();
+                                        });
+
+                                      },
+                                      child: Assets.icons.editIcon.svg(),
+                                    ),
+                                  ],
                                 ),
                                 CustomText(
                                   textAlign: TextAlign.start,
@@ -412,34 +473,72 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                         },
                       ),
                       SizedBox(height: 15.h),
+
+                      /// ==========================================> Additional Information ==================================>
+
                       CustomText(
                         textAlign: TextAlign.start,
                         maxline: 2,
                         text: 'Why do I want to work at On-Site Fleet Services?',
-                        color: AppColors.textColor151515,fontsize: 18.sp,),
+                        color: AppColors.textColor151515,fontsize: 18.sp),
                       SizedBox(height: 10.h),
-                      CustomText(
-                        textAlign: TextAlign.start,
-                          maxline: 10,
-                          text: mechanicController.profile.value.whyOnSite ?? 'N/A',
-                          fontsize: 10.sp,
-                          color: AppColors.textColor151515),
-                      SizedBox(height: 24.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            textAlign: TextAlign.start,
+                              maxline: 10,
+                              text: mechanicController.profile.value.whyOnSite ?? 'N/A',
+                              fontsize: 10.sp,
+                              color: AppColors.textColor151515),
+                          GestureDetector(
+                            onTap: () async {
+                              final result = await context.pushNamed(
+                                AppRoutes.mechanicAdditionalInformationScreen,
+                                extra: {
+                                  "title": "Additional Information",
+                                  "isEdit": true,
+                                  "data": mechanicController.profile.value.whyOnSite,
+
+                                },
+                              ).then((_) {
+                                print('===========================================test');
+                                mechanicController.getProfile();
+                              });
+
+                            },
+                            child: Assets.icons.editIcon.svg(),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 50.h),
 
                       /// ================================> Pdf Button ==============================================>
 
+                      GestureDetector(
+                        onTap: () async {
+                          final result = await context.pushNamed(
+                            AppRoutes.mechanicResumeCertificateScreen,
+                            extra: {
+                              "title": "Resume and Certificate",
+                              "isEdit": true,
+                            },
+                          ).then((_) {
+                            print('===========================================test');
+                            mechanicController.getProfile();
+                          });
+                        },
+                        child: Assets.icons.editIcon.svg(),
+                      ),
+                      SizedBox(height: 10.h),
                       CustomUploadButton(
                         title: getFileName(mechanicController.profile.value.resume),
-                        onTap: () {
-                          // Handle resume tap
-                        },
+                        onTap: () {},
                       ),
                       SizedBox(height: 12.h),
                       CustomUploadButton(
                         title: getFileName(mechanicController.profile.value.certificate),
-                        onTap: () {
-                          // Handle certificate tap
-                        },
+                        onTap: () {},
                       ),
 
                       /// ==============================================> Go to Home Button ============================================>
@@ -464,23 +563,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
   }
 
 
-  Map<String, List<Tool>> toolsGroupToMap(ToolsGroup toolsGroup) {
-    final Map<String, List<Tool>> groupedTools = {};
 
-    if (toolsGroup.basicHand != null && toolsGroup.basicHand!.isNotEmpty) {
-      groupedTools[""] = toolsGroup.basicHand!;
-    }
-
-    if (toolsGroup.group2 != null && toolsGroup.group2!.isNotEmpty) {
-      groupedTools["Group 2"] = toolsGroup.group2!;
-    }
-
-    if (toolsGroup.group3 != null && toolsGroup.group3!.isNotEmpty) {
-      groupedTools["Group 3"] = toolsGroup.group3!;
-    }
-
-    return groupedTools;
-  }
 
 
   String getFileName(String? path) {

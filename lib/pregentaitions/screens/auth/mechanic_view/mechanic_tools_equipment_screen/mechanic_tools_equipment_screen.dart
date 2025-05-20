@@ -9,13 +9,14 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../models/get_profile_model.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
-import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/equipment_check_box_list.dart';
 
 
 class MechanicToolsEquipmentScreen extends StatefulWidget {
-  MechanicToolsEquipmentScreen({super.key});
+  const MechanicToolsEquipmentScreen({super.key});
   @override
   State<MechanicToolsEquipmentScreen> createState() => _MechanicToolsEquipmentScreenState();
 }
@@ -30,25 +31,58 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
   bool? validUSDOTNumber;
   final  List<String> customTools = [];
 
+  // @override
+  // void initState() {
+  //  mechanicController.getAllTools();
+  //   super.initState();
+  // }
+
+
   @override
   void initState() {
-   mechanicController.getAllTools();
+    mechanicController.getAllTools();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Map routeData = GoRouterState.of(context).extra as Map;
+      final bool isEdit = routeData['isEdit'] ?? false;
+
+      if (isEdit && routeData['toolsGroup'] != null) {
+        final ToolsGroup toolsGroup = routeData['toolsGroup'];
+
+        for (var group in mechanicController.tools) {
+          for (var tool in group.tools) {
+            for (var entry in toolsGroup.groups.entries) {
+              if (entry.value.contains(tool.name)) {
+                tool.isSelected = true;
+              }
+            }
+          }
+        }
+      }
+    });
+
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
+    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: CustomText(
-          text: "Tools and Equipment",
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w400,
-          textAlign: TextAlign.start,
-        ),
-      ),
+      appBar: CustomAppBar(
+          title: "${routeData["title"]}"),
+      // appBar: AppBar(
+      //   forceMaterialTransparency: true,
+      //   title: CustomText(
+      //     text: "Tools and Equipment",
+      //     fontsize: 20.sp,
+      //     fontWeight: FontWeight.w400,
+      //     textAlign: TextAlign.start,
+      //   ),
+      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -191,31 +225,67 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
 
                 SizedBox(height: 85.h),
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
+
+
                 Obx(() => CustomButton(
                   loading: mechanicController.mechanicToolsLoading.value,
-                  title: "Save and Next",
-                    onpress: () {
-                      if (fromKey.currentState!.validate()) {
-                        List<String> selectedToolIds = [];
-                        mechanicController.tools.forEach((group) {
-                          group.tools.forEach((tool) {
-                            if (tool.isSelected == true) {
-                              selectedToolIds.add(tool.id!);
-                            }
-                          });
-                        });
-                        mechanicController.mechanicTools(
-                          tools: selectedToolIds,
-                          toolsCustom: customTools,
-                          context: context,
-                        ).then((success) {
-                          if (success) {
-                            context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                  title: isEdit ? "Edit" : "Save and Next",
+                  onpress: () {
+                    if (fromKey.currentState!.validate()) {
+                      List<String> selectedToolIds = [];
+                      mechanicController.tools.forEach((group) {
+                        group.tools.forEach((tool) {
+                          if (tool.isSelected == true) {
+                            selectedToolIds.add(tool.id!);
                           }
                         });
-                      }
+                      });
+
+                      mechanicController.mechanicTools(
+                        tools: selectedToolIds,
+                        toolsCustom: customTools,
+                        context: context,
+                      ).then((success) {
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              : context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                        }
+                      });
                     }
+                  },
                 )),
+
+
+
+
+
+
+                // Obx(() => CustomButton(
+                //   loading: mechanicController.mechanicToolsLoading.value,
+                //   title: "Save and Next",
+                //     onpress: () {
+                //       if (fromKey.currentState!.validate()) {
+                //         List<String> selectedToolIds = [];
+                //         mechanicController.tools.forEach((group) {
+                //           group.tools.forEach((tool) {
+                //             if (tool.isSelected == true) {
+                //               selectedToolIds.add(tool.id!);
+                //             }
+                //           });
+                //         });
+                //         mechanicController.mechanicTools(
+                //           tools: selectedToolIds,
+                //           toolsCustom: customTools,
+                //           context: context,
+                //         ).then((success) {
+                //           if (success) {
+                //             context.pushNamed(AppRoutes.mechanicEmploymentHistoryScreen);
+                //           }
+                //         });
+                //       }
+                //     }
+                // )),
                 SizedBox(height: 70.h),
               ],
             ),

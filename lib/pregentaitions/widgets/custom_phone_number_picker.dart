@@ -18,7 +18,7 @@ class CustomPhoneNumberPicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(text: lebelText,bottom: 6.h,),
+        CustomText(text: lebelText,bottom: 6.h),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

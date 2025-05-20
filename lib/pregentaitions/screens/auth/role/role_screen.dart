@@ -60,7 +60,6 @@ class RoleScreen extends StatelessWidget {
                   PrefsHelper.setString(AppConstants.role, "mechanic");
                   context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
                   // context.pushNamed(AppRoutes.mechanicBottomNavBar);
-
             }),
             SizedBox(height: 10.h),
             CustomButton(

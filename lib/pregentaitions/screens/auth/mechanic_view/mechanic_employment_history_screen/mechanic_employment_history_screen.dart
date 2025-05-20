@@ -1,4 +1,3 @@
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -7,17 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../widgets/certification_custom_checkbox_list.dart';
-import '../../../../widgets/custom_checkbox_list.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import 'package:intl/intl.dart';
 
 
 class MechanicEmploymentHistoryScreen extends StatefulWidget {
-  MechanicEmploymentHistoryScreen({super.key});
+  const MechanicEmploymentHistoryScreen({super.key});
   @override
   State<MechanicEmploymentHistoryScreen> createState() => _MechanicEmploymentHistoryScreenState();
 }
@@ -45,18 +43,65 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
   final TextEditingController fromDateCtrl = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeData = GoRouterState.of(context).extra as Map;
+      final data = routeData['data'];
+
+      if (data != null) {
+        companyNameCtrl.text = data.companyName ?? '';
+        jobTitleCtrl.text = data.jobName ?? '';
+        supervisorsNameCtrl.text = data.supervisorsName ?? '';
+        supervisorsContactCtrl.text = data.supervisorsContact ?? '';
+
+        if (data.durationFrom != null) {
+          fromDateCtrl.text = data.durationFrom is DateTime
+              ? DateFormat('yyyy-MM-dd').format(data.durationFrom)
+              : data.durationFrom;
+        }
+
+        if (data.durationTo != null) {
+          dateCtrl.text = data.durationTo is DateTime
+              ? DateFormat('yyyy-MM-dd').format(data.durationTo)
+              : data.durationTo;
+        }
+
+        reasonLeavingCtrl.text = data.reason ?? '';
+
+        if (data.platform != null) {
+          workSettingCheckbox.updateAll((key, value) => false);
+          final key = data.platform.toString().toLowerCase();
+          if (workSettingCheckbox.containsKey(key)) {
+            workSettingCheckbox[key] = true;
+          }
+        }
+
+        setState(() {});
+      }
+    });
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
+    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: CustomText(
-          text: "Employment History",
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w400,
-          textAlign: TextAlign.start,
-        ),
-      ),
+      // appBar: AppBar(
+      //   forceMaterialTransparency: true,
+      //   title: CustomText(
+      //     text: "Employment History",
+      //     fontsize: 20.sp,
+      //     fontWeight: FontWeight.w400,
+      //     textAlign: TextAlign.start,
+      //   ),
+      // ),
+      appBar: CustomAppBar(
+          title: "${routeData["title"]}"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -220,7 +265,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                       child: TextField(
                         controller: reasonLeavingCtrl,
                         maxLines: 5,
-                        style: TextStyle(fontSize: 10.sp),
+                        style: TextStyle(fontSize: 10.sp,color: AppColors.textColor151515),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Write leaving reason...',
@@ -234,33 +279,72 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                   SizedBox(height: 77.h),
 
                   /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-                  Obx(()=>
-                  CustomButton(
-                    loading: mechanicController.employmentHistoriesLoading.value,
-                      title: "Save and Next",
-                      onpress: () {
-                        if (fromKey.currentState!.validate()) {
-                          String? selectedPlatform;
-                          workSettingCheckbox.forEach((key, value) {
-                            if (value) selectedPlatform = key;
-                          });
-                          mechanicController.employmentHistories(
-                            companyName: companyNameCtrl.text,
-                            jobName: jobTitleCtrl.text,
-                            supervisorsName: supervisorsNameCtrl.text,
-                            supervisorsContact: supervisorsContactCtrl.text,
-                            durationFrom: fromDateCtrl.text,
-                            durationTo: dateCtrl.text,
-                            platform: selectedPlatform,
-                            reason: reasonLeavingCtrl.text,
-                            context: context,
-                          );
-                        }
+                  SizedBox(height: 50.h),
+                  Obx(() => Row(
+                    children: [
+                      if (isEdit)
+                        Expanded(
+                          child: CustomButton(
+                            title: "Edit",
+                            loading: mechanicController.employmentHistoriesLoading.value,
+                            onpress: () async {
+                              if (fromKey.currentState!.validate()) {
+                                String? selectedPlatform;
+                                workSettingCheckbox.forEach((key, value) {
+                                  if (value) selectedPlatform = key;
+                                });
 
-                      }
+                                final success = await mechanicController.employmentHistories(
+                                  companyName: companyNameCtrl.text,
+                                  jobName: jobTitleCtrl.text,
+                                  supervisorsName: supervisorsNameCtrl.text,
+                                  supervisorsContact: supervisorsContactCtrl.text,
+                                  durationFrom: fromDateCtrl.text,
+                                  durationTo: dateCtrl.text,
+                                  platform: selectedPlatform,
+                                  reason: reasonLeavingCtrl.text,
+                                  context: context,
+                                );
 
-                  ),),
+                                if (success) {
+                                  context.pop(true);
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      if (!isEdit)
+                        Expanded(
+                          child: CustomButton(
+                              loading: mechanicController.employmentHistoriesLoading.value,
+                              title: "Save and Next",
+                              onpress: () {
+                                if (fromKey.currentState!.validate()) {
+                                  String? selectedPlatform;
+                                  workSettingCheckbox.forEach((key, value) {
+                                    if (value) selectedPlatform = key;
+                                  });
+                                  mechanicController.employmentHistories(
+                                    companyName: companyNameCtrl.text,
+                                    jobName: jobTitleCtrl.text,
+                                    supervisorsName: supervisorsNameCtrl.text,
+                                    supervisorsContact: supervisorsContactCtrl.text,
+                                    durationFrom: fromDateCtrl.text,
+                                    durationTo: dateCtrl.text,
+                                    platform: selectedPlatform,
+                                    reason: reasonLeavingCtrl.text,
+                                    context: context,
+                                  );
+                                }
+
+                              }
+
+                          ),
+                        ),
+                    ],
+                  )),
                   SizedBox(height: 70.h),
+
                 ],
               ),
 

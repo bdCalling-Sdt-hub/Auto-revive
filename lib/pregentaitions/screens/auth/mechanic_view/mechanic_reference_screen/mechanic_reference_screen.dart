@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../helpers/toast_message_helper.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
@@ -19,6 +21,8 @@ class MechanicReferenceScreen extends StatefulWidget {
 }
 
 class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
+
+
   MechanicController mechanicController = Get.put(MechanicController());
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
   List<ReferenceFormData> referenceList = [ReferenceFormData()];
@@ -29,19 +33,50 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
     });
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeData = GoRouterState.of(context).extra as Map;
+      final isEdit = routeData['isEdit'] ?? false;
+      final data = routeData['data'];
+
+      if (isEdit && data != null) {
+        final ref = ReferenceFormData();
+
+        ref.nameCtrl.text = data.name ?? '';
+        ref.phoneNoCtrl.text = data.phone ?? '';
+        ref.relationshipMap.updateAll((key, value) => false);
+        if (data.relation != null && ref.relationshipMap.containsKey(data.relation)) {
+          ref.relationshipMap[data.relation!] = true;
+        }
+
+        referenceList = [ref];
+        setState(() {});
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
+    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: CustomText(
-          text: "Reference",
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w400,
-          textAlign: TextAlign.start,
-        ),
-      ),
+      appBar: CustomAppBar(
+          title: "${routeData["title"]}"),
+      // appBar: AppBar(
+      //   forceMaterialTransparency: true,
+      //   title: CustomText(
+      //     text: "Reference",
+      //     fontsize: 20.sp,
+      //     fontWeight: FontWeight.w400,
+      //     textAlign: TextAlign.start,
+      //   ),
+      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -141,7 +176,7 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                     ),
                     child: Column(
                       children: [
-                        Icon(Icons.add, color: AppColors.primaryColor),
+                        const Icon(Icons.add, color: AppColors.primaryColor),
                         SizedBox(height: 4.h),
                         CustomText(
                           text: "Add more",
@@ -156,38 +191,83 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                 SizedBox(height: 20.h),
 
                 /// ===================================>  Save and Next ==============================>
-                Obx(()=>
-                   CustomButton(
-                     loading: mechanicController.referenceLoading.value,
-                    title: "Save and Next",
-                     onpress: () {
-                       if (fromKey.currentState!.validate()) {
-                         List<Map<String, String>> referencesData = [];
-                         for (var ref in referenceList) {
-                           String? selectedRelation = ref.relationshipMap.entries
-                               .firstWhere((element) => element.value, orElse: () => MapEntry('', false))
-                               .key;
+                SizedBox(height: 20.h),
 
-                           if (selectedRelation.isEmpty) {
-                             ToastMessageHelper.showToastMessage("Please select relation for all references");
-                             return;
-                           }
+                Obx(() => Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        loading: mechanicController.referenceLoading.value,
+                        title: isEdit ? "Edit" : "Save and Next",
+                        onpress: () async {
+                          if (fromKey.currentState!.validate()) {
+                            List<Map<String, String>> referencesData = [];
 
-                           referencesData.add({
-                             'name': ref.nameCtrl.text,
-                             'phone': ref.phoneNoCtrl.text,
-                             'relation': selectedRelation,
-                           });
-                         }
+                            for (var ref in referenceList) {
+                              String? selectedRelation = ref.relationshipMap.entries
+                                  .firstWhere((e) => e.value, orElse: () => MapEntry('', false))
+                                  .key;
 
-                         mechanicController.referencesList(
-                           references: referencesData,
-                           context: context,
-                         );
-                       }
-                     },
-                   ),
-                ),
+                              if (selectedRelation.isEmpty) {
+                                ToastMessageHelper.showToastMessage("Please select relation for all references");
+                                return;
+                              }
+
+                              referencesData.add({
+                                'name': ref.nameCtrl.text,
+                                'phone': ref.phoneNoCtrl.text,
+                                'relation': selectedRelation,
+                              });
+                            }
+
+                            final success = await mechanicController.referencesList(
+                              references: referencesData,
+                              context: context,
+                            );
+
+                            if (success) {
+                              context.pop(true);
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                )),
+
+                SizedBox(height: 70.h),
+
+                // Obx(()=>
+                //    CustomButton(
+                //      loading: mechanicController.referenceLoading.value,
+                //     title: "Save and Next",
+                //      onpress: () {
+                //        if (fromKey.currentState!.validate()) {
+                //          List<Map<String, String>> referencesData = [];
+                //          for (var ref in referenceList) {
+                //            String? selectedRelation = ref.relationshipMap.entries
+                //                .firstWhere((element) => element.value, orElse: () => MapEntry('', false))
+                //                .key;
+                //
+                //            if (selectedRelation.isEmpty) {
+                //              ToastMessageHelper.showToastMessage("Please select relation for all references");
+                //              return;
+                //            }
+                //
+                //            referencesData.add({
+                //              'name': ref.nameCtrl.text,
+                //              'phone': ref.phoneNoCtrl.text,
+                //              'relation': selectedRelation,
+                //            });
+                //          }
+                //
+                //          mechanicController.referencesList(
+                //            references: referencesData,
+                //            context: context,
+                //          );
+                //        }
+                //      },
+                //    ),),
                 SizedBox(height: 70.h),
               ],
             ),
