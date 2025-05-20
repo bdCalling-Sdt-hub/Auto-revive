@@ -25,7 +25,6 @@ class Themes {
         ),
       ),
 
-      textTheme: TextTheme(),
 
       ///-----------------app bar theme------------------>
       appBarTheme: const  AppBarTheme(
@@ -33,6 +32,8 @@ class Themes {
           color: AppColors.bgColorWhite,
           centerTitle: true,
           elevation: 0),
+
+        inputDecorationTheme: InputDecorationTheme(fillColor: Colors.black87),
 
         iconTheme: IconThemeData(color: Colors.black),
         scaffoldBackgroundColor: AppColors.bgColorWhite,

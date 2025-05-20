@@ -125,14 +125,16 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                               ? "Try Again"
                               : "Submit",
                           onpress: () {
+
+                            print("-----------------------------------------------------  ${routerData["destCoordinates"]}");
+
                             List<String> carModelList = [];
 
                             for(var car in customerMapController.mechanic){
                               carModelList.add(car.id.toString());
                             }
                             customerMapController.mechanic.isEmpty
-                                ? customerMapController.fetchMechanicWithRadius(
-                                    radius: "5")
+                                ? customerMapController.fetchMechanicWithRadius(radius: "5")
                                 : customerHomeController.postJob(
                                     context: context,
                                     time: "${routerData["time"]}",

@@ -19,14 +19,31 @@ class CustomerBookingScreen extends StatefulWidget {
   State<CustomerBookingScreen> createState() => _CustomerBookingScreenState();
 }
 
-class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
-
+class _CustomerBookingScreenState extends State<CustomerBookingScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
   CustomerBookingController bookingController = Get.find<CustomerBookingController>();
 
 
   @override
   void initState() {
+
+    _tabController = TabController(length: 3, vsync: this);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+
+      bookingController.booking.clear();
+      if (_tabController.index == 0) {
+        bookingController.fetchBooking(status: "requested");
+      } else if (_tabController.index == 1) {
+        bookingController.fetchBooking(status: "serviced");
+      } else {
+        bookingController.fetchBooking(status: "history");
+      }
+    });
+
+
     bookingController.booking.clear();
     bookingController.fetchBooking(status: "requested");
     super.initState();
@@ -54,6 +71,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
             labelColor: AppColors.primaryShade300,
             unselectedLabelColor: AppColors.primaryShade300,
             indicatorColor: AppColors.primaryShade300,
+            controller: _tabController,
             onTap: (value) {
               print("-------------------------------status = $value");
 
@@ -75,9 +93,13 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
               Tab(text: 'Next Pay'),
               Tab(text: 'History'),
             ],
+
+
+
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: [
             /// Requested Tab
             Obx(() =>
@@ -95,10 +117,11 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> {
                       context.pushNamed(AppRoutes.towTruckDetailsScreen);
                     },
                     certificates: booking.providerId?.certifications ?? [],
+                    address:  booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
                     onTap: (){
                       context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
                         "title" : "Complete",
-                        "name" : booking.providerId?.name??"",
+                        "name" : booking.providerId?.name  ??"",
                         "address" : booking.providerId?.address ?? "",
                         "rating" : booking.providerId?.avgRating ?? 0,
                         "certifications" :  booking.providerId?.certifications ?? [],

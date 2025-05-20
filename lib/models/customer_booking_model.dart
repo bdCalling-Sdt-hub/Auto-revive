@@ -4,6 +4,7 @@ class CustomerBookingModel {
   final String? id;
   final ProviderId? providerId;
   final String? status;
+  final String? platform;
   final List<dynamic>? services;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -11,7 +12,8 @@ class CustomerBookingModel {
   final int? transportPrice;
   final String? carModel;
 
-  CustomerBookingModel({
+  CustomerBookingModel( {
+    this.platform,
     this.id,
     this.providerId,
     this.status,
@@ -20,11 +22,12 @@ class CustomerBookingModel {
     this.updatedAt,
     this.v,
     this.transportPrice,
-    this.carModel,
+    this.carModel
   });
 
   factory CustomerBookingModel.fromJson(Map<String, dynamic> json) => CustomerBookingModel(
     id: json["_id"],
+    platform : json["platform"],
     providerId: json["providerId"] == null ? null : ProviderId.fromJson(json["providerId"]),
     status: json["status"],
     services: json["services"] == null ? [] : List<dynamic>.from(json["services"]!.map((x) => x)),
@@ -45,6 +48,7 @@ class CustomerBookingModel {
     "__v": v,
     "transportPrice": transportPrice,
     "carModel": carModel,
+    "platform": platform,
   };
 }
 
