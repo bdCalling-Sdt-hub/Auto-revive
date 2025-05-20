@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text.dart';
@@ -20,19 +22,40 @@ MechanicController mechanicController = Get.put(MechanicController());
 final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
 
 class _MechanicAdditionalInformationScreenState extends State<MechanicAdditionalInformationScreen> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final routeData = GoRouterState.of(context).extra as Map;
+      final isEdit = routeData['isEdit'] ?? false;
+      final data = routeData['data'];
+
+      if (isEdit && data != null) {
+        additionController.text = data.toString();
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
+    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        title: CustomText(
-          text: "Additional Information",
-          fontsize: 20.sp,
-          fontWeight: FontWeight.w400,
-          textAlign: TextAlign.start,
-        ),
-      ),
+      appBar: CustomAppBar(
+          title: "${routeData["title"]}"),
+      // appBar: AppBar(
+      //   forceMaterialTransparency: true,
+      //   title: CustomText(
+      //     text: "Additional Information",
+      //     fontsize: 20.sp,
+      //     fontWeight: FontWeight.w400,
+      //     textAlign: TextAlign.start,
+      //   ),
+      // ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -65,7 +88,7 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                     child: TextField(
                       controller: additionController,
                       maxLines: 15,
-                      style: TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: 14.sp,color: AppColors.textColor151515),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Write some things...',
@@ -79,21 +102,45 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                 SizedBox(height: 400.h),
 
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-                Obx(()=>
-                   CustomButton(
-                     loading: mechanicController.additionalInformationLoading.value,
-                    title: "Save and Next",
-                    onpress: () {
-                      if(fromKey.currentState!.validate()){
-                        mechanicController.additionalInformation(
-                          whyOnSite: additionController.text.toString(),
-                            context: context
-                        );
-                      }
 
-                    },
-                  ),
+
+                Obx(() =>
+                    CustomButton(
+                      loading: mechanicController.additionalInformationLoading.value,
+                      title: isEdit ? "Edit" : "Save and Next",
+                      onpress: () async {
+                        if (fromKey.currentState!.validate()) {
+                          await mechanicController.additionalInformation(
+                            whyOnSite: additionController.text.trim(),
+                            context: context,
+                          );
+                          context.pop(true);
+
+                        }
+                      },
+                    ),
                 ),
+
+
+
+
+
+                // Obx(()=>
+                //    CustomButton(
+                //      loading: mechanicController.additionalInformationLoading.value,
+                //     title: "Save and Next",
+                //     onpress: () {
+                //       if(fromKey.currentState!.validate()){
+                //         mechanicController.additionalInformation(
+                //           whyOnSite: additionController.text.toString(),
+                //             context: context
+                //         );
+                //       }
+                //
+                //     },
+                //   )),
+
+
                 SizedBox(height: 25.h),
               ],
             ),
