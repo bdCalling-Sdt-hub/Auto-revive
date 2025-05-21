@@ -34,9 +34,8 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
 
   getLocalData()async{
     userRole = await PrefsHelper.getString(AppConstants.role);
-    setState(() {
-
-    });
+    print("----------------------------------------------------------------------------  Role : $userRole");
+    setState(() {});
   }
 
   @override
@@ -73,7 +72,7 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                   title: 'Profile Information',
                   icon: Assets.icons.profileInfo.svg(),
                   onTap: () {
-                   userRole == "Customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) :userRole == "Mechanic or automotive shop" ?  context.pushNamed(AppRoutes.mechanicProfileInformationScreen) :
+                   userRole.toLowerCase() == "customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) : userRole.toLowerCase() == "mechanic" ?  context.pushNamed(AppRoutes.mechanicProfileInformationScreen) :
                     context.pushNamed(AppRoutes.profileDetailsScreen);
                   }),
 

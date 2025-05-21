@@ -48,7 +48,6 @@ class CurrentLocationController extends GetxController {
     longitude.value = locData.longitude ?? 0.0;
 
 
-
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
         latitude.value,

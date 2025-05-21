@@ -162,6 +162,7 @@ class BookingCardWidget extends StatelessWidget {
                   fontsize: 16.sp,
                 ),
               ),
+              SizedBox(height: 100.h),
             ],
           ],
         ),

@@ -37,52 +37,75 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
   //   super.initState();
   // }
 
-
   @override
   void initState() {
-    mechanicController.getAllTools();
+    super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Map routeData = GoRouterState.of(context).extra as Map;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // final routeData = GoRouterState.of(context).extra as Map;
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
       final bool isEdit = routeData['isEdit'] ?? false;
-
-      if (isEdit && routeData['toolsGroup'] != null) {
-        final ToolsGroup toolsGroup = routeData['toolsGroup'];
+      final toolsGroup = routeData['toolsGroup'];
+      final custom = routeData['toolsCustom'];
+      if (mechanicController.tools.isEmpty) {
+        await mechanicController.getAllTools();
+      }
+      if (isEdit && toolsGroup != null) {
+        final selectedNames = <String>{};
+        for (var entry in toolsGroup.groups.entries) {
+          selectedNames.addAll(entry.value);
+        }
 
         for (var group in mechanicController.tools) {
           for (var tool in group.tools) {
-            for (var entry in toolsGroup.groups.entries) {
-              if (entry.value.contains(tool.name)) {
-                tool.isSelected = true;
-              }
+
+            if (tool.name != null && selectedNames.contains(tool.name)) {
+              tool.isSelected = true;
+            } else {
+              tool.isSelected = false;
             }
           }
         }
       }
-    });
 
-    super.initState();
+
+      if (custom != null) {
+        customTools.clear();
+        customTools.addAll(List<String>.from(custom.where((e) => e != null && e.toString().isNotEmpty)));
+      }
+      setState(() {});
+    });
   }
+
+
+
 
 
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
-    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    // Map routeData = GoRouterState.of(context).extra as Map;
+    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(
-          title: "${routeData["title"]}"),
-      // appBar: AppBar(
-      //   forceMaterialTransparency: true,
-      //   title: CustomText(
-      //     text: "Tools and Equipment",
-      //     fontsize: 20.sp,
-      //     fontWeight: FontWeight.w400,
-      //     textAlign: TextAlign.start,
-      //   ),
-      // ),
+      // appBar: CustomAppBar(
+      //     title: "${routeData["title"]}"),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: CustomText(
+          text: "Tools and Equipment",
+          fontsize: 20.sp,
+          fontWeight: FontWeight.w400,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -233,6 +256,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   onpress: () {
                     if (fromKey.currentState!.validate()) {
                       List<String> selectedToolIds = [];
+
                       mechanicController.tools.forEach((group) {
                         group.tools.forEach((tool) {
                           if (tool.isSelected == true) {
@@ -255,8 +279,6 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                     }
                   },
                 )),
-
-
 
 
 

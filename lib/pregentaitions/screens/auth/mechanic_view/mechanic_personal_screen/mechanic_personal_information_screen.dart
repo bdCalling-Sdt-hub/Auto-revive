@@ -6,9 +6,11 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 import '../../../../widgets/CustomChecked.dart';
@@ -54,11 +56,34 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
       final profile = mechanicController.profile.value;
       fullNameCtrl.text = profile.name ?? '';
       emailCtrl.text = profile.email ?? '';
+
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // final routeData = GoRouterState.of(context).extra as Map;
+
+        final extra = GoRouterState.of(context).extra;
+        final Map routeData = extra is Map ? extra : {};
+
+        fullNameCtrl.text = routeData['name'] ?? '';
+        phoneNoCtrl.text = routeData['phone'] ?? '';
+        currentAddressCtrl.text = routeData['address'] ?? '';
+        platformCtrl.text = routeData['platform'] ?? '';
+        hasDriversLicense = routeData['haveLicense'] ?? false;
+        hasCDL = routeData['haveCdl'] ?? false;
+        uploadedUrl = routeData['image'] ?? '';
+
+        setState(() {});
+      });
+
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -95,7 +120,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          // Profile image with border
+                          /// ================================================>  Profile image with border ===============================================>
                           Container(
                             width: 104.w,
                             height: 104.h,
@@ -148,7 +173,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
 
                   ///<<<=============>>> Name Filed <<<===============>>>
                   CustomTextField(
-                    readOnly: true,
+                    // readOnly: !isEdit,
                       controller: fullNameCtrl,
                       labelText: "Full Name"),
 
@@ -226,26 +251,63 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
 
                   /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
 
-                  Obx(()=>
-                      CustomButton(
-                        loading: mechanicController.basicInfoLoading.value,
-                        title: "Save and Next",
-                        onpress: () {
-                          if (fromKey.currentState!.validate()) {
-                            mechanicController.mechanicBasicInfo(
-                                profileImage: uploadedUrl,
-                                platform: platformCtrl.text.trim().toLowerCase(),
-                                phone: phoneNoCtrl.text,
-                                address: currentAddressCtrl.text,
-                                haveLicense: hasDriversLicense,
-                                haveCdl: hasCDL,
-                                context: context,
-                            );
+
+
+                  Obx(() => CustomButton(
+                    loading: mechanicController.basicInfoLoading.value,
+                    title: isEdit ? "Edit" : "Save and Next",
+                    onpress: () async {
+                      if (fromKey.currentState!.validate()) {
+                        final success = await mechanicController.mechanicBasicInfo(
+                          profileImage: uploadedUrl,
+                          name: fullNameCtrl.text,
+                          platform: platformCtrl.text.trim().toLowerCase(),
+                          phone: phoneNoCtrl.text,
+                          address: currentAddressCtrl.text,
+                          haveLicense: hasDriversLicense,
+                          haveCdl: hasCDL,
+                          context: context,
+                        );
+                        if (success) {
+                          if (isEdit) {
+                            context.pop(true);
                           } else {
-                            ToastMessageHelper.showToastMessage("Please fill all required fields");
+                            context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
                           }
-                        },
-                      ),),
+                        }
+                      }
+                    },
+                  )),
+
+
+
+                  // Obx(()=>
+                  //     CustomButton(
+                  //       loading: mechanicController.basicInfoLoading.value,
+                  //       title: "Save and Next",
+                  //       onpress: () {
+                  //         if (fromKey.currentState!.validate()) {
+                  //           mechanicController.mechanicBasicInfo(
+                  //               profileImage: uploadedUrl,
+                  //               platform: platformCtrl.text.trim().toLowerCase(),
+                  //               phone: phoneNoCtrl.text,
+                  //               address: currentAddressCtrl.text,
+                  //               haveLicense: hasDriversLicense,
+                  //               haveCdl: hasCDL,
+                  //               context: context,
+                  //           );
+                  //         } else {
+                  //           ToastMessageHelper.showToastMessage("Please fill all required fields");
+                  //         }
+                  //       },
+                  //     ),),
+
+
+
+
+
+
+
 
                   SizedBox(height: 80.h),
                 ],
