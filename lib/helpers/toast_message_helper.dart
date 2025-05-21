@@ -5,7 +5,7 @@ import '../core/constants/app_colors.dart';
 
 
 class ToastMessageHelper{
- static void showToastMessage(String message, {int? secound}) {
+ static void showToastMessage(String message, {bool isSuccess =  true}) {
     // Fluttertoast.showToast(
     //   msg: message,
     //   toastLength: Toast.LENGTH_SHORT,
@@ -21,7 +21,7 @@ class ToastMessageHelper{
      type: ToastificationType.success,
      style: ToastificationStyle.flatColored,
      autoCloseDuration: const Duration(seconds: 3),
-     title: const Text('Success', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+     title:  Text(isSuccess ? 'Success' : "Fail", style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
      description: RichText(text:  TextSpan(text: message.toString(), style: const TextStyle(color: Colors.black))),
      alignment: Alignment.topRight,
      direction: TextDirection.ltr,

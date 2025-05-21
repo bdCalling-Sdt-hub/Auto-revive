@@ -45,6 +45,9 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
   Widget build(BuildContext context) {
     final Map routerData = GoRouterState.of(context).extra as Map;
 
+
+    print("================================================   : ${customerMapController.markers}");
+
     return Scaffold(
       appBar: CustomAppBar(
         title: routerData["title"].toString(),
@@ -67,14 +70,18 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              return GoogleMap(
-                myLocationEnabled: true,
-                initialCameraPosition: controller.initialCameraPosition!,
-                circles: controller.circles,
-                markers: customerMapController.markers,
-                onMapCreated: (GoogleMapController mapCtrl) {
-                  controller.mapController = mapCtrl;
-                  controller.isMapReady = true;
+              return GetBuilder<CustomerMapController>(
+                builder: (controller) {
+                  return  GoogleMap(
+                    myLocationEnabled: true,
+                    initialCameraPosition: controller.initialCameraPosition!,
+                    circles: controller.circles,
+                    markers: customerMapController.markers,
+                    onMapCreated: (GoogleMapController mapCtrl) {
+                      controller.mapController = mapCtrl;
+                      controller.isMapReady = true;
+                    },
+                  );
                 },
               );
             },

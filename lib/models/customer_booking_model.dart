@@ -10,6 +10,7 @@ class CustomerBookingModel {
   final DateTime? updatedAt;
   final int? v;
   final int? transportPrice;
+  final int? servicePrice;
   final String? carModel;
 
   CustomerBookingModel( {
@@ -22,6 +23,7 @@ class CustomerBookingModel {
     this.updatedAt,
     this.v,
     this.transportPrice,
+    this.servicePrice,
     this.carModel
   });
 
@@ -35,6 +37,7 @@ class CustomerBookingModel {
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     v: json["__v"],
     transportPrice: json["transportPrice"],
+    servicePrice: json["servicePrice"],
     carModel: json["carModel"],
   );
 
@@ -47,13 +50,14 @@ class CustomerBookingModel {
     "updatedAt": updatedAt?.toIso8601String(),
     "__v": v,
     "transportPrice": transportPrice,
+    "servicePrice": servicePrice,
     "carModel": carModel,
     "platform": platform,
   };
 }
 
 class ProviderId {
-  final List<int>? location;
+  final List<num>? location;
   final String? id;
   final String? name;
   final String? profileImage;
@@ -76,7 +80,7 @@ class ProviderId {
   });
 
   factory ProviderId.fromJson(Map<String, dynamic> json) => ProviderId(
-    location: json["location"] == null ? [] : List<int>.from(json["location"]!.map((x) => x)),
+    location: json["location"] == null ? [] : List.from(json["location"]!.map((x) => x)),
     id: json["_id"],
     name: json["name"],
     profileImage: json["profileImage"],

@@ -51,6 +51,7 @@ class CustomerHomeController extends GetxController {
             "time": "$time",
             "date": "$date",
             "carModelId": "$carModelId",
+            "coordinates": coordinates?.map((e) => e is RxDouble ? e.value : e).toList(),
             "targets": targets,
           }
         : platForm?.toLowerCase().toString() == "tow truck"
@@ -61,6 +62,7 @@ class CustomerHomeController extends GetxController {
               }
             : {
                 "platform": platForm?.toLowerCase().toString(),
+                "coordinates": coordinates?.map((e) => e is RxDouble ? e.value : e).toList(),
                 "carModelId": "$carModelId",
                 "targets": targets,
               };

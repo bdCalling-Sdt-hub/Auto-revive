@@ -34,7 +34,7 @@ class AuthController extends GetxController {
     var body = {
       "name": "$name",
       "email": "$email",
-      // "phone": phone,
+      "phone": "$phone",
       "password": "$password",
       "confirmPassword": "$confirmPassword",
       "role": "$role",
@@ -55,11 +55,8 @@ class AuthController extends GetxController {
 
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       signUpLoading(false);
-    } else if(response.statusCode == 1){
-      signUpLoading(false);
-      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     } else {
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      ToastMessageHelper.showToastMessage("${response.body["message"]}", isSuccess: false);
       signUpLoading(false);
     }
   }

@@ -336,6 +336,7 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                           context.pushNamed(AppRoutes.customerMapScreen, extra: {
                             "title": routerData["title"],
                             "carModelId": carSelectIdCtrl.text,
+                            "coordinates" : [controller.longitude, controller.latitude],
                             "time" : timeCtrl.text,
                             "date" : dateCtrl.text
                           });
