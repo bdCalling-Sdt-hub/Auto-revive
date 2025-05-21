@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_app_bar.dart';
@@ -40,7 +41,9 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final Map routeData = GoRouterState.of(context).extra as Map;
+      // final Map routeData = GoRouterState.of(context).extra as Map;
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
       isEdit = routeData['isEdit'] ?? false;
 
       if (isEdit) {
@@ -53,21 +56,25 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
-    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
+
+    // Map routeData = GoRouterState.of(context).extra as Map;
+    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar(
-          title: "${routeData["title"]}"),
-      // appBar: AppBar(
-      //   forceMaterialTransparency: true,
-      //   title: CustomText(
-      //     text: "Resume and Certificate",
-      //     fontsize: 20.sp,
-      //     fontWeight: FontWeight.w400,
-      //     textAlign: TextAlign.start,
-      //   ),
-      // ),
+      // appBar: CustomAppBar(
+      //     title: "${routeData["title"]}"),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: CustomText(
+          text: "Resume and Certificate",
+          fontsize: 20.sp,
+          fontWeight: FontWeight.w400,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -105,28 +112,66 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
 
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
 
-                Obx(() => CustomButton(
-                  loading: mechanicController.resumeCertificateLoading.value,
-                  title: isEdit ? "Edit" : "Save and Next",
-                  onpress: () async {
-                    if (fromKey.currentState!.validate()) {
-                      if (resumeUrl.value.isEmpty || certificateUrl.value.isEmpty) {
-                        ToastMessageHelper.showToastMessage("Please upload both resume and certificate.");
-                        return;
-                      }
 
-                 await mechanicController.resumeCertificate(
-                        resume: resumeUrl.value,
-                        certificate: certificateUrl.value,
-                        context: context,
-                      );
-
-                      context.pop(true);
-
-
+              Obx(() => CustomButton(
+                loading: mechanicController.resumeCertificateLoading.value,
+                title: isEdit ? "Edit" : "Save and Next",
+                onpress: () async {
+                  if (fromKey.currentState!.validate()) {
+                    if (resumeUrl.value.isEmpty || certificateUrl.value.isEmpty) {
+                      ToastMessageHelper.showToastMessage("Please upload both resume and certificate.");
+                      return;
                     }
-                  },
-                )),
+
+                    final success = await mechanicController.resumeCertificate(
+                      resume: resumeUrl.value,
+                      certificate: certificateUrl.value,
+                      context: context,
+                    );
+
+                    if (success) {
+                      if (isEdit) {
+                        context.pop(true);
+                      } else {
+                        context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+                      }
+                    }
+                  }
+                },
+              )),
+
+
+
+
+
+
+
+
+
+
+
+                // Obx(() => CustomButton(
+                //   loading: mechanicController.resumeCertificateLoading.value,
+                //   title: isEdit ? "Edit" : "Save and Next",
+                //   onpress: () async {
+                //     if (fromKey.currentState!.validate()) {
+                //       if (resumeUrl.value.isEmpty || certificateUrl.value.isEmpty) {
+                //         ToastMessageHelper.showToastMessage("Please upload both resume and certificate.");
+                //         return;
+                //       }
+                //
+                //  await mechanicController.resumeCertificate(
+                //         resume: resumeUrl.value,
+                //         certificate: certificateUrl.value,
+                //         context: context,
+                //       );
+                //
+                //       // context.pop(true);
+                //
+                //
+                //     }
+                //   },
+                // )),
 
 
                 // Obx(() => CustomButton(
@@ -165,9 +210,6 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                 //   //   }
                 //   // },
                 // )),
-
-
-
                 SizedBox(height: 20.h),
               ],
             ),

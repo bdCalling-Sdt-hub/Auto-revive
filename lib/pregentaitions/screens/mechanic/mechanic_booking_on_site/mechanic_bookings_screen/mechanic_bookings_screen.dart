@@ -19,7 +19,8 @@ class MechanicBookingsScreen extends StatefulWidget {
       _MechanicBookingsScreenState();
 }
 
-class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
+class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with SingleTickerProviderStateMixin{
+  late TabController _tabController;
 
 
   MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
@@ -27,8 +28,25 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
 
   @override
   void initState() {
-    super.initState();
+
+    _tabController = TabController(length: 3, vsync: this);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+
+      mechanicBookingAllFiltersController.bookingFilters.clear();
+      if (_tabController.index == 0) {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
+      } else if (_tabController.index == 1) {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'accepted');
+      } else {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'history');
+      }
+    });
+    mechanicBookingAllFiltersController.bookingFilters.clear();
     mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
+    super.initState();
+
   }
 
 
@@ -53,6 +71,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
             labelColor: AppColors.primaryShade300,
             unselectedLabelColor: AppColors.primaryShade300,
             indicatorColor: AppColors.primaryShade300,
+            controller: _tabController,
             onTap: (value) {
               print("-------------------------------status = $value");
               if (value == 0) {
@@ -66,9 +85,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
               }
             },
             tabs: const [
-              Tab(
-                text: 'Requested',
-              ),
+              Tab(text: 'Requested'),
               Tab(text: 'Accepted'),
               Tab(text: 'History'),
             ],
@@ -76,6 +93,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
         ),
         body:
            TabBarView(
+             controller: _tabController,
             children: [
               /// =================================> Requested Tab ===================================>
               Obx((){
@@ -124,10 +142,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                     );
                   },
                 );
-              }
-
-              ),
-
+              }),
               /// ===============================> Accepted Tab =======================================>
 
               Obx((){
@@ -174,9 +189,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen> {
                     );
                   },
                 );
-              }
-
-              ),
+              }),
 
               /// ==================================> History Tab =====================================>
 

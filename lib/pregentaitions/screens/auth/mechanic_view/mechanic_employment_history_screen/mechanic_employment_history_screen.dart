@@ -47,7 +47,9 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final routeData = GoRouterState.of(context).extra as Map;
+      // final routeData = GoRouterState.of(context).extra as Map;
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
       final data = routeData['data'];
 
       if (data != null) {
@@ -87,21 +89,25 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
-    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
+
+    // Map routeData = GoRouterState.of(context).extra as Map;
+    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      // appBar: AppBar(
-      //   forceMaterialTransparency: true,
-      //   title: CustomText(
-      //     text: "Employment History",
-      //     fontsize: 20.sp,
-      //     fontWeight: FontWeight.w400,
-      //     textAlign: TextAlign.start,
-      //   ),
-      // ),
-      appBar: CustomAppBar(
-          title: "${routeData["title"]}"),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: CustomText(
+          text: "Employment History",
+          fontsize: 20.sp,
+          fontWeight: FontWeight.w400,
+          textAlign: TextAlign.start,
+        ),
+      ),
+      // appBar: CustomAppBar(
+      //     title: "${routeData["title"]}"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -305,7 +311,6 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                                   reason: reasonLeavingCtrl.text,
                                   context: context,
                                 );
-
                                 if (success) {
                                   context.pop(true);
                                 }

@@ -57,37 +57,33 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
   @override
   void initState() {
     super.initState();
-    mechanicController.getAllExperience();
 
-    // Delay to ensure controller & context are fully ready
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final routeData = GoRouterState.of(context).extra as Map;
+    mechanicController.getAllExperience().then((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
 
-      // 🔹 Load Certifications
+      // Load Certifications
       List<String> certs = List<String>.from(routeData['certifications'] ?? []);
       certificationCheckbox.updateAll((key, value) => certs.contains(key));
 
-      // 🔹 Load Experiences (MUST BE List<Experience>)
+      // Load Experiences
       List<Experience> expList = List<Experience>.from(routeData['experiences'] ?? []);
-
-      // Reset controllers based on incoming list length
       selectedWorkSpaces = List.generate(expList.length, (_) => 'In Shop');
       experienceControllers = List.generate(expList.length, (_) => TextEditingController());
 
       for (int i = 0; i < expList.length; i++) {
         final experience = expList[i];
-
-        // Ensure exact match with workSpaceOptions
         selectedWorkSpaces[i] = workSpaceOptions.firstWhere(
               (element) => element.toLowerCase() == (experience.platform ?? 'in shop').toLowerCase(),
           orElse: () => 'In Shop',
         );
-
         experienceControllers[i].text = experience.time?.toString() ?? '';
       }
+
       setState(() {});
     });
   }
+
 
 
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
@@ -96,21 +92,25 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
-    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    // Map routeData = GoRouterState.of(context).extra as Map;
+    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(
-          title: "${routeData["title"]}"),
-      // appBar: AppBar(
-      //   forceMaterialTransparency: true,
-      //   title: CustomText(
-      //     text: "Experience and Skill",
-      //     fontsize: 20.sp,
-      //     fontWeight: FontWeight.w400,
-      //     textAlign: TextAlign.start,
-      //   ),
-      // ),
+      // appBar: CustomAppBar(
+      //     title: "${routeData["title"]}"),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: CustomText(
+          text: "Experience and Skill",
+          fontsize: 20.sp,
+          fontWeight: FontWeight.w400,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -147,6 +147,15 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                   if (mechanicController.experience.isEmpty) {
                     return Center(
                       child: CustomText(text: 'No data available',fontsize: 16.sp,color: AppColors.textColor151515)
+                    );
+                  }
+                  if (selectedWorkSpaces.length != mechanicController.experience.length) {
+                    selectedWorkSpaces = List.generate(mechanicController.experience.length, (_) => 'In Shop');
+                  }
+                  if (experienceControllers.length != mechanicController.experience.length) {
+                    experienceControllers = List.generate(
+                      mechanicController.experience.length,
+                          (_) => TextEditingController(),
                     );
                   }
                   return ListView.builder(

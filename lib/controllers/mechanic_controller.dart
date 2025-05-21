@@ -68,8 +68,9 @@ class MechanicController extends GetxController{
 
   var basicInfoLoading = false.obs;
 
-  Future<void> mechanicBasicInfo({
+  Future<bool> mechanicBasicInfo({
     String? profileImage,
+    String? name,
     String? platform,
     String? phone,
     String? address,
@@ -84,6 +85,7 @@ class MechanicController extends GetxController{
       'address': address,
       'haveLicense': haveLicense,
       'haveCdl': haveCdl,
+      'name':name
     };
 
     basicInfoLoading(true);
@@ -95,18 +97,61 @@ class MechanicController extends GetxController{
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-        context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
+        return true;
       } else {
         ToastMessageHelper.showToastMessage("Select profile image!");
+        return false;
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong.");
+      return false;
     } finally {
       basicInfoLoading(false);
     }
   }
 
+
+  // Future<void> mechanicBasicInfo({
+  //   String? profileImage,
+  //   String? platform,
+  //   String? phone,
+  //   String? address,
+  //   bool? haveLicense,
+  //   bool? haveCdl,
+  //   required BuildContext context,
+  // }) async {
+  //   var body = {
+  //     'profileImage': profileImage,
+  //     'platform': platform,
+  //     'phone': phone,
+  //     'address': address,
+  //     'haveLicense': haveLicense,
+  //     'haveCdl': haveCdl,
+  //   };
+  //
+  //   basicInfoLoading(true);
+  //
+  //   try {
+  //     var response = await ApiClient.putData(
+  //       ApiConstants.mechanicBasicInfoEndPoint,
+  //       body,
+  //     );
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       ToastMessageHelper.showToastMessage("${response.body["message"]}");
+  //       context.pushNamed(AppRoutes.mechanicExperienceSkillScreen);
+  //     } else {
+  //       ToastMessageHelper.showToastMessage("Select profile image!");
+  //     }
+  //   } catch (e) {
+  //     ToastMessageHelper.showToastMessage("Something went wrong.");
+  //   } finally {
+  //     basicInfoLoading(false);
+  //   }
+  // }
+  //
 
 
 
@@ -237,7 +282,7 @@ class MechanicController extends GetxController{
     referenceLoading(false);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.mechanicAdditionalInformationScreen);
+      // context.pushNamed(AppRoutes.mechanicAdditionalInformationScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
@@ -252,7 +297,7 @@ class MechanicController extends GetxController{
 
   var additionalInformationLoading = false.obs;
 
-  Future<void> additionalInformation({
+  Future<bool> additionalInformation({
     String? whyOnSite,
     required BuildContext context,
   }) async {
@@ -269,17 +314,50 @@ class MechanicController extends GetxController{
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-        context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
+        return true;
       } else {
         ToastMessageHelper.showToastMessage("Something went wrong.");
+        return false;
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Failed to submit additional information.");
+      return false;
     } finally {
       additionalInformationLoading(false);
     }
   }
+
+
+  // Future<void> additionalInformation({
+  //   String? whyOnSite,
+  //   required BuildContext context,
+  // }) async {
+  //   var body = {
+  //     'whyOnSite': whyOnSite,
+  //   };
+  //
+  //   additionalInformationLoading(true);
+  //
+  //   try {
+  //     var response = await ApiClient.putData(
+  //       ApiConstants.additionalInformationEndPoint,
+  //       body,
+  //     );
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       ToastMessageHelper.showToastMessage("${response.body["message"]}");
+  //       context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
+  //     } else {
+  //       ToastMessageHelper.showToastMessage("Something went wrong.");
+  //     }
+  //   } catch (e) {
+  //     ToastMessageHelper.showToastMessage("Failed to submit additional information.");
+  //   } finally {
+  //     additionalInformationLoading(false);
+  //   }
+  // }
 
 
   /// ================================> Resume Certificate ==============================>
@@ -287,7 +365,7 @@ class MechanicController extends GetxController{
 
   var resumeCertificateLoading = false.obs;
 
-  Future<void> resumeCertificate({
+  Future<bool> resumeCertificate({
     String? resume,
     String? certificate,
     required BuildContext context,
@@ -307,17 +385,52 @@ class MechanicController extends GetxController{
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-        context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+        // context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+        return true;
       } else {
         ToastMessageHelper.showToastMessage("Failed to upload resume/certificate.");
+        return false;
       }
     } catch (e) {
-
       ToastMessageHelper.showToastMessage("Something went wrong.");
+      return false;
     } finally {
       resumeCertificateLoading(false);
     }
   }
+
+
+  // Future<void> resumeCertificate({
+  //   String? resume,
+  //   String? certificate,
+  //   required BuildContext context,
+  // }) async {
+  //   var body = {
+  //     'resume': resume,
+  //     'certificate': certificate,
+  //   };
+  //
+  //   resumeCertificateLoading(true);
+  //
+  //   try {
+  //     var response = await ApiClient.putData(
+  //       ApiConstants.mechanicResumeCertificateEndPoint,
+  //       body,
+  //     );
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       ToastMessageHelper.showToastMessage("${response.body["message"]}");
+  //       context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+  //     } else {
+  //       ToastMessageHelper.showToastMessage("Failed to upload resume/certificate.");
+  //     }
+  //   } catch (e) {
+  //
+  //     ToastMessageHelper.showToastMessage("Something went wrong.");
+  //   } finally {
+  //     resumeCertificateLoading(false);
+  //   }
+  // }
 
 
 

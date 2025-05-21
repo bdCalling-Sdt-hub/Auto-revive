@@ -24,16 +24,18 @@ class MechanicJobController extends GetxController {
   }
   RxBool loading = false.obs;
   RxList<AllJobProviderModel> jobProvider = <AllJobProviderModel>[].obs;
-  mechanicJobAllProvider({String sortField = 'createdAt', String sortOrder = 'desc', required String radius}) async {
+  mechanicJobAllProvider({required String radius}) async {
     if(page.value == 1){
       loading(true);
     }
     loading.value = true;
-    var response = await ApiClient.getData(ApiConstants.getAllJobProvider("${page.value}", sortField, sortOrder,radius));
+    var response = await ApiClient.getData(ApiConstants.getAllJobProvider("${page.value}",radius));
     if (response.statusCode == 200) {
       totalPages = jsonDecode(response.body['pagination']['totalPages'].toString()) ?? 0;
       currentPage = jsonDecode(response.body['pagination']['currentPage'].toString()) ?? 0;
       total = jsonDecode(response.body['pagination']['total'].toString()) ?? 0;
+
+
       var data = List<AllJobProviderModel>.from(response.body['data'].map((x) => AllJobProviderModel.fromJson(x)));
       jobProvider.addAll(data);
       update();

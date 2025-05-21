@@ -41,7 +41,7 @@ class ApiConstants{
   static  String changeStatus (String id) => "/job-process/provider/$id";
   static  String bookingAllPaginationFilters = "/job-process/provider";
   static  String allHistories (String page,limit) => "/job-process/provider?page=1&limit=11&sortField=createdAt&sortOrder=desc";
-  static  String getAllJobProvider(String page, sortField,  sortOrder, radius) => "/job/provider/$radius?page=$page&limit=10&sortField=$sortField&sortOrder=$sortOrder";
+  static  String getAllJobProvider(String page, radius) => "/job/provider/$radius?page=$page&limit=10000";
 
 
 }

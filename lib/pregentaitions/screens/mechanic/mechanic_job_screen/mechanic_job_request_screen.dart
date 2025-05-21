@@ -43,6 +43,12 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
 
   final RxDouble _miles = 4.0.obs;
 
+  @override
+  void dispose() {
+    mechanicJobController.jobProvider.clear();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +157,7 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
         return ListView.builder(
           itemCount: mechanicJobController.jobProvider.length,
           itemBuilder: (context, index) {
+
             var job = mechanicJobController.jobProvider[index];
             return CustomContainer(
               marginAll: 8.h,

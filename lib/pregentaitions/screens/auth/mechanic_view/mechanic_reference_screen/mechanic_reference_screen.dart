@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
@@ -39,7 +40,9 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final routeData = GoRouterState.of(context).extra as Map;
+      // final routeData = GoRouterState.of(context).extra as Map;
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
       final isEdit = routeData['isEdit'] ?? false;
       final data = routeData['data'];
 
@@ -62,21 +65,25 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
-    final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    // Map routeData = GoRouterState.of(context).extra as Map;
+    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: CustomAppBar(
-          title: "${routeData["title"]}"),
-      // appBar: AppBar(
-      //   forceMaterialTransparency: true,
-      //   title: CustomText(
-      //     text: "Reference",
-      //     fontsize: 20.sp,
-      //     fontWeight: FontWeight.w400,
-      //     textAlign: TextAlign.start,
-      //   ),
-      // ),
+      // appBar: CustomAppBar(
+      //     title: "${routeData["title"]}"),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        title: CustomText(
+          text: "Reference",
+          fontsize: 20.sp,
+          fontWeight: FontWeight.w400,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
@@ -224,9 +231,12 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                               references: referencesData,
                               context: context,
                             );
-
                             if (success) {
-                              context.pop(true);
+                              if (isEdit) {
+                                context.pop(true);
+                              } else {
+                                context.pushNamed(AppRoutes.mechanicAdditionalInformationScreen);
+                              }
                             }
                           }
                         },
