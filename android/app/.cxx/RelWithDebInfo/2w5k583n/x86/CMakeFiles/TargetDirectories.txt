@@ -1,0 +1,2 @@
+C:/Users/BD Calling/StudioProjects/Auto-revive/android/app/.cxx/RelWithDebInfo/2w5k583n/x86/CMakeFiles/edit_cache.dir
+C:/Users/BD Calling/StudioProjects/Auto-revive/android/app/.cxx/RelWithDebInfo/2w5k583n/x86/CMakeFiles/rebuild_cache.dir
