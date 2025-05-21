@@ -14,6 +14,7 @@ import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_re
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/screens/tow_truck_profile/admin_support/admin_support_screen.dart';
+import 'package:autorevive/services/socket_services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../pregentaitions/screens/auth/mechanic_view/mechanic_employment_history_screen/mechanic_employment_history_screen.dart';
@@ -125,12 +126,17 @@ class AppRoutes {
         Future.delayed(const Duration(seconds: 3), () async {
           var role = await PrefsHelper.getString(AppConstants.role);
           var token = await PrefsHelper.getString(AppConstants.bearerToken);
+          var userId = await PrefsHelper.getString(AppConstants.userId);
           bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
 
           print("======================================$isLogged");
 
+          SocketServices sockService = SocketServices();
 
-          if(token != "" || isLogged){
+          sockService.init(userId: userId );
+
+
+          if(token != "" && isLogged){
 
             /// ===============Role Check =============>>>
             if(role.toLowerCase() == "customer"){
