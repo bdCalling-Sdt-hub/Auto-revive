@@ -28,61 +28,63 @@ class OtpScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            SizedBox(height: 16.h),
-
-            ///<<<=============>>> LOGO <<<===============>>>
-
-            Assets.icons.logoSVG.svg(),
-
-            SizedBox(height: 38.h),
-
-            ///<<<=============>>> OTP FILED <<<===============>>>
-
-            CustomPinCodeTextField(textEditingController: otpTEController),
-
-            SizedBox(height: 10.h),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: "Didn't got the code?"),
-                GestureDetector(
-                    onTap: () {
-                      authController.reSendOtp();
-                    },
-                    child: CustomText(text: "Resend", color: Colors.red))
-              ],
-            ),
-
-            SizedBox(height: 70.h),
-
-            ///<<<=============>>> VERIFY <<<===============>>>
-
-            Obx(
-              () => CustomButton(
-                  loading: authController.verfyLoading.value,
-                  width: double.infinity,
-                  title: "Verify",
-                  onpress: () {
-                    print("--------------------------- ${otpTEController.text}");
-
-                    // if(screenType == "Sign Up"){
-                    //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
-                    // }
-                    // if (screenType == "mechanic") {
-                      authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
-                    // }
-
-                    // else if(screenType == "track"){
-                    //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
-                    // } else{
-                    //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
-                    // }
-                  }),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 16.h),
+          
+              ///<<<=============>>> LOGO <<<===============>>>
+          
+              Assets.icons.logoSVG.svg(),
+          
+              SizedBox(height: 38.h),
+          
+              ///<<<=============>>> OTP FILED <<<===============>>>
+          
+              CustomPinCodeTextField(textEditingController: otpTEController),
+          
+              SizedBox(height: 10.h),
+          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(text: "Didn't got the code?"),
+                  GestureDetector(
+                      onTap: () {
+                        authController.reSendOtp();
+                      },
+                      child: CustomText(text: "Resend", color: Colors.red))
+                ],
+              ),
+          
+              SizedBox(height: 70.h),
+          
+              ///<<<=============>>> VERIFY <<<===============>>>
+          
+              Obx(
+                () => CustomButton(
+                    loading: authController.verfyLoading.value,
+                    width: double.infinity,
+                    title: "Verify",
+                    onpress: () {
+                      print("--------------------------- ${otpTEController.text}");
+          
+                      // if(screenType == "Sign Up"){
+                      //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+                      // }
+                      // if (screenType == "mechanic") {
+                        authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
+                      // }
+          
+                      // else if(screenType == "track"){
+                      //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
+                      // } else{
+                      //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
+                      // }
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );

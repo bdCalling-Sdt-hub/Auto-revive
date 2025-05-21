@@ -135,7 +135,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                                 ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
                                 : CustomNetworkImage(
                               boxShape: BoxShape.circle,
-                              imageUrl: uploadedUrl ?? "https://randomuser.me/api/portraits/men/10.jpg",
+                              imageUrl:  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+
                               height: 128.h,
                               width: 128.w,
                             ),

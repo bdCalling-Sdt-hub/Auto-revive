@@ -195,8 +195,8 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime.now(),
                                   );
                                   if (pickedDate != null) {
                                     final formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
@@ -225,8 +225,8 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
+                                    firstDate: DateTime(1950),
+                                    lastDate: DateTime.now(),
                                   );
                                   if (pickedDate != null) {
                                     final formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";

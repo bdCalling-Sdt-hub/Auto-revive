@@ -59,7 +59,10 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                   children: [
                     CustomNetworkImage(
                       boxShape: BoxShape.circle,
-                      imageUrl: "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
+                      imageUrl:
+                      mechanicController.profile.value.profileImage == null ||  mechanicController.profile.value.profileImage == "" ?
+                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" :
+                      "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
                       height: 128.h,
                       width: 128.w,
                     ),

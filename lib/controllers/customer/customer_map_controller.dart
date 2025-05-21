@@ -29,7 +29,7 @@ class CustomerMapController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _listenToLocationChanges();
+
     _startDotTimer();
   }
 
@@ -147,32 +147,32 @@ class CustomerMapController extends GetxController {
 
 
 
-  ///=====================  Live Location Changing ======================>>>
-  bool isMapReady = false;
-  void _listenToLocationChanges() {
-    location.onLocationChanged.listen((loc.LocationData newLocation) {
-      double? lat = newLocation.latitude;
-      double? lng = newLocation.longitude;
-
-      if (lat != null && lng != null) {
-        center = LatLng(lat, lng);
-        debugPrint("📍 =============================>>>  Location changed: $lat, $lng");
-
-        if (isMapReady && mapController != null) {
-          try {
-            mapController!.animateCamera(
-              CameraUpdate.newLatLng(center),
-            );
-          } catch (e) {
-            debugPrint("⚠️ Error animating camera: $e");
-          }
-        }
-
-        updateCircle(miles);
-        update();
-      }
-    });
-  }
+  // ///=====================  Live Location Changing ======================>>>
+  // bool isMapReady = false;
+  // void _listenToLocationChanges() {
+  //   location.onLocationChanged.listen((loc.LocationData newLocation) {
+  //     double? lat = newLocation.latitude;
+  //     double? lng = newLocation.longitude;
+  //
+  //     if (lat != null && lng != null) {
+  //       center = LatLng(lat, lng);
+  //       debugPrint("📍 =============================>>>  Location changed: $lat, $lng");
+  //
+  //       if (isMapReady && mapController != null) {
+  //         try {
+  //           mapController!.animateCamera(
+  //             CameraUpdate.newLatLng(center),
+  //           );
+  //         } catch (e) {
+  //           debugPrint("⚠️ Error animating camera: $e");
+  //         }
+  //       }
+  //
+  //       updateCircle(miles);
+  //       update();
+  //     }
+  //   });
+  // }
 
 
 

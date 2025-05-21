@@ -2,14 +2,19 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../controllers/live_location_change_controller.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../widgets/custom_text.dart';
 
 class MechanicHomeScreen extends StatelessWidget {
-  const MechanicHomeScreen({super.key});
+   MechanicHomeScreen({super.key});
+
+   LiveLocationChangeController controller = Get.put(LiveLocationChangeController());
+
 
   @override
   Widget build(BuildContext context) {

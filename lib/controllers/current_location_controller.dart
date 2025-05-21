@@ -92,4 +92,9 @@ class CurrentLocationController extends GetxController {
   double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
   }
+
+
+
+
+
 }
