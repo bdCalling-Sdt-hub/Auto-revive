@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/customer/customer_booking_controller.dart';
+import '../../../../helpers/quick_alert.dart';
 import '../../../widgets/booking_card_customer.dart';
 
 class CustomerBookingScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
       if (_tabController.index == 0) {
         bookingController.fetchBooking(status: "requested");
       } else if (_tabController.index == 1) {
-        bookingController.fetchBooking(status: "serviced");
+        bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
       } else {
         bookingController.fetchBooking(status: "history");
       }
@@ -80,7 +81,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                 bookingController.fetchBooking(status: "requested");
               }else if(value == 1){
                 bookingController.booking.clear();
-                bookingController.fetchBooking(status: "serviced");
+                bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
               }else{
                 bookingController.booking.clear();
                 bookingController.fetchBooking(status: "history");
@@ -98,122 +99,175 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
           ),
         ),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            /// Requested Tab
-            Obx(() =>
-            bookingController.bookingLoading.value ? const CustomLoader() :
-               ListView.builder(
-                itemCount: bookingController.booking.length,
-                padding: EdgeInsets.symmetric(vertical: 4.h),
-                itemBuilder: (context, index) {
-                  var booking = bookingController.booking[index];
+        body: Padding(
+          padding:  EdgeInsets.only(bottom: 100.h),
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              /// Requested Tab
+              Obx(() =>
+              bookingController.bookingLoading.value ? const CustomLoader() :
+                 ListView.builder(
+                  itemCount: bookingController.booking.length,
+                  padding: EdgeInsets.symmetric(vertical: 4.h),
+                  itemBuilder: (context, index) {
+                    var booking = bookingController.booking[index];
 
-                  print("========================'${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}'");
-                  return BookingCardCustomer(
-                    buttonLabel: 'Cancel',
-                    onTapDetails: () {
-                      context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                    },
-                    certificates: booking.providerId?.certifications ?? [],
-                    address:  booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
-                    onTap: (){
-                      context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
-                        "title" : "Complete",
-                        "name" : booking.providerId?.name  ??"",
+                    print("========================'${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}'");
+                    return BookingCardCustomer(
+                      buttonLabel: 'Cancel',
+                      onTapDetails: () {
+                        context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                      },
+                      certificates: booking.providerId?.certifications ?? [],
+                      address: booking.platform?.toLowerCase() == "on site" ? "" : booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
+                      onTap: (){
+                        context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
+                          "title" : "Complete",
+                          "name" : booking.providerId?.name  ??"",
+                          "address" : booking.providerId?.address ?? "",
+                          "rating" : booking.providerId?.avgRating ?? 0,
+                          "certifications" :  booking.providerId?.certifications ?? [],
+                          "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
+                          "price" : booking.transportPrice ?? 0,
+                          "id" : "${booking.id}"
+                        }).then((_){
+                          bookingController.booking.clear();
+                          bookingController.fetchBooking(status: "requested");
+                        });
+                      },
+                      rating: booking.providerId?.avgRating ?? 0,
+                      name: booking.providerId?.name.toString() ?? "",
+                      money: booking.transportPrice?.toString() ?? "",
+                      image: booking.providerId?.profileImage != null ? '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}' : "",
+                      id: booking.id.toString(),
+
+                    );
+                  },
+                ),
+              ),
+
+              /// Next Pay Tab
+              Obx(() =>
+              bookingController.bookingLoading.value ? const CustomLoader() :
+                 ListView.builder(
+                  itemCount: bookingController.booking.length,
+                  padding: EdgeInsets.all(8.r),
+                  itemBuilder: (context, index) {
+                    var booking = bookingController.booking[index];
+                    return BookingCardCustomer(
+                      isNextPay: booking.platform?.toLowerCase() == "in shop" ? false : true,
+                      title: 'Price: \$${booking.servicePrice ?? "0"}',
+                      name: '${booking.providerId?.name ?? "N/A"}',
+                      certificates: booking.providerId?.certifications ?? [],
+                      rating: booking.providerId?.avgRating ?? 0,
+                      status: 'On-going',
+                      image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                      id: booking.id.toString(),
+                      buttonLabel: booking.status == "serviced" ? 'Pay Now' : "See Details",
+                      address:  booking.platform?.toLowerCase() == "on site" ? "" :  booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
+
+                      onTapDetails: () {
+                        context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                      },
+
+
+
+                      ///===================>>> See Details Or Pay Now BTN ==============>>>>
+
+
+                      nextPayCardBtnOnTap: ()async {
+
+                        if(booking.status == "serviced"){
+                          var response = await bookingController.customerInitBooking(
+                              status: "accepted",
+                              id: booking.id.toString(),
+                              isToast: false);
+
+                          if (response == "completed") {
+                            QuickAlertHelper.showSuccessAlert(
+                                context, "Your initial payment has been successfully processed.");
+                          } else if (response == "fail") {
+                            QuickAlertHelper.showErrorAlert(context,
+                                "Sorry, something went wrong Please Try Again");
+                          }
+                        }else{
+                          context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
+                            "title" : "Details",
+                            "name" : booking.providerId?.name??"",
+                            "address" : booking.providerId?.address ?? "",
+                            "rating" : booking.providerId?.avgRating ?? 0,
+                            "certifications" :  booking.providerId?.certifications ?? [],
+                            "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
+                            "price" : booking.servicePrice ?? 0,
+                            "id" : "${booking.id}",
+                            "status" : "${booking.status}"
+                          }).then((_){
+                            bookingController.booking.clear();
+                            bookingController.fetchBooking(status: "serviced");
+                          });
+                        }
+                      },
+
+
+
+                      ///===================>>> Whole Card On Tap ==============>>>>
+
+                      onTap: () {
+                        context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
+                        "title" : "Details",
+                        "name" : booking.providerId?.name??"",
                         "address" : booking.providerId?.address ?? "",
                         "rating" : booking.providerId?.avgRating ?? 0,
                         "certifications" :  booking.providerId?.certifications ?? [],
                         "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
-                        "price" : booking.transportPrice ?? 0,
-                        "id" : "${booking.id}"
-                      }).then((_){
-                        bookingController.booking.clear();
-                        bookingController.fetchBooking(status: "requested");
-                      });
-                    },
-                    rating: booking.providerId?.avgRating ?? 0,
-                    name: booking.providerId?.name.toString() ?? "",
-                    money: booking.transportPrice?.toString() ?? "",
-                    image: booking.providerId?.profileImage != null ? '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}' : "",
-                    id: booking.id.toString(),
+                        "price" : booking.servicePrice ?? 0,
+                        "id" : "${booking.id}",
+                          "status" : "${booking.status}"
+                        }).then((_){
+                          bookingController.booking.clear();
+                          bookingController.fetchBooking(status: "serviced");
+                        });
+                      },
 
-                  );
-                },
+                      buttonColor: AppColors.primaryShade300,
+                    );
+                  },
+                ),
               ),
-            ),
 
-            /// Next Pay Tab
-            Obx(() =>
-            bookingController.bookingLoading.value ? const CustomLoader() :
-               ListView.builder(
-                itemCount: bookingController.booking.length,
-                padding: EdgeInsets.all(8.r),
-                itemBuilder: (context, index) {
-                  var booking = bookingController.booking[index];
-                  return BookingCardCustomer(
-                    isNextPay: true,
-                    buttonLabel: booking.status == "serviced" ? 'Pay Now' : "See Details",
-                    buttonColor: AppColors.primaryShade300,
-                    onTapDetails: () {
-                      context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                    },
-                    onTap: () {
-                      context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
-                      "title" : "Details",
-                      "name" : booking.providerId?.name??"",
-                      "address" : booking.providerId?.address ?? "",
-                      "rating" : booking.providerId?.avgRating ?? 0,
-                      "certifications" :  booking.providerId?.certifications ?? [],
-                      "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
-                      "price" : booking.transportPrice ?? 0,
-                      "id" : "${booking.id}",
-                        "status" : "${booking.status}"
-                      }).then((_){
-                        bookingController.booking.clear();
-                        bookingController.fetchBooking(status: "serviced");
-                      });;
-                    },
-                    title: 'Price: \$${booking.transportPrice ?? "0"}',
-                    name: '${booking.providerId?.name ?? "N/A"}',
-                    certificates: booking.providerId?.certifications ?? [],
-                    rating: booking.providerId?.avgRating ?? 0,
-                    status: 'On-going',
-                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
-                    id: booking.id.toString(),
-                  );
-                },
+              // History Tab
+              Obx(() =>
+              bookingController.bookingLoading.value ? const CustomLoader() :
+                 ListView.builder(
+                  itemCount: bookingController.booking.length,
+                  padding: EdgeInsets.all(8.r),
+                  itemBuilder: (context, index) {
+                    var booking = bookingController.booking[index];
+                    return  BookingCardCustomer(
+                      onTapDetails: (){
+                        context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                      },
+                      historyButtonAction: (){
+                      },
+                      isHistory: true,
+                      name: '${booking.providerId?.name ?? "N/A"}',
+                      // title: 'New York, USA',
+                      status:  booking.status, //'Complete',
+                      rating: booking.providerId?.avgRating ?? 0,
+                      certificates:  booking.providerId?.certifications ?? [],
+                      image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
+                      id: booking.id.toString(),
+                    );
+                  },
+                ),
               ),
-            ),
 
-            // History Tab
-            Obx(() =>
-            bookingController.bookingLoading.value ? const CustomLoader() :
-               ListView.builder(
-                itemCount: bookingController.booking.length,
-                padding: EdgeInsets.all(8.r),
-                itemBuilder: (context, index) {
-                  var booking = bookingController.booking[index];
-                  return  BookingCardCustomer(
-                    onTapDetails: (){
-                      context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                    },
-                    historyButtonAction: (){
-                    },
-                    isHistory: true,
-                    name: '${booking.providerId?.name ?? "N/A"}',
-                    // title: 'New York, USA',
-                    status:  booking.status, //'Complete',
-                    rating: booking.providerId?.avgRating ?? 0,
-                    certificates:  booking.providerId?.certifications ?? [],
-                    image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
-                    id: booking.id.toString(),
-                  );
-                },
-              ),
-            ),
-          ],
+
+
+
+            ],
+          ),
         ),
       ),
     );

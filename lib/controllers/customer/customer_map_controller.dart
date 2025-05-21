@@ -23,7 +23,6 @@ class CustomerMapController extends GetxController {
   bool isLoading = true;
   final loc.Location location = loc.Location();
   Set<Marker> markers = {};
-
   RxInt dotCount = 0.obs;
   Timer? timer;
 
@@ -119,15 +118,25 @@ class CustomerMapController extends GetxController {
 
 
       markers.clear();
+
+
       for (var x in tempMechanic) {
+        final lat = x.location!.coordinates![1].toDouble();
+        final lng = x.location!.coordinates![0].toDouble();
+        print("🧭 Adding marker at: $lat, $lng");
+
         markers.add(
           Marker(
             markerId: MarkerId(x.id.toString()),
-            position: LatLng(x.location!.coordinates![0].toDouble(), x.location!.coordinates![1].toDouble()),
+            position: LatLng(lat, lng),
             infoWindow: InfoWindow(title: x.name),
           ),
         );
+
+        update();
       }
+
+
       update();
 
       mechanicLoading(false);

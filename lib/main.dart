@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:autorevive/env/config.dart';
 import 'package:autorevive/helpers/dependancy_injaction.dart';
+import 'package:autorevive/pregentaitions/widgets/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -38,14 +39,23 @@ class MyApp extends StatelessWidget {
          return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Auto Revive',
-           theme: Themes().lightTheme,
-           darkTheme: Themes().lightTheme,
-            routeInformationParser: AppRoutes.goRouter.routeInformationParser,
-            routeInformationProvider: AppRoutes.goRouter.routeInformationProvider,
-            routerDelegate: AppRoutes.goRouter.routerDelegate,
+            theme: Themes().lightTheme,
+            darkTheme: Themes().lightTheme,
+           routeInformationParser: AppRoutes.goRouter.routeInformationParser,
+           routeInformationProvider: AppRoutes.goRouter.routeInformationProvider,
+           routerDelegate: AppRoutes.goRouter.routerDelegate,
+           builder: (context, child) {
+             return Scaffold(body: NoInterNetScreen(child: child!));
+           },
           );
         }
       ),
     );
   }
 }
+
+
+
+
+
+

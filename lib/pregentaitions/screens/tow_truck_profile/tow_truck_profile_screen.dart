@@ -146,7 +146,19 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                                       leftBtnOnTap: () {
                                         Navigator.pop(context);
                                       },
-                                      rightBtnOnTap: () {
+                                      rightBtnOnTap: () async{
+                                       await PrefsHelper.remove(AppConstants.role);
+                                       await PrefsHelper.remove(AppConstants.isLogged);
+                                       await PrefsHelper.remove(AppConstants.bearerToken);
+                                       await PrefsHelper.remove(AppConstants.address);
+                                       await PrefsHelper.remove(AppConstants.name);
+                                       await PrefsHelper.remove(AppConstants.image);
+                                       await PrefsHelper.remove(AppConstants.userId);
+                                       await  PrefsHelper.remove(AppConstants.email);
+                                       await PrefsHelper.remove(AppConstants.phone);
+                                       await PrefsHelper.remove(AppConstants.fcmToken);
+                                       await PrefsHelper.remove(AppConstants.mechanicType);
+                                       await PrefsHelper.remove(AppConstants.emailValidator);
                                         context.go(AppRoutes.logInScreen);
                                       },
                                     ),

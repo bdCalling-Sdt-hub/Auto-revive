@@ -28,6 +28,7 @@ class BookingCardCustomer extends StatelessWidget {
     this.historyButtonAction,
     this.buttonColor,
     this.onTap,
+    this.nextPayCardBtnOnTap,
     this.certificates,
      this.id,
      this.isBtnNeed = false, this.address = ''
@@ -37,6 +38,7 @@ class BookingCardCustomer extends StatelessWidget {
   final String? buttonLabel;
   final VoidCallback? onTapDetails;
   final VoidCallback? onTap;
+  final VoidCallback? nextPayCardBtnOnTap;
   final String name;
   final String? title;
   final String image;
@@ -197,7 +199,7 @@ class BookingCardCustomer extends StatelessWidget {
                 SizedBox(height: 16.h),
                 isBtnNeed ? const SizedBox.shrink() :
                 isNextPay
-                    ? CustomButton(title: "Pay Now", onpress: () {}, height: 39.h, borderRadius: 10)
+                    ? CustomButton(title: "${buttonLabel}", onpress: nextPayCardBtnOnTap ?? () {}, height: 39.h, borderRadius: 10)
                     : Align(
                         alignment: Alignment.centerLeft,
                         child: CustomTwoButon(

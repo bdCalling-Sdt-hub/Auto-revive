@@ -31,6 +31,7 @@ dependencies:
 
 
   internet_connection_checker_plus: ^2.5.2
+  connectivity_plus: ^6.1.2
 
 
   shared_preferences: ^2.5.3
@@ -45,7 +46,7 @@ dependencies:
   chat_bubbles: ^1.6.0
   country_code_picker: ^3.3.0
   custom_rating_bar: ^3.0.0
-  toastification: ^3.0.2
+  toastification:
   quickalert: ^1.1.0
 #  flutter_stripe: ^10.2.0
   flutter_stripe: ^11.3.0

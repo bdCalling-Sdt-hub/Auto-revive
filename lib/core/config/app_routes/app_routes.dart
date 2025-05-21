@@ -1,3 +1,5 @@
+import 'package:autorevive/core/app_constants/app_constants.dart';
+import 'package:autorevive/helpers/prefs_helper.dart';
 import 'package:autorevive/pregentaitions/screens/auth/change_password/change_password.dart';
 import 'package:autorevive/pregentaitions/screens/auth/customer_signup/customer_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/email_verify/email_verify_screen.dart';
@@ -110,18 +112,43 @@ class AppRoutes {
   static const String adminSupportScreen = "/AdminSupportScreen";
   static const String addBalanceScreen = "/AddBalanceScreen";
 
+
+
+
   static final GoRouter goRouter =
       GoRouter(initialLocation: splashScreen, routes: [
     GoRoute(
       path: splashScreen,
       name: splashScreen,
-      builder: (context, state) {
-        return SplashScreen();
-      },
+      builder: (context, state) => const SplashScreen(),
       redirect: (context, state) {
         Future.delayed(const Duration(seconds: 3), () async {
-          AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+          var role = await PrefsHelper.getString(AppConstants.role);
+          var token = await PrefsHelper.getString(AppConstants.bearerToken);
+          bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
+
+          print("======================================$isLogged");
+
+
+          if(token != "" || isLogged){
+
+            /// ===============Role Check =============>>>
+            if(role.toLowerCase() == "customer"){
+              AppRoutes.goRouter.replaceNamed(AppRoutes.customerBottomNavBar);
+            }else if(role.toLowerCase() == "mechanic"){
+              AppRoutes.goRouter.replaceNamed(AppRoutes.mechanicBottomNavBar);
+            }else{
+              AppRoutes.goRouter.replaceNamed(AppRoutes.towTruckBottomNavBar);
+            }
+          }else{
+            AppRoutes.goRouter.replaceNamed(AppRoutes.onboardingScreen);
+          }
+
+
+
         });
+
+        return;
       },
     ),
 

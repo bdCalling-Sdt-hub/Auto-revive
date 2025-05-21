@@ -215,8 +215,12 @@ class $AssetsLottieGen {
   LottieGenImage get buttonLoading =>
       const LottieGenImage('assets/lottie/buttonLoading.json');
 
+  /// File path: assets/lottie/no_internet.json
+  LottieGenImage get noInternet =>
+      const LottieGenImage('assets/lottie/no_internet.json');
+
   /// List of all assets
-  List<LottieGenImage> get values => [buttonLoading];
+  List<LottieGenImage> get values => [buttonLoading, noInternet];
 }
 
 class Assets {

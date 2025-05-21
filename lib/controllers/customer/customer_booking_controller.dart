@@ -14,13 +14,13 @@ class CustomerBookingController extends GetxController {
   RxList<CustomerBookingModel> booking = <CustomerBookingModel>[].obs;
   RxBool bookingLoading = false.obs;
   RxString bookingStatus = ''.obs;
-  fetchBooking({String? status}) async {
+  fetchBooking({String? status, String? nextStatus}) async {
     if (status != null) {
       bookingStatus.value = status;
     }
     bookingLoading(true);
     var response = await ApiClient.getData(
-        "${ApiConstants.customerBookingEndPoint}?page=1&limit=11&sortField=createdAt&sortOrder=desc&status=${bookingStatus ?? ""}");
+        "${ApiConstants.customerBookingEndPoint}?page=1&limit=11&sortField=createdAt&sortOrder=desc&status=${bookingStatus ?? ""}&nextStatus=${nextStatus?? ""}");
 
     if (response.statusCode == 200) {
       booking.value = List<CustomerBookingModel>.from(
