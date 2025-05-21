@@ -148,7 +148,7 @@ class ErId {
 
 class Ation {
   final String? type;
-  final List<int>? coordinates;
+  final List<num>? coordinates;
 
   Ation({
     this.type,
@@ -157,7 +157,7 @@ class Ation {
 
   factory Ation.fromJson(Map<String, dynamic> json) => Ation(
     type: json["type"],
-    coordinates: json["coordinates"] == null ? [] : List<int>.from(json["coordinates"]!.map((x) => x)),
+    coordinates: json["coordinates"] == null ? [] : List.from(json["coordinates"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {

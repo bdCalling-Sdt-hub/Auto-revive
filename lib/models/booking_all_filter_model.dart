@@ -47,7 +47,7 @@ class BookingAllFiltersModel {
 }
 
 class CustomerId {
-  final List<int>? location;
+  final List<num>? location;
   final String? id;
   final String? name;
   final String? profileImage;
@@ -64,7 +64,7 @@ class CustomerId {
   });
 
   factory CustomerId.fromJson(Map<String, dynamic> json) => CustomerId(
-    location: json["location"] == null ? [] : List<int>.from(json["location"]!.map((x) => x)),
+    location: json["location"] == null ? [] : List.from(json["location"]!.map((x) => x)),
     id: json["_id"],
     name: json["name"],
     profileImage: json["profileImage"],
