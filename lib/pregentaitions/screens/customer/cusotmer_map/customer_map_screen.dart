@@ -43,7 +43,12 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map routerData = GoRouterState.of(context).extra as Map;
+    // final Map routerData = GoRouterState.of(context).extra as Map;
+    final extra = GoRouterState.of(context).extra;
+    if (extra == null || extra is! Map) {
+      return const Center(child: Text('Some Think want wrong Please go back'));
+    }
+    final Map routerData = extra;
 
 
     print("================================================   : ${customerMapController.markers}");
@@ -79,7 +84,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                     markers: customerMapController.markers,
                     onMapCreated: (GoogleMapController mapCtrl) {
                       controller.mapController = mapCtrl;
-                      controller.isMapReady = true;
+                      // controller.isMapReady = true;
                     },
                   );
                 },

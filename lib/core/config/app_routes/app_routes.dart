@@ -129,7 +129,7 @@ class AppRoutes {
           var userId = await PrefsHelper.getString(AppConstants.userId);
           bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
 
-          print("======================================$isLogged");
+          print("======================================$isLogged  \n token: $token \n userId : $userId");
 
           SocketServices sockService = SocketServices();
 

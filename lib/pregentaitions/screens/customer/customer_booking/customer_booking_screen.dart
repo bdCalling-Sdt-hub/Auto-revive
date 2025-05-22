@@ -3,6 +3,7 @@ import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/booking_card_widget.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
+import 'package:autorevive/pregentaitions/widgets/no_data_found_card.dart';
 import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,7 +107,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
             children: [
               /// Requested Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() :
+              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -149,7 +150,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               /// Next Pay Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() :
+              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.all(8.r),
@@ -238,7 +239,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               // History Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() :
+              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.all(8.r),
