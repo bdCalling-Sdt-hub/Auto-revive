@@ -119,10 +119,9 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                 onpress: () async {
                   if (fromKey.currentState!.validate()) {
                     if (resumeUrl.value.isEmpty || certificateUrl.value.isEmpty) {
-                      ToastMessageHelper.showToastMessage("Please upload both resume and certificate.");
+                      ToastMessageHelper.showToastMessage("Please upload both resume and certificate", title: 'Attention');
                       return;
                     }
-
                     final success = await mechanicController.resumeCertificate(
                       resume: resumeUrl.value,
                       certificate: certificateUrl.value,
@@ -139,17 +138,6 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                   }
                 },
               )),
-
-
-
-
-
-
-
-
-
-
-
                 // Obx(() => CustomButton(
                 //   loading: mechanicController.resumeCertificateLoading.value,
                 //   title: isEdit ? "Edit" : "Save and Next",
@@ -218,7 +206,6 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
       ),
     );
   }
-
   Future<void> importPdf({required bool isResume}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -241,5 +228,4 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
       ToastMessageHelper.showToastMessage("No file selected.");
     }
   }
-
 }

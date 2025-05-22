@@ -13,7 +13,7 @@ import '../../../widgets/custom_text.dart';
 class MechanicHomeScreen extends StatelessWidget {
    MechanicHomeScreen({super.key});
 
-   LiveLocationChangeController controller = Get.put(LiveLocationChangeController());
+   // LiveLocationChangeController controller = Get.put(LiveLocationChangeController());
 
 
   @override

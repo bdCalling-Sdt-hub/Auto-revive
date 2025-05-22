@@ -546,7 +546,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                       GestureDetector(
                         onTap: () async {
-                          final result = await context.pushNamed(
+                        context.pushNamed(
                             AppRoutes.mechanicResumeCertificateScreen,
                             extra: {
                               "title": "Resume and Certificate",
@@ -600,6 +600,8 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
     path = path.replaceAll('\\', '/');
     return path.split('/').last;
   }
+
+
   Widget _buildTag(String text) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
@@ -652,5 +654,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
       ),
     );
   }
+
 
 }

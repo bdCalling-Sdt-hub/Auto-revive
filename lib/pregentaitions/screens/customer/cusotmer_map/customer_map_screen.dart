@@ -79,7 +79,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                     markers: customerMapController.markers,
                     onMapCreated: (GoogleMapController mapCtrl) {
                       controller.mapController = mapCtrl;
-                      controller.isMapReady = true;
+                      // controller.isMapReady = true;
                     },
                   );
                 },

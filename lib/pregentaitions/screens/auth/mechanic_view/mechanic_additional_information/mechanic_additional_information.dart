@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
@@ -92,7 +93,7 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(8.h),
-                    child: TextField(
+                    child: TextFormField(
                       controller: additionController,
                       maxLines: 15,
                       style: TextStyle(fontSize: 14.sp,color: AppColors.textColor151515),
@@ -101,8 +102,11 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                         hintText: 'Write some things...',
                         hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.textColor151515),
                         isCollapsed: true,
+
+
                       ),
                     ),
+
                   ),
                 ),
 
@@ -117,20 +121,28 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
                       title: isEdit ? "Edit" : "Save and Next",
                       onpress: () async {
                         if (fromKey.currentState!.validate()) {
+                          final additionalInfo = additionController.text.trim();
+
+                          if (additionalInfo.isEmpty) {
+                            ToastMessageHelper.showToastMessage('Enter your additional information!', title: 'Attention');
+                            return;
+                          }
+
                           final success = await mechanicController.additionalInformation(
-                            whyOnSite: additionController.text.trim(),
+                            whyOnSite: additionalInfo,
                             context: context,
                           );
+
                           if (success) {
-                            if (isEdit) {
-                              context.pop(true);
-                            } else {
-                              context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
-                            }
+                            isEdit
+                                ? context.pop(true)
+                                : context.pushNamed(AppRoutes.mechanicResumeCertificateScreen);
                           }
                         }
                       },
-                    ),),
+                    ),
+                ),
+
 
 
 

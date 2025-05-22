@@ -53,10 +53,11 @@ class AuthController extends GetxController {
          context.pushNamed(AppRoutes.otpScreen, extra: "track");
        }
 
+
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       signUpLoading(false);
     } else {
-      ToastMessageHelper.showToastMessage("${response.body["message"]}", isSuccess: false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}",title:  'Fail');
       signUpLoading(false);
     }
   }
@@ -76,19 +77,18 @@ class AuthController extends GetxController {
       "email": email,
       "password": password,
       "confirmPassword": confirmPassword,
-      "role": "mechanic",
+      "role": "$role",
     };
 
     var response = await ApiClient.postData(ApiConstants.signUpEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
-      // if(role == "mechanic"){
+      if(role == "mechanic"){
         context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
-      // }else{
-      //   // context.pushNamed(AppRoutes.otpScreen, extra: "track");
-      // }
-
+      }else{
+        context.pushNamed(AppRoutes.otpScreen, extra: "tow_truck");
+      }
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       mechanicSignUpLoading(false);
     } else if(response.statusCode == 1){
@@ -129,9 +129,11 @@ class AuthController extends GetxController {
           context.go(AppRoutes.logInScreen);
         } else if(screenType == "mechanic"){
           context.go(AppRoutes.mechanicPersonalInformationScreen);
-        }else{
-
         }
+        // else (screenType == "tow_truck"){
+        //   context.go(AppRoutes.basicInfoScreen);
+        // }
+
       }
 
 
@@ -180,9 +182,29 @@ class AuthController extends GetxController {
 
       if (role == "customer") {
         context.go(AppRoutes.customerBottomNavBar);
-      }else{
-        context.go(AppRoutes.mechanicBottomNavBar);
       }
+      // else{
+      //   if(data["step"] == 1){
+      //
+      //   }else if(data["step"] ==  2){
+      //
+      //   }else if(data["step"] ==  3){
+      //
+      //   }else if(data["step"] ==  4){
+      //
+      //   }else if(data["step"] ==  5){
+      //
+      //   }else if(data["step"] ==  6){
+      //
+      //   }else if(data["step"] ==  7){
+      //
+      //   }else if(data["step"] ==  8){
+      //
+      //   }
+        else{
+          context.go(AppRoutes.mechanicBottomNavBar);
+        }
+      // }
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);
     }else{

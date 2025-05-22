@@ -250,9 +250,10 @@ class Tool {
   };
 }
 
+
 class Location {
   final String? type;
-  final List<int>? coordinates;
+  final List<double>? coordinates;
 
   Location({
     this.type,
@@ -261,14 +262,39 @@ class Location {
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
     type: json["type"],
-    coordinates: json["coordinates"] == null ? [] : List<int>.from(json["coordinates"]!.map((x) => x)),
+    coordinates: json["coordinates"] == null
+        ? []
+        : List<double>.from(json["coordinates"].map((x) => x.toDouble())),
   );
 
   Map<String, dynamic> toJson() => {
     "type": type,
-    "coordinates": coordinates == null ? [] : List<dynamic>.from(coordinates!.map((x) => x)),
+    "coordinates": coordinates == null
+        ? []
+        : List<dynamic>.from(coordinates!.map((x) => x)),
   };
 }
+
+
+// class Location {
+//   final String? type;
+//   final List<num>? coordinates;
+//
+//   Location({
+//     this.type,
+//     this.coordinates,
+//   });
+//
+//   factory Location.fromJson(Map<String, dynamic> json) => Location(
+//     type: json["type"],
+//     coordinates: json["coordinates"] == null ? [] : List<int>.from(json["coordinates"]!.map((x) => x)),
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "type": type,
+//     "coordinates": coordinates == null ? [] : List<dynamic>.from(coordinates!.map((x) => x)),
+//   };
+// }
 
 class Reference {
   final String? name;

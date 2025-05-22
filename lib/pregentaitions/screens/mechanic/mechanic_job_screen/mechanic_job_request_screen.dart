@@ -36,12 +36,12 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await mechanicJobController.settingRadiusLimits();
-      final min = mechanicJobController.radiusLimits.value.value?.min ?? 0;
-      _miles.value = min.toDouble();
+      final parsed = double.tryParse(widget.radius) ?? 0;
+      _miles.value = parsed;
     });
   }
 
-  final RxDouble _miles = 4.0.obs;
+  final RxDouble _miles = 0.0.obs;
 
   @override
   void dispose() {
@@ -106,11 +106,17 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                   max: max,
                   onChanged: (val) => _miles.value = val,
                 )),
+                // Obx(() => CustomText(
+                //   text: _miles.value.toInt().toString(),
+                //   fontsize: 16.sp,
+                // )),
                 CustomText(
                   text: 'Max: ${max.toInt()}',
                   fontsize: 12.sp,
                   bottom: 4.h,
                 ),
+
+
                 Obx(() => CustomContainer(
                   alignment: Alignment.center,
                   radiusAll: 12.r,

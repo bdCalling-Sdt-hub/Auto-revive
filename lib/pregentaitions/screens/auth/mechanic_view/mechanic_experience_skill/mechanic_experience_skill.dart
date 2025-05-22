@@ -1,15 +1,16 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../models/get_profile_model.dart';
 import '../../../../widgets/certification_custom_checkbox_list.dart';
-import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 
 
@@ -33,7 +34,6 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
 
 
   bool? validUSDOTNumber;
-  // State
   List<String> selectedWorkSpaces = List.generate(10, (index) => 'In Shop');
   List<TextEditingController> experienceControllers = List.generate(10, (index) => TextEditingController());
 
@@ -80,11 +80,13 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
         experienceControllers[i].text = experience.time?.toString() ?? '';
       }
 
-      setState(() {});
+      setState(() {
+        isLoading = false;
+
+      });
     });
   }
-
-
+  bool isLoading = true;
 
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
 
@@ -111,7 +113,14 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
           textAlign: TextAlign.start,
         ),
       ),
-      body: Padding(
+      body:   isLoading
+          ? SingleChildScrollView(
+            child: Column(
+                    children: List.generate(4, (_) => _buildShimmerProfile()),
+                  ),
+          )
+
+          :Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Form(
@@ -143,7 +152,8 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                 ),
                 SizedBox(height: 8.h),
                 /// ==============================>  Skill rows  =================================>
-                Obx(() {
+
+              Obx(() {
                   if (mechanicController.experience.isEmpty) {
                     return Center(
                       child: CustomText(text: 'No data available',fontsize: 16.sp,color: AppColors.textColor151515)
@@ -194,7 +204,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                                       ? selectedWorkSpaces[index]
                                       : workSpaceOptions[0],
                                   isExpanded: true,
-                                  icon: Icon(Icons.keyboard_arrow_down_outlined),
+                                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
                                   items: workSpaceOptions.map((item) {
                                     return DropdownMenuItem<String>(
                                       value: item,
@@ -237,12 +247,6 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                                   isCollapsed: true,
                                   contentPadding: EdgeInsets.only(top: 8.h),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return 'Please enter field';
-                                  }
-                                  return null;
-                                },
                               ),
                             ),
 
@@ -269,40 +273,48 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
                   title: isEdit ? "Edit" : "Save and Next",
                   onpress: () async {
                     if (fromKey.currentState!.validate()) {
-                      final experienceList = <Map<String, dynamic>>[];
-
-                      for (int i = 0; i < mechanicController.experience.length; i++) {
-                        final experienceId = mechanicController.experience[i].id;
-                        final platform = selectedWorkSpaces.length > i
-                            ? selectedWorkSpaces[i].toLowerCase()
-                            : 'in shop';
-                        final time = int.tryParse(experienceControllers[i].text.trim()) ?? 0;
-
-                        if (time > 0) {
-                          experienceList.add({
-                            "experienceId": experienceId,
-                            "platform": platform,
-                            "time": time,
-                          });
-                        }
-                      }
 
                       final selectedCerts = certificationCheckbox.entries
                           .where((e) => e.value)
                           .map((e) => e.key)
                           .toList();
+                      if(selectedCerts.isEmpty){
+                        ToastMessageHelper.showToastMessage('You must select a certificate!',title: 'Attention');
+                      }else {
+                        final experienceList = <Map<String, dynamic>>[];
+                        for (int i = 0; i < mechanicController.experience.length; i++) {
+                          final experienceId = mechanicController.experience[i].id;
+                          final platform = selectedWorkSpaces.length > i
+                              ? selectedWorkSpaces[i].toLowerCase()
+                              : 'in shop';
+                          final time = int.tryParse(experienceControllers[i].text.trim()) ?? 0;
 
-                      final success = await mechanicController.experienceCertifications(
-                        experiences: experienceList,
-                        certifications: selectedCerts,
-                        context: context,
-                      );
+                          if (time > 0) {
+                            experienceList.add({
+                              "experienceId": experienceId,
+                              "platform": platform,
+                              "time": time,
+                            });
+                          }
+                        }
+                        if (experienceList.isEmpty) {
+                          ToastMessageHelper.showToastMessage('You must select an experience!', title: 'Attention');
+                          return;
+                        }
+                        final success = await mechanicController.experienceCertifications(
+                          experiences: experienceList,
+                          certifications: selectedCerts,
+                          context: context,
+                        );
 
-                      if (success) {
-                        isEdit
-                            ? context.pop(true)
-                            : context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              : context.pushNamed(AppRoutes.mechanicToolsEquipmentScreen);
+                        }
                       }
+
+
                     }
                   },
                 )),
@@ -353,6 +365,145 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
       ),
     );
   }
+
+  Widget _buildShimmerProfile() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 8.h),
+
+            // Linear progress indicator placeholder
+            Container(
+              height: 8.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            // Title text placeholder (e.g. "How many experience...")
+            Container(
+              width: 220.w,
+              height: 20.h,
+              color: Colors.grey[300],
+            ),
+
+            SizedBox(height: 8.h),
+
+            // Work Space & Experience labels placeholder row
+            Row(
+              children: [
+                Container(width: 80.w, height: 14.h, color: Colors.grey[300]),
+                SizedBox(width: 42.w),
+                Container(width: 80.w, height: 14.h, color: Colors.grey[300]),
+              ],
+            ),
+
+            SizedBox(height: 12.h),
+
+            // Multiple skill rows placeholders (simulate 3 items)
+            ...List.generate(3, (index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Skill name placeholder
+                    Container(
+                      width: 100.w,
+                      height: 18.h,
+                      color: Colors.grey[300],
+                    ),
+
+                    // Work space dropdown placeholder
+                    Container(
+                      width: 100.w,
+                      height: 36.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                    ),
+
+                    // Experience input placeholder
+                    Container(
+                      width: 80.w,
+                      height: 36.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+
+            SizedBox(height: 20.h),
+
+            // Certification title placeholder
+            Container(
+              width: 120.w,
+              height: 20.h,
+              color: Colors.grey[300],
+            ),
+
+            SizedBox(height: 14.h),
+
+            // Certification checkbox placeholders (simulate 4 items in 2 rows)
+            Wrap(
+              spacing: 20.w,
+              runSpacing: 12.h,
+              children: List.generate(4, (index) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 20.w,
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Container(
+                      width: 60.w,
+                      height: 18.h,
+                      color: Colors.grey[300],
+                    ),
+                  ],
+                );
+              }),
+            ),
+
+            SizedBox(height: 50.h),
+
+            // Save and Next button placeholder
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
+
 
 
 

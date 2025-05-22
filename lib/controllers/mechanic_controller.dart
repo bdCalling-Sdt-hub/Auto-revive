@@ -257,7 +257,7 @@ class MechanicController extends GetxController{
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
-      ToastMessageHelper.showToastMessage("Failed employment histories data.");
+      ToastMessageHelper.showToastMessage('You must enter at least one Platform!', title: 'Attention');
       return false;
     }
   }

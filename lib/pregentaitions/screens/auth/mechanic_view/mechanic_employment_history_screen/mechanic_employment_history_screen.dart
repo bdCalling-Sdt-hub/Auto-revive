@@ -181,7 +181,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                   ///<<<=============>>> Employment Duration <<<===============>>>
                   CustomText(text: 'Employment Duration:',color: AppColors.textColor151515,fontsize: 14.sp),
                   Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 18.h,horizontal: 25.w),
+                    padding:  EdgeInsets.symmetric(vertical: 18.h,horizontal: 23.w),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +237,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                                   child: CustomTextField(
                                     readOnly: true,
                                     controller: dateCtrl,
-                                    hintText: "Select Date",
+                                    hintText: "To Date",
                                     suffixIcon: const Icon(Icons.calendar_today),
                                   ),
                                 ),
