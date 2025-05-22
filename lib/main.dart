@@ -24,6 +24,9 @@ void main() async{
   PlatformDispatcher.instance.onAccessibilityFeaturesChanged = (){};
   DependencyInjection di = DependencyInjection();
   di.dependencies();
+
+
+  di.lockDevicePortrait();
   runApp(const MyApp());
 }
 

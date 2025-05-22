@@ -1,5 +1,6 @@
 
 import 'package:autorevive/controllers/customer/customer_home_controller.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
@@ -14,5 +15,12 @@ class DependencyInjection implements Bindings {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => CustomerHomeController(), fenix: true);
     Get.lazyPut(() => CustomerBookingController(), fenix: true);
+  }
+
+  void lockDevicePortrait() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 }

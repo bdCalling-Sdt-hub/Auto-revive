@@ -176,6 +176,7 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["tokens"]["accessToken"]);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
+      await PrefsHelper.setString(AppConstants.userId, data['userId']);
       await PrefsHelper.setBool(AppConstants.isLogged, true);
 
       var role = data['role'];

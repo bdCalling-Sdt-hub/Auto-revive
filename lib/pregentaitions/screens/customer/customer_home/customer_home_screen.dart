@@ -1,4 +1,6 @@
+import 'package:autorevive/controllers/live_location_change_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'package:autorevive/services/socket_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,10 +18,18 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   CurrentLocationController controller = Get.put(CurrentLocationController());
+  LiveLocationChangeController liveLocationChangeController = Get.put(LiveLocationChangeController());
+  SocketServices socketServices = SocketServices();
+
 
   @override
   void initState() {
+
+
     controller.getCurrentLocation();
+    liveLocationChangeController.listenToLocationChanges();
+
+
     super.initState();
   }
 
