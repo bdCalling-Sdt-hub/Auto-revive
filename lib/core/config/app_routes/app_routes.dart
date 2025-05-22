@@ -12,6 +12,7 @@ import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_pr
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_reference_screen/mechanic_reference_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/mechanic_view/mechanic_resume_certificate_screen/mechanic_resume_certificate_screen.dart';
 import 'package:autorevive/pregentaitions/screens/auth/otp/otp_screen.dart';
+import 'package:autorevive/pregentaitions/screens/auth/tow_track_signup/towtrack_signup_screen.dart';
 import 'package:autorevive/pregentaitions/screens/splash_screen/splash_screen.dart';
 import 'package:autorevive/pregentaitions/screens/tow_truck_profile/admin_support/admin_support_screen.dart';
 import 'package:autorevive/services/socket_services.dart';
@@ -81,6 +82,7 @@ class AppRoutes {
   static const String mechanicCompleteDetailsScreen = "/MechanicCompleteDetailsScreen";
   static const String mechanicMapScreen = "/MechanicMapScreen";
   static const String mechanicSignupScreen = "/MechanicSignupScreen";
+  static const String towTrackSignupScreen = "/TowTrackSignupScreen";
   static const String notificationsScreen = "/NotificationsScreen";
   static const String settingsScreen = "/SettingsScreen";
   static const String changePasswordScreen = "/ChangePasswordScreen";
@@ -131,9 +133,9 @@ class AppRoutes {
 
           print("======================================$isLogged");
 
-          SocketServices sockService = SocketServices();
+          // SocketServices sockService = SocketServices();
 
-          sockService.init(userId: userId );
+          // sockService.init(userId: userId );
 
 
           if(token != "" && isLogged){
@@ -365,6 +367,14 @@ class AppRoutes {
           name: mechanicSignupScreen,
           pageBuilder: (context, state) =>  _customTransitionPage(MechanicSignupScreen(), state),
         ),
+
+        ///<<<=============>>> MECHANIC SIGN UP SCREEN <<<===============>>>
+        GoRoute(
+          path: towTrackSignupScreen,
+          name: towTrackSignupScreen,
+          pageBuilder: (context, state) =>  _customTransitionPage(TowTrackSignupScreen(), state),
+        ),
+
 
 
         ///=========Privacy All Screen========>>

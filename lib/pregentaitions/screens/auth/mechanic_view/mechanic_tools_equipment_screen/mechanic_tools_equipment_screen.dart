@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
-import '../../../../../models/get_profile_model.dart';
-import '../../../../widgets/custom_app_bar.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/equipment_check_box_list.dart';
 
@@ -88,7 +87,6 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
   Widget build(BuildContext context) {
     // Map routeData = GoRouterState.of(context).extra as Map;
     // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
-
     final extra = GoRouterState.of(context).extra;
     final Map routeData = extra is Map ? extra : {};
     final bool isEdit = routeData['isEdit'] ?? false;
@@ -255,8 +253,8 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   title: isEdit ? "Edit" : "Save and Next",
                   onpress: () {
                     if (fromKey.currentState!.validate()) {
-                      List<String> selectedToolIds = [];
 
+                      List<String> selectedToolIds = [];
                       mechanicController.tools.forEach((group) {
                         group.tools.forEach((tool) {
                           if (tool.isSelected == true) {
@@ -264,7 +262,14 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                           }
                         });
                       });
-
+                      if (selectedToolIds.isEmpty) {
+                        ToastMessageHelper.showToastMessage('You must select at least one tools!', title: 'Attention');
+                        return;
+                      }
+                      if (customTools.isEmpty) {
+                        ToastMessageHelper.showToastMessage('You must enter at least one custom tools!', title: 'Attention');
+                        return;
+                      }
                       mechanicController.mechanicTools(
                         tools: selectedToolIds,
                         toolsCustom: customTools,
@@ -279,9 +284,6 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                     }
                   },
                 )),
-
-
-
 
                 // Obx(() => CustomButton(
                 //   loading: mechanicController.mechanicToolsLoading.value,

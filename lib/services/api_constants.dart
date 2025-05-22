@@ -44,4 +44,8 @@ class ApiConstants{
   static  String getAllJobProvider(String page, radius) => "/job/provider/$radius?page=$page&limit=10000";
 
 
+  /// =============================================> Tow Track ============================================>
+
+  static const String towTrackBasicInfoEndPoint = "/tow-truck/basic-info";
+
 }

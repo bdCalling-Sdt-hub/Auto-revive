@@ -46,7 +46,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: Obx(() =>
       notificationsController.notificationLoading.value ? const CustomLoader() :
-      notificationsController.notifications.isEmpty ? CustomText(text: "No Notification Found!") :
+      notificationsController.notifications.isEmpty ? Center(child: CustomText(text: "No Notification Found!")) :
          Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: ListView.builder(

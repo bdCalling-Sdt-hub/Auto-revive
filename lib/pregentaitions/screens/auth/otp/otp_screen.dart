@@ -69,18 +69,17 @@ class OtpScreen extends StatelessWidget {
                     onpress: () {
                       print("--------------------------- ${otpTEController.text}");
           
-                      // if(screenType == "Sign Up"){
-                      //   authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
-                      // }
-                      // if (screenType == "mechanic") {
+                      if(screenType == "Sign Up"){
+                        // authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+                      }
+                      if (screenType == "mechanic") {
                         authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
-                      // }
-          
-                      // else if(screenType == "track"){
-                      //   authController.verfyEmail(otpTEController.text, screenType: "track", context: context);
-                      // } else{
-                      //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
-                      // }
+                      }
+                      else if(screenType == "tow_truck"){
+                        authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context);
+                      } else{
+                        authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
+                      }
                     }),
               ),
             ],

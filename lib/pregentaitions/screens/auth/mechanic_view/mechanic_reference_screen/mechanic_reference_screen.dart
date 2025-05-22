@@ -216,7 +216,7 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                                   .key;
 
                               if (selectedRelation.isEmpty) {
-                                ToastMessageHelper.showToastMessage("Please select relation for all references");
+                                ToastMessageHelper.showToastMessage("You must select at least one Relationship!", title: 'Attention');
                                 return;
                               }
 

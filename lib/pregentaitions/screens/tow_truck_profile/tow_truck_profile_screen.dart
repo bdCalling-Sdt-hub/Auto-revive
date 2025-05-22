@@ -5,7 +5,6 @@ import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_profile_list_tile.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_two_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../global/custom_assets/assets.gen.dart';
+import '../../../controllers/mechanic_controller.dart';
+import '../../../services/api_constants.dart';
+import '../../widgets/cachanetwork_image.dart';
 
 
 class TowTruckProfileScreen extends StatefulWidget {
@@ -24,11 +26,16 @@ class TowTruckProfileScreen extends StatefulWidget {
 
 class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
 
+
+  MechanicController mechanicController = Get.put(MechanicController());
+
+
   String userRole = "";
 
   @override
   void initState() {
     getLocalData();
+    mechanicController.getProfile();
     super.initState();
   }
 
@@ -60,12 +67,20 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                       child: Assets.icons.notificationIcon.svg(color: Colors.black)),
                 ],
               ),
-              CustomImageAvatar(
-                radius: 50.r,
+              CustomNetworkImage(
+                boxShape: BoxShape.circle,
+                imageUrl:
+                mechanicController.profile.value.profileImage == null ||  mechanicController.profile.value.profileImage == "" ?
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" :
+                "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
+                height: 128.h,
+                width: 128.w,
               ),
               CustomText(
-                text: 'Bryan',
-                fontsize: 24.sp,
+                text: mechanicController.profile.value.name ?? 'N/A',
+                fontsize: 25.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textColor151515,
               ),
               SizedBox(height: 24.h),
               CustomProfileListTile(

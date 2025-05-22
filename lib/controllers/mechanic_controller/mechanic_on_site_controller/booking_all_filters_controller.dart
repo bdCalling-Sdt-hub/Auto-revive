@@ -120,10 +120,10 @@ class MechanicBookingAllFiltersController extends GetxController {
         context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen, extra: {"id":"$serviceId"});
 
       } else {
-        ToastMessageHelper.showToastMessage("Job process not found");
+        ToastMessageHelper.showToastMessage("Job process not found",title: 'Attention');
       }
     } catch (e) {
-      ToastMessageHelper.showToastMessage("Failed to add service");
+      ToastMessageHelper.showToastMessage("Failed to add service",title: 'Attention');
     } finally {
       addServiceLoading(false);
     }

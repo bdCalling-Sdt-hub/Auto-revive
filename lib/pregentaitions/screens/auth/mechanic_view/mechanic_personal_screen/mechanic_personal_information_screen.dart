@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
@@ -47,6 +48,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
     CarModel(id: '3', adminId: 'admin456', name: 'both', v: 0),
   ];
 
+  bool isLoading = true;
+
   final GlobalKey<FormState> fromKey = GlobalKey<FormState>();
 
   @override
@@ -71,10 +74,11 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
         hasDriversLicense = routeData['haveLicense'] ?? false;
         hasCDL = routeData['haveCdl'] ?? false;
         uploadedUrl = routeData['image'] ?? '';
-
-        setState(() {});
+        print("Received gfjhhg Image: ${routeData['image']}");
+        setState(() {
+          isLoading = false;
+        });
       });
-
 
     });
   }
@@ -98,7 +102,12 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
-          child: Obx(()=>
+          child:   isLoading
+              ? Column(
+            children: List.generate(4, (_) => _buildShimmerProfile()),
+          )
+
+              :Obx(()=>
            Form(
              key: fromKey,
              child: Column(
@@ -135,8 +144,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                                 ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
                                 : CustomNetworkImage(
                               boxShape: BoxShape.circle,
-                              imageUrl:  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-
+                              imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
                               height: 128.h,
                               width: 128.w,
                             ),
@@ -155,7 +163,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
                                     blurRadius: 10,
-                                    offset: Offset(0, 3),
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
@@ -175,6 +183,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                   ///<<<=============>>> Name Filed <<<===============>>>
                   CustomTextField(
                     // readOnly: !isEdit,
+                    hintText: 'name',
                       controller: fullNameCtrl,
                       labelText: "Full Name"),
 
@@ -280,8 +289,6 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                     },
                   )),
 
-
-
                   // Obx(()=>
                   //     CustomButton(
                   //       loading: mechanicController.basicInfoLoading.value,
@@ -302,20 +309,144 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                   //         }
                   //       },
                   //     ),),
-
-
-
-
-
-
-
-
                   SizedBox(height: 80.h),
                 ],
               ),
            ),
           ),
         ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildShimmerProfile() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Profile Image Shimmer
+          Center(
+            child: Container(
+              width: 104.w,
+              height: 104.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey[300],
+              ),
+            ),
+          ),
+          SizedBox(height: 20.h),
+
+          // Name field shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 15.h),
+
+          // Platform field shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 15.h),
+
+          // Email field shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 15.h),
+
+          // Phone field shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 15.h),
+
+          // Address field shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 15.h),
+
+          // Checkbox placeholders (driver license, CDL)
+          Row(
+            children: [
+              Container(
+                width: 24.w,
+                height: 24.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Container(
+                width: 150.w,
+                height: 20.h,
+                color: Colors.grey[300],
+              ),
+            ],
+          ),
+          SizedBox(height: 10.h),
+          Row(
+            children: [
+              Container(
+                width: 24.w,
+                height: 24.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Container(
+                width: 100.w,
+                height: 20.h,
+                color: Colors.grey[300],
+              ),
+            ],
+          ),
+          SizedBox(height: 40.h),
+
+          // Button shimmer
+          Container(
+            width: double.infinity,
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          SizedBox(height: 80.h),
+        ],
       ),
     );
   }

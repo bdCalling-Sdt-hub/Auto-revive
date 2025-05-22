@@ -156,7 +156,7 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
             SizedBox(height: 93.h),
             CustomButton(title: 'Complete',
                 onpress: () {
-                  context.pushNamed(AppRoutes.mechanicBookingsScreen);
+                  // context.pushNamed(AppRoutes.mechanicBookingsScreen);
 
             }),
             SizedBox(height: 20.h),

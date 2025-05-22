@@ -288,7 +288,7 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                   title: 'Submit',
                   onpress: () {
                 if(mechanicBookingAllFiltersController.servicesBody.isEmpty){
-                  ToastMessageHelper.showToastMessage("Please enter price!");
+                  ToastMessageHelper.showToastMessage("Please enter price!",title: 'Attention');
                 }else{
                   mechanicBookingAllFiltersController.addServiceProvider(
                       context: context, serviceId: routeData["id"]?.toString() ?? ""
