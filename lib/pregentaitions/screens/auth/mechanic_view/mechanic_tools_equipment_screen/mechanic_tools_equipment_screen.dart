@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
@@ -74,12 +75,21 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
         customTools.clear();
         customTools.addAll(List<String>.from(custom.where((e) => e != null && e.toString().isNotEmpty)));
       }
-      setState(() {});
+
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
+      });
+
+
+
     });
   }
 
 
-
+  bool isLoading = true;
 
 
 
@@ -104,7 +114,9 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
           textAlign: TextAlign.start,
         ),
       ),
-      body: Padding(
+      body:  isLoading
+          ? SingleChildScrollView(child: _buildShimmerTools())
+          : Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Form(
@@ -134,7 +146,10 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                 ),
 
                 /// <<<=============>>> Tools Group List <<<===============>>>
-                Obx(() {
+
+
+
+              if (validUSDOTNumber == true) ...[Obx(() {
                   if (mechanicController.toolsLoading.value) {
                     return const Center(child: CustomLoader());
                   } else if (mechanicController.tools.isEmpty) {
@@ -173,18 +188,13 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                                 );
                               },
                             ),
-                            SizedBox(height: 20.h),
+
                           ],
                         );
                       },
                     );
                   }
                 }),
-
-
-
-
-                SizedBox(height: 20.h),
                 ///<<<=============>>> Additional Tools <<<===============>>>
                 CustomText(
                   text: "List any additional tools you own",
@@ -242,7 +252,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                     ),
                   ),
                 ),
-
+],
 
                 SizedBox(height: 85.h),
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
@@ -253,26 +263,32 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                   title: isEdit ? "Edit" : "Save and Next",
                   onpress: () {
                     if (fromKey.currentState!.validate()) {
-
                       List<String> selectedToolIds = [];
-                      mechanicController.tools.forEach((group) {
-                        group.tools.forEach((tool) {
-                          if (tool.isSelected == true) {
-                            selectedToolIds.add(tool.id!);
-                          }
+
+                      if (validUSDOTNumber == true) {
+                        // Only collect tools if user said yes
+                        mechanicController.tools.forEach((group) {
+                          group.tools.forEach((tool) {
+                            if (tool.isSelected == true) {
+                              selectedToolIds.add(tool.id!);
+                            }
+                          });
                         });
-                      });
-                      if (selectedToolIds.isEmpty) {
-                        ToastMessageHelper.showToastMessage('You must select at least one tools!', title: 'Attention');
-                        return;
+
+                        if (selectedToolIds.isEmpty) {
+                          ToastMessageHelper.showToastMessage('You must select at least one tools!', title: 'Attention');
+                          return;
+                        }
+
+                        if (customTools.isEmpty) {
+                          ToastMessageHelper.showToastMessage('You must enter at least one custom tools!', title: 'Attention');
+                          return;
+                        }
                       }
-                      if (customTools.isEmpty) {
-                        ToastMessageHelper.showToastMessage('You must enter at least one custom tools!', title: 'Attention');
-                        return;
-                      }
+
                       mechanicController.mechanicTools(
                         tools: selectedToolIds,
-                        toolsCustom: customTools,
+                        toolsCustom: validUSDOTNumber == true ? customTools : [],
                         context: context,
                       ).then((success) {
                         if (success) {
@@ -282,8 +298,7 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                         }
                       });
                     }
-                  },
-                )),
+                  },)),
 
                 // Obx(() => CustomButton(
                 //   loading: mechanicController.mechanicToolsLoading.value,
@@ -310,6 +325,9 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
                 //       }
                 //     }
                 // )),
+
+
+
                 SizedBox(height: 70.h),
               ],
             ),
@@ -319,8 +337,156 @@ class _MechanicToolsEquipmentScreenState extends State<MechanicToolsEquipmentScr
     );
   }
 
+  Widget _buildShimmerTools() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 16.h), // app bar space
 
+            // Linear progress indicator placeholder
+            Container(
+              height: 8.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+            SizedBox(height: 29.h),
 
+            // "Do you have own tools?" text placeholder
+            Container(
+              width: 180.w,
+              height: 20.h,
+              color: Colors.grey.shade300,
+            ),
+            SizedBox(height: 12.h),
 
+            // Checkbox placeholder for validUSDOTNumber (single)
+            Row(
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Container(
+                  width: 150.w,
+                  height: 20.h,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+
+            SizedBox(height: 24.h),
+
+            // Tools group placeholders (simulate 2 groups)
+            ...List.generate(2, (_) {
+              return Padding(
+                padding: EdgeInsets.only(bottom: 24.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Group title placeholder
+                    Container(
+                      width: 140.w,
+                      height: 20.h,
+                      color: Colors.grey.shade300,
+                    ),
+                    SizedBox(height: 12.h),
+
+                    // Tools checkbox placeholders (3 tools per group)
+                    ...List.generate(3, (_) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 8.h),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 20.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Container(
+                              width: 200.w,
+                              height: 18.h,
+                              color: Colors.grey.shade300,
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              );
+            }),
+
+            // Additional Tools label placeholder
+            Container(
+              width: 220.w,
+              height: 20.h,
+              color: Colors.grey.shade300,
+            ),
+
+            SizedBox(height: 12.h),
+
+            // Chips placeholder (simulate 3 chips)
+            Wrap(
+              spacing: 8.w,
+              runSpacing: 4.h,
+              children: List.generate(3, (_) {
+                return Container(
+                  width: 80.w,
+                  height: 30.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                );
+              }),
+            ),
+
+            SizedBox(height: 12.h),
+
+            // Additional tools input placeholder
+            Container(
+              width: double.infinity,
+              height: 46.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(30.r),
+              ),
+            ),
+
+            SizedBox(height: 85.h),
+
+            // Save and Next button placeholder
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 70.h),
+          ],
+        ),
+      ),
+    );
+  }
 }
 

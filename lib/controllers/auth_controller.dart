@@ -176,36 +176,36 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["tokens"]["accessToken"]);
       await PrefsHelper.setString(AppConstants.email, email);
       await PrefsHelper.setString(AppConstants.name, data['name']);
-      await PrefsHelper.setString(AppConstants.userId, data['userId']);
-      await PrefsHelper.setBool(AppConstants.isLogged, true);
+      await PrefsHelper.setString(AppConstants.userId, data['_id']);
+
 
       var role = data['role'];
 
       if (role == "customer") {
         context.go(AppRoutes.customerBottomNavBar);
+        await PrefsHelper.setBool(AppConstants.isLogged, true);
       }
-      // else{
-      //   if(data["step"] == 1){
-      //
-      //   }else if(data["step"] ==  2){
-      //
-      //   }else if(data["step"] ==  3){
-      //
-      //   }else if(data["step"] ==  4){
-      //
-      //   }else if(data["step"] ==  5){
-      //
-      //   }else if(data["step"] ==  6){
-      //
-      //   }else if(data["step"] ==  7){
-      //
-      //   }else if(data["step"] ==  8){
-      //
-      //   }
+      else{
+        if(data["step"] == 1){
+          context.go(AppRoutes.mechanicPersonalInformationScreen);
+        }else if(data["step"] ==  2){
+          context.go(AppRoutes.mechanicExperienceSkillScreen);
+        }else if(data["step"] ==  3){
+          context.go(AppRoutes.mechanicToolsEquipmentScreen);
+        }else if(data["step"] ==  4){
+          context.go(AppRoutes.mechanicEmploymentHistoryScreen);
+        }else if(data["step"] ==  5){
+          context.go(AppRoutes.mechanicReferenceScreen);
+        }else if(data["step"] ==  6){
+          context.go(AppRoutes.mechanicAdditionalInformationScreen);
+        }else if(data["step"] ==  7){
+          context.go(AppRoutes.mechanicResumeCertificateScreen);
+        }
         else{
           context.go(AppRoutes.mechanicBottomNavBar);
+          await PrefsHelper.setBool(AppConstants.isLogged, true);
         }
-      // }
+      }
       ToastMessageHelper.showToastMessage('Your are logged in');
       logInLoading(false);
     }else{
