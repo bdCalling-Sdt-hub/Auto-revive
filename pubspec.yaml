@@ -50,13 +50,10 @@ dependencies:
   quickalert: ^1.1.0
 #  flutter_stripe: ^10.2.0
   flutter_stripe: ^11.3.0
-
   location_picker_text_field:
-
-
-
   country_pickers: ^3.0.1
   socket_io_client:
+  flutter_polyline_points: ^2.1.0
 
 dev_dependencies:
   flutter_test:

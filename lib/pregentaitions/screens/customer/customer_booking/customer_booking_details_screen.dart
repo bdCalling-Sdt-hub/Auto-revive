@@ -71,15 +71,27 @@ class _CustomerBookingDetailsScreenState
                             color: Colors.black,
                             right: 30.w,
                             fontsize: 22.h),
-                        Container(
-                            decoration: BoxDecoration(
-                                color: AppColors.primaryShade300,
-                                borderRadius: BorderRadius.circular(8.r)),
-                            child: Padding(
-                              padding: EdgeInsets.all(4.r),
-                              child: Icon(Icons.location_on,
-                                  color: Colors.white, size: 16.r),
-                            ))
+                        GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoutes.mechanicMapScreen, extra: {
+                              "name" : routeData["name"],
+                              "address" : routeData["address"],
+                              "rating" : routeData["rating"],
+                              "lat" : routeData["lat"],
+                              "log" : routeData["log"],
+                              "image" : routeData["image"]
+                            });
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.primaryShade300,
+                                  borderRadius: BorderRadius.circular(8.r)),
+                              child: Padding(
+                                padding: EdgeInsets.all(4.r),
+                                child: Icon(Icons.location_on,
+                                    color: Colors.white, size: 16.r),
+                              )),
+                        )
                       ],
                     ),
                     Row(
@@ -298,16 +310,18 @@ class _CustomerBookingDetailsScreenState
                                         ),
                                       ),
                                       SizedBox(height: 30.h),
+
+
                                       CustomButton(
                                           title: "Pay Now",
                                           onpress: () async {
                                             context.pop();
 
-                                            var response =
-                                                await bookingController
-                                                    .customerInitBooking(
+                                            var response = await bookingController.customerInitBooking(
                                                         id: routeData["id"],
                                                         status: "paid");
+
+                                            print("---------------------------------payment status : $response");
 
                                             response == "completed"
                                                 ? showDialog(

@@ -9,6 +9,7 @@ class MechanicProfileCard extends StatelessWidget {
   final String name;
   final String location;
   final double rating;
+  final double? height;
 
   const MechanicProfileCard({
     Key? key,
@@ -16,13 +17,14 @@ class MechanicProfileCard extends StatelessWidget {
     required this.name,
     required this.location,
     required this.rating,
+    this.height,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 393.w,
-      height: 218.h,
+      height: height ??  218.h,
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
       decoration: BoxDecoration(
         color: Colors.white,

@@ -116,9 +116,9 @@ class CustomerMapController extends GetxController {
 
   RxBool mechanicLoading = false.obs;
   RxList<FindMechanicCustomerModel> mechanic = <FindMechanicCustomerModel>[].obs;
-  fetchMechanicWithRadius({String? radius})async{
+  fetchMechanicWithRadius({String? radius, String? target})async{
     mechanicLoading(true);
-    var response = await ApiClient.getData(ApiConstants.findMechanicRadius+"/$radius");
+    var response = await ApiClient.getData(target?.toLowerCase() == "tow truck" ? "/user/radius/tow_truck/$radius" : ApiConstants.findMechanicRadius+"/$radius");
     if(response.statusCode == 200){
       mechanic.value = List<FindMechanicCustomerModel>.from(response.body["data"].map((x)=> FindMechanicCustomerModel.fromJson(x)));
       var tempMechanic = List<MarkerModels>.from(response.body["data"].map((x)=> MarkerModels.fromJson(x)));
