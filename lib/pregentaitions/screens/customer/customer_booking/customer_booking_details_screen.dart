@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/customer/customer_booking_controller.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../services/vibration_service.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../tow_truck_profile/tow_truck_profile_screen.dart';
@@ -255,9 +256,11 @@ class _CustomerBookingDetailsScreenState
                               isToast: false);
 
                       if (response == "completed") {
+                        VibrationService.vibrateForDuration(2500);
                         QuickAlertHelper.showSuccessAlert(
                             context, "Your initial payment has been successfully processed.");
                       } else if (response == "fail") {
+                        VibrationService.vibrateForDuration(2500);
                         QuickAlertHelper.showErrorAlert(context,
                             "Sorry, something went wrong Please Try Again");
                       }

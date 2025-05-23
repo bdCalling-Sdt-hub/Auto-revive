@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/customer/customer_booking_controller.dart';
 import '../../helpers/quick_alert.dart';
+import '../../services/vibration_service.dart';
 
 class BookingCardCustomer extends StatelessWidget {
    BookingCardCustomer({
@@ -209,9 +210,11 @@ class BookingCardCustomer extends StatelessWidget {
                           var response = await  bookingController.customerInitBooking(status: "accepted", id: id.toString(), isToast: false);
 
                             if (response == "completed") {
+                              VibrationService.vibrateForDuration(2500);
                               QuickAlertHelper.showSuccessAlert(
                                   context, "Your initial payment has been successfully processed.");
                             } else if (response == "fail") {
+                              VibrationService.vibrateForDuration(2500);
                               QuickAlertHelper.showErrorAlert(context,
                                   "Sorry, something went wrong \n Please Try Again");
                             }
