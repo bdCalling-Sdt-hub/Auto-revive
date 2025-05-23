@@ -21,7 +21,7 @@ class MechanicJobScreen extends StatefulWidget {
 }
 
 class _MechanicJobScreenState extends State<MechanicJobScreen> {
-  MechanicJobController mechanicJobController = Get.put(MechanicJobController());
+  MechanicJobController mechanicJobController = Get.find<MechanicJobController>();
 
   bool status = false;
   double _miles = 2;

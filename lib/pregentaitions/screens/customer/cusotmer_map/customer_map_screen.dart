@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
@@ -13,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:autorevive/controllers/customer/customer_map_controller.dart';
 import '../../../../controllers/customer/customer_home_controller.dart';
+import '../../../../controllers/mechanic_controller/mechanic_job_controller.dart';
 import '../../../widgets/custom_container.dart';
 import '../../../widgets/custom_slider.dart';
 
@@ -29,26 +31,42 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
 
   final CustomerMapController customerMapController = Get.put(CustomerMapController());
   CustomerHomeController customerHomeController = Get.find<CustomerHomeController>();
+  final MechanicJobController mechanicJobController = Get.find<MechanicJobController>();
 
-
+  double _miles = 5;
   @override
   void initState() {
     super.initState();
-    customerMapController.fetchMechanicWithRadius(radius: customerMapController.miles.toString());
+
+
+    mechanicJobController.settingRadiusLimits().then((_) {
+      final min = mechanicJobController.radiusLimits.value.value?.min ?? 0;
+      setState(() {
+        _miles = min.toDouble();
+      });
+    });
+
     Future.delayed(Duration.zero, () async {
       await customerMapController.setInitialLocation();
     });
+
+
   }
 
 
   @override
   Widget build(BuildContext context) {
-    // final Map routerData = GoRouterState.of(context).extra as Map;
+    final radiusLimits = mechanicJobController.radiusLimits.value.value;
+    final double min = radiusLimits?.min?.toDouble() ?? 0;
+    final double max = radiusLimits?.max?.toDouble() ?? 100;
+
     final extra = GoRouterState.of(context).extra;
     if (extra == null || extra is! Map) {
-      return const Center(child: Text('Some Think want wrong Please go back'));
+      return const Center(child: Text('Something went wrong Please go back'));
     }
     final Map routerData = extra;
+
+    customerMapController.fetchMechanicWithRadius(radius: _miles.toString(), target: "${routerData["title"]}");
 
 
     print("================================================   : ${customerMapController.markers}");
@@ -92,8 +110,9 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
             },
           ),
 
-          Obx(() {
 
+
+          Obx(() {
             return _buildStatusCard(
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -146,7 +165,7 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                               carModelList.add(car.id.toString());
                             }
                             customerMapController.mechanic.isEmpty
-                                ? customerMapController.fetchMechanicWithRadius(radius: "5")
+                                ? customerMapController.fetchMechanicWithRadius(radius: "$_miles", target: routerData["title"])
                                 : customerHomeController.postJob(
                                     context: context,
                                     time: "${routerData["time"]}",
@@ -188,16 +207,23 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                     top: 16.h,
                   ),
                 ),
+
                 CustomSlider(
-                  activeColor: AppColors.primaryShade300,
-                  inactiveColor: AppColors.switchColor,
-                  thumbColor: Colors.grey.shade300,
-                  value: customerMapController.miles,
+                  value: _miles,
+                  min: min,
+                  max: max,
+                  activeColor: AppColors.primaryColor,
                   onChanged: (val) {
-                    setState(() => customerMapController.miles = val);
+                    setState(() {
+                      _miles = val;
+                    });
                   },
                 ),
-                CustomText(text: 'Maximum', fontsize: 12.sp, bottom: 4.h),
+                CustomText(
+                    text: 'Max: ${max.toInt()}',
+                    fontsize: 12.sp,
+                    color: Colors.black87,
+                    bottom: 4.h),
                 CustomContainer(
                   alignment: Alignment.center,
                   radiusAll: 12.r,
@@ -205,17 +231,18 @@ class _CustomerMapScreenState extends State<CustomerMapScreen> {
                   height: 42.h,
                   bordersColor: AppColors.primaryShade300,
                   child: CustomText(
-                    text: customerMapController.miles.toInt().toString(),
+                    text: _miles.toInt().toString(),
+                    color: Colors.black87,
                     fontsize: 16.sp,
                   ),
                 ),
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    customerMapController.updateCircle(customerMapController.miles);
+                    customerMapController.updateCircle(_miles);
                     customerMapController.mechanic.clear();
-                    customerMapController.fetchMechanicWithRadius(
-                        radius: "${customerMapController.miles}");
+                    customerMapController.fetchMechanicWithRadius( target: "${routerData["title"]}",
+                        radius: "${_miles}");
                     context.pop();
                   },
                   child: CustomContainer(

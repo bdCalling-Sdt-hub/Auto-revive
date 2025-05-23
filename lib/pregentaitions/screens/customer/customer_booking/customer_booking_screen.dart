@@ -202,7 +202,9 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                             "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                             "price" : booking.servicePrice ?? 0,
                             "id" : "${booking.id}",
-                            "status" : "${booking.status}"
+                            "status" : "${booking.status}",
+                            "lat" : booking.providerId?.location?[1],
+                            "log" : booking.providerId?.location?[0],
                           }).then((_){
                             bookingController.booking.clear();
                             bookingController.fetchBooking(status: "serviced");
@@ -224,7 +226,9 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                         "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                         "price" : booking.servicePrice ?? 0,
                         "id" : "${booking.id}",
-                          "status" : "${booking.status}"
+                          "status" : "${booking.status}",
+                          "lat" : booking.providerId?.location?[1],
+                          "log" : booking.providerId?.location?[0],
                         }).then((_){
                           bookingController.booking.clear();
                           bookingController.fetchBooking(status: "serviced");

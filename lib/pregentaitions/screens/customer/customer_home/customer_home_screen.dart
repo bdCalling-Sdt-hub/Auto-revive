@@ -25,10 +25,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   @override
   void initState() {
 
-
     controller.getCurrentLocation();
     liveLocationChangeController.listenToLocationChanges();
-
 
     super.initState();
   }

@@ -1,7 +1,16 @@
-import 'package:autorevive/core/constants/app_colors.dart';
+
+
+import 'dart:convert';
+import 'package:autorevive/controllers/current_location_controller.dart';
+import 'package:autorevive/controllers/live_location_change_controller.dart';
+import 'package:autorevive/env/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../../../../widgets/mechanic_profile_card.dart';
 
 class MechanicMapScreen extends StatefulWidget {
@@ -10,78 +19,64 @@ class MechanicMapScreen extends StatefulWidget {
 }
 
 class _MechanicMapScreenState extends State<MechanicMapScreen> {
-  final LatLng _center = const LatLng(37.7749, -122.4194); // San Francisco
-  Set<Circle> _circles = {};
-  Set<Polyline> _polylines = {};
-  Set<Marker> _markers = {}; // Marker set
+  LiveLocationChangeController liveLocationChangeController = Get.find<LiveLocationChangeController>();
+  CurrentLocationController currentLocationController = Get.find<CurrentLocationController>();
 
-  double _distance = 4;
+  Set<Polyline> polylines = {};
+  List<LatLng> polylineCoordinates = [];
 
-  final LatLng _startLocation = const LatLng(37.7749, -122.4194); // San Francisco
-  final LatLng _destinationLocation = const LatLng(37.7849, -122.4294); // Nearby location
+  Map routeData = {};
+  LatLng userLatLng = const LatLng(23.7805733, 90.2792399);
+  LatLng mechanicLatLng = const LatLng(23.7855733, 90.2852399);
 
   @override
   void initState() {
     super.initState();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    _updateCircle(_distance);
-    _setPolylines();
-    _setMarkers(); // Set markers when map is created
-  }
-
-  void _updateCircle(double miles) {
-    final radiusInMeters = miles * 1609.34;
-    setState(() {
-      _circles = {
-        Circle(
-          circleId: const CircleId('radius'),
-          center: _center,
-          radius: radiusInMeters,
-          fillColor: Colors.blue.withOpacity(0.2),
-          strokeColor: AppColors.primaryColor,
-          strokeWidth: 2,
-        ),
-      };
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      routeData = GoRouterState.of(context).extra as Map;
+      if (currentLocationController.latitude.value != null) {
+        userLatLng = LatLng(
+          currentLocationController.latitude.value,
+          currentLocationController.longitude.value,
+        );
+      }
+      mechanicLatLng = LatLng(routeData["lat"], routeData["log"]);
+      getRoutePolyline(userLatLng, mechanicLatLng);
     });
   }
 
-  // Function to draw polyline between two locations
-  void _setPolylines() {
-    setState(() {
-      _polylines = {
-        Polyline(
-          polylineId: const PolylineId('route1'),
-          color: AppColors.primaryColor,
-          width: 5,
-          points: [
-            _startLocation,
-            _destinationLocation,
-          ],
-        ),
-      };
-    });
-  }
+  Future<void> getRoutePolyline(LatLng origin, LatLng destination) async {
+     String apiKey = "${Config.googleMapKey}";
+    final String url =
+        "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=$apiKey";
 
-  // Function to set markers
-  void _setMarkers() {
-    setState(() {
-      _markers = {
-        Marker(
-          markerId: const MarkerId('start'),
-          position: _startLocation,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          infoWindow: InfoWindow(title: 'Start Location'),
-        ),
-        Marker(
-          markerId: const MarkerId('destination'),
-          position: _destinationLocation,
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed ),
-          infoWindow: InfoWindow(title: 'Destination'),
-        ),
-      };
-    });
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final points = data["routes"][0]["overview_polyline"]["points"];
+
+      PolylinePoints polylinePoints = PolylinePoints();
+      List<PointLatLng> result = polylinePoints.decodePolyline(points);
+
+      polylineCoordinates.clear();
+      for (var point in result) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+
+      setState(() {
+        polylines = {
+          Polyline(
+            polylineId: PolylineId("route"),
+            color: Colors.blue,
+            width: 5,
+            points: polylineCoordinates,
+          )
+        };
+      });
+    } else {
+      print("Failed to load directions: ${response.body}");
+    }
   }
 
   @override
@@ -89,63 +84,64 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 14.0,
-            ),
-            circles: _circles,
-            polylines: _polylines,
-            markers: _markers, // Show markers on the map
+          GetBuilder<CurrentLocationController>(
+            builder: (controller) {
+              if (controller.isLoading.value || controller.initialCameraPosition == null) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              return GoogleMap(
+                myLocationEnabled: true,
+                initialCameraPosition: controller.initialCameraPosition!,
+                markers: {
+                  Marker(
+                    markerId: const MarkerId("mechanic"),
+                    position: mechanicLatLng,
+                    infoWindow: InfoWindow(title: "${routeData["name"]}"),
+                  ),
+                  Marker(
+                    markerId: const MarkerId("user"),
+                    position: userLatLng,
+                    infoWindow: const InfoWindow(title: "Your Location"),
+                  ),
+                },
+                polylines: polylines,
+                onMapCreated: (GoogleMapController mapCtrl) {
+                  controller.mapController = mapCtrl;
+                },
+              );
+            },
           ),
+
           Positioned(
-            top: 60,
-            left: 15,
-            right: 15,
-            child: Container(
-              padding: EdgeInsets.only(left: 12.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [BoxShadow(blurRadius: 10.r, color: Colors.black12)],
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.location_on_outlined, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Search",
-                        hintStyle: TextStyle(color: Color(0xff9D9D9D)),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 23,
-                    backgroundColor: AppColors.primaryColor,
-                    child: Icon(Icons.search, color: Colors.white),
-                  ),
-                ],
-              ),
+            top: 60.h,
+            left: 20.w,
+            child: GestureDetector(
+              onTap: () => context.pop(),
+              child: const Icon(Icons.arrow_back),
             ),
           ),
-          const Positioned(
+
+          Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: MechanicProfileCard(
-              image: 'assets/images/mapprofile.png',
-              name: 'David Bryan',
-              location: 'New York, USA',
-              rating: 4.85,
+              height: 120,
+              image: '${routeData["image"]}',
+              name: '${routeData["name"]}',
+              location: '${routeData["address"]}',
+              rating: double.parse(routeData["rating"].toString()),
             ),
           ),
+
           SizedBox(height: 29.h),
         ],
       ),
     );
   }
 }
+
+
+
+

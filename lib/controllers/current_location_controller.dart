@@ -2,16 +2,20 @@ import 'dart:math';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as loc;
 
 class CurrentLocationController extends GetxController {
 
   final loc.Location location = loc.Location();
+  CameraPosition? initialCameraPosition;
 
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
   var isLoading = false.obs;
   RxString address = ''.obs;
+  GoogleMapController? mapController;
+  LatLng center = const LatLng(0, 0);
 
 
 
@@ -47,6 +51,10 @@ class CurrentLocationController extends GetxController {
     latitude.value = locData.latitude ?? 0.0;
     longitude.value = locData.longitude ?? 0.0;
 
+
+    final locationData = await location.getLocation();
+    center = LatLng(locationData.latitude ?? 0.0, locationData.longitude ?? 0.0);
+    initialCameraPosition = CameraPosition(target: center, zoom: 14.0);
 
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(

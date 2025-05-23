@@ -44,21 +44,24 @@ class CustomerBookingController extends GetxController {
     };
     var response = await ApiClient.putData(ApiConstants.initBookingCustomer+"/${id?? ""}", body);
     if (response.statusCode == 200 || response.statusCode == 201) {
-     booking.removeWhere((x) => x.id == id);
+      booking.removeWhere((x) => x.id == id);
 
-     if(isToast??true){
-       ToastMessageHelper.showToastMessage("${response.body["message"]}");
-     }
+      if (isToast ?? true) {
+        ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      }
 
 
       update();
 
       customerInitPaymentLoading(false);
-     return "completed";
+      return "completed";
+    }else{
+      customerInitPaymentLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}",title: "Fail");
+      return "fail";
     }
 
-    customerInitPaymentLoading(false);
-    return "fail";
+
   }
 
 
