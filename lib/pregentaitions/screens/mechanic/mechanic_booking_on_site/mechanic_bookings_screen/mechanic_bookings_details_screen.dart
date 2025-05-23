@@ -71,7 +71,6 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                             fontsize: 20.sp,
                             bottom: 6.h,
                           ),
-
                           // CustomText(
                           //   text: "${routeData["address"]}",
                           //   fontsize: 20.sp,
@@ -84,11 +83,12 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                         children: [
                           Assets.icons.detailsMessage.svg(),
                           SizedBox(width: 6.w),
-                          GestureDetector
-                            (
+                          GestureDetector(
+
                             onTap: () {
                               context.pushNamed(AppRoutes.mechanicMapScreen);
                             },
+
                               child: Assets.icons.detailsLocation.svg()),
                         ],
                       ),

@@ -131,7 +131,7 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
               image: '${routeData["image"]}',
               name: '${routeData["name"]}',
               location: '${routeData["address"]}',
-              rating: double.parse(routeData["rating"].toString()),
+              rating: double.parse(routeData["rating"]?.toString()??'0.0'),
             ),
           ),
 

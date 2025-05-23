@@ -124,16 +124,13 @@ class AuthController extends GetxController {
 
 
       if (type == 'Sign Up') {
-
         if(screenType == "user"){
           context.go(AppRoutes.logInScreen);
         } else if(screenType == "mechanic"){
           context.go(AppRoutes.mechanicPersonalInformationScreen);
+        }else if (screenType == "tow_truck") {
+          context.go(AppRoutes.basicInfoScreen);
         }
-        // else (screenType == "tow_truck"){
-        //   context.go(AppRoutes.basicInfoScreen);
-        // }
-
       }
 
 
