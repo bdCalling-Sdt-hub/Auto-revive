@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -148,7 +149,8 @@ class PaymentController {
 
         // Step 2: Send the subscriptionId and transactionId to your custom API
         Map<String, dynamic> body = {
-          "amount": int.parse(price.toString())
+          "amount": int.parse(price.toString()),
+          "trId" : "$transactionId"
         };
 
         ///API URL
@@ -157,6 +159,7 @@ class PaymentController {
         final apiResponse = await ApiClient.postData(ApiConstants.addBalance, jsonEncode(body));
 
         if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
+
           if (kDebugMode) {
             print("Payment successfully created: ${apiResponse.body}");
           }

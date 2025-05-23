@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/customer/customer_booking_controller.dart';
 import '../../../../helpers/quick_alert.dart';
+import '../../../../services/vibration_service.dart';
 import '../../../widgets/booking_card_customer.dart';
 
 class CustomerBookingScreen extends StatefulWidget {
@@ -186,9 +187,11 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                               isToast: false);
 
                           if (response == "completed") {
+                            VibrationService.vibrateForDuration(2500);
                             QuickAlertHelper.showSuccessAlert(
                                 context, "Your initial payment has been successfully processed.");
                           } else if (response == "fail") {
+                            VibrationService.vibrateForDuration(2500);
                             QuickAlertHelper.showErrorAlert(context,
                                 "Sorry, something went wrong Please Try Again");
                           }

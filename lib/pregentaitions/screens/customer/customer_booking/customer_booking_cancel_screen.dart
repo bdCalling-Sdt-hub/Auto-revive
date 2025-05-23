@@ -48,25 +48,6 @@ class _CustomerBookingCancelScreenState extends State<CustomerBookingCancelScree
                   maxline: 2,
                   color: Colors.black),
               SizedBox(height: 40.h),
-              // CustomTextField(
-              //   controller: nameCtrl,
-              //   labelText: "Mechanic Name",
-              //   hintText: "Enter mechanic name",
-              // ),
-              // CustomTextField(
-              //   controller: emailCtrl,
-              //   labelText: "Mechanic Email",
-              //   hintText: "Enter mechanic email",
-              //   isEmail: true,
-              // ),
-              // CustomTextField(
-              //   controller: phoneNoCtrl,
-              //   labelText: "Mechanic Phone No",
-              //   hintText: "Enter mechanic phone no",
-              //   keyboardType: TextInputType.number,
-              // ),
-              //
-
 
               CustomText(text: "Upload Car Images", color: Colors.black),
 
