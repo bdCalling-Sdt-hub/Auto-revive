@@ -192,6 +192,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
                   CustomTextField(
                     labelText: "Platform",
                     readOnly: true,
+                    hintText: 'platform',
                     controller: platformCtrl,
                     suffixIcon: CustomPopupMenu(
                         items: platForm,

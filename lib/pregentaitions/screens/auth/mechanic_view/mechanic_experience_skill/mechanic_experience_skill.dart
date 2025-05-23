@@ -116,7 +116,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
       body:   isLoading
           ? SingleChildScrollView(
             child: Column(
-                    children: List.generate(4, (_) => _buildShimmerProfile()),
+                    children: List.generate(4, (_) => _buildShimmerExperience()),
                   ),
           )
 
@@ -366,7 +366,7 @@ class _MechanicExperienceSkillScreenState extends State<MechanicExperienceSkillS
     );
   }
 
-  Widget _buildShimmerProfile() {
+  Widget _buildShimmerExperience() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,

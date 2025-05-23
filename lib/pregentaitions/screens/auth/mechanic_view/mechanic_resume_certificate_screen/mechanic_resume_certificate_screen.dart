@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
@@ -50,10 +51,20 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
         resumeUrl.value = mechanicController.profile.value.resume ?? '';
         certificateUrl.value = mechanicController.profile.value.certificate ?? '';
       }
+
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
+      });
+
     });
+
+
   }
 
-
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
     final extra = GoRouterState.of(context).extra;
@@ -75,12 +86,19 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
           textAlign: TextAlign.start,
         ),
       ),
-      body: Padding(
+      body:isLoading
+          ? SingleChildScrollView(
+        child: Column(
+          children: List.generate(4, (_) => _buildShimmerCertificate()),
+        ),
+      )
+
+          : Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Form(
             key: fromKey,
-            child: Column(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 8.h),
@@ -111,9 +129,7 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                 SizedBox(height: 330.h),
 
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-
-
-              Obx(() => CustomButton(
+                Obx(() => CustomButton(
                 loading: mechanicController.resumeCertificateLoading.value,
                 title: isEdit ? "Edit" : "Save and Next",
                 onpress: () async {
@@ -228,4 +244,76 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
       ToastMessageHelper.showToastMessage("No file selected.");
     }
   }
+
+
+  Widget _buildShimmerCertificate() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 16.h), // space for AppBar
+
+            // Linear progress indicator placeholder
+            Container(
+              height: 8.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // Info text placeholder: multiple lines of varying width
+            Container(height: 12.h, width: double.infinity, color: Colors.grey.shade300),
+            SizedBox(height: 8.h),
+            Container(height: 12.h, width: 0.9.sw, color: Colors.grey.shade300),
+            SizedBox(height: 8.h),
+            Container(height: 12.h, width: 0.85.sw, color: Colors.grey.shade300),
+            SizedBox(height: 8.h),
+            Container(height: 12.h, width: 0.75.sw, color: Colors.grey.shade300),
+            SizedBox(height: 29.h),
+
+            // Upload Resume button placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 5.h),
+
+            // Upload Certificate button placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 330.h),
+
+            // Save / Edit button placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+          ],
+        ),
+      ),
+    );
+  }
+
 }

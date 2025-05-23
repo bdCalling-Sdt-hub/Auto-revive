@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
@@ -38,11 +39,18 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
 
       if (isEdit && data != null) {
         additionController.text = data.toString();
-        setState(() {});
+
       }
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
+      });
+
     });
   }
-
+  bool isLoading = true;
   @override
   Widget build(BuildContext context) {
     final extra = GoRouterState.of(context).extra;
@@ -64,7 +72,9 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
           textAlign: TextAlign.start,
         ),
       ),
-      body: Padding(
+      body: isLoading
+          ? SingleChildScrollView(child: _buildShimmerAdditional())
+          : Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Form(
@@ -172,4 +182,64 @@ class _MechanicAdditionalInformationScreenState extends State<MechanicAdditional
       ),
     );
   }
+
+  Widget _buildShimmerAdditional() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 16.h), // space for AppBar
+
+            // Linear progress indicator placeholder
+            Container(
+              height: 8.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // Title text placeholder
+            Container(
+              width: 280.w,
+              height: 24.h,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.only(bottom: 25.h),
+            ),
+
+            // TextField container placeholder
+            Container(
+              width: 342.w,
+              height: 107.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              margin: EdgeInsets.only(bottom: 400.h),
+            ),
+
+            // Save and Next button placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+
 }

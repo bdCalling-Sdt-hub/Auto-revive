@@ -133,9 +133,9 @@ class AppRoutes {
 
           print("======================================$isLogged  \n token: $token \n userId : $userId");
 
-          // SocketServices sockService = SocketServices();
+          SocketServices sockService = SocketServices();
 
-          // sockService.init(userId: userId );
+          sockService.init(userId: userId );
 
 
           if(token != "" && isLogged){

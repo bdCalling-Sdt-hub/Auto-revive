@@ -255,7 +255,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       SizedBox(height: 10.h),
                       /// ======================================> ListView to display the experience items =============================>
                       SizedBox(
-                        height: 300.h,
+                        height: 120.h,
                         child: (mechanicController.profile.value.experiences == null ||
                             mechanicController.profile.value.experiences!.isEmpty)
                             ? Center(
@@ -574,9 +574,9 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                       SizedBox(height: 16.h),
                       CustomButton(
-                        title: "Go To Home",
+                        title: "Go To Login",
                         onpress: () {
-                          context.pushNamed(AppRoutes.mechanicBottomNavBar);
+                          context.pushNamed(AppRoutes.logInScreen);
                         },
                       ),
                     ],

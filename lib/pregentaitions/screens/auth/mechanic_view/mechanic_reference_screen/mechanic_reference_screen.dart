@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
@@ -33,7 +34,7 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
       referenceList.add(ReferenceFormData());
     });
   }
-
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -55,9 +56,15 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
         if (data.relation != null && ref.relationshipMap.containsKey(data.relation)) {
           ref.relationshipMap[data.relation!] = true;
         }
-
         referenceList = [ref];
-        setState(() {});
+
+
+        Future.delayed(Duration(milliseconds: 500), () {
+          setState(() {
+            isLoading = false;
+          });
+        });
+
       }
     });
   }
@@ -84,7 +91,12 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
           textAlign: TextAlign.start,
         ),
       ),
-      body: Padding(
+      body:isLoading
+          ? SingleChildScrollView(
+        child: Column(
+          children: List.generate(4, (_) => _buildShimmerReference()),
+        ),
+      ): Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SingleChildScrollView(
           child: Form(
@@ -298,3 +310,149 @@ class ReferenceFormData {
     'Other': false,
   };
 }
+
+
+Widget _buildShimmerReference() {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20.w),
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 16.h),
+
+            // Linear progress indicator placeholder
+            Container(
+              height: 8.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // Simulate 2 reference cards shimmer
+            ...List.generate(2, (index) => Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: Container(
+                padding: EdgeInsets.all(16.r),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Reference title bar
+                    Container(
+                      height: 20.h,
+                      width: 120.w,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 16.h),
+                    ),
+
+                    // Name label placeholder
+                    Container(
+                      height: 14.h,
+                      width: 50.w,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 8.h),
+                    ),
+                    // Name input placeholder
+                    Container(
+                      height: 40.h,
+                      width: double.infinity,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 16.h),
+                    ),
+
+                    // Phone label placeholder
+                    Container(
+                      height: 14.h,
+                      width: 70.w,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 8.h),
+                    ),
+                    // Phone input placeholder
+                    Container(
+                      height: 40.h,
+                      width: double.infinity,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 16.h),
+                    ),
+
+                    // Relationship label placeholder
+                    Container(
+                      height: 14.h,
+                      width: 100.w,
+                      color: Colors.grey.shade400,
+                      margin: EdgeInsets.only(bottom: 12.h),
+                    ),
+
+                    // Simulate checkbox list placeholders (3 items horizontally)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(3, (_) => Row(
+                        children: [
+                          Container(
+                            width: 20.w,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Container(
+                            width: 60.w,
+                            height: 18.h,
+                            color: Colors.grey.shade400,
+                          ),
+                        ],
+                      )),
+                    ),
+                  ],
+                ),
+              ),
+            )),
+
+            SizedBox(height: 16.h),
+
+            // Add more button placeholder
+            Container(
+              height: 60.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Center(
+                child: Icon(Icons.add, color: Colors.grey.shade400, size: 28.sp),
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            // Save and Next button placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 70.h),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+

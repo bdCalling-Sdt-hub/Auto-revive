@@ -27,7 +27,7 @@ class ToastMessageHelper {
         break;
       default:
         type = ToastificationType.success;
-        icon = const Icon(Icons.check, color: Colors.white);
+        icon = const Icon(Icons.check, color: Colors.black);
     }
 
     toastification.show(
@@ -87,19 +87,6 @@ class ToastMessageHelper {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:toastification/toastification.dart';
