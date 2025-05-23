@@ -5,17 +5,35 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../controllers/current_location_controller.dart';
 import '../../../../controllers/live_location_change_controller.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
+import '../../../../services/socket_services.dart';
 import '../../../widgets/custom_text.dart';
 
-class MechanicHomeScreen extends StatelessWidget {
+class MechanicHomeScreen extends StatefulWidget {
    MechanicHomeScreen({super.key});
 
-   // LiveLocationChangeController controller = Get.put(LiveLocationChangeController());
+  @override
+  State<MechanicHomeScreen> createState() => _MechanicHomeScreenState();
+}
+
+class _MechanicHomeScreenState extends State<MechanicHomeScreen> {
+
+  CurrentLocationController controller = Get.put(CurrentLocationController());
+  LiveLocationChangeController liveLocationChangeController = Get.put(LiveLocationChangeController());
+  SocketServices socketServices = SocketServices();
 
 
+  @override
+  void initState() {
+
+    controller.getCurrentLocation();
+    liveLocationChangeController.listenToLocationChanges();
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

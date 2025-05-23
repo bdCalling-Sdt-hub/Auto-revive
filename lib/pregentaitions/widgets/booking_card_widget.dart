@@ -25,6 +25,7 @@ class BookingCardWidget extends StatelessWidget {
     this.historyButtonAction,
     this.buttonColor,
     this.onTap,
+    this.locationOnTap,
     required this.address,
   });
 
@@ -32,6 +33,7 @@ class BookingCardWidget extends StatelessWidget {
   final String? buttonLabel;
   final VoidCallback? onTapDetails;
   final VoidCallback? onTap;
+  final VoidCallback? locationOnTap;
   final String name;
   final String? title;
   final String image;
@@ -42,6 +44,9 @@ class BookingCardWidget extends StatelessWidget {
   final VoidCallback? historyButtonAction;
   final Color? buttonColor;
   final String address;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +78,7 @@ class BookingCardWidget extends StatelessWidget {
                             : AppColors.primaryColor,
                       )),
                   GestureDetector(
-                    onTap: () {
-                      context.pushNamed(AppRoutes.mechanicMapScreen);
-                    },
+                    onTap: locationOnTap,
                       child: Assets.icons.location.svg()),
                 ],
               ),
