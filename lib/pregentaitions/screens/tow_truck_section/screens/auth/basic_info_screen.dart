@@ -1,19 +1,22 @@
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
+import 'dart:io';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_linear_indicator.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_phone_number_picker.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../../controllers/mechanic_controller.dart';
+import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
+import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../../helpers/toast_message_helper.dart';
+import '../../../../widgets/cachanetwork_image.dart';
 
 class BasicInfoScreen extends StatefulWidget {
   const BasicInfoScreen({super.key});
@@ -23,6 +26,11 @@ class BasicInfoScreen extends StatefulWidget {
 }
 
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
+
+  UploadController uploadController = Get.put(UploadController());
+  TowTrackController towTrackController = Get.put(TowTrackController());
+  MechanicController mechanicController = Get.put(MechanicController());
+
   final TextEditingController _nameTEController = TextEditingController();
   final TextEditingController _addressTEController = TextEditingController();
   final TextEditingController _emailTEController = TextEditingController();
@@ -30,6 +38,52 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
   final TextEditingController _phoneTEController = TextEditingController();
   final TextEditingController _lLCTEController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    mechanicController.getProfile().then((_) {
+      final profile = mechanicController.profile.value;
+      _nameTEController.text = profile.name ?? '';
+      _emailTEController.text = profile.email ?? '';
+
+
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   // final routeData = GoRouterState.of(context).extra as Map;
+      //
+      //   final extra = GoRouterState.of(context).extra;
+      //   final Map routeData = extra is Map ? extra : {};
+      //
+      //   fullNameCtrl.text = routeData['name'] ?? '';
+      //   phoneNoCtrl.text = routeData['phone'] ?? '';
+      //   currentAddressCtrl.text = routeData['address'] ?? '';
+      //   platformCtrl.text = routeData['platform'] ?? '';
+      //   hasDriversLicense = routeData['haveLicense'] ?? false;
+      //   hasCDL = routeData['haveCdl'] ?? false;
+      //   uploadedUrl = routeData['image'] ?? '';
+      //   print("Received gfjhhg Image: ${routeData['image']}");
+
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
+      });
+
+
+      // });
+
+
+
+    });
+  }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +95,12 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             text: "Basic Info...",
             fontsize: 20.sp,
           )),
-      body: SingleChildScrollView(
+      body: isLoading
+          ? Column(
+        children: List.generate(2, (_) => _buildShimmerProfile()),
+      )
+
+          : SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
@@ -51,13 +110,66 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 progressValue: 0.03,
                 label: 0,
               ),
-              SizedBox(height: 16.h),
-              Center(
-                child: CustomImageAvatar(
-                  radius: 60.r,
-                ),
+          SizedBox(height: 30.h),
+          /// <<<=============>>> Image and camera upload section <<<=============>>>
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                showImagePickerOption(context);
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  /// ================================================>  Profile image with border ===============================================>
+                  Container(
+                    width: 104.w,
+                    height: 104.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.primaryColor,
+                        width: 3,
+                      ),
+                    ),
+                    child: selectedImage != null
+                        ? ClipOval(child: Image.file(selectedImage!, fit: BoxFit.cover))
+                        : CustomNetworkImage(
+                      boxShape: BoxShape.circle,
+                      imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                      height: 128.h,
+                      width: 128.w,
+                    ),
+                  ),
+                  /// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
+                  Positioned(
+                    top: 67.h,
+                    left: 42.w,
+                    child: Container(
+                      width: 26.58.w,
+                      height: 26.58.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withOpacity(0.2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.camera_alt,
+                        color:AppColors.fontColorFFFFFF,
+                        size: 16.sp,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 16.h),
+            ),
+          ),
+          SizedBox(height: 8.h),
               CustomTextField(
                 controller: _nameTEController,
                 labelText: 'Full Name',
@@ -73,6 +185,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
 
 
               CustomTextField(
+                readOnly: true,
                 keyboardType: TextInputType.emailAddress,
                 isEmail: true,
                 controller: _emailTEController,
@@ -103,12 +216,27 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
               SizedBox(height: 44.h),
 
 
-              Center(child: CustomButton(title: 'Save and Next',
-                  onpress: (){
-                if(_formKey.currentState!.validate()) return;
-                context.pushNamed(AppRoutes.companyInformationScreen);
+              Obx(()=>
+              CustomButton(
+                    loading: towTrackController.basicInfoLoading.value,
+                    title: 'Save and Next',
+                       onpress: (){
+                                if(_formKey.currentState!.validate()){
+                                  final int? ppm = int.tryParse(_priceTEController.text.trim());
+                                  towTrackController.towTrackBasicInfo(
+                                    profileImage: uploadedUrl,
+                                      address: _addressTEController.text.trim(),
+                                      phone: _phoneTEController.text.trim(),
+                                      ppm: ppm,
+                                      llc: _lLCTEController.text.trim(),
 
-              })),
+                                      context: context);
+
+
+                                } return;
+
+
+                              })),
               SizedBox(height: 24.h),
             ],
           ),
@@ -116,4 +244,266 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
       ),
     );
   }
+
+
+
+
+  Widget _buildShimmerProfile() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: kToolbarHeight + 20.h), // space for appbar
+
+            // Profile Image Shimmer
+            Center(
+              child: Container(
+                width: 104.w,
+                height: 104.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            ),
+            SizedBox(height: 30.h),
+
+            // Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Email field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Price Per Mile field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Phone Number field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // LLC field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // Checkbox placeholders row 1
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Container(
+                  width: 150.w,
+                  height: 20.h,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+
+            // Checkbox placeholders row 2
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Container(
+                  width: 100.w,
+                  height: 20.h,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+            SizedBox(height: 40.h),
+
+            // Save and Next button placeholder
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+//==================================> ShowImagePickerOption Function <===============================
+
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        elevation: 3,
+        context: context,
+        builder: (builder) {
+          return Container(
+            decoration: BoxDecoration(
+              border: const Border(top: BorderSide(color: AppColors.primaryColor, width: 0.25)),
+              borderRadius: BorderRadius.circular(20.r),
+
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 9.2,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _pickImageFromGallery();
+                        },
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.image,
+                                size: 50.w,
+                              ),
+                              CustomText(text: 'Gallery')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          _pickImageFromCamera();
+                        },
+                        child: SizedBox(
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                size: 50.w,
+                              ),
+                              CustomText(text: 'Camera')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+
+  File? selectedImage;
+  String? uploadedUrl;
+
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      String? path = await uploadController.uploadFile(file: file);
+      if (path != null) {
+        setState(() {
+          selectedImage = file;
+          uploadedUrl = path;
+        });
+      } else {
+        ToastMessageHelper.showToastMessage("File upload failed.",title: 'Attention');
+      }
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      String? path = await uploadController.uploadFile(file: file);
+      if (path != null) {
+        setState(() {
+          selectedImage = file;
+          uploadedUrl = path;
+        });
+      } else {
+        ToastMessageHelper.showToastMessage("File upload failed.");
+      }
+      Navigator.pop(context);
+    }
+  }
+
 }

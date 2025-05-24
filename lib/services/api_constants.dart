@@ -47,5 +47,8 @@ class ApiConstants{
   /// =============================================> Tow Track ============================================>
 
   static const String towTrackBasicInfoEndPoint = "/tow-truck/basic-info";
+  static const String towTrackCompanyInfoEndPoint = "/tow-truck/company-info";
+  static const String towTrackLicenseComplianceEndPoint = "/tow-truck/licensing-compliance";
+  static const String towTrackVehicleEndPoint = "/tow-truck/vehicles";
 
 }
