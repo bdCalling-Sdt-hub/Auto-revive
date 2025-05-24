@@ -1,5 +1,6 @@
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
@@ -14,26 +15,29 @@ import '../../helpers/quick_alert.dart';
 import '../../services/vibration_service.dart';
 
 class BookingCardCustomer extends StatelessWidget {
-   BookingCardCustomer({
-    super.key,
-    this.rating,
-    this.buttonLabel,
-    this.onTapDetails,
-    required this.name,
-    this.title,
-    this.money,
-    required this.image,
-    this.isNextPay = false,
-    this.isHistory = false,
-    this.status,
-    this.historyButtonAction,
-    this.buttonColor,
-    this.onTap,
-    this.nextPayCardBtnOnTap,
-    this.certificates,
-     this.id,
-     this.isBtnNeed = false, this.address = ''
-  });
+  BookingCardCustomer(
+      {super.key,
+      this.rating,
+      this.buttonLabel,
+      this.onTapDetails,
+      required this.name,
+      this.title,
+      this.money,
+      required this.image,
+      this.isNextPay = false,
+      this.isHistory = false,
+      this.btnVisible = true,
+      this.status,
+      this.historyButtonAction,
+      this.buttonColor,
+      this.onTap,
+      this.nextPayCardBtnOnTap,
+      this.certificates,
+      this.acceptCancelBtnName,
+      this.isNextPaySection=false,
+      this.id,
+      this.isBtnNeed = false,
+      this.address = ''});
 
   final int? rating;
   final String? buttonLabel;
@@ -46,16 +50,19 @@ class BookingCardCustomer extends StatelessWidget {
   final String? money;
   final bool isNextPay;
   final bool isHistory;
+  final bool btnVisible;
+  final bool isNextPaySection;
   final bool isBtnNeed;
   final String? status;
   final String? address;
   final String? id;
   final List? certificates;
+  final List? acceptCancelBtnName;
   final VoidCallback? historyButtonAction;
   final Color? buttonColor;
 
-
-  CustomerBookingController bookingController = Get.find<CustomerBookingController>();
+  CustomerBookingController bookingController =
+      Get.find<CustomerBookingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -155,42 +162,41 @@ class BookingCardCustomer extends StatelessWidget {
                               ],
                             ),
                           ],
-
-
-
-                            SizedBox(height: 8.h),
-
-                            address == "" ?
-
-                            Wrap(
-                              spacing: 10.w,
-                              runSpacing: 6.h,
-                              children:
-                                  List.generate(certificates!.length, (index) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 7.w,
-                                    vertical: 3.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffFFE6E6),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: CustomText(
-                                    text: certificates![index].toString(),
-                                    fontsize: 10.sp,
-                                  ),
-                                );
-                              }),
-                            )
-                                :  Row(
-                              children: [
-                                Icon(Icons.location_on_outlined, size: 16.r),
-                                Expanded(child: CustomText(text: "$address", textAlign: TextAlign.start)),
-                              ],
-                            ) ,
-                          ],
-
+                          SizedBox(height: 8.h),
+                          address == ""
+                              ? Wrap(
+                                  spacing: 10.w,
+                                  runSpacing: 6.h,
+                                  children: List.generate(certificates!.length,
+                                      (index) {
+                                    return Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 7.w,
+                                        vertical: 3.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffFFE6E6),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                      child: CustomText(
+                                        text: certificates![index].toString(),
+                                        fontsize: 10.sp,
+                                      ),
+                                    );
+                                  }),
+                                )
+                              : Row(
+                                  children: [
+                                    Icon(Icons.location_on_outlined,
+                                        size: 16.r),
+                                    Expanded(
+                                        child: CustomText(
+                                            text: "$address",
+                                            textAlign: TextAlign.start)),
+                                  ],
+                                ),
+                        ],
                       ),
                     ),
                   ],
@@ -198,32 +204,65 @@ class BookingCardCustomer extends StatelessWidget {
               ),
               if (!isHistory) ...[
                 SizedBox(height: 16.h),
-                isBtnNeed ? const SizedBox.shrink() :
-                isNextPay
-                    ? CustomButton(title: "${buttonLabel}", onpress: nextPayCardBtnOnTap ?? () {}, height: 39.h, borderRadius: 10)
-                    : Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomTwoButon(
-                          width: 130.w,
-                          btnNameList: const ["Accept", "Cancel"],
-                          leftBtnOnTap: () async{
-                          var response = await  bookingController.customerInitBooking(status: "accepted", id: id.toString(), isToast: false);
+                isBtnNeed
+                    ? const SizedBox.shrink()
+                    : isNextPay
+                        ? CustomButton(
+                            title: "${buttonLabel}",
+                            onpress: nextPayCardBtnOnTap ?? () {},
+                            height: 39.h,
+                            borderRadius: 10)
+                        : Align(
+                            alignment: Alignment.centerLeft,
+                            child: CustomTwoButon(
+                              btnVisible: btnVisible,
+                              width: 130.w,
+                              btnNameList: acceptCancelBtnName,
+                              leftBtnOnTap: btnVisible
+                                  ? () async {
 
-                            if (response == "completed") {
-                              VibrationService.vibrateForDuration(2500);
-                              QuickAlertHelper.showSuccessAlert(
-                                  context, "Your initial payment has been successfully processed.");
-                            } else if (response == "fail") {
-                              VibrationService.vibrateForDuration(2500);
-                              QuickAlertHelper.showErrorAlert(context,
-                                  "Sorry, something went wrong \n Please Try Again");
-                            }
-                          },
-                          rightBtnOnTap: () {
-                            bookingController.customerInitBooking(status: "request-canceled", id: id.toString());
-                          },
-                        ),
-                      ),
+                                if(isNextPaySection){
+                                  onTap?.call();
+                                }else{
+                                  var response = await bookingController.customerInitBooking(
+                                      status: "accepted",
+                                      id: id.toString(),
+                                      isToast: false);
+
+                                  if (response == "completed") {
+                                    VibrationService.vibrateForDuration(
+                                        2500);
+                                    QuickAlertHelper.showSuccessAlert(
+                                        context,
+                                        "Your initial payment has been successfully processed.");
+                                  } else if (response == "fail") {
+                                    VibrationService.vibrateForDuration(
+                                        2500);
+                                    QuickAlertHelper.showErrorAlert(context,
+                                        "Sorry, something went wrong \n Please Try Again");
+                                  }
+                                }
+
+
+                                    }
+                                  : () {
+                                      ToastMessageHelper.showToastMessage(
+                                          "You all ready requested for response",
+                                          title: "Information");
+                                    },
+                              rightBtnOnTap: btnVisible
+                                  ? () {
+                                      bookingController.customerInitBooking(
+                                          status: isNextPaySection ? "service-rejected" : "request-canceled" ,
+                                          id: id.toString());
+                                    }
+                                  : () {
+                                      ToastMessageHelper.showToastMessage(
+                                          "Your request is being processed.\nPlease with for service provider response",
+                                          title: "Information");
+                                    },
+                            ),
+                          ),
               ],
             ],
           ),

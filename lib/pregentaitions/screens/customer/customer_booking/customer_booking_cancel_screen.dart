@@ -108,7 +108,8 @@ class _CustomerBookingCancelScreenState extends State<CustomerBookingCancelScree
               CustomButton(title: "Submit", onpress: () {
 
 
-                bookingController.cancelPayment(images: carImages, type: "service", jobId: routeData["id"], refundDetails: reasonCtrl.text);
+                bookingController.cancelPayment(images: carImages, type: "service", jobId: routeData["id"], refundDetails: reasonCtrl.text, context: context);
+
 
 
               }),
