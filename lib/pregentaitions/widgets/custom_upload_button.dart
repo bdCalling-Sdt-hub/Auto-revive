@@ -51,20 +51,17 @@ class CustomUploadButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 if (displayIcon != null) ...[
                   Icon(
                     displayIcon,
                     color: Colors.white,
                     size: 20.sp,
                   ),
-                  SizedBox(width: 8.w),
                 ],
-                Expanded(
-                  child: CustomText(
-                    text: title,
-                    color: Colors.white,
-                  ),
+                SizedBox(width: 10.w),
+                CustomText(
+                  text: title,
+                  color: Colors.white,
                 ),
 
               ],

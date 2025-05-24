@@ -66,7 +66,7 @@ class RoleScreen extends StatelessWidget {
                 title: "Tow Truck Operator",
                 onpress: (){
                   PrefsHelper.setString(AppConstants.role, "tow_truck");
-                  context.pushNamed(AppRoutes.basicInfoScreen);
+                  context.pushNamed(AppRoutes.towTrackSignupScreen);
 
                 }),
 

@@ -8,12 +8,9 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
-import 'package:country_pickers/country.dart';
-import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../models/car_model.dart';
 
 class VehicleEquipmentScreen extends StatefulWidget {
@@ -68,17 +65,17 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 bottom: 6.h,
               ),
               CustomTextField(
-                onTap: _selectDate,
-                readOnly: true,
+                // onTap: _selectDate,
+                // readOnly: true,
                 controller: _makingYearTEController,
                 labelText: 'Making of the year..',
                 hintText: 'Making of the year..',
-                suffixIcon: IconButton(
-                    onPressed: _selectDate,
-                    icon: const Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.black,
-                    )),
+                // suffixIcon: IconButton(
+                //     onPressed: _selectDate,
+                //     icon: const Icon(
+                //       Icons.date_range_outlined,
+                //       color: Colors.black,
+                //     )),
               ),
               CustomTextField(
                 controller: _manufacturerTEController,
