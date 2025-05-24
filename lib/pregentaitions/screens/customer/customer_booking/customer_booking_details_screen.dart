@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heart_overlay/heart_overlay.dart';
 
 import '../../../../controllers/customer/customer_booking_controller.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -41,11 +42,14 @@ class _CustomerBookingDetailsScreenState
     super.dispose();
   }
 
+  double rating = 0;
+
   @override
   Widget build(BuildContext context) {
     Map routeData = GoRouterState.of(context).extra as Map;
     bookingController.getService(id: routeData['id']);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(title: "${routeData["title"]}"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -318,7 +322,7 @@ class _CustomerBookingDetailsScreenState
                                       CustomButton(
                                           title: "Pay Now",
                                           onpress: () async {
-                                            context.pop();
+
 
                                             var response = await bookingController.customerInitBooking(
                                                         id: routeData["id"],
@@ -326,95 +330,87 @@ class _CustomerBookingDetailsScreenState
 
                                             print("---------------------------------payment status : $response");
 
-                                            response == "completed"
-                                                ? showDialog(
+                                            if(response?.toLowerCase() == "fail"){
+                                              VibrationService.vibrateForDuration(2500);
+                                            }
+
+
+
+
+
+                                            if (response == "completed") {
+                                              VibrationService.vibrateForDuration(2500);
+
+                                              Future.delayed(const Duration(milliseconds: 100), () {
+                                                if (context.mounted) {
+                                                  showDialog(
                                                     context: context,
-                                                    builder: (context) =>
-                                                        AlertDialog(
+                                                    builder: (context) => AlertDialog(
                                                       title: Row(
                                                         children: [
                                                           Expanded(
                                                             child: Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
+                                                              alignment: Alignment.center,
                                                               child: CustomText(
-                                                                text:
-                                                                    "Kindly Give Feedback",
-                                                                color: Colors
-                                                                    .black,
+                                                                text: "Kindly Give Feedback",
+                                                                color: Colors.black,
                                                               ),
                                                             ),
                                                           ),
                                                           GestureDetector(
-                                                              onTap: () {},
-                                                              child: const Icon(
-                                                                  Icons
-                                                                      .cancel_outlined,
-                                                                  color: Colors
-                                                                      .red)),
+                                                            onTap: () => Navigator.of(context).pop(),
+                                                            child: const Icon(Icons.cancel_outlined, color: Colors.red),
+                                                          ),
                                                         ],
                                                       ),
-                                                      content:
-                                                          SingleChildScrollView(
+                                                      content: SingleChildScrollView(
                                                         child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: [
                                                             Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          50.w),
+                                                              padding: EdgeInsets.symmetric(horizontal: 20.w),
                                                               child: RatingBar(
-                                                                filledIcon:
-                                                                    Icons.star,
-                                                                emptyIcon: Icons
-                                                                    .star_border,
-                                                                onRatingChanged:
-                                                                    (value) =>
-                                                                        debugPrint(
-                                                                            '$value'),
-                                                                initialRating:
-                                                                    3,
+                                                                filledIcon: Icons.star,
+                                                                emptyIcon: Icons.star_border,
+                                                                onRatingChanged: (value) {
+                                                                  rating = value;
+                                                                  setState(() {
+
+                                                                  });
+                                                                },
+                                                                initialRating: 0,
                                                                 maxRating: 5,
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                                height: 35.h),
-                                                            CustomText(
-                                                                text:
-                                                                    "Leave A Comment For User.",
-                                                                color: Colors
-                                                                    .black),
-                                                            SizedBox(
-                                                                height: 15.h),
+                                                            SizedBox(height: 35.h),
+                                                            CustomText(text: "Leave A Comment For User.", color: Colors.black),
+                                                            SizedBox(height: 15.h),
                                                             CustomTextField(
-                                                              controller:
-                                                                  ratingCommentCtrl,
-                                                              hintText:
-                                                                  "Enter Your Valuable Comment",
+                                                              controller: ratingCommentCtrl,
+                                                              hintText: "Enter Your Valuable Comment",
                                                             ),
-                                                            SizedBox(
-                                                                height: 16.h),
+                                                            SizedBox(height: 16.h),
                                                             CustomButton(
                                                               title: "Submit",
                                                               onpress: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(); // Close the dialog
-                                                                // Handle your submit logic here
+                                                                bookingController.customerFeedBack(id: routeData["id"], rating: rating.toString(), comment: ratingCommentCtrl.text);
+                                                                Navigator.of(context).pop();
+                                                                // Handle your submit logic
                                                               },
                                                             ),
                                                           ],
                                                         ),
                                                       ),
                                                     ),
-                                                  )
-                                                : SizedBox();
+                                                  );
+                                                }
+                                              });
+
+                                            }
+
+
+
                                           })
                                     ],
                                   ),
@@ -430,6 +426,8 @@ class _CustomerBookingDetailsScreenState
     );
   }
 }
+
+
 
 class RepairListWidget extends StatelessWidget {
   final List<ServicesModelCustomer> services;

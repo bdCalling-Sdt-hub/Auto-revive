@@ -150,7 +150,6 @@ class PaymentController {
         // Step 2: Send the subscriptionId and transactionId to your custom API
         Map<String, dynamic> body = {
           "amount": int.parse(price.toString()),
-          "trId" : "$transactionId"
         };
 
         ///API URL

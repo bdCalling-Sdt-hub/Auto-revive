@@ -151,11 +151,11 @@ class CustomerMapController extends GetxController {
               markerId: MarkerId(x.id.toString()),
               position: LatLng(lat.toDouble(), lng.toDouble()),
               infoWindow: InfoWindow(title: x.name ?? "Mechanic"),
-              icon: icon,
-
-
+              icon: icon
             ),
           );
+
+
 
         } else {
           print("⚠️ Skipping mechanic ${x.id} due to missing coordinates");

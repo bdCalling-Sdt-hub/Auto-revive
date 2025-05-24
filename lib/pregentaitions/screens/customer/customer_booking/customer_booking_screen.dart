@@ -1,6 +1,7 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/booking_card_widget.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_listview_shimmer.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/no_data_found_card.dart';
@@ -31,24 +32,30 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
   @override
   void initState() {
 
+    bookingController.booking.clear();
     _tabController = TabController(length: 3, vsync: this);
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) return;
 
-      bookingController.booking.clear();
-      if (_tabController.index == 0) {
-        bookingController.fetchBooking(status: "requested");
-      } else if (_tabController.index == 1) {
-        bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
-      } else {
-        bookingController.fetchBooking(status: "history");
-      }
+
+
+      Future.delayed(Duration(milliseconds: 500), (){
+        if (_tabController.index == 0) {
+          bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
+        } else if (_tabController.index == 1) {
+          bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
+        } else {
+          bookingController.fetchBooking(status: "history");
+        }
+      });
+
+
     });
 
 
     bookingController.booking.clear();
-    bookingController.fetchBooking(status: "requested");
+    bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
     super.initState();
   }
 
@@ -80,7 +87,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               if(value == 0){
                 bookingController.booking.clear();
-                bookingController.fetchBooking(status: "requested");
+                bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
               }else if(value == 1){
                 bookingController.booking.clear();
                 bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
@@ -108,7 +115,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
             children: [
               /// Requested Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
+              bookingController.bookingLoading.value ? const CustomListviewShimmer()  : bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -117,6 +124,8 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
                     print("========================'${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}'");
                     return BookingCardCustomer(
+                      btnVisible:  booking.status == "accepted"  ? false : true,
+                      acceptCancelBtnName: [booking.platform == "in shop" && booking.status == "accepted" ? "Pay now" : "Accept", "Cancel"],
                       buttonLabel: 'Cancel',
                       onTapDetails: () {
                         context.pushNamed(AppRoutes.towTruckDetailsScreen);
@@ -151,14 +160,16 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               /// Next Pay Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
+              bookingController.bookingLoading.value ? CustomListviewShimmer(): bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.all(8.r),
                   itemBuilder: (context, index) {
                     var booking = bookingController.booking[index];
                     return BookingCardCustomer(
-                      isNextPay: booking.platform?.toLowerCase() == "in shop" ? false : true,
+                      isNextPaySection: true,
+                      acceptCancelBtnName: [booking.status == "paid" ? "Complete" : "Pay Now", "Cancel"],
+                      isNextPay:  booking.platform?.toLowerCase() == "in shop" ? false : true,
                       title: 'Price: \$${booking.servicePrice ?? "0"}',
                       name: '${booking.providerId?.name ?? "N/A"}',
                       certificates: booking.providerId?.certifications ?? [],
@@ -173,10 +184,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                         context.pushNamed(AppRoutes.towTruckDetailsScreen);
                       },
 
-
-
                       ///===================>>> See Details Or Pay Now BTN ==============>>>>
-
 
                       nextPayCardBtnOnTap: ()async {
 
@@ -216,7 +224,6 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       },
 
 
-
                       ///===================>>> Whole Card On Tap ==============>>>>
 
                       onTap: () {
@@ -246,7 +253,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               // History Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? const CustomLoader() : bookingController.booking.isEmpty ? const NoDataFoundCard() :
+              bookingController.bookingLoading.value ? CustomListviewShimmer(): bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.all(8.r),
