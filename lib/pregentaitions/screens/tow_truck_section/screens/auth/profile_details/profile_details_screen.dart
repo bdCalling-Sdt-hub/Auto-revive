@@ -1,14 +1,36 @@
+import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-class ProfileDetailsScreen extends StatelessWidget {
+import '../../../../../../services/api_constants.dart';
+import '../../../../../widgets/cachanetwork_image.dart';
+import 'package:intl/intl.dart';
+
+class ProfileDetailsScreen extends StatefulWidget {
   const ProfileDetailsScreen({super.key});
+
+  @override
+  State<ProfileDetailsScreen> createState() => _ProfileDetailsScreenState();
+}
+
+class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
+
+  TowTrackController towTrackController = Get.put(TowTrackController());
+
+
+  @override
+  void initState() {
+    towTrackController.getTowTrackProfile();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +47,19 @@ class ProfileDetailsScreen extends StatelessWidget {
           child: Column(
             children: [
               Row(
+                /// =================================> ProfileImage ================================>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomImageAvatar(
-                    radius: 56.r,
+                  CustomNetworkImage(
+                    boxShape: BoxShape.circle,
+                    imageUrl:
+                    towTrackController.trackProfile.value.profileImage == null ||   towTrackController.trackProfile.value.profileImage == "" ?
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" :
+                    "${ApiConstants.imageBaseUrl}/${ towTrackController.trackProfile.value.profileImage}",
+                    height: 128.h,
+                    width: 128.w,
                   ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
+                  SizedBox(width: 10.w),
                   Flexible(
                     child: RichText(
                         text: TextSpan(
@@ -40,23 +67,25 @@ class ProfileDetailsScreen extends StatelessWidget {
                                 color: Colors.black,
                                 fontSize: 20.sp,
                                 height: 1.4),
-                            text: 'Bryan  ',
+                            text: towTrackController.trackProfile.value.name ?? 'N/A',
                             children: [
-                          TextSpan(
-                              style: TextStyle(
-                                  color: AppColors.primaryColor,
-                                  fontSize: 20.sp),
-                              text: '(\$25)'),
+                          // TextSpan(
+                          //     style: TextStyle(
+                          //         color: AppColors.primaryColor,
+                          //         fontSize: 20.sp),
+                          //     text: '(\$25)'),
                           TextSpan(
                               style: TextStyle(fontSize: 10.sp),
-                              text: '\n Tow truck owner '
-                                  '\n +784 8954958     ||   bryan@gmail.com '
-                                  '\n USA, New York'),
+                              text: '\n ${towTrackController.trackProfile.value.role ?? 'N/A'} '
+                                  '\n ${towTrackController.trackProfile.value.phone ?? 'N/A'}     ||   ${towTrackController.trackProfile.value.email ?? 'N/A'} '
+                                  '\n ${towTrackController.trackProfile.value.address ?? 'N/A'}'),
                         ])),
                   ),
                 ],
               ),
               SizedBox(height: 16.h),
+
+              /// ==============================================> Basic Info ==================================>
               CustomContainer(
                 paddingAll: 16.h,
                 radiusAll: 8.r,
@@ -66,28 +95,28 @@ class ProfileDetailsScreen extends StatelessWidget {
                   children: [
                     Center(
                         child: CustomText(
-                      text: 'Goodyear Auto Service',
+                      text: towTrackController.trackProfile.value.companyName ?? 'N/A',
                       fontsize: 18.sp,
                     )),
                     Center(
                         child: CustomText(
-                      text: 'Owner: David Williams',
+                      text: 'Owner: ${towTrackController.trackProfile.value.companyOwner ?? 'N/A'}',
                       fontsize: 13.sp,
                     )),
                     CustomText(
                       bottom: 20.h,
                       maxline: 10,
                       text:
-                          'Contact: +784 8954958 | bryan@gmail.com | www.davidwilliams.com '
-                          '\nYears of business: 7 year | Number of tow trucks: 13 '
-                          '\nEIN number: 86640275',
+                          'Contact: ${towTrackController.trackProfile.value.companyPhone ?? 'N/A'} | ${towTrackController.trackProfile.value.companyEmail ?? 'N/A'} | ${towTrackController.trackProfile.value.website ?? 'N/A'} '
+                          '\nYears of business: ${towTrackController.trackProfile.value.yearsInBusiness ?? 'N/A'} | Number of tow trucks: ${towTrackController.trackProfile.value.totalTows ?? 'N/A'} '
+                          '\nEIN number: ${towTrackController.trackProfile.value.einNo ?? 'N/A'}',
                       fontsize: 10.sp,
                     ),
                     const Divider(
                       color: AppColors.borderColor,
                     ),
 
-                    /// ++++++++++++++++ 1st Step +++++++++++++++++++++++
+                    /// ============================>  Licensing and Compliance =========================>
                     CustomText(
                       text: 'Licensing and Compliance',
                       fontsize: 20.sp,
@@ -95,11 +124,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                     CustomText(
                         maxline: 2,
                         textAlign: TextAlign.start,
-                        text: 'Have a valid US-DOT number '
-                            '\n US-DOT number: 67363748374'),
+                        text: 'Have a valid US-DOT number'
+                            '\nUS-DOT number: ${towTrackController.trackProfile.value.usDotNo ?? 'N/A'}'),
                     CustomUploadButton(
-                      title: 'DOT registration.pdf',
-                      onTap: () {},
+                      title: 'US-DOT number.pdf',
+                      // getFileName(towTrackController.trackProfile.value.usDotFile),
+                      onTap: () {
+
+                      },
                       showUploadIcon: false,
                     ),
 
@@ -109,11 +141,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                         top: 16.h,
                         textAlign: TextAlign.start,
                         text: 'Have commercial insurance coverage '
-                            '\nPolicy Number : 85873 7384 '
-                            '\nCoverage Limits : 833 KM'),
+                            '\nPolicy Number : ${towTrackController.trackProfile.value.policyNo ?? 'N/A'} '
+                            '\nCoverage Limits : ${towTrackController.trackProfile.value.policyLimit ?? 'N/A'}'),
                     CustomUploadButton(
-                      title: 'insurancePolicy.pdf',
-                      onTap: () {},
+                      title: 'Insurance.pdf',
+                      // towTrackController.trackProfile.value.policyFile ?? 'N/A',
+                      onTap: () {
+
+                      },
                       showUploadIcon: false,
                     ),
 
@@ -123,11 +158,14 @@ class ProfileDetailsScreen extends StatelessWidget {
                         top: 16.h,
                         textAlign: TextAlign.start,
                         text: 'Have a valid Motor Carrier (MC) number. '
-                            '\nMC Number : 85873 7384 '
-                            '\nCoverage Limits : 833 KM'),
+                            '\nMC Number : ${towTrackController.trackProfile.value.mcNo ?? 'N/A'} '
+                            '\nCoverage Limits : ${towTrackController.trackProfile.value.policyLimit ?? 'N/A'}'),
                     CustomUploadButton(
-                      title: 'mc.pdf',
-                      onTap: () {},
+                      title: 'Mc.pdf',
+                      // towTrackController.trackProfile.value.mcFile ?? 'N/A',
+                      onTap: () {
+
+                      },
                       showUploadIcon: false,
                     ),
 
@@ -140,18 +178,37 @@ class ProfileDetailsScreen extends StatelessWidget {
                       text: 'Vehicle and Equipment',
                       fontsize: 20.sp,
                     ),
-                    CustomText(
-                        maxline: 10,
-                        textAlign: TextAlign.start,
-                        text: 'Making Year: 2023 '
-                            '\nBrand: Ford '
-                            '\nModel: T-376237 '
-                            '\nGVWR: 500 Ton '
-                            '\nType of tow truck: Flatbet'),
-                    CustomUploadButton(
-                      title: 'towtruck.mp4',
-                      onTap: () {},
-                      showUploadIcon: false,
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: towTrackController.trackProfile.value.vehicles?.length,
+                      itemBuilder: (context, index) {
+                        final vehicle = towTrackController.trackProfile.value.vehicles?[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                maxline: 10,
+                                textAlign: TextAlign.start,
+                                text: 'Making Year: ${vehicle?.year ?? 'N/A'} '
+                                    '\nBrand: ${vehicle?.brand ?? 'N/A'} '
+                                    '\nModel: ${vehicle?.modelNo ?? 'N/A'} '
+                                    '\nGVWR: ${vehicle?.gvwr ?? 'N/A'} '
+                                    '\nType of tow truck: ${vehicle?.type ?? 'N/A'}',
+                              ),
+                              SizedBox(height: 10.h),
+                              CustomUploadButton(
+                                title: 'towTrack.Mp4',
+                                // '${vehicle?.video}',
+                                onTap: () {},
+                                showUploadIcon: false,
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
 
                     const Divider(
@@ -168,24 +225,30 @@ class ProfileDetailsScreen extends StatelessWidget {
                       text: 'Types of towing services do we offer.',
                       fontsize: 16.sp,
                     ),
-                    CustomText(
-                      maxline: 20,
-                      textAlign: TextAlign.start,
-                      text: 'Light-Duty Towing (Cars & Small Trucks) '
-                          '\nMedium-Duty Towing (Box Trucks & RVs) '
-                          '\nHeavy-Duty Towing (Semis & Large Trucks) '
-                          '\nRoadside Assistance (Jump-starts, Lockouts, Fuel Delivery). '
-                          '\n Winch-Out & Recovery Services '
-                          '\nEquipment Transport',
-                      fontsize: 10.sp,
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: towTrackController.trackProfile.value.services?.length,
+                      itemBuilder: (context, index) {
+                        final services = towTrackController.trackProfile.value.services?[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: CustomText(
+                            textAlign: TextAlign.start,
+                            text: '${services}',
+                            fontsize: 10.sp,
+                          ),
+                        );
+                      },
                     ),
+
                     CustomText(
                       maxline: 10,
                       textAlign: TextAlign.start,
-                      text: 'Primary service area: USA, New York '
-                          '\nRegions Covered: Full USA '
-                          '\nWe offer 24/7 support. '
-                          '\nAverage ETA for service calls : Over 1 hour',
+                      text: 'Primary service area: ${towTrackController.trackProfile.value.primaryCity ?? 'N/A'} '
+                          '\nRegions Covered: ${towTrackController.trackProfile.value.regionsCovered ?? 'N/A'}'
+                          '\n${towTrackController.trackProfile.value.emergency247 ?? 'N/A'}'
+                          '\nAverage ETA for service calls : ${towTrackController.trackProfile.value.eta ?? 'N/A'}',
                       fontsize: 16.sp,
                     ),
 
@@ -223,34 +286,54 @@ class ProfileDetailsScreen extends StatelessWidget {
                     CustomText(
                       maxline: 5,
                       textAlign: TextAlign.start,
-                      text: 'Authorized or Representative name : David Hook',
+                      text: 'Authorized or Representative name : ${towTrackController.trackProfile.value.authName ??'N/A'}',
                       fontsize: 16.sp,
                     ),
                     CustomText(
                       maxline: 5,
                       textAlign: TextAlign.start,
                       text:
-                          'Authorized or Representative title : General manager ',
+                          'Authorized or Representative title : ${towTrackController.trackProfile.value.authTitle ??'N/A'}',
                       fontsize: 16.sp,
                     ),
 
                     SizedBox(height: 16.h),
                     CustomUploadButton(title: 'Signature.jpg', onTap: () {}),
-
-                    CustomText(
-                      maxline: 5,
-                      bottom: 24.h,
-                      textAlign: TextAlign.start,
-                      text: 'Date: 15 March 2025 ',
-                      fontsize: 16.sp,
+                    SizedBox(height: 10.h),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // CustomText(
+                        //   text: 'Date: ',
+                        //   fontsize: 16.sp,
+                        // ),
+                        SizedBox(width: 5.h),
+                        CustomText(
+                          maxline: 5,
+                          bottom: 24.h,
+                          textAlign: TextAlign.start,
+                          text: DateFormat('dd MMM yyyy').format(DateTime.parse('${towTrackController.trackProfile.value.authDate ?? 'N/A'}')),
+                          fontsize: 16.sp,
+                        ),
+                      ],
                     ),
+
                   ],
                 ),
               ),
+              SizedBox(height: 25.h,)
             ],
           ),
         ),
       ),
     );
+  }
+
+
+
+  String getFileName(String? path) {
+    if (path == null || path.trim().isEmpty) return 'Not uploaded';
+    path = path.replaceAll('\\', '/');
+    return path.split('/').last;
   }
 }

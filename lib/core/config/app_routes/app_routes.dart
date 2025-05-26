@@ -91,7 +91,7 @@ class AppRoutes {
   static const String customerSignupScreen = "/CustomerSignupScreen";
   static const String customerBottomNavBar = "/CustomerBottomNavBar";
   static const String towTruckBottomNavBar = "/towTruckBottomNavBar";
-  static const String basicInfoScreen = "/basicInfoScreen";
+  static const String towTrackBasicInfoScreen = "/towTrackBasicInfoScreen";
   static const String companyInformationScreen = "/companyInformationScreen";
   static const String licensingAndComplianceScreen = "/licensingAndComplianceScreen";
   static const String customerMechanicScreen = "/CustomerMechanicScreen";
@@ -410,10 +410,10 @@ class AppRoutes {
     ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
 
     GoRoute(
-      path: basicInfoScreen,
-      name: basicInfoScreen,
+      path: towTrackBasicInfoScreen,
+      name: towTrackBasicInfoScreen,
       pageBuilder: (context, state) =>
-          _customTransitionPage(BasicInfoScreen(), state),
+          _customTransitionPage(TowTrackBasicInfoScreen(), state),
     ),
 
     ///<<<=============>>> BASIC INFORMATION SCREEN <<<===============>>>
