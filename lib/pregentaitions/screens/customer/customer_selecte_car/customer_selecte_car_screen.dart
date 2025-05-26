@@ -206,6 +206,7 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                               }
                               return null;
                             },
+
                             suffixIcon: CustomPopupMenu(
                                 items: customerHomeController.carModels,
                                 onSelected: (p0) {

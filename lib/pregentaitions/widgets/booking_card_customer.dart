@@ -224,23 +224,24 @@ class BookingCardCustomer extends StatelessWidget {
                                 if(isNextPaySection){
                                   onTap?.call();
                                 }else{
-                                  var response = await bookingController.customerInitBooking(
-                                      status: "accepted",
-                                      id: id.toString(),
-                                      isToast: false);
-
-                                  if (response == "completed") {
-                                    VibrationService.vibrateForDuration(
-                                        2500);
-                                    QuickAlertHelper.showSuccessAlert(
-                                        context,
-                                        "Your initial payment has been successfully processed.");
-                                  } else if (response == "fail") {
-                                    VibrationService.vibrateForDuration(
-                                        2500);
-                                    QuickAlertHelper.showErrorAlert(context,
-                                        "Sorry, something went wrong \n Please Try Again");
-                                  }
+                                  onTap?.call();
+                                  // var response = await bookingController.customerInitBooking(
+                                  //     status: "accepted",
+                                  //     id: id.toString(),
+                                  //     isToast: false);
+                                  //
+                                  // if (response == "completed") {
+                                  //   VibrationService.vibrateForDuration(
+                                  //       2500);
+                                  //   QuickAlertHelper.showSuccessAlert(
+                                  //       context,
+                                  //       "Your initial payment has been successfully processed.");
+                                  // } else if (response == "fail") {
+                                  //   VibrationService.vibrateForDuration(
+                                  //       2500);
+                                  //   QuickAlertHelper.showErrorAlert(context,
+                                  //       "Sorry, something went wrong \n Please Try Again");
+                                  // }
                                 }
 
 

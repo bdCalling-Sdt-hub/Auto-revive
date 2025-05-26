@@ -16,7 +16,7 @@ import 'error_response.dart';
 class ApiClient extends GetxService {
   static var client = http.Client();
   static const String noInternetMessage = "Can't connect to the internet!";
-  static const int timeoutInSeconds = 30;
+  static const int timeoutInSeconds = 20;
   static String bearerToken = "";
 
 //==========================================> Get Data <======================================

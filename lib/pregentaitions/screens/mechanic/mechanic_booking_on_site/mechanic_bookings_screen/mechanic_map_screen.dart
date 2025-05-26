@@ -128,9 +128,9 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
             right: 0,
             child: MechanicProfileCard(
               height: 120,
-              image: '${routeData["image"]}',
-              name: '${routeData["name"]}',
-              location: '${routeData["address"]}',
+              image: '${routeData["image"] ?? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}',
+              name: '${routeData["name"] ?? "N/A"}',
+              location: '${routeData["address"] ?? "N/A"}',
               rating: double.parse(routeData["rating"]?.toString()??'0.0'),
             ),
           ),

@@ -79,9 +79,17 @@ class CustomerHomeController extends GetxController {
 
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      QuickAlertHelper.showSuccessAlert(context, "Your job post is success!");
+      // QuickAlertHelper.showSuccessAlert(context, "Your job post is success!");
+
+      ToastMessageHelper.showToastMessage("${response.body["message"]}", title: "Success");
+
+      context.go(AppRoutes.customerBottomNavBar);
+
       postJobLoading(false);
+    }else{
+      postJobLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}", title: "Success");
     }
-    postJobLoading(false);
+
   }
 }
