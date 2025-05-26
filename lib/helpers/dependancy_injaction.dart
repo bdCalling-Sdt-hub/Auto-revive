@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../controllers/auth_controller.dart';
+import '../controllers/chat_controller.dart';
 import '../controllers/current_location_controller.dart';
 import '../controllers/customer/customer_booking_controller.dart';
 import '../controllers/live_location_change_controller.dart';
@@ -21,6 +22,7 @@ class DependencyInjection implements Bindings {
     Get.lazyPut(() => MechanicJobController(), fenix: true);
     Get.lazyPut(() => CurrentLocationController(), fenix: true);
     Get.lazyPut(() => LiveLocationChangeController(), fenix: true);
+    Get.lazyPut(() => ChatController(), fenix: true);
   }
 
   void lockDevicePortrait() {

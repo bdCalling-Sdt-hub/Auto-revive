@@ -32,30 +32,28 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
   @override
   void initState() {
 
-    bookingController.booking.clear();
     _tabController = TabController(length: 3, vsync: this);
 
     _tabController.addListener(() {
+      print("**************************************** called **********************************");
+
       if (_tabController.indexIsChanging) return;
 
-
-
-      Future.delayed(Duration(milliseconds: 500), (){
-        if (_tabController.index == 0) {
-          bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
-        } else if (_tabController.index == 1) {
-          bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
-        } else {
-          bookingController.fetchBooking(status: "history");
-        }
-      });
-
-
+      final index = _tabController.index;
+      bookingController.booking.clear();
+      if (index == 0) {
+        bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
+      } else if (index == 1) {
+        bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
+      } else {
+        bookingController.fetchBooking(status: "history");
+      }
     });
 
-
+    // Initial fetch
     bookingController.booking.clear();
     bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
+
     super.initState();
   }
 
@@ -82,6 +80,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
             unselectedLabelColor: AppColors.primaryShade300,
             indicatorColor: AppColors.primaryShade300,
             controller: _tabController,
+            enableFeedback: true,
             onTap: (value) {
               print("-------------------------------status = $value");
 
@@ -141,10 +140,11 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                           "certifications" :  booking.providerId?.certifications ?? [],
                           "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                           "price" : booking.transportPrice ?? 0,
-                          "id" : "${booking.id}"
+                          "id" : "${booking.id}",
+                          "btnVisible" : booking.status == "accepted"  ? false : true,
                         }).then((_){
                           bookingController.booking.clear();
-                          bookingController.fetchBooking(status: "requested");
+                          bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
                         });
                       },
                       rating: booking.providerId?.avgRating ?? 0,
@@ -188,22 +188,22 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
                       nextPayCardBtnOnTap: ()async {
 
-                        if(booking.status == "serviced"){
-                          var response = await bookingController.customerInitBooking(
-                              status: "accepted",
-                              id: booking.id.toString(),
-                              isToast: false);
-
-                          if (response == "completed") {
-                            VibrationService.vibrateForDuration(2500);
-                            QuickAlertHelper.showSuccessAlert(
-                                context, "Your initial payment has been successfully processed.");
-                          } else if (response == "fail") {
-                            VibrationService.vibrateForDuration(2500);
-                            QuickAlertHelper.showErrorAlert(context,
-                                "Sorry, something went wrong Please Try Again");
-                          }
-                        }else{
+                        // if(booking.status == "serviced"){
+                        //   // var response = await bookingController.customerInitBooking(
+                        //   //     status: "accepted",
+                        //   //     id: booking.id.toString(),
+                        //   //     isToast: false);
+                        //   //
+                        //   // if (response == "completed") {
+                        //   //   VibrationService.vibrateForDuration(2500);
+                        //   //   QuickAlertHelper.showSuccessAlert(
+                        //   //       context, "Your initial payment has been successfully processed.");
+                        //   // } else if (response == "fail") {
+                        //   //   VibrationService.vibrateForDuration(2500);
+                        //   //   QuickAlertHelper.showErrorAlert(context,
+                        //   //       "Sorry, something went wrong Please Try Again");
+                        //   // }
+                        // }else{
                           context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
                             "title" : "Details",
                             "name" : booking.providerId?.name??"",
@@ -213,14 +213,15 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                             "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                             "price" : booking.servicePrice ?? 0,
                             "id" : "${booking.id}",
+                            "provideId" : "${booking.providerId?.id}",
                             "status" : "${booking.status}",
                             "lat" : booking.providerId?.location?[1],
                             "log" : booking.providerId?.location?[0],
                           }).then((_){
                             bookingController.booking.clear();
-                            bookingController.fetchBooking(status: "serviced");
+                            bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
                           });
-                        }
+                        // }
                       },
 
 
@@ -235,13 +236,14 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                         "certifications" :  booking.providerId?.certifications ?? [],
                         "image" : "${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}",
                         "price" : booking.servicePrice ?? 0,
+                          "provideId" : "${booking.providerId?.id}",
                         "id" : "${booking.id}",
                           "status" : "${booking.status}",
                           "lat" : booking.providerId?.location?[1],
                           "log" : booking.providerId?.location?[0],
                         }).then((_){
                           bookingController.booking.clear();
-                          bookingController.fetchBooking(status: "serviced");
+                          bookingController.fetchBooking(status: "serviced", nextStatus: "paid");
                         });
                       },
 
@@ -253,7 +255,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
 
               // History Tab
               Obx(() =>
-              bookingController.bookingLoading.value ? CustomListviewShimmer(): bookingController.booking.isEmpty ? const NoDataFoundCard() :
+              bookingController.bookingLoading.value ? const CustomListviewShimmer(): bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
                   itemCount: bookingController.booking.length,
                   padding: EdgeInsets.all(8.r),
@@ -261,7 +263,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                     var booking = bookingController.booking[index];
                     return  BookingCardCustomer(
                       onTapDetails: (){
-                        context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                        // context.pushNamed(AppRoutes.towTruckDetailsScreen);
                       },
                       historyButtonAction: (){
                       },

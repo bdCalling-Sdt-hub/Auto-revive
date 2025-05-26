@@ -18,6 +18,7 @@ class CustomerBookingController extends GetxController {
   fetchBooking({String? status, String? nextStatus}) async {
     if (status != null) {
       bookingStatus.value = status;
+      update();
     }
     bookingLoading(true);
     var response = await ApiClient.getData(
@@ -43,7 +44,13 @@ class CustomerBookingController extends GetxController {
     var response = await ApiClient.putData(
         ApiConstants.initBookingCustomer + "/${id ?? ""}", body);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      booking.removeWhere((x) => x.id == id);
+
+     if(status == "accepted"){
+
+     }else{
+       booking.removeWhere((x) => x.id == id);
+     }
+
 
       if (isToast ?? true) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");

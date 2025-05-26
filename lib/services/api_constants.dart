@@ -24,6 +24,8 @@ class ApiConstants{
   static const String mechanicResumeCertificateEndPoint = "/mechanic/resume-certificate";
   static const String getProfileEndPoint = "/user/me";
   static const String carModel = "/car-model";
+  static const String chatUser = "/message/thread/all";
+  static  String message(String id) => "/message/${id}";
   static const String postJob = "/job";
   static const String initBookingCustomer = "/job-process/customer";
   static const String feedBack = "/job-process/customer/feedback/";
