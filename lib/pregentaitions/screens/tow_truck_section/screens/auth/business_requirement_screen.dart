@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_checkbox_list.dart';
@@ -6,9 +8,17 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
+import '../../../../../controllers/upload_controller.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 
 class BusinessRequirementScreen extends StatefulWidget {
   const BusinessRequirementScreen({super.key});
@@ -18,11 +28,16 @@ class BusinessRequirementScreen extends StatefulWidget {
 }
 
 class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
+
+  UploadController uploadController = Get.put(UploadController());
   final TextEditingController _nameTEController = TextEditingController();
   final TextEditingController _titleTEController = TextEditingController();
   final TextEditingController _dateTEController = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
+  TowTrackController towTrackController = Get.put(TowTrackController());
+
+  RxString signatureUrl = ''.obs;
 
   final Map<String, bool> _services = {
     'Maintain active DOT registration & insurance coverage at all times.': false,
@@ -34,15 +49,6 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
     'I certify that the information provided is accurate and that my company meets all requirements for partnering with Fix It LLC.': false,
   };
 
-
-  void _getSelectedItems() {
-    final selected = _services.entries
-        .where((entry) => entry.value)
-        .map((entry) => entry.key)
-        .toList();
-
-    print("Selected Services: $selected");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +102,7 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
               CustomUploadButton(
                 topLabel: 'Signarure',
                   title: 'signature.jpg',
-
-                  onTap: (){}),
+                  onTap: ()=> importPdf(isSignature: true)),
 
               CustomTextField(
                 readOnly: true,
@@ -109,13 +114,34 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
               ),
 
               SizedBox(height: 44.h),
-              Center(
-                  child: CustomButton(
-                      title: 'Submit',
-                      onpress: () {
-                        if(_globalKey.currentState!.validate()) return;
-                        context.pushNamed(AppRoutes.towTruckBottomNavBar);
-                      })),
+              Obx(()=>
+                CustomButton(
+                  loading: towTrackController.businessRequirementsLoading.value,
+                    title: 'Submit',
+                    onpress: () {
+                      if(_globalKey.currentState!.validate()){
+
+                        if (signatureUrl.value.isEmpty) {
+                          ToastMessageHelper.showToastMessage("Please upload Signature", title: 'Attention');
+                          return;
+                        }
+
+                        if (!_services.values.any((v) => v)) {
+                          ToastMessageHelper.showToastMessage("Please select all services LLC", title: 'Attention');
+                          return;
+                        }
+
+                        towTrackController.businessRequirements(
+                          authName: _nameTEController.text.trim(),
+                            authTitle: _titleTEController.text.trim(),
+                            authSignature: signatureUrl.value,
+                            authDate: _dateTEController.text.trim(),
+                            context: context);
+
+
+                      } return;
+                    }),
+              ),
               SizedBox(height: 24.h),
             ],
           ),
@@ -124,7 +150,24 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
     );
   }
 
+  Future<void> importPdf({required bool isSignature}) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
+    if (result != null && result.files.isNotEmpty) {
+      File selectedFile = File(result.files.single.path!);
+      String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
+      if (uploadedPath != null) {
+        if (isSignature) {
+          signatureUrl.value = uploadedPath;
+        }
+      }
+    } else {
+      ToastMessageHelper.showToastMessage("No file selected.");
+    }
+  }
   Future<void> _selectDate() async {
     DateTime? pickedDate = await showDatePicker(
       context: context,

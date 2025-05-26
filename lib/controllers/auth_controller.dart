@@ -118,29 +118,15 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
-      // await PrefsHelper.setString(AppConstants.name, response.body["data"]['name']);
-      // await PrefsHelper.setString(AppConstants.email, response.body["data"]['email']);
-      // await PrefsHelper.setString(AppConstants.phone, response.body["data"]['phone']);
-
-
       if (type == 'Sign Up') {
         if(screenType == "user"){
           context.go(AppRoutes.logInScreen);
         } else if(screenType == "mechanic"){
           context.go(AppRoutes.mechanicPersonalInformationScreen);
         }else {
-          context.go(AppRoutes.basicInfoScreen);
+          context.go(AppRoutes.towTrackBasicInfoScreen);
         }
       }
-
-
-      // else if(screenType == "user"){
-      //   _dialog(context, "user");
-      // }else if(screenType == "mechanic"){
-      //   _dialog(context, "mechanic");
-      // } else {
-      //   // context.go(AppRoutes.setPasswordScreen);
-      // }
       verfyLoading(false);
     } else if(response.statusCode == 1){
       verfyLoading(false);

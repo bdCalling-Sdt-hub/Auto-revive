@@ -1,3 +1,4 @@
+import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/CustomChecked.dart';
@@ -10,7 +11,11 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../helpers/toast_message_helper.dart';
 
 class ServiceCoverageScreen extends StatefulWidget {
   const ServiceCoverageScreen({super.key});
@@ -20,6 +25,9 @@ class ServiceCoverageScreen extends StatefulWidget {
 }
 
 class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
+
+  TowTrackController towTrackController = Get.put(TowTrackController());
+
   TextEditingController country = TextEditingController();
   TextEditingController state = TextEditingController();
   TextEditingController city = TextEditingController();
@@ -41,15 +49,6 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
     '30-60 minutes': false,
     'Over 1 hour': false,
   };
-
-  void _getSelectedItems() {
-    final selected = _services.entries
-        .where((entry) => entry.value)
-        .map((entry) => entry.key)
-        .toList();
-
-    print("Selected Services: $selected");
-  }
 
   bool? _emergencyTowingChecked;
 
@@ -80,14 +79,12 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
                 isAllChecked: true,
                 items: _services,
               ),
-
               SizedBox(height: 10.h),
               CustomText(
                 text: 'What is your primary service area?',
                 bottom: 6.h,
               ),
-
-              ///CountryStateCityPicker Widget initialize
+              /// ====================================> CountryStateCityPicker Widget initialize ====================================>
               CountryStateCityPicker(
                 country: country,
                 state: state,
@@ -144,13 +141,52 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
                 items: checkboxOptions,
               ),
               SizedBox(height: 44.h),
-              Center(
-                  child: CustomButton(
-                      title: 'Save and Next',
-                      onpress: () {
-                        if(_globalKey.currentState!.validate()) return;
-                        context.pushNamed(AppRoutes.businessRequirementScreen);
-                      })),
+              Obx(()=>
+               CustomButton(
+                 loading: towTrackController.serviceCoverageLoading.value,
+                    title: 'Save and Next',
+                   onpress: () {
+                     if (_globalKey.currentState!.validate()) {
+
+                       final selectedServices = _services.entries
+                           .where((element) => element.value)
+                           .map((e) => e.key)
+                           .toList();
+
+                       final selectedETA = checkboxOptions.entries
+                           .where((element) => element.value)
+                           .map((e) => e.key)
+                           .toList();
+
+                       if (country.text.isEmpty || state.text.isEmpty || city.text.isEmpty) {
+                         ToastMessageHelper.showToastMessage('Please select country, state, and city',title: 'Attention');
+                         return;
+                       }
+
+                       if (selectedServices.isEmpty) {
+                         ToastMessageHelper.showToastMessage('Please select at least one towing service',title: 'Attention');
+                         return;
+                       }
+
+                       if (selectedETA.isEmpty) {
+                         ToastMessageHelper.showToastMessage('Please select at least one ETA option',title: 'Attention');
+                         return;
+                       }
+
+                       towTrackController.serviceCoverage(
+                         services: selectedServices,
+                         primaryCountry: country.text.trim(),
+                         primaryState: state.text.trim(),
+                         primaryCity: city.text.trim(),
+                         regionsCovered: _regionsCoveredTEController.text.trim(),
+                         emergency24_7: _emergencyTowingChecked ?? false,
+                         eta: selectedETA.toString(),
+                         context: context,
+                       );
+                     }
+                   }
+               )
+               ),
               SizedBox(height: 24.h),
             ],
           ),

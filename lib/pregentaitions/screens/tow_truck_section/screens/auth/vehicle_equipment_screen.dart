@@ -1,4 +1,4 @@
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'dart:io';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
@@ -8,9 +8,14 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
+import '../../../../../controllers/upload_controller.dart';
+import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 
 class VehicleEquipmentScreen extends StatefulWidget {
@@ -21,6 +26,7 @@ class VehicleEquipmentScreen extends StatefulWidget {
 }
 
 class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
+
   final TextEditingController _makingYearTEController = TextEditingController();
   final TextEditingController _manufacturerTEController = TextEditingController();
   final TextEditingController _modelNumberTEController = TextEditingController();
@@ -28,16 +34,22 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
   final TextEditingController _typeTowTruckTEController = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
+  TowTrackController towTrackController = Get.put(TowTrackController());
+  UploadController uploadController = Get.put(UploadController());
+  RxString videoUrl = ''.obs;
 
-  final List<String> towTruckList = [
-    "Flatbed",
-    "Wrecker",
-    'Heavy - Duty',
-    'Medium - Duty',
-    'Light - Duty',
-    'Other',
+
+
+
+
+  final List<CarModel> typeTrack =  [
+    CarModel(id: '1', adminId: 'admin123', name: 'flatbed', v: 0),
+    CarModel(id: '2', adminId: 'admin123', name: 'wrecker', v: 0),
+    CarModel(id: '3', adminId: 'admin456', name: 'heavy-duty', v: 0),
+    CarModel(id: '4', adminId: 'admin456', name: 'medium-duty', v: 0),
+    CarModel(id: '5', adminId: 'admin456', name: 'light-duty', v: 0),
+    CarModel(id: '6', adminId: 'admin456', name: 'other', v: 0),
   ];
-
 
 
 
@@ -65,17 +77,14 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 bottom: 6.h,
               ),
               CustomTextField(
-                // onTap: _selectDate,
-                // readOnly: true,
+                keyboardType: TextInputType.number,
                 controller: _makingYearTEController,
                 labelText: 'Making of the year..',
                 hintText: 'Making of the year..',
-                // suffixIcon: IconButton(
-                //     onPressed: _selectDate,
-                //     icon: const Icon(
-                //       Icons.date_range_outlined,
-                //       color: Colors.black,
-                //     )),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(4),
+                ],
               ),
               CustomTextField(
                 controller: _manufacturerTEController,
@@ -88,32 +97,40 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 hintText: 'Model number of truck..',
               ),
               CustomTextField(
+                keyboardType: TextInputType.number,
                 controller: _vehicleWeightTEController,
                 labelText: 'Gross Vehicle Weight Rating (GVWR)',
                 hintText: 'Gross Vehicle Weight Rating (GVWR)',
-              ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(9),
+                ],
 
+              ),
+        /// ===========================================> Type of Tow track ===================================>
               CustomTextField(
                 readOnly: true,
                 controller: _typeTowTruckTEController,
                 labelText: 'Type of tow truck',
                 hintText: 'Type of tow truck',
                 suffixIcon: CustomPopupMenu(
-                  items: [
-                    CarModel(id: '1', adminId: 'admin123', name: 'Tow Truck A', v: 0),
-                    CarModel(id: '2', adminId: 'admin123', name: 'Tow Truck B', v: 0),
-                    CarModel(id: '3', adminId: 'admin456', name: 'Tow Truck C', v: 0),
-                  ],
-                  onSelected: (val) {
-                    _typeTowTruckTEController.text = val;
-                  },
+                  items: typeTrack,
+                    onSelected: (p0) {
+                      final selectCarThis = typeTrack.firstWhere((x) => x.id == p0);
+                      _typeTowTruckTEController.text = selectCarThis.name!;
+                      setState(() {
+
+                      });
+                    }
                 ),
               ),
+
+              /// ======================================> Upload Video ==================================>
               CustomUploadButton(
                 topLabel: 'Upload walk around video of your tow truck',
                 title: 'towtruck.mp4',
                 icon: Icons.upload,
-                onTap: () {},
+                onTap: () => importPdf(isTruckVideo: true),
               ),
               SizedBox(height: 16.h),
 
@@ -137,35 +154,58 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                 ),
               ),
               SizedBox(height: 44.h),
-              Center(
-                  child: CustomButton(
-                      title: 'Save and Next',
-                      onpress: () {
-                        if(_globalKey.currentState!.validate()) return;
-                        context.pushNamed(AppRoutes.serviceCoverageScreen);
-                      })),
+              Obx(()=>
+                CustomButton(
+                  loading: towTrackController.vehiclesEquipmentLoading.value,
+                    title: 'Save and Next',
+                    onpress: () {
+                      if(_globalKey.currentState!.validate()){
+                        final int? gvwr = int.tryParse(_vehicleWeightTEController.text.trim());
+                        final int? year = int.tryParse(_makingYearTEController.text.trim());
+
+                        if (videoUrl.value.isEmpty) {
+                          ToastMessageHelper.showToastMessage("Please upload tow track video", title: 'Attention');
+                          return;
+                        }
+                        towTrackController.vehiclesEquipment(
+                            year: year,
+                            brand: _manufacturerTEController.text.trim(),
+                            modelNo: _modelNumberTEController.text.trim(),
+                            gvwr: gvwr,
+                            type: _typeTowTruckTEController.text.trim(),
+                            video: videoUrl.value,
+                            context: context);
+                      } return;
+
+                    }),
+              ),
               SizedBox(height: 24.h),
             ],
           ),
         ),
       ),
     );
+
   }
 
-  Future<void> _selectDate() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      initialDate: DateTime.now(),
+  Future<void> importPdf({required bool isTruckVideo}) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
     );
 
-    if (pickedDate != null) {
-      String formattedDate =
-          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-      setState(() {
-        _makingYearTEController.text = formattedDate;
-      });
+    if (result != null && result.files.isNotEmpty) {
+      File selectedFile = File(result.files.single.path!);
+      String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
+      if (uploadedPath != null) {
+        if (isTruckVideo) {
+          videoUrl.value = uploadedPath;
+        }
+      }
+    } else {
+      ToastMessageHelper.showToastMessage("No file selected.");
     }
   }
+
+
 }
