@@ -1,5 +1,4 @@
 import 'package:autorevive/controllers/chat_controller.dart';
-import 'package:autorevive/controllers/payment_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/helpers/quick_alert.dart';
@@ -12,14 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heart_overlay/heart_overlay.dart';
-
 import '../../../../controllers/customer/customer_booking_controller.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../services/vibration_service.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
-import '../../tow_truck_profile/tow_truck_profile_screen.dart';
+
+
 
 class CustomerBookingDetailsScreen extends StatefulWidget {
   CustomerBookingDetailsScreen({super.key});
@@ -171,7 +169,10 @@ class _CustomerBookingDetailsScreenState
                                 SizedBox(width: 6.w),
                                 GestureDetector(
                                   onTap: () {
-                                    chatController.createChat(content: "****5555%%%%***&&&777^^^##@@!!!", receiveId: routeData["provideId"]);
+                                    context.pushNamed(AppRoutes.messageChatScreen, extra: {
+                                      "receiverId" : "${routeData["provideId"]}",
+                                      "name" : "${routeData["name"]}"
+                                    });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(

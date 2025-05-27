@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../../controllers/current_location_controller.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../widgets/custom_text.dart';
@@ -25,11 +26,17 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   @override
   void initState() {
-
+    requestNotificationPermission();
     controller.getCurrentLocation();
     liveLocationChangeController.listenToLocationChanges();
 
     super.initState();
+  }
+
+  Future<void> requestNotificationPermission() async {
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
   }
 
   @override

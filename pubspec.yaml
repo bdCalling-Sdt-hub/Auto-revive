@@ -54,7 +54,10 @@ dependencies:
   country_pickers: ^3.0.1
   socket_io_client:
   flutter_polyline_points: ^2.1.0
-  heart_overlay: ^1.4.1
+  flutter_local_notifications: ^18.0.1
+  firebase_messaging:
+  firebase_core: ^3.13.1
+  firebase_analytics: ^11.4.6
 
 
 
