@@ -57,6 +57,7 @@ import '../../../pregentaitions/screens/tow_truck_section/screens/tow_truck_book
 import '../../../pregentaitions/screens/tow_truck_section/screens/tow_truck_bookings/tow_trucks_bookings_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/tow_turck_job/tow_truck_job_request_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/tow_turck_job/tow_truck_job_screen.dart';
+import '../../../services/firebase_notification_services.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
@@ -131,12 +132,13 @@ class AppRoutes {
           var userId = await PrefsHelper.getString(AppConstants.userId);
           bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
 
-          print("======================================$isLogged  \n token: $token \n userId : $userId");
+          var fcmToken = await FirebaseNotificationService.getFCMToken();
+
+          print("======================================$isLogged  \n token: $token \n userId : $userId \n fcm token : $fcmToken");
 
           SocketServices sockService = SocketServices();
 
-          sockService.init(userId: userId );
-
+          sockService.init(userId: userId, fcmToken: fcmToken.toString());
 
           if(token != "" && isLogged){
 

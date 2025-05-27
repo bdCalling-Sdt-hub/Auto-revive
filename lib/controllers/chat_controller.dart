@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:autorevive/core/app_constants/app_constants.dart';
@@ -12,28 +13,68 @@ import '../services/api_client.dart';
 import '../services/api_constants.dart';
 
 class ChatController extends GetxController {
+
+  RxInt page = 1.obs;
+  var totalPage = (-1);
+  var currectPage = (-1);
+  var totalResult = (-1);
+
+
+
+  void loadMore() {
+    if (totalPage > page.value) {
+      page.value += 1;
+      fetchChat();
+      update();
+    }
+  }
+
+
+
   RxList<ChatModel> chats = <ChatModel>[].obs;
   RxBool chatLoading = false.obs;
 
+  RxString tempReceiverId = "".obs;
   fetchChat({String? receiverId}) async {
-    chatLoading(true);
-    var response =
-        await ApiClient.getData(ApiConstants.message("${receiverId ?? ""}"));
+    if(page.value == 1){
+      clearChats();
+      tempReceiverId.value = receiverId ?? "";
+      chatLoading(true);
+      update();
+    }
+
+    var response = await ApiClient.getData(ApiConstants.message("$tempReceiverId?page=${page.value}"));
 
     if (response.statusCode == 200) {
-      chats.value = List<ChatModel>.from(
-          response.body["data"].map((x) => ChatModel.fromJson(x)));
+
+      totalPage = jsonDecode(response.body['pagination']['totalPages'].toString());
+      currectPage = jsonDecode(response.body['pagination']['currentPage'].toString()) ?? 0;
+      totalResult = jsonDecode(response.body['pagination']['totalCount'].toString()) ?? 0;
+
+      var data = List<ChatModel>.from(response.body["data"].map((x) => ChatModel.fromJson(x)));
+      chats.addAll(data);
+      chats.refresh();
+      update();
       chatLoading(false);
     }
     chatLoading(false);
+  }
+  clearChats(){
+    chats.clear();
+    page.value = 1;
+    totalPage = -1;
+    currectPage = -1;
+    totalResult = -1;
+    tempReceiverId.value = "";
+    update();
   }
 
   RxList<ChatUserModel> chatUsers = <ChatUserModel>[].obs;
   RxBool fetchUserLoading = false.obs;
 
-  fetchUser() async {
+  fetchUser({String name = ""}) async {
     fetchUserLoading(true);
-    var response = await ApiClient.getData(ApiConstants.chatUser);
+    var response = await ApiClient.getData("${ApiConstants.chatUser}${name== "" ? "all?limit=80"  : "search?keyword=${name}"}");
 
     if (response.statusCode == 200) {
       chatUsers.value = List<ChatUserModel>.from(
@@ -56,7 +97,7 @@ class ChatController extends GetxController {
       multipartBody: photoList,
     );
 
-    if (response.status == 200 || response.status == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       List<String> filenames = List<String>.from(response.body["data"]);
 
       sendMessage(threadId: "$threadId",content: "",receiveId: "$receiveId", filePath: filenames);
@@ -85,12 +126,16 @@ class ChatController extends GetxController {
     });
   }
 
+  void offListenMessage(){
+    socketServices.socket.off("message-receive");
+  }
+
   createChat({String? content, receiveId}) async {
     var myId = await PrefsHelper.getString(AppConstants.userId);
 
     var body = {
       "senderId": "$myId",
-      "content": "$content",
+      "content": "",
       "participants": ["$myId", "$receiveId"]
     };
 
@@ -100,7 +145,7 @@ class ChatController extends GetxController {
   sendMessage({String? content, receiveId, threadId, filePath}) async {
     var myId = await PrefsHelper.getString(AppConstants.userId);
 
-    var body = filePath != null
+    var body = filePath == null || filePath == ""
         ? {
             "senderId": "$myId",
             "threadId": "$threadId",
@@ -110,7 +155,7 @@ class ChatController extends GetxController {
             "senderId": "$myId",
             "threadId": "$threadId",
             "content": "$content",
-            "attachments": [filePath.toString()]
+            "attachments": filePath
           };
 
     socketServices.emit("message-send", body);

@@ -29,7 +29,7 @@ class CustomListviewShimmer extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // Generate multiple booking card placeholders
-            ...List.generate(4, (_) => Padding(
+            ...List.generate(3, (_) => Padding(
               padding: EdgeInsets.only(bottom: 16.h),
               child: Container(
                 decoration: BoxDecoration(

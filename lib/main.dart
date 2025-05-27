@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:autorevive/env/config.dart';
 import 'package:autorevive/helpers/dependancy_injaction.dart';
 import 'package:autorevive/pregentaitions/widgets/no_internet_screen.dart';
+import 'package:autorevive/services/firebase_notification_services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -19,7 +22,9 @@ void main() async{
   await Stripe.instance.applySettings();
 
 
-
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance;
+  FirebaseNotificationService.instance;
 
   PlatformDispatcher.instance.onAccessibilityFeaturesChanged = (){};
   DependencyInjection di = DependencyInjection();

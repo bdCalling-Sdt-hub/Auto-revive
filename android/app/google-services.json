@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "20978497970",
+    "project_id": "auto-revive-b",
+    "storage_bucket": "auto-revive-b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20978497970:android:81683176ffa231f5394cab",
+        "android_client_info": {
+          "package_name": "com.example.autorevive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdsj305TmbZnVY9juCwCigeT0hsUfGzwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

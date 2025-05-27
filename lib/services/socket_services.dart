@@ -16,7 +16,7 @@ class SocketServices {
 
   SocketServices._internal();
 
-  Future<void> init({String? userId}) async {
+  Future<void> init({String? userId, fcmToken}) async {
 
     // if(socket.connected){
     //   disconnect(isManual: true);
@@ -36,6 +36,7 @@ class SocketServices {
     socket.onConnect((_){
       socket.emit("user-connected",{
         "userId" : "$userId",
+        "fcmToken" : "$fcmToken"
       });
     }); // Ensure connection starts
   }

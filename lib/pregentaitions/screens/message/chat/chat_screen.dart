@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:autorevive/helpers/toast_message_helper.dart';
+import 'package:autorevive/pregentaitions/widgets/cachanetwork_image.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_app_bar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -7,6 +8,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:autorevive/pregentaitions/widgets/no_data_found_card.dart';
 import 'package:autorevive/services/api_constants.dart';
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
+import 'package:chat_bubbles/bubbles/bubble_normal_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,11 +28,31 @@ class MessageChatScreen extends StatefulWidget {
 class _MessageChatScreenState extends State<MessageChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   ChatController chatController = Get.find<ChatController>();
+  final ScrollController _scrollController = ScrollController();
+  String threadId = "";
 
   @override
   void initState() {
     chatController.listenMessage();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        if (_scrollController.position.pixels == 0) {
+        } else {
+          chatController.loadMore();
+          print("====> scroll bottom");
+        }
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    chatController.clearChats();
+    chatController.offListenMessage();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,58 +66,67 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
           children: [
             Expanded(
               child: Obx(
-                () => chatController.chatLoading.value
-                    ? CustomLoader()
-                    : chatController.chats.isEmpty
-                        ? NoDataFoundCard()
+                () => chatController.chatLoading.value ? const CustomLoader() :  chatController.chats.isEmpty
+                        ? const NoDataFoundCard()
                         : ListView.builder(
+                            controller: _scrollController,
                             reverse: true,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w, vertical: 10.h),
                             itemCount: chatController.chats.length,
                             itemBuilder: (context, index) {
-                              final message = chatController.chats[index];
-                              final isSender =
-                                  routeData["receiverId"] != message.senderId;
 
-                              return Column(
-                                crossAxisAlignment: isSender
-                                    ? CrossAxisAlignment.end
-                                    : CrossAxisAlignment.start,
-                                children: [
-                                  BubbleNormal(
-                                    text: "${message.content}",
-                                    isSender: isSender,
-                                    color: isSender
-                                        ? AppColors.primaryColor
-                                        : AppColors.fontColorFEFEFE,
-                                    tail: true,
-                                    seen: isSender ? true : false,
-                                    sent: true,
-                                    textStyle: TextStyle(
+                              if(index < chatController.chats.length){
+                                final message = chatController.chats[index];
+                                final isSender = routeData["receiverId"] != message.senderId;
+
+                                threadId = message.threadId.toString();
+
+                                return Column(
+                                  crossAxisAlignment: isSender
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
+                                  children: [
+                                    message.content == ""
+                                        ? BubbleNormalImage(
+                                      id: 'image_${message.id}',
+                                      image: CustomNetworkImage(
+                                        imageUrl: "${ApiConstants.imageBaseUrl}/${message.attachments?.first}",
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(16.r),
+                                      ),
+                                      // isSender: isSender,
+                                      color: Colors.transparent
+                                    )
+                                        :
+                                    BubbleNormal(
+                                      text: "${message.content}",
+                                      // isSender: isSender,
                                       color: isSender
-                                          ? Colors.white
-                                          : Colors.black87,
-                                      fontSize: 16.sp,
+                                          ? AppColors.primaryColor
+                                          : AppColors.fontColorFEFEFE,
+                                      seen: isSender,
+                                      textStyle: TextStyle(
+                                        color: isSender
+                                            ? Colors.white
+                                            : Colors.black87,
+                                        fontSize: 16.sp
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                ],
-                              );
+                                    SizedBox(height: 10.h),
+                                  ],
+                                );
+                              }else if(index >= chatController.totalResult){
+                                return null;
+                              }else{
+                                return const CustomLoader();
+                              }
+
+
                             },
                           ),
               ),
             ),
-
-
-
-
-
-
-
-
-
-
             if (pickedFiles.isNotEmpty)
               Container(
                 height: 100.h,
@@ -121,12 +152,12 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                           child: isImage
                               ? Image.file(file, fit: BoxFit.cover)
                               : Center(
-                            child: Icon(
-                              Icons.insert_drive_file,
-                              size: 40.sp,
-                              color: Colors.grey,
-                            ),
-                          ),
+                                  child: Icon(
+                                    Icons.insert_drive_file,
+                                    size: 40.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                         ),
                         Positioned(
                           right: 0,
@@ -138,7 +169,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                               });
                             },
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.black54,
                                 shape: BoxShape.circle,
                               ),
@@ -155,9 +186,6 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                   },
                 ),
               ),
-
-
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
@@ -178,12 +206,15 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                             chatController.sendMessage(
                               receiveId: routeData["receiverId"],
                               content: _messageController.text,
-                              threadId: routeData["threadId"],
+                              threadId:   routeData["threadId"] ?? threadId,
                             );
                             _messageController.clear();
-                          }else{
-                            chatController.uploadFile(images: pickedFiles, receiveId: routeData["receiverId"], threadId: routeData["threadId"]);
+                          } else {
+                            chatController.uploadFile(images: pickedFiles, receiveId: routeData["receiverId"], threadId: routeData["threadId"] ?? threadId);
                             pickedFiles.clear();
+                            setState(() {
+
+                            });
                           }
                         },
                         icon: const Icon(Icons.send),
@@ -199,9 +230,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
     );
   }
 
-
   List<File> pickedFiles = [];
-
 
   Future<void> pickAnyFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
