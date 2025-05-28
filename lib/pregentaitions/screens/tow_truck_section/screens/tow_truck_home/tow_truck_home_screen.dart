@@ -59,7 +59,7 @@ class TowTruckHomeScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 children: [
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 47.h),
 
                   Row(
                     children: [
@@ -110,6 +110,7 @@ class TowTruckHomeScreen extends StatelessWidget {
                       child: CustomText(text: "Let's Get Started!", color: Colors.black),
                     ),
                   ),
+
                 ],
               ),
             ),

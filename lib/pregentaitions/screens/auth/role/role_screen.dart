@@ -36,8 +36,6 @@ class RoleScreen extends StatelessWidget {
           children: [
             SizedBox(height: 38.h),
             Assets.icons.logoSVG.svg(),
-
-
             SizedBox(height: 19.h),
             CustomText(
               text: 'Sign up as a',
@@ -59,14 +57,13 @@ class RoleScreen extends StatelessWidget {
                 onpress: (){
                   PrefsHelper.setString(AppConstants.role, "mechanic");
                   context.pushNamed(AppRoutes.mechanicSignupScreen);
-                  // context.pushNamed(AppRoutes.mechanicBottomNavBar);
             }),
             SizedBox(height: 10.h),
             CustomButton(
                 title: "Tow Truck Operator",
                 onpress: (){
                   PrefsHelper.setString(AppConstants.role, "tow_truck");
-                  context.pushNamed(AppRoutes.towTrackBasicInfoScreen);
+                  context.pushNamed(AppRoutes.towTrackSignupScreen);
 
                 }),
 

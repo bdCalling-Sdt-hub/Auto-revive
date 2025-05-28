@@ -136,7 +136,9 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
 
               /// ++++++++++++++  Add more field ************************
               CustomContainer(
-                onTap: () {},
+                onTap: () {
+
+                },
                 bordersColor: AppColors.pdfButtonColor,
                 radiusAll: 8.r,
                 width: double.infinity,

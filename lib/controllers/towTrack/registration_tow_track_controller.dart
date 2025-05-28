@@ -20,6 +20,7 @@ class TowTrackController extends GetxController{
 
   Future<bool> towTrackBasicInfo({
     String? profileImage,
+    String?name,
     String? phone,
     String? address,
     int? ppm,
@@ -28,6 +29,7 @@ class TowTrackController extends GetxController{
   }) async {
     var body = {
       'profileImage': profileImage,
+      'name': name,
       'phone': phone,
       'address': address,
       'ppm': int.tryParse(ppm.toString()),
@@ -43,7 +45,7 @@ class TowTrackController extends GetxController{
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        context.pushNamed(AppRoutes.companyInformationScreen);
+
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         return true;
       } else {
@@ -96,7 +98,7 @@ class TowTrackController extends GetxController{
         body,
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
-        context.pushNamed(AppRoutes.licensingAndComplianceScreen);
+        // context.pushNamed(AppRoutes.licensingAndComplianceScreen);
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         return true;
       } else {

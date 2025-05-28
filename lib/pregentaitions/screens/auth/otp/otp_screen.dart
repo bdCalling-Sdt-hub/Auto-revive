@@ -67,7 +67,7 @@ class OtpScreen extends StatelessWidget {
                     width: double.infinity,
                     title: "Verify",
                     onpress: () {
-                      print("--------------------------- ${otpTEController.text}");
+                      print("--------------------------- ${screenType}");
           
                       if(screenType == "Sign Up"){
                         // authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
@@ -76,7 +76,7 @@ class OtpScreen extends StatelessWidget {
                         authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
                       }
                       else if(screenType == "tow_truck"){
-                        authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context);
+                        authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context,type: "Sign Up");
                       } else{
                         authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
                       }

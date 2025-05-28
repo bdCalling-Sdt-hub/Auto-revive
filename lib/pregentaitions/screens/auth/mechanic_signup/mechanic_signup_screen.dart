@@ -111,7 +111,7 @@ class _MechanicSignupScreenState extends State<MechanicSignupScreen> {
                       child: CustomText(text: isMatched.value ? "Password Matched" : "",color: Colors.green,fontsize: 14.sp,),
                     ))),
 
-                SizedBox(height: 200.h),
+                SizedBox(height: 201.h),
                 Obx(()=>
                     CustomButton(
                       loading: authController.mechanicSignUpLoading.value,
@@ -124,6 +124,7 @@ class _MechanicSignupScreenState extends State<MechanicSignupScreen> {
                             email: emailCtrl.text,
                             password: passwordCtrl.text.trim(),
                             confirmPassword: confirmPasswordCtrl.text.trim(),
+
                           );
                         }
                       },),

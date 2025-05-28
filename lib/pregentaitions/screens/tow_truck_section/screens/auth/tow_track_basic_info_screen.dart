@@ -8,12 +8,13 @@ import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/cachanetwork_image.dart';
@@ -29,7 +30,7 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
 
   UploadController uploadController = Get.put(UploadController());
   TowTrackController towTrackController = Get.put(TowTrackController());
-  MechanicController mechanicController = Get.put(MechanicController());
+
 
   final TextEditingController _nameTEController = TextEditingController();
   final TextEditingController _addressTEController = TextEditingController();
@@ -41,41 +42,31 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
 
   bool isLoading = true;
 
+
   @override
   void initState() {
     super.initState();
-    mechanicController.getProfile().then((_) {
-      final profile = mechanicController.profile.value;
+    towTrackController.getTowTrackProfile().then((_) {
+      final profile = towTrackController.trackProfile.value;
       _nameTEController.text = profile.name ?? '';
       _emailTEController.text = profile.email ?? '';
 
 
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
-      //   // final routeData = GoRouterState.of(context).extra as Map;
-      //
-      //   final extra = GoRouterState.of(context).extra;
-      //   final Map routeData = extra is Map ? extra : {};
-      //
-      //   fullNameCtrl.text = routeData['name'] ?? '';
-      //   phoneNoCtrl.text = routeData['phone'] ?? '';
-      //   currentAddressCtrl.text = routeData['address'] ?? '';
-      //   platformCtrl.text = routeData['platform'] ?? '';
-      //   hasDriversLicense = routeData['haveLicense'] ?? false;
-      //   hasCDL = routeData['haveCdl'] ?? false;
-      //   uploadedUrl = routeData['image'] ?? '';
-      //   print("Received gfjhhg Image: ${routeData['image']}");
+      WidgetsBinding.instance.addPostFrameCallback((_) {
 
+        final extra = GoRouterState.of(context).extra;
+        final Map routeData = extra is Map ? extra : {};
+            _nameTEController.text = routeData['name'] ?? '';
+            _phoneTEController.text = routeData['phone'] ?? '';
+            _addressTEController.text = routeData['address'] ?? '';
+            _lLCTEController.text = routeData['llc'] ?? '';
+            _priceTEController.text = routeData['ppm']?.toString() ?? '';
+            uploadedUrl = routeData['image'] ?? '';
 
-      Future.delayed(Duration(milliseconds: 500), () {
         setState(() {
           isLoading = false;
         });
       });
-
-
-      // });
-
-
 
     });
   }
@@ -83,10 +74,11 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
 
 
 
-
-
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           forceMaterialTransparency: true,
@@ -220,20 +212,25 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
               Obx(()=>
               CustomButton(
                     loading: towTrackController.basicInfoLoading.value,
-                    title: 'Save and Next',
-                       onpress: (){
-                                if(_formKey.currentState!.validate()){
-                                  final int? ppm = int.tryParse(_priceTEController.text.trim());
-                                  towTrackController.towTrackBasicInfo(
+                    title:  isEdit ? "Edit" : "Save and Next",
+                       onpress: () async {
+                                if(_formKey.currentState!.validate()) {
+                                  final int? ppm = int.tryParse(_priceTEController.text);
+                                  final success = await towTrackController.towTrackBasicInfo(
                                     profileImage: uploadedUrl,
-                                      address: _addressTEController.text.trim(),
-                                      phone: _phoneTEController.text.trim(),
+                                      address: _addressTEController.text,
+                                      phone: _phoneTEController.text,
                                       ppm: ppm,
-                                      llc: _lLCTEController.text.trim(),
-
+                                      llc: _lLCTEController.text,
+                                      name: _nameTEController.text,
                                       context: context);
-
-
+                                  if (success) {
+                                    if (isEdit) {
+                                      context.pop(true);
+                                    } else {
+                                      context.pushNamed(AppRoutes.companyInformationScreen);
+                                    }
+                                  }
                                 } return;
 
 
