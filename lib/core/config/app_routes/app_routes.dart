@@ -130,15 +130,17 @@ class AppRoutes {
           var role = await PrefsHelper.getString(AppConstants.role);
           var token = await PrefsHelper.getString(AppConstants.bearerToken);
           var userId = await PrefsHelper.getString(AppConstants.userId);
+          var fcmToken = await PrefsHelper.getString(AppConstants.fcmToken);
           bool isLogged = await PrefsHelper.getBool(AppConstants.isLogged);
 
-          var fcmToken = await FirebaseNotificationService.getFCMToken();
+
 
           print("======================================$isLogged  \n token: $token \n userId : $userId \n fcm token : $fcmToken");
 
           SocketServices sockService = SocketServices();
 
           sockService.init(userId: userId, fcmToken: fcmToken.toString());
+          FirebaseNotificationService.listenMessage();
 
           if(token != "" && isLogged){
 

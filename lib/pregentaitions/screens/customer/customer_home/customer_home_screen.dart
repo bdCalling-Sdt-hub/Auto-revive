@@ -26,18 +26,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   @override
   void initState() {
-    requestNotificationPermission();
     controller.getCurrentLocation();
     liveLocationChangeController.listenToLocationChanges();
 
     super.initState();
   }
 
-  Future<void> requestNotificationPermission() async {
-    if (await Permission.notification.isDenied) {
-      await Permission.notification.request();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

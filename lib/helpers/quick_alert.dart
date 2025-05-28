@@ -7,6 +7,7 @@ class QuickAlertHelper {
       context: context,
       type: QuickAlertType.success,
       text: message,
+
     );
   }
 
