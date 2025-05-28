@@ -291,12 +291,10 @@ class _CustomerBookingDetailsScreenState
 
                                 if (response == "completed") {
                                   VibrationService.vibrateForDuration(2500);
-                                  QuickAlertHelper.showSuccessAlert(context,
-                                      "Your ${routeData["price"] == 0 ? "accept request" : "initial payment"} has been successfully processed.");
-                                  context.pop();
+                                  QuickAlertHelper.showSuccessAlert(context, "Your ${routeData["price"] == 0 ? "accept request" : "initial payment"} has been successfully processed.");
+
                                 } else if (response == "fail") {
                                   VibrationService.vibrateForDuration(2500);
-                                  context.pop();
                                   QuickAlertHelper.showErrorAlert(context,
                                       "Sorry, something went wrong Please Try Again");
                                 }

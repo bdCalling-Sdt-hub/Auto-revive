@@ -25,6 +25,8 @@ void main() async{
   await Firebase.initializeApp();
   await FirebaseMessaging.instance;
   FirebaseNotificationService.instance;
+  FirebaseNotificationService.getFCMToken();
+  FirebaseNotificationService.printFCMToken();
 
   PlatformDispatcher.instance.onAccessibilityFeaturesChanged = (){};
   DependencyInjection di = DependencyInjection();
