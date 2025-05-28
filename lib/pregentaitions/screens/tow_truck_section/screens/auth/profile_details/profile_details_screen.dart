@@ -111,6 +111,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
               }),
               /// ==========================================> Company Information ========================================>
               SizedBox(height: 16.h),
+
               Obx(() {
                 final profile = towTrackController.trackProfile.value;
                 return CustomContainer(
@@ -120,14 +121,9 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                        child: CustomText(
-                          text: profile.companyName ?? '',
-                          fontsize: 18.sp,
-                        ),
-                      ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          await towTrackController.getTowTrackProfile();
                           context.pushNamed(
                             AppRoutes.companyInformationScreen,
                             extra: {
@@ -137,13 +133,21 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                               "companyOwner": profile.companyOwner ?? '',
                               "companyPhone": profile.companyPhone ?? '',
                               "website": profile.website ?? '',
-                              "yearsInBusiness": profile.yearsInBusiness ?? '',
-                              "totalTows": profile.totalTows ?? '',
+                              "yearsInBusiness": profile.yearsInBusiness?.toString() ?? '',
+                              "totalTows": profile.totalTows?.toString() ?? '',
                               "einNo": profile.einNo ?? '',
+                              "companyEmail": profile.companyEmail ?? '',
+                              "companyAddress": profile.companyAddress ?? '',
                             },
                           ).then((_) => towTrackController.getTowTrackProfile());
                         },
                         child: Assets.icons.editIcon.svg(),
+                      ),
+                      Center(
+                        child: CustomText(
+                          text: profile.companyName ?? '',
+                          fontsize: 18.sp,
+                        ),
                       ),
                       Center(
                         child: CustomText(
@@ -156,12 +160,34 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                         maxline: 10,
                         text:
                         'Contact: ${profile.companyPhone ?? ""} | ${profile.companyEmail ?? ""} | ${profile.website ?? ""} '
-                            '\nYears of business: ${profile.yearsInBusiness ?? ""} | Number of tow trucks: ${profile.totalTows ?? ""} '
+                            '\nYears of business: ${profile.yearsInBusiness ?? ""}| Number of tow trucks: ${profile.totalTows ?? ""} | Company Address: ${profile.companyAddress ?? ""}  '
                             '\nEIN number: ${profile.einNo ?? ""}',
                         fontsize: 10.sp,
                       ),
                       const Divider(color: AppColors.borderColor),
-               /// =======================================> Licensing and Compliance =====================================>
+                      SizedBox(height: 12.h),
+                     /// =====================> Licensing and Compliance ====================>
+                      GestureDetector(
+                        onTap: () async {
+                          await towTrackController.getTowTrackProfile();
+                          context.pushNamed(
+                            AppRoutes.licensingAndComplianceScreen,
+                            extra: {
+                              "title": "Licensing and Compliance",
+                              "isEdit": true,
+                              "usDotNo": profile.usDotNo ?? '',
+                              "usDotFile": profile.usDotFile ?? '',
+                              "policyNo": profile.policyNo ?? '',
+                              "policyLimit": profile.policyLimit?.toString() ?? '',
+                              "policyFile": profile.policyFile ?? '',
+                              "mcNo": profile.mcNo ?? '',
+                              "mcFile": profile.mcFile ?? '',
+                            },
+                          ).then((_) => towTrackController.getTowTrackProfile());
+                        },
+                        child: Assets.icons.editIcon.svg(),
+                      ),
+                      SizedBox(height: 10.h),
                       CustomText(
                         text: 'Licensing and Compliance',
                         fontsize: 20.sp,
@@ -173,11 +199,13 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                             '\nUS-DOT number: ${profile.usDotNo ?? ""}',
                       ),
                       CustomUploadButton(
-                        title: 'US-DOT number.pdf',
+                        title: profile.usDotFile != null && profile.usDotFile!.isNotEmpty
+                            ? 'DOT registration.pdf'
+                            : 'Upload DOT registration',
                         onTap: () {},
                         showUploadIcon: false,
                       ),
-              /// ===================================> commercial insurance ===============================================>
+                  /// ====================> commercial insurance =============================>
                       CustomText(
                         maxline: 10,
                         top: 16.h,
@@ -187,11 +215,14 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                             '\nCoverage Limits : ${profile.policyLimit ?? ""}',
                       ),
                       CustomUploadButton(
-                        title: 'Insurance.pdf',
+                        title: profile.policyFile != null && profile.policyFile!.isNotEmpty
+                            ? 'insurancePolicy.pdf'
+                            : 'Upload insurance policy',
                         onTap: () {},
                         showUploadIcon: false,
                       ),
-                      /// ==============================================> Mc Number =================================>
+
+                      /// =============================> Mc Number =========================>
 
                       CustomText(
                         maxline: 10,
@@ -202,17 +233,47 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                             '\nCoverage Limits : ${profile.policyLimit ?? ""}',
                       ),
                       CustomUploadButton(
-                        title: 'Mc.pdf',
+                        title: profile.mcFile != null && profile.policyFile!.isNotEmpty
+                            ? 'mc.pdf'
+                            : 'Upload mc',
                         onTap: () {},
                         showUploadIcon: false,
                       ),
-
                       const Divider(color: AppColors.borderColor),
                       /// ====================================>  Vehicle and Equipment ========================================>
 
-                      CustomText(
-                        text: 'Vehicle and Equipment',
-                        fontsize: 20.sp,
+                      Row(
+                        children: [
+                          CustomText(
+                            text: 'Vehicle and Equipment',
+                            fontsize: 20.sp,
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () async {
+                              await towTrackController.getTowTrackProfile();
+                              final vehicle = profile.vehicles?.first;
+
+                              if (vehicle == null) return;
+                              context.pushNamed(
+                                AppRoutes.vehicleEquipmentScreen,
+                                extra: {
+                                  "title": "Vehicle and Equipment Verification",
+                                  "isEdit": true,
+                                  "year": vehicle.year ?? '',
+                                  "brand": vehicle.brand ?? '',
+                                  "modelNo": vehicle.modelNo ?? '',
+                                  "gvwr": vehicle.gvwr ?? '',
+                                  "type": vehicle.type ?? '',
+                                  "video": vehicle.video ?? '',
+
+                                },
+                              ).then((_) => towTrackController.getTowTrackProfile());
+                            },
+                            child: Assets.icons.editIcon.svg(),
+                          ),
+
+                        ],
                       ),
 
                       // Vehicles list replaced ListView.builder with Column + List.generate
@@ -237,10 +298,10 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                                   ),
                                   SizedBox(height: 10.h),
                                   CustomUploadButton(
-                                    title: 'towTrack.Mp4',
-                                    onTap: () {
-
-                                    },
+                                    title: vehicle.video != null && vehicle.video!.isNotEmpty
+                                        ? 'towtrack.mp4'
+                                        : 'Upload towtrack',
+                                    onTap: () {},
                                     showUploadIcon: false,
                                   ),
                                 ],
@@ -250,11 +311,38 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                         ),
 
                       const Divider(color: AppColors.borderColor),
-                      /// ====================================> Service and Coverage =============================================>
 
-                      CustomText(
-                        text: 'Service and Coverage Area',
-                        fontsize: 20.sp,
+                      /// =====================================> Service and Coverage =============================================>
+
+                      Row(
+                        children: [
+                          CustomText(
+                            text: 'Service and Coverage Area',
+                            fontsize: 20.sp,
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () async {
+                              await towTrackController.getTowTrackProfile();
+                              context.pushNamed(
+                                AppRoutes.serviceCoverageScreen,
+                                extra: {
+                                  "title": "Service and Coverage Area..",
+                                  "isEdit": true,
+                                  "services": profile.services ?? [],
+                                  "country": profile.primaryCountry ?? '',
+                                  "state": profile.primaryCity ?? '',
+                                  "city": profile.primaryCity ?? '',
+                                  "regionsCovered": profile.regionsCovered ?? '',
+                                  "emergency247": profile.emergency247 ?? false,
+                                  "eta": profile.eta ?? '',
+
+                                },
+                              ).then((_) => towTrackController.getTowTrackProfile());
+                            },
+                            child: Assets.icons.editIcon.svg(),
+                          ),
+                        ],
                       ),
                       CustomText(
                         text: 'Types of towing services do we offer.',
@@ -268,10 +356,13 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                             final service = profile.services![index];
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: 4.h),
-                              child: CustomText(
-                                textAlign: TextAlign.start,
-                                text: service ?? '',
-                                fontsize: 10.sp,
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: CustomText(
+                                  textAlign: TextAlign.start,
+                                  text: service ?? '',
+                                  fontsize: 10.sp,
+                                ),
                               ),
                             );
                           }),
@@ -289,13 +380,38 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                       ),
 
                       const Divider(color: AppColors.borderColor),
+
                       /// ======================================> Business requirements ======================================>
 
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        maxline: 2,
-                        text: 'Business requirements and agreements',
-                        fontsize: 20.sp,
+                      Row(
+                        children: [
+                          CustomText(
+                            textAlign: TextAlign.start,
+                            maxline: 2,
+                            text: 'Business requirements and agreements',
+                            fontsize: 16.sp,
+                          ),
+                          SizedBox(width: 12.w),
+                          GestureDetector(
+                            onTap: () async {
+                              await towTrackController.getTowTrackProfile();
+
+                              if (profile != null) {
+                              context.pushNamed(
+                              AppRoutes.businessRequirementScreen,
+                              extra: {
+                              "title": "Business requirements and agreements",
+                              "isEdit": true,
+                              "authName": profile.authName ?? '',
+                              "authTitle": profile.authTitle ?? '',
+                              "authDate": profile.authDate ?? '',
+                              "authSignature": profile.authSignature ?? '',
+                              },
+                              ).then((_) => towTrackController.getTowTrackProfile());
+                              }},
+                            child: Assets.icons.editIcon.svg(),
+                          ),
+                        ],
                       ),
                       CustomText(
                         maxline: 5,
@@ -327,17 +443,31 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                         text: 'Authorized or Representative title : ${profile.authTitle ?? ""}',
                         fontsize: 16.sp,
                       ),
-
                       SizedBox(height: 16.h),
-                      CustomUploadButton(title: 'Signature.jpg', onTap: () {}),
+                      CustomUploadButton(
+                        title: profile.authSignature != null && profile.authSignature!.isNotEmpty
+                            ? 'Signature.jpg'
+                            : 'Upload signature',
+                        onTap: () {},
+                        showUploadIcon: false,
+                      ),
                       SizedBox(height: 10.h),
-                      SizedBox(width: 5.h),
-                      CustomText(
-                        maxline: 5,
-                        bottom: 24.h,
-                        textAlign: TextAlign.start,
-                        text: '${profile.authDate ?? ""}',
-                        fontsize: 16.sp,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(text: 'Date: ',fontsize: 16.sp),
+                          SizedBox(height: 12.h),
+                          CustomText(
+                            maxline: 5,
+                            bottom: 24.h,
+                            textAlign: TextAlign.start,
+                            text: (profile.authDate != null && DateTime.tryParse('${profile.authDate!}') != null)
+                                ? "${DateTime.parse('${profile.authDate!}').year}-${DateTime.parse('${profile.authDate!}').month.toString().padLeft(2, '0')}-${DateTime.parse('${profile.authDate!}').day.toString().padLeft(2, '0')}"
+                                : '',
+
+                            fontsize: 16.sp,
+                          ),
+                        ],
                       ),
                     ],
                   ),

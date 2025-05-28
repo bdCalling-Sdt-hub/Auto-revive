@@ -149,7 +149,7 @@ class TowTrackController extends GetxController{
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        context.pushNamed(AppRoutes.vehicleEquipmentScreen);
+        // context.pushNamed(AppRoutes.vehicleEquipmentScreen);
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         return true;
       } else {
@@ -197,7 +197,7 @@ class TowTrackController extends GetxController{
         body);
     vehiclesEquipmentLoading(false);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.serviceCoverageScreen);
+      // context.pushNamed(AppRoutes.serviceCoverageScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
@@ -207,7 +207,7 @@ class TowTrackController extends GetxController{
   }
 
 
-  /// =====================================> Vehicle Equipment ==============================================>
+  /// =====================================> service Coverage ==============================================>
 
   var serviceCoverageLoading = false.obs;
 
@@ -236,7 +236,7 @@ class TowTrackController extends GetxController{
         body);
     serviceCoverageLoading(false);
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.businessRequirementScreen);
+      // context.pushNamed(AppRoutes.businessRequirementScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
@@ -275,7 +275,7 @@ class TowTrackController extends GetxController{
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        context.pushNamed(AppRoutes.towTruckBottomNavBar);
+        // context.pushNamed(AppRoutes.towTruckBottomNavBar);
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         return true;
       } else {

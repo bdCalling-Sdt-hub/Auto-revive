@@ -35,34 +35,35 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
   final TextEditingController _businessYearTEController = TextEditingController();
   final TextEditingController _towTrucksTEController = TextEditingController();
   final TextEditingController _eINTEController = TextEditingController();
+
+
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-
-
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
-    towTrackController.getTowTrackProfile().then((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final extra = GoRouterState.of(context).extra;
       final Map routeData = extra is Map ? extra : {};
-
 
       _companyNameTEController.text = routeData['companyName'] ?? '';
       _ownerNameTEController.text = routeData['companyOwner'] ?? '';
       _businessPhoneTEController.text = routeData['companyPhone'] ?? '';
       _websiteURLTEController.text = routeData['website'] ?? '';
-      _businessYearTEController.text = routeData['yearsInBusiness'] ?? '';
-      _towTrucksTEController.text = routeData['totalTows'] ?? '';
+      _businessYearTEController.text = routeData['yearsInBusiness']?.toString() ?? '';
+      _towTrucksTEController.text = routeData['totalTows']?.toString() ?? '';
       _eINTEController.text = routeData['einNo'] ?? '';
+      _businessEmailTEController.text = routeData['companyEmail'] ?? '';
+      _companyAddressTEController.text = routeData['companyAddress'] ?? '';
 
       setState(() {
         isLoading = false;
-
       });
     });
+    towTrackController.getTowTrackProfile();
   }
+
 
 
   @override

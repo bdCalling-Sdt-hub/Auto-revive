@@ -1,5 +1,4 @@
 import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/CustomChecked.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
@@ -12,9 +11,8 @@ import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 
 class ServiceCoverageScreen extends StatefulWidget {
@@ -34,7 +32,6 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
   final TextEditingController _regionsCoveredTEController = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
-
   final Map<String, bool> _services = {
     'Light-Duty Towing (Cars & Small Trucks)': false,
     'Medium-Duty Towing (Box Trucks & RVs)': false,
@@ -43,17 +40,55 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
     'Winch-Out & Recovery Services': false,
     'Equipment Transport': false,
   };
-
   final Map<String, bool> checkboxOptions = {
     'Under 30 minutes': false,
     '30-60 minutes': false,
     'Over 1 hour': false,
   };
-
   bool? _emergencyTowingChecked;
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
+      final List<String> servicesList = (routeData['services'] as List?)?.cast<String>() ?? [];
+      for (var key in _services.keys) {
+        _services[key] = servicesList.contains(key);
+      }
+
+      final List<String> etaList = (routeData['eta'] as String?)?.replaceAll('[', '').replaceAll(']', '').split(',') ?? [];
+      for (var key in checkboxOptions.keys) {
+        checkboxOptions[key] = etaList.contains(key.trim());
+      }
+
+      country.text = routeData['country'] ?? '';
+      state.text = routeData['state'] ?? '';
+      city.text = routeData['city'] ?? '';
+      _regionsCoveredTEController.text = routeData['regionsCovered'] ?? '';
+      _emergencyTowingChecked = routeData['emergency247'] ?? false;
+
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+    towTrackController.getTowTrackProfile();
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -144,8 +179,8 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
               Obx(()=>
                CustomButton(
                  loading: towTrackController.serviceCoverageLoading.value,
-                    title: 'Save and Next',
-                   onpress: () {
+                    title:  isEdit ? "Edit" : "Save and Next",
+                   onpress: () async {
                      if (_globalKey.currentState!.validate()) {
 
                        final selectedServices = _services.entries
@@ -173,7 +208,7 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
                          return;
                        }
 
-                       towTrackController.serviceCoverage(
+                       final success = await towTrackController.serviceCoverage(
                          services: selectedServices,
                          primaryCountry: country.text.trim(),
                          primaryState: state.text.trim(),
@@ -183,6 +218,11 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
                          eta: selectedETA.toString(),
                          context: context,
                        );
+                       if (success) {
+                         isEdit
+                             ? context.pop(true)
+                             :   context.pushNamed(AppRoutes.businessRequirementScreen);
+                       }
                      }
                    }
                )

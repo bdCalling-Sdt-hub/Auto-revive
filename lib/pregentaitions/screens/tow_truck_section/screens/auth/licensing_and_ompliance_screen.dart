@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 
 class LicensingAndComplianceScreen extends StatefulWidget {
@@ -37,14 +39,51 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
   RxString registrationUrl = ''.obs;
   RxString insurancePolicyUrl = ''.obs;
   RxString mcUrl = ''.obs;
-
-
   bool? validUSDOTNumber;
   bool? coverageNumber;
   bool? mCNumber;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
+      _uSDOTNumberTEController.text = routeData['usDotNo'] ?? '';
+      _policyNumberTEController.text = routeData['policyNo'] ?? '';
+      _coverageLimitsTEController.text = routeData['policyLimit']?.toString() ?? '';
+      _mCNumberTEController.text = routeData['mcNo'] ?? '';
+
+      registrationUrl.value = routeData['usDotFile'] ?? '';
+      insurancePolicyUrl.value = routeData['policyFile'] ?? '';
+      mcUrl.value = routeData['mcFile'] ?? '';
+
+      validUSDOTNumber = (routeData['usDotNo'] ?? '').toString().isNotEmpty;
+      coverageNumber = (routeData['policyNo'] ?? '').toString().isNotEmpty;
+      mCNumber = (routeData['mcNo'] ?? '').toString().isNotEmpty;
+
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+
+    towTrackController.getTowTrackProfile();
+  }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -85,10 +124,13 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
               ),
               CustomUploadButton(
                 topLabel: 'Do you have commercial insurance coverage?*',
-                title: 'DOT registration.pdf',
+                title: registrationUrl.value.isNotEmpty
+                    ? 'DOT registration.pdf'
+                    : 'Upload DOT registration',
                 icon: Icons.upload,
                 onTap: () => importPdf(target: 'dot'),
-              ),],
+              ),
+            ],
 
               /// =======================================> Commercial Insurance ===================================>
 
@@ -122,12 +164,14 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   LengthLimitingTextInputFormatter(9),
                 ],
               ),
-              CustomUploadButton(
-                topLabel: 'Upload Proof of a Active insurance policy.',
-                title: 'Insurance-policy.pdf',
-                icon: Icons.upload,
-                onTap: () => importPdf(target: 'insurance'),
-              ),],
+                CustomUploadButton(
+                  topLabel: 'Upload Proof of a Active insurance policy.',
+                  title: insurancePolicyUrl.value.isNotEmpty
+                      ? 'insurancePolicy.pdf'
+                      : 'Upload insurance policy',
+                  icon: Icons.upload,
+                  onTap: () => importPdf(target: 'insurance'),
+                ),],
 
               /// =======================================> MC Number ===================================>
               CustomChecked(
@@ -150,22 +194,22 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   LengthLimitingTextInputFormatter(9),
                 ],
               ),
-              CustomUploadButton(
-                topLabel: 'Upload Proof of MC authority',
-                title: 'mc.pdf',
-                icon: Icons.upload,
-                onTap: () => importPdf(target: 'mc'),
-              ),],
+      CustomUploadButton(
+        topLabel: 'Upload Proof of MC authority',
+        title: mcUrl.value.isNotEmpty
+            ? 'mc.pdf'
+            : 'Upload mc',
+        icon: Icons.upload,
+        onTap: () => importPdf(target: 'mc'),
+      ),],
 
 
               SizedBox(height: 44.h),
               Obx(()=>
                 CustomButton(
                   loading: towTrackController.licensingComplianceLoading.value,
-                    title: 'Save and Next',
-
-
-                    onpress: () {
+                    title: isEdit ? "Edit" : "Save and Next",
+                    onpress: () async{
                       if(_globalKey.currentState!.validate()){
                         if (validUSDOTNumber == true && registrationUrl.value.isEmpty) {
                           ToastMessageHelper.showToastMessage("Please upload DOT registration.", title: 'Attention');
@@ -181,7 +225,7 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                         }
 
                         final int? policyLimit = int.tryParse(_coverageLimitsTEController.text.trim());
-                        towTrackController.licensingCompliance(
+                        final success = await  towTrackController.licensingCompliance(
                             policyNo: _policyNumberTEController.text.trim(),
                             policyLimit: policyLimit,
                             usDotFile: registrationUrl.value,
@@ -190,7 +234,12 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                             usDotNo: _uSDOTNumberTEController.text.trim(),
                             mcFile: mcUrl.value,
                             context: context);
-                      } return;
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              :  context.pushNamed(AppRoutes.vehicleEquipmentScreen);
+                        }
+                      }
 
                     }
 
