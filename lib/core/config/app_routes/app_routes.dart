@@ -45,7 +45,7 @@ import '../../../pregentaitions/screens/tow_truck_profile/earning/add_balace_scr
 import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/withdraw_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/personal_info_customer/personal_info_customer_screen.dart';
-import '../../../pregentaitions/screens/tow_truck_section/screens/auth/basic_info_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_section/screens/auth/tow_track_basic_info_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/auth/business_requirement_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/auth/company_information_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/auth/licensing_and_ompliance_screen.dart';

@@ -84,7 +84,7 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
-      if(role == "mechanic"){
+      if(role.toLowerCase() == "mechanic"){
         context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
       }else{
         context.pushNamed(AppRoutes.otpScreen, extra: "tow_truck");
@@ -119,6 +119,7 @@ class AuthController extends GetxController {
       debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
       if (type == 'Sign Up') {
+        print('================================ screenType received yjuikhujikgyhujvghg: $screenType');
         if(screenType == "user"){
           context.go(AppRoutes.logInScreen);
         } else if(screenType == "mechanic"){
@@ -128,9 +129,9 @@ class AuthController extends GetxController {
         }
       }
       verfyLoading(false);
-    } else if(response.statusCode == 1){
+    } else{
       verfyLoading(false);
-      // ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+      print('================================ screenType received yjuikhujikgyhujvghg: $screenType');
     }
     verfyLoading(false);
     ToastMessageHelper.showToastMessage("${response.body["message"]}");
@@ -142,17 +143,24 @@ class AuthController extends GetxController {
   ///************************************************************************///
   ///===============Log in================<>
   RxBool logInLoading = false.obs;
+
   handleLogIn(String email, String password, {required BuildContext context}) async {
     logInLoading.value = true;
+
     var headers = {'Content-Type': 'application/json'};
     var body = {
       "email": email,
-      "password": password
+      "password": password,
     };
+
     var response = await ApiClient.postData(
-        ApiConstants.loginUpEndPoint, jsonEncode(body),
-        headers: headers);
+      ApiConstants.loginUpEndPoint,
+      jsonEncode(body),
+      headers: headers,
+    );
+
     print("========================${response.statusCode} \n ${response.body}");
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data']["user"];
       await PrefsHelper.setString(AppConstants.role, data['role']);
@@ -161,50 +169,115 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.name, data['name']);
       await PrefsHelper.setString(AppConstants.userId, data['_id']);
 
-
       var role = data['role'];
 
       if (role == "customer") {
         context.go(AppRoutes.customerBottomNavBar);
         await PrefsHelper.setBool(AppConstants.isLogged, true);
-      }
-      else{
-        if(data["step"] == 1){
+      } else if (role == "mechanic") {
+        if (data["step"] == 1) {
           context.go(AppRoutes.mechanicPersonalInformationScreen);
-        }else if(data["step"] ==  2){
+        } else if (data["step"] == 2) {
           context.go(AppRoutes.mechanicExperienceSkillScreen);
-        }else if(data["step"] ==  3){
+        } else if (data["step"] == 3) {
           context.go(AppRoutes.mechanicToolsEquipmentScreen);
-        }else if(data["step"] ==  4){
+        } else if (data["step"] == 4) {
           context.go(AppRoutes.mechanicEmploymentHistoryScreen);
-        }else if(data["step"] ==  5){
+        } else if (data["step"] == 5) {
           context.go(AppRoutes.mechanicReferenceScreen);
-        }else if(data["step"] ==  6){
+        } else if (data["step"] == 6) {
           context.go(AppRoutes.mechanicAdditionalInformationScreen);
-        }else if(data["step"] ==  7){
+        } else if (data["step"] == 7) {
           context.go(AppRoutes.mechanicResumeCertificateScreen);
-        }
-        else{
+        } else {
           context.go(AppRoutes.mechanicBottomNavBar);
           await PrefsHelper.setBool(AppConstants.isLogged, true);
         }
+      } else {
+        context.go(AppRoutes.towTruckBottomNavBar);
+        await PrefsHelper.setBool(AppConstants.isLogged, true);
       }
-      ToastMessageHelper.showToastMessage('Your are logged in');
+
+      ToastMessageHelper.showToastMessage('You are logged in');
       logInLoading(false);
-    }else{
+    } else {
       logInLoading(false);
-      ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
       if (response.body["message"] == "Email not verified. Please verify your email.") {
         context.go(AppRoutes.otpScreen, extra: "");
         await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']);
         ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your email.");
-      }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
+      } else if (response.body["message"] == "⛔ Wrong password! ⛔") {
         ToastMessageHelper.showToastMessage(response.body["message"]);
+      } else {
+        ToastMessageHelper.showToastMessage(response.body['message']);
       }
-      logInLoading(false);
-      ToastMessageHelper.showToastMessage(response.body['message']);
     }
   }
+
+
+  // RxBool logInLoading = false.obs;
+  // handleLogIn(String email, String password, {required BuildContext context}) async {
+  //   logInLoading.value = true;
+  //   var headers = {'Content-Type': 'application/json'};
+  //   var body = {
+  //     "email": email,
+  //     "password": password
+  //   };
+  //   var response = await ApiClient.postData(
+  //       ApiConstants.loginUpEndPoint, jsonEncode(body),
+  //       headers: headers);
+  //   print("========================${response.statusCode} \n ${response.body}");
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     var data = response.body['data']["user"];
+  //     await PrefsHelper.setString(AppConstants.role, data['role']);
+  //     await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["tokens"]["accessToken"]);
+  //     await PrefsHelper.setString(AppConstants.email, email);
+  //     await PrefsHelper.setString(AppConstants.name, data['name']);
+  //     await PrefsHelper.setString(AppConstants.userId, data['_id']);
+  //
+  //
+  //     var role = data['role'];
+  //
+  //     if (role == "customer") {
+  //       context.go(AppRoutes.customerBottomNavBar);
+  //       await PrefsHelper.setBool(AppConstants.isLogged, true);
+  //     }
+  //     else{
+  //       if(data["step"] == 1){
+  //         context.go(AppRoutes.mechanicPersonalInformationScreen);
+  //       }else if(data["step"] ==  2){
+  //         context.go(AppRoutes.mechanicExperienceSkillScreen);
+  //       }else if(data["step"] ==  3){
+  //         context.go(AppRoutes.mechanicToolsEquipmentScreen);
+  //       }else if(data["step"] ==  4){
+  //         context.go(AppRoutes.mechanicEmploymentHistoryScreen);
+  //       }else if(data["step"] ==  5){
+  //         context.go(AppRoutes.mechanicReferenceScreen);
+  //       }else if(data["step"] ==  6){
+  //         context.go(AppRoutes.mechanicAdditionalInformationScreen);
+  //       }else if(data["step"] ==  7){
+  //         context.go(AppRoutes.mechanicResumeCertificateScreen);
+  //       } else{
+  //         context.go(AppRoutes.mechanicBottomNavBar);
+  //         await PrefsHelper.setBool(AppConstants.isLogged, true);
+  //       }
+  //     }
+  //     ToastMessageHelper.showToastMessage('Your are logged in');
+  //     logInLoading(false);
+  //   }else{
+  //     logInLoading(false);
+  //     ///******** When user do not able to verify their account thay have to verify there account then they can go to the app********
+  //     if (response.body["message"] == "Email not verified. Please verify your email.") {
+  //       context.go(AppRoutes.otpScreen, extra: "");
+  //       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']);
+  //       ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your email.");
+  //     }else if(response.body["message"] == "⛔ Wrong password! ⛔"){
+  //       ToastMessageHelper.showToastMessage(response.body["message"]);
+  //     }
+  //     logInLoading(false);
+  //     ToastMessageHelper.showToastMessage(response.body['message']);
+  //   }
+  // }
 
 
   //

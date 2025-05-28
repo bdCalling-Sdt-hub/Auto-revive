@@ -38,9 +38,38 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
 
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    towTrackController.getTowTrackProfile().then((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
+
+      _companyNameTEController.text = routeData['companyName'] ?? '';
+      _ownerNameTEController.text = routeData['companyOwner'] ?? '';
+      _businessPhoneTEController.text = routeData['companyPhone'] ?? '';
+      _websiteURLTEController.text = routeData['website'] ?? '';
+      _businessYearTEController.text = routeData['yearsInBusiness'] ?? '';
+      _towTrucksTEController.text = routeData['totalTows'] ?? '';
+      _eINTEController.text = routeData['einNo'] ?? '';
+
+      setState(() {
+        isLoading = false;
+
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -149,12 +178,12 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
               Obx(()=>
               CustomButton(
                 loading: towTrackController.companyInfoLoading.value,
-                    title: 'Save and Next',
-                    onpress: () {
+                    title: isEdit ? "Edit" : "Save and Next",
+                    onpress: () async {
                       if(_globalKey.currentState!.validate()){
                         final int? yearsInBusiness = int.tryParse(_businessYearTEController.text.trim());
                         final int? totalTows = int.tryParse(_towTrucksTEController.text.trim());
-                        towTrackController.companyInformation(
+                        final success = await towTrackController.companyInformation(
                           companyName: _companyNameTEController.text.trim(),
                             companyOwner: _ownerNameTEController.text.trim(),
                             companyPhone: _businessPhoneTEController.text.trim(),
@@ -165,7 +194,12 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
                             totalTows: totalTows,
                             einNo: _eINTEController.text.trim(),
                             context: context);
-                      } return;
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              :  context.pushNamed(AppRoutes.licensingAndComplianceScreen);
+                        }
+                      }
 
                     }),
               ),
