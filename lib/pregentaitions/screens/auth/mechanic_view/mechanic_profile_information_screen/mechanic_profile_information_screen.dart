@@ -561,13 +561,20 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       ),
                       SizedBox(height: 10.h),
                       CustomUploadButton(
-                        title: getFileName(mechanicController.profile.value.resume),
+                        title: mechanicController.profile.value.resume != null && mechanicController.profile.value.resume!.isNotEmpty
+                            ? 'Resume.pdf'
+                            : 'Upload resume',
                         onTap: () {},
+                        showUploadIcon: false,
                       ),
+
                       SizedBox(height: 12.h),
                       CustomUploadButton(
-                        title: getFileName(mechanicController.profile.value.certificate),
+                        title: mechanicController.profile.value.certificate != null && mechanicController.profile.value.certificate!.isNotEmpty
+                        ? 'Certificate .pdf'
+                        : 'Upload certificate',
                         onTap: () {},
+                        showUploadIcon: false,
                       ),
 
                       /// ==============================================> Go to Home Button ============================================>

@@ -13,8 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 
@@ -37,11 +39,6 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
   TowTrackController towTrackController = Get.put(TowTrackController());
   UploadController uploadController = Get.put(UploadController());
   RxString videoUrl = ''.obs;
-
-
-
-
-
   final List<CarModel> typeTrack =  [
     CarModel(id: '1', adminId: 'admin123', name: 'flatbed', v: 0),
     CarModel(id: '2', adminId: 'admin123', name: 'wrecker', v: 0),
@@ -50,11 +47,41 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
     CarModel(id: '5', adminId: 'admin456', name: 'light-duty', v: 0),
     CarModel(id: '6', adminId: 'admin456', name: 'other', v: 0),
   ];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
+      _makingYearTEController.text = routeData['year']?.toString() ?? '';
+      _manufacturerTEController.text = routeData['brand'] ?? '';
+      _modelNumberTEController.text = routeData['modelNo'] ?? '';
+      _vehicleWeightTEController.text = routeData['gvwr']?.toString() ?? '';
+      _typeTowTruckTEController.text = routeData['type'] ?? '';
+      videoUrl.value = routeData['video'] ?? '';
+
+      setState(() {
+        isLoading = false;
+      });
+    });
+    towTrackController.getTowTrackProfile();
+  }
+
+
+
+
 
 
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -159,17 +186,16 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
               Obx(()=>
                 CustomButton(
                   loading: towTrackController.vehiclesEquipmentLoading.value,
-                    title: 'Save and Next',
-                    onpress: () {
+                    title:  isEdit ? "Edit" : "Save and Next",
+                    onpress: () async{
                       if(_globalKey.currentState!.validate()){
                         final int? gvwr = int.tryParse(_vehicleWeightTEController.text.trim());
                         final int? year = int.tryParse(_makingYearTEController.text.trim());
 
                         if (videoUrl.value.isEmpty) {
                           ToastMessageHelper.showToastMessage("Please upload tow track video", title: 'Attention');
-                          return;
                         }
-                        towTrackController.vehiclesEquipment(
+                        final success = await  towTrackController.vehiclesEquipment(
                             year: year,
                             brand: _manufacturerTEController.text.trim(),
                             modelNo: _modelNumberTEController.text.trim(),
@@ -177,7 +203,13 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
                             type: _typeTowTruckTEController.text.trim(),
                             video: videoUrl.value,
                             context: context);
-                      } return;
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              :  context.pushNamed(AppRoutes.serviceCoverageScreen);
+                        }
+
+                      }
 
                     }),
               ),

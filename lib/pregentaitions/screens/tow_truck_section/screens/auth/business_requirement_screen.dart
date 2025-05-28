@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_checkbox_list.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_linear_indicator.dart';
@@ -12,12 +10,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 
 class BusinessRequirementScreen extends StatefulWidget {
@@ -48,10 +44,43 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
     'Submit a live walk-around video showing that all trucks meet operational standards.': false,
     'I certify that the information provided is accurate and that my company meets all requirements for partnering with Fix It LLC.': false,
   };
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      final Map routeData = extra is Map ? extra : {};
+
+      _nameTEController.text = routeData['authName'] ?? '';
+      _titleTEController.text = routeData['authTitle'] ?? '';
+      _dateTEController.text = routeData['authDate'] != null
+          ? DateTime.parse(routeData['authDate'].toString())
+          .toIso8601String()
+          .split('T')
+          .first
+          : '';
+      signatureUrl.value = routeData['authSignature'] ?? '';
+
+
+
+      setState(() {
+        isLoading = false;
+      });
+    });
+    towTrackController.getTowTrackProfile();
+  }
+
+
 
 
   @override
   Widget build(BuildContext context) {
+    final extra = GoRouterState.of(context).extra;
+    final Map routeData = extra is Map ? extra : {};
+    final bool isEdit = routeData['isEdit'] ?? false;
     return CustomScaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -78,10 +107,12 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                 text: 'By applying to work with Fix It LLC, you agree to the following..',
                 bottom: 6.h,
               ),
-              CustomCheckboxList(
-                isAllChecked: true,
-                items: _services,
-              ),
+              if (!isEdit)
+                CustomCheckboxList(
+                  isAllChecked: true,
+                  items: _services,
+                ),
+
 
               SizedBox(height: 10.h),
 
@@ -98,11 +129,17 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
               ),
 
 
+              Obx(() =>
+                  CustomUploadButton(
+                    topLabel: 'Signature',
+                    title: signatureUrl.value.isNotEmpty
+                        ? 'signature.jpg'
+                        : 'Upload signature',
+                    icon: Icons.upload,
+                    onTap: () => importPdf(isSignature: true),
+                  ),
 
-              CustomUploadButton(
-                topLabel: 'Signarure',
-                  title: 'signature.jpg',
-                  onTap: ()=> importPdf(isSignature: true)),
+              ),
 
               CustomTextField(
                 readOnly: true,
@@ -117,8 +154,8 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
               Obx(()=>
                 CustomButton(
                   loading: towTrackController.businessRequirementsLoading.value,
-                    title: 'Submit',
-                    onpress: () {
+                    title:  isEdit ? "Edit" : "Save and Next",
+                    onpress: ()async {
                       if(_globalKey.currentState!.validate()){
 
                         if (signatureUrl.value.isEmpty) {
@@ -126,20 +163,24 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                           return;
                         }
 
-                        if (!_services.values.any((v) => v)) {
+                        if (!isEdit && !_services.values.any((v) => v)) {
                           ToastMessageHelper.showToastMessage("Please select all services LLC", title: 'Attention');
                           return;
                         }
 
-                        towTrackController.businessRequirements(
+                        final success = await towTrackController.businessRequirements(
                           authName: _nameTEController.text.trim(),
                             authTitle: _titleTEController.text.trim(),
                             authSignature: signatureUrl.value,
                             authDate: _dateTEController.text.trim(),
                             context: context);
+                        if (success) {
+                          isEdit
+                              ? context.pop(true)
+                              :    context.pushNamed(AppRoutes.towTruckBottomNavBar);
+                        }
 
-
-                      } return;
+                      }
                     }),
               ),
               SizedBox(height: 24.h),
