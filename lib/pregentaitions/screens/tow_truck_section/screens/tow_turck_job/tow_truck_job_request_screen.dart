@@ -1,7 +1,6 @@
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_slider.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -197,21 +196,16 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
                                 color: Colors.blue.shade600,
                               ),
                               SizedBox(width: 4.w),
-                              Row(
-                                children: [
-                                  CustomText(
-                                    text: job.carModelId?.name ?? 'N/A',
-                                    fontsize: 10.sp,
-                                    color: AppColors.pdfButtonColor,
-                                  ),
-                                  SizedBox(width: 5.w),
-                                  CustomText(
-                                      text: 'Distance: 23 KM', color: AppColors.primaryColor),
-
-                                ],
+                              CustomText(
+                                text: job.carModelId?.name ?? 'N/A',
+                                fontsize: 10.sp,
+                                color: AppColors.pdfButtonColor,
                               ),
+
                             ],
                           ),
+                          CustomText(
+                              text: 'Distance: ${job.distance?.toStringAsFixed(2) ?? 'N/A'}', color: AppColors.primaryColor),
                           SizedBox(height: 10.h),
                           Obx(() {
                             bool isRequested = mechanicJobController.requestedJobIds.contains(job.id);

@@ -4,6 +4,7 @@ class AllJobProviderModel {
   final CarModelId? carModelId;
   final String? platform;
   final DateTime? createdAt;
+  final double? distance;
 
   AllJobProviderModel({
     this.id,
@@ -11,6 +12,8 @@ class AllJobProviderModel {
     this.carModelId,
     this.platform,
     this.createdAt,
+    this.distance,
+
   });
 
   factory AllJobProviderModel.fromJson(Map<String, dynamic> json) => AllJobProviderModel(
@@ -19,6 +22,7 @@ class AllJobProviderModel {
     carModelId: json["carModelId"] == null ? null : CarModelId.fromJson(json["carModelId"]),
     platform: json["platform"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    distance: json["distance"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -26,6 +30,7 @@ class AllJobProviderModel {
     "customerId": customerId?.toJson(),
     "carModelId": carModelId?.toJson(),
     "platform": platform,
+    "distance": distance,
     "createdAt": createdAt?.toIso8601String(),
   };
 }

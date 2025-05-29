@@ -122,7 +122,7 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with 
                     onTapDetails: () {},
                     onTap: (){
                       mechanicBookingAllFiltersController.changeStatus(
-                          status: bookingAllFilters.status,
+                          status: 'canceled',
                           jobId: bookingAllFilters.id,
                           context: context);
                     },
