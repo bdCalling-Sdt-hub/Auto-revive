@@ -6,8 +6,7 @@ class QuickAlertHelper {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: message,
-
+      text: message
     );
   }
 
@@ -15,7 +14,7 @@ class QuickAlertHelper {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.error,
-      text: message,
+      text: message
     );
   }
 
@@ -23,7 +22,7 @@ class QuickAlertHelper {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.info,
-      text: message,
+      text: message
     );
   }
 
@@ -31,7 +30,7 @@ class QuickAlertHelper {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.loading,
-      title: title,
+      title: title
     );
   }
 }

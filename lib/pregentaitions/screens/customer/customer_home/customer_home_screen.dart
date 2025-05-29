@@ -35,6 +35,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(controller.address.value == ""){
+      print("======================================= do not have address");
+      controller.getCurrentLocation();
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
