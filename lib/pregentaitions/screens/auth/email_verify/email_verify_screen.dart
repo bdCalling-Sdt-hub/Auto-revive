@@ -23,40 +23,43 @@ class EmailVerifyScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-
-            SizedBox(height: 16.h),
-
-            ///<<<=============>>> LOGO <<<===============>>>
-
-            Assets.icons.logoSVG.svg(),
-
-
-            SizedBox(height: 38.h),
-
-
-            ///<<<=============>>> EMAIL FILED <<<===============>>>
-
-            CustomTextField(
-                controller: emailCtrl,
-                hintText: "Enter E-mail",
-                prefixIcon: Assets.icons.mail.svg(),
-                isEmail: true),
-
-
-
-            SizedBox(height: 111.h),
-
-
-            ///<<<=============>>> SEND OTP <<<===============>>>
-
-            CustomButton(title: "Send OTP", onpress: (){
-              context.pushNamed(AppRoutes.otpScreen);
-            }),
-
-
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+          
+              SizedBox(height: 16.h),
+          
+              ///<<<=============>>> LOGO <<<===============>>>
+          
+              Assets.icons.logoSVG.svg(),
+          
+          
+              SizedBox(height: 38.h),
+          
+          
+              ///<<<=============>>> EMAIL FILED <<<===============>>>
+          
+              CustomTextField(
+                  controller: emailCtrl,
+                  hintText: "Enter E-mail",
+                  prefixIcon: Assets.icons.mail.svg(),
+                  isEmail: true),
+          
+          
+          
+              SizedBox(height: 111.h),
+          
+          
+              ///<<<=============>>> SEND OTP <<<===============>>>
+          
+              CustomButton(title: "Send OTP", onpress: (){
+                context.pushNamed(AppRoutes.otpScreen);
+              }),
+              SizedBox(height: 20.h),
+          
+          
+            ],
+          ),
         ),
       ),
     );

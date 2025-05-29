@@ -204,7 +204,7 @@ class TowTrackProfileModel {
 
 class Location {
   final String? type;
-  final List<int>? coordinates;
+  final List? coordinates;
 
   Location({
     this.type,
@@ -213,7 +213,7 @@ class Location {
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
     type: json["type"],
-    coordinates: json["coordinates"] == null ? [] : List<int>.from(json["coordinates"]!.map((x) => x)),
+    coordinates: json["coordinates"] == null ? [] : List.from(json["coordinates"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {

@@ -43,6 +43,7 @@ class ApiConstants{
   static const String getAllServiceEndPoint = "/service";
   static  String changeStatus (String id) => "/job-process/provider/$id";
   static  String bookingAllPaginationFilters = "/job-process/provider";
+  static  String paymentHistory = "/payment/history";
   static  String allHistories (String page,limit) => "/job-process/provider?page=1&limit=11&sortField=createdAt&sortOrder=desc";
   static  String getAllJobProvider(String page, radius) => "/job/provider/$radius?page=$page&limit=10000";
 

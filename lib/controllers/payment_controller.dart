@@ -1,18 +1,14 @@
-
-
-
 import 'dart:convert';
-
 import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart' as http;
 
 import '../env/config.dart';
 import '../helpers/toast_message_helper.dart';
+import '../models/payment_history_model.dart';
 import '../services/api_client.dart';
 
 
@@ -167,6 +163,24 @@ class PaymentController {
     } catch (e) {
     }
   }
+
+  /// ================================> Payment History  ==============================>
+
+  RxBool paymentHistoryLoading = false.obs;
+  RxList<PaymentHistoryModel> paymentHistory = <PaymentHistoryModel>[].obs;
+  getPaymentHistory()async{
+    paymentHistoryLoading(true);
+    var response = await ApiClient.getData(ApiConstants.paymentHistory);
+    if(response.statusCode == 200){
+      paymentHistory.value = List<PaymentHistoryModel>.from(response.body["data"].map((x)=> PaymentHistoryModel.fromJson(x)));
+      paymentHistoryLoading(false);
+    }else{
+      paymentHistoryLoading(false);
+    }
+  }
+
+
+
 
 
 }

@@ -524,8 +524,12 @@ class AppRoutes {
     GoRoute(
       path: towTruckJobRequestScreen,
       name: towTruckJobRequestScreen,
-      pageBuilder: (context, state) =>
-          _customTransitionPage(TowTruckJobRequestScreen(), state),
+      pageBuilder: (context, state) {
+        final radius = state.extra as String;
+        return MaterialPage(
+          child: TowTruckJobRequestScreen(radius: radius),
+        );
+      },
     ),
 
     ///<<<=============>>> CUSTOMER MECHANIC SCREEN <<<===============>>>

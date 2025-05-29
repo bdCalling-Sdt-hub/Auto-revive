@@ -2,17 +2,40 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../controllers/current_location_controller.dart';
+import '../../../../../controllers/live_location_change_controller.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../global/custom_assets/assets.gen.dart';
+import '../../../../../services/socket_services.dart';
 import '../../../../widgets/custom_text.dart';
 
 
 
-class TowTruckHomeScreen extends StatelessWidget {
+class TowTruckHomeScreen extends StatefulWidget {
   const TowTruckHomeScreen({super.key});
 
+  @override
+  State<TowTruckHomeScreen> createState() => _TowTruckHomeScreenState();
+}
+
+class _TowTruckHomeScreenState extends State<TowTruckHomeScreen> {
+  CurrentLocationController controller = Get.put(CurrentLocationController());
+  LiveLocationChangeController liveLocationChangeController = Get.put(LiveLocationChangeController());
+  SocketServices socketServices = SocketServices();
+
+
+  @override
+  void initState() {
+
+    controller.getCurrentLocation();
+    liveLocationChangeController.listenToLocationChanges();
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

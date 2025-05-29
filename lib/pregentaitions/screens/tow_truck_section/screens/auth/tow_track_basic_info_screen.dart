@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
@@ -71,9 +72,6 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     final extra = GoRouterState.of(context).extra;
@@ -88,15 +86,13 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
             fontsize: 20.sp,
           )),
       body:
-
-      // isLoading
-      //     ? Column(
-      //   children: List.generate(2, (_) => _buildShimmerProfile()),
-      // ) :
       SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Column(
+          child:isLoading
+              ? Column(
+            children: List.generate(2, (_) => _buildShimmerProfile()),
+          ) : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomLinearIndicator(
@@ -246,161 +242,161 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
 
 
 
-  // Widget _buildShimmerProfile() {
-  //   return Shimmer.fromColors(
-  //     baseColor: Colors.grey.shade300,
-  //     highlightColor: Colors.grey.shade100,
-  //     child: Padding(
-  //       padding: EdgeInsets.symmetric(horizontal: 20.w),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         children: [
-  //           SizedBox(height: kToolbarHeight + 20.h), // space for appbar
-  //
-  //           // Profile Image Shimmer
-  //           Center(
-  //             child: Container(
-  //               width: 104.w,
-  //               height: 104.h,
-  //               decoration: BoxDecoration(
-  //                 shape: BoxShape.circle,
-  //                 color: Colors.grey.shade300,
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(height: 30.h),
-  //
-  //           // Name field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 15.h),
-  //
-  //           // Business Address field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 15.h),
-  //
-  //           // Email field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 15.h),
-  //
-  //           // Price Per Mile field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 15.h),
-  //
-  //           // Phone Number field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 15.h),
-  //
-  //           // LLC field shimmer
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 20.h),
-  //
-  //           // Checkbox placeholders row 1
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Container(
-  //                 width: 24.w,
-  //                 height: 24.h,
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.grey.shade300,
-  //                   borderRadius: BorderRadius.circular(4.r),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 10.w),
-  //               Container(
-  //                 width: 150.w,
-  //                 height: 20.h,
-  //                 color: Colors.grey.shade300,
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(height: 10.h),
-  //
-  //           // Checkbox placeholders row 2
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Container(
-  //                 width: 24.w,
-  //                 height: 24.h,
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.grey.shade300,
-  //                   borderRadius: BorderRadius.circular(4.r),
-  //                 ),
-  //               ),
-  //               SizedBox(width: 10.w),
-  //               Container(
-  //                 width: 100.w,
-  //                 height: 20.h,
-  //                 color: Colors.grey.shade300,
-  //               ),
-  //             ],
-  //           ),
-  //           SizedBox(height: 40.h),
-  //
-  //           // Save and Next button placeholder
-  //           Container(
-  //             width: double.infinity,
-  //             height: 50.h,
-  //             decoration: BoxDecoration(
-  //               color: Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(8.r),
-  //             ),
-  //           ),
-  //           SizedBox(height: 80.h),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildShimmerProfile() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: kToolbarHeight + 20.h), // space for appbar
+
+            // Profile Image Shimmer
+            Center(
+              child: Container(
+                width: 104.w,
+                height: 104.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            ),
+            SizedBox(height: 30.h),
+
+            // Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Email field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Price Per Mile field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Phone Number field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // LLC field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // Checkbox placeholders row 1
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Container(
+                  width: 150.w,
+                  height: 20.h,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+
+            // Checkbox placeholders row 2
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4.r),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Container(
+                  width: 100.w,
+                  height: 20.h,
+                  color: Colors.grey.shade300,
+                ),
+              ],
+            ),
+            SizedBox(height: 40.h),
+
+            // Save and Next button placeholder
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
 
 
 
 
 
-//==================================> ShowImagePickerOption Function <===============================
+/// ==================================> ShowImagePickerOption Function <===============================
 
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(

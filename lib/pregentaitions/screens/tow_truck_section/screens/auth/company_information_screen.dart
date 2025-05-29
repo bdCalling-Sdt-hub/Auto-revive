@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 
@@ -57,9 +58,13 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
       _businessEmailTEController.text = routeData['companyEmail'] ?? '';
       _companyAddressTEController.text = routeData['companyAddress'] ?? '';
 
-      setState(() {
-        isLoading = false;
+      Future.delayed(Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
       });
+
+
     });
     towTrackController.getTowTrackProfile();
   }
@@ -81,7 +86,10 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
       body: SingleChildScrollView(
         child: Form(
           key: _globalKey,
-          child: Column(
+          child:isLoading
+              ? Column(
+            children: List.generate(2, (_) => _buildShimmerCompanyInformation()),
+          ) : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomLinearIndicator(
@@ -211,4 +219,134 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
       ),
     );
   }
+
+  Widget _buildShimmerCompanyInformation() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 20.h), // space for appbar
+
+            // Company Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Owner / Manager Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Phone Number picker shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Email Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Company Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Website URL field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Years in Business field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Number of Tow Trucks and EIN number row shimmer
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Container(
+                  width: 134.w,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 40.h),
+
+            // Save and Next button shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
