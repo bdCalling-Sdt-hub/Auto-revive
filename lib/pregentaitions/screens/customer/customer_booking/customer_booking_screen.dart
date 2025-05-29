@@ -130,7 +130,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                         context.pushNamed(AppRoutes.towTruckDetailsScreen);
                       },
                       certificates: booking.providerId?.certifications ?? [],
-                      address: booking.platform?.toLowerCase() == "on site" ? "" : booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
+                      address: booking.platform?.toLowerCase() == "on site" ? "" : booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${"${booking.providerId?.distance?.toStringAsFixed(2)}"}',
                       onTap: (){
                         context.pushNamed(AppRoutes.customerBookingDetailsScreen, extra: {
                           "title" : "Complete",
@@ -149,7 +149,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       },
                       rating: booking.providerId?.avgRating ?? 0,
                       name: booking.providerId?.name.toString() ?? "",
-                      money: booking.transportPrice?.toString() ?? "",
+                      money: booking.providerId?.role == "tow_truck" ? "${booking.servicePrice?.toStringAsFixed(2)}" : booking.transportPrice?.toString() ?? "",
                       image: booking.providerId?.profileImage != null ? '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}' : "",
                       id: booking.id.toString(),
 

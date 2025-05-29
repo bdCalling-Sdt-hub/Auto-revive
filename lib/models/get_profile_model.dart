@@ -17,6 +17,7 @@ class GetProfileModel {
   final String? resume;
   final ToolsGroup? toolsGroup;
   final String? name;
+  final String? filePath;
   final String? email;
   final Location? location;
   final String? profileImage;
@@ -52,6 +53,7 @@ class GetProfileModel {
     this.resume,
     this.toolsGroup,
     this.name,
+    this.filePath,
     this.email,
     this.location,
     this.profileImage,
@@ -88,6 +90,7 @@ class GetProfileModel {
     resume: json["resume"],
     toolsGroup: json["toolsGroup"] == null ? null : ToolsGroup.fromJson(json["toolsGroup"]),
     name: json["name"],
+    filePath: json["filePath"],
     email: json["email"],
     location: json["location"] == null ? null : Location.fromJson(json["location"]),
     profileImage: json["profileImage"],
@@ -124,6 +127,7 @@ class GetProfileModel {
     "resume": resume,
     "toolsGroup": toolsGroup?.toJson(),
     "name": name,
+    "filePath": filePath,
     "email": email,
     "location": location?.toJson(),
     "profileImage": profileImage,
