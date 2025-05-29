@@ -51,12 +51,6 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
     super.initState();
 
 
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-
   }
 
 
@@ -101,9 +95,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
             ],
           ),
         ),
-        body:isLoading
-            ? SingleChildScrollView(child: CustomListviewShimmer())
-            :
+        body:
            Padding(
              padding:  EdgeInsets.only(bottom: 100.h),
 
@@ -112,7 +104,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
               children: [
                 /// =================================> Requested Tab ===================================>
                 Obx(()=>
-                mechanicBookingAllFiltersController.loading.value ?  const CustomLoader() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+                mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
                    ListView.builder(
                    itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
                    padding: EdgeInsets.all(16.r),
@@ -163,7 +155,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
                 /// ===============================> Accepted Tab =======================================>
 
                 Obx(()=>
-                mechanicBookingAllFiltersController.loading.value ?  const CustomLoader() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+                mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
 
                     ListView.builder(
                       itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
@@ -211,7 +203,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
                 /// ==================================> History Tab =====================================>
 
                 Obx(()=>
-                mechanicBookingAllFiltersController.loading.value ?  const CustomLoader() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+                mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
                     ListView.builder(
                       itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
                       padding: EdgeInsets.all(8.r),

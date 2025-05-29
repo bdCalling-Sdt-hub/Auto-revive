@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
@@ -38,7 +39,9 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
 
   TowTrackController towTrackController = Get.put(TowTrackController());
   UploadController uploadController = Get.put(UploadController());
+
   RxString videoUrl = ''.obs;
+
   final List<CarModel> typeTrack =  [
     CarModel(id: '1', adminId: 'admin123', name: 'flatbed', v: 0),
     CarModel(id: '2', adminId: 'admin123', name: 'wrecker', v: 0),
@@ -64,9 +67,13 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
       _typeTowTruckTEController.text = routeData['type'] ?? '';
       videoUrl.value = routeData['video'] ?? '';
 
-      setState(() {
-        isLoading = false;
+      Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {
+          isLoading = false;
+        });
       });
+
+
     });
     towTrackController.getTowTrackProfile();
   }
@@ -92,7 +99,10 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
       body: SingleChildScrollView(
         child: Form(
           key: _globalKey,
-          child: Column(
+          child: isLoading
+              ? Column(
+            children: List.generate(2, (_) => _buildShimmerVehicle()),
+          ) : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomLinearIndicator(
@@ -163,9 +173,7 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
 
               /// ++++++++++++++  Add more field ************************
               CustomContainer(
-                onTap: () {
-
-                },
+                onTap: () {},
                 bordersColor: AppColors.pdfButtonColor,
                 radiusAll: 8.r,
                 width: double.infinity,
@@ -211,8 +219,7 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
 
                       }
 
-                    }),
-              ),
+                    }),),
               SizedBox(height: 24.h),
             ],
           ),
@@ -221,6 +228,136 @@ class _VehicleEquipmentScreenState extends State<VehicleEquipmentScreen> {
     );
 
   }
+
+  Widget _buildShimmerVehicle() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 20.h), // space for appbar
+
+            // Company Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Owner / Manager Name field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Phone Number picker shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Business Email Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Company Address field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Website URL field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Years in Business field shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 15.h),
+
+            // Number of Tow Trucks and EIN number row shimmer
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Container(
+                  width: 134.w,
+                  height: 50.h,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 40.h),
+
+            // Save and Next button shimmer
+            Container(
+              width: double.infinity,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
+
 
   Future<void> importPdf({required bool isTruckVideo}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

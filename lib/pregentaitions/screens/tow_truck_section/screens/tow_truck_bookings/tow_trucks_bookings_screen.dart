@@ -4,7 +4,14 @@ import 'package:autorevive/pregentaitions/widgets/booking_card_widget.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../controllers/mechanic_controller/mechanic_on_site_controller/booking_all_filters_controller.dart';
+import '../../../../../services/api_constants.dart';
+import '../../../../widgets/custom_listview_shimmer.dart';
+import '../../../../widgets/custom_loader.dart';
+import '../../../../widgets/no_data_found_card.dart';
 
 class TowTrucksBookingsScreen extends StatefulWidget {
   const TowTrucksBookingsScreen({super.key});
@@ -14,7 +21,37 @@ class TowTrucksBookingsScreen extends StatefulWidget {
       _TowTrucksBookingsScreenState();
 }
 
-class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> {
+class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with SingleTickerProviderStateMixin{
+
+  late TabController _tabController;
+  MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
+
+
+  @override
+  void initState() {
+
+    _tabController = TabController(length: 3, vsync: this);
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+
+      mechanicBookingAllFiltersController.bookingFilters.clear();
+      if (_tabController.index == 0) {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
+      } else if (_tabController.index == 1) {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'accepted');
+      } else {
+        mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'history');
+      }
+    });
+    mechanicBookingAllFiltersController.bookingFilters.clear();
+    mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
+    super.initState();
+
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     int rating = 4;
@@ -37,83 +74,154 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> {
             labelColor: AppColors.primaryShade300,
             unselectedLabelColor: AppColors.primaryShade300,
             indicatorColor: AppColors.primaryShade300,
+            controller: _tabController,
+            onTap: (value) {
+              print("-------------------------------status = $value");
+              if (value == 0) {
+                mechanicBookingAllFiltersController.bookingFilters.clear();
+                mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'requested');
+              } else if (value == 1) {
+                mechanicBookingAllFiltersController.bookingFilters.clear();
+                mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'accepted');
+              } else {
+                mechanicBookingAllFiltersController.mechanicBookingAllFilters(status: 'history');
+              }
+            },
             tabs: const [
-              Tab(
-                text: 'Requested',
-              ),
+              Tab(text: 'Requested'),
               Tab(text: 'Accepted'),
               Tab(text: 'History'),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            /// Requested Tab
-            ListView.builder(
-              itemCount: 5,
-              padding: EdgeInsets.all(16.r),
-              itemBuilder: (context, index) {
-                return BookingCardWidget(
-                  buttonLabel: 'Cancel',
-                  onTapDetails: () {
-                    context.pushNamed(AppRoutes.towTruckDetailsScreen);
+        body: Padding(
+          padding:  EdgeInsets.only(bottom: 100.h),
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              /// =================================> Requested Tab ===================================>
+              Obx(()=>
+              mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+              ListView.builder(
+                itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
+                padding: EdgeInsets.all(16.r),
+                itemBuilder: (context, index) {
+                  var bookingAllFilters = mechanicBookingAllFiltersController.bookingFilters[index];
+                  return BookingCardWidget(
+                    locationOnTap:  () {
+                      context.pushNamed(AppRoutes.mechanicMapScreen, extra: {
+                        "name" : bookingAllFilters.customerId!.name,
+                        "address" :  bookingAllFilters.customerId!.address,
+                        "lat" :  bookingAllFilters.customerId?.location?[1],
+                        "log" : bookingAllFilters.customerId?.location?[0],
+                        "image" :  bookingAllFilters.customerId!.profileImage,
+                      });
+                    },
+                    isAccepted: true,
+                    buttonLabel: 'Cancel',
+                    onTapDetails: () {},
+                    onTap: (){
+                      mechanicBookingAllFiltersController.changeStatus(
+                          status: bookingAllFilters.status,
+                          jobId: bookingAllFilters.id,
+                          context: context);
+                    },
+                    name: bookingAllFilters.customerId?.name ?? 'N/A',
+                    address: bookingAllFilters.customerId?.address ?? 'N/A',
+                    subTitle: bookingAllFilters.carModel ?? 'N/A',
+                    image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                  );
+                },
+              )
 
-                  },
-                  onTap: (){},
-                  rating: rating,
-                  address: '',
-                  name: 'David Bryan',
-                  subTitle: 'Sedan',
-                  image: '',
-                );
-              },
-            ),
+              ),
 
-            /// Accepted Tab
-            ListView.builder(
-              itemCount: 5,
-              padding: EdgeInsets.all(8.r),
-              itemBuilder: (context, index) {
-                return BookingCardWidget(
-                  isAccepted: true,
-                  buttonLabel: 'Confirm',
-                  buttonColor: AppColors.primaryShade300,
-                  onTapDetails: () {
-                    context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                  },
-                  onTap: () {},
-                  title: 'New York, USA',
-                  name: 'David Bryan',
-                  address: '',
-                  subTitle: 'Sedan',
-                  status: 'On-going',
-                  image: '',
-                );
-              },
-            ),
+              /// ===============================> Accepted Tab =======================================>
 
-            // History Tab
-            ListView.builder(
-              itemCount: 5,
-              padding: EdgeInsets.all(8.r),
-              itemBuilder: (context, index) {
-                return  BookingCardWidget(
-                  onTapDetails: (){
-                    context.pushNamed(AppRoutes.towTruckDetailsScreen);
-                  },
-                  historyButtonAction: (){
-                  },
-                  isHistory: true,
-                  name: 'David Bryan',
-                  address: '',
-                  subTitle: 'Sedan',
-                  title: 'New York, USA',
-                  status: 'Complete',
-                  image: '',
-                );
-              },
-            ),
-          ],
+              Obx(()=>
+              mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+
+              ListView.builder(
+                itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
+                padding: EdgeInsets.all(8.r),
+                itemBuilder: (context, index) {
+                  var bookingAllFilters = mechanicBookingAllFiltersController.bookingFilters[index];
+                  return BookingCardWidget(
+                    locationOnTap:  () {
+                      context.pushNamed(AppRoutes.mechanicMapScreen, extra: {
+                        "name" : bookingAllFilters.customerId!.name,
+                        "address" :  bookingAllFilters.customerId!.address,
+                        "rating" : '0.0',
+                        "lat" :  bookingAllFilters.customerId?.location?[1],
+                        "log" : bookingAllFilters.customerId?.location?[0],
+                        "image" :  bookingAllFilters.customerId!.profileImage,
+                      });
+                    },
+                    isAccepted: true,
+                    buttonLabel: 'Confirm',
+                    buttonColor: AppColors.primaryShade300,
+                    onTapDetails: () {
+
+                    },
+                    onTap: () {
+                      context.pushNamed(AppRoutes.towTruckDetailsScreen,
+                          extra: {
+                            "title" : "Details",
+                            "name" :  bookingAllFilters.customerId?.name??"",
+                            "address" :  bookingAllFilters.customerId?.address ?? "",
+                            "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                            "id": bookingAllFilters.id
+                          }
+                      );
+
+                    },
+                    name: bookingAllFilters.customerId?.name ?? 'N/A',
+                    address: bookingAllFilters.customerId?.address ?? 'N/A',
+                    subTitle: bookingAllFilters.carModel ?? 'N/A',
+                    image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                  );
+                },
+              )
+              ),
+
+
+              /// ==================================> History Tab =====================================>
+
+              Obx(()=>
+              mechanicBookingAllFiltersController.loading.value ?  const CustomListviewShimmer() : mechanicBookingAllFiltersController.bookingFilters.isEmpty ?  const Center(child: NoDataFoundCard()) :
+              ListView.builder(
+                itemCount: mechanicBookingAllFiltersController.bookingFilters.length,
+                padding: EdgeInsets.all(8.r),
+                itemBuilder: (context, index) {
+                  var bookingAllFilters = mechanicBookingAllFiltersController.bookingFilters[index];
+                  return  BookingCardWidget(
+                    locationOnTap:  () {
+                      context.pushNamed(AppRoutes.mechanicMapScreen, extra: {
+                        "name" : bookingAllFilters.customerId!.name,
+                        "address" :  bookingAllFilters.customerId!.address,
+                        "rating" : '0.0',
+                        "lat" :  bookingAllFilters.customerId?.location?[1],
+                        "log" : bookingAllFilters.customerId?.location?[0],
+                        "image" :  bookingAllFilters.customerId!.profileImage,
+                      });
+                    },
+                    onTapDetails: (){
+                      // context.pushNamed(AppRoutes.mechanicBookingsDetailsScreen,);
+                    },
+                    historyButtonAction: (){
+
+                    },
+                    isHistory: true,
+                    name: bookingAllFilters.customerId?.name ?? 'N/A',
+                    address: bookingAllFilters.customerId?.address ?? 'N/A',
+                    subTitle: bookingAllFilters.carModel ?? 'N/A',
+                    status: bookingAllFilters.status ?? 'N/A',
+                    image: bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
+                  );
+                },
+              )),
+            ],
+          ),
         ),
       ),
     );

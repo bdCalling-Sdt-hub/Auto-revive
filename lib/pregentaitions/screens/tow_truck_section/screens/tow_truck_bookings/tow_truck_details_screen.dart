@@ -7,20 +7,26 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../widgets/custom_app_bar.dart';
 
 class TowTruckDetailsScreen extends StatelessWidget {
   const TowTruckDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Map routeData = GoRouterState.of(context).extra as Map;
     return CustomScaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: CustomText(
-            maxline: 2,
-            text: "Details",
-            fontsize: 20.sp,
-          )),
+      appBar: CustomAppBar(
+          title: "${routeData["title"]}"),
+      // appBar: AppBar(
+      //     centerTitle: true,
+      //     title: CustomText(
+      //       maxline: 2,
+      //       text: "Details",
+      //       fontsize: 20.sp,
+      //     )),
       body: Column(
         children: [
           SizedBox(height: 44.w),
@@ -28,7 +34,7 @@ class TowTruckDetailsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomImageAvatar(
-                image: '',
+                image: "${routeData["image"]}",
                 radius: 44.r,
               ),
               SizedBox(width: 10.w),
@@ -39,7 +45,7 @@ class TowTruckDetailsScreen extends StatelessWidget {
                     width: 200.w,
                     child: CustomText(
                       textAlign: TextAlign.start,
-                      text: 'David Bryan',
+                      text: "${routeData["name"]}",
                       fontsize: 20.sp,
                       bottom: 6.h,
                     ),

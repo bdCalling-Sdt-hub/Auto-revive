@@ -2,6 +2,7 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_slider.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -54,9 +55,8 @@ class _MechanicJobScreenState extends State<MechanicJobScreen> {
       ),
       body: Obx(() {
         if (mechanicJobController.radiusLimits.value.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CustomLoader());
         }
-
         return Column(
           children: [
             SizedBox(height: 32.h),

@@ -36,6 +36,7 @@ class TowTruckBottomNavBarState extends State<TowTruckBottomNavBar> {
     final sizeH = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
       body: screens[currentIndex],
       bottomNavigationBar: SafeArea(
