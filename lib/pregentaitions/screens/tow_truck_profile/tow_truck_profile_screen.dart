@@ -16,7 +16,6 @@ import '../../../controllers/mechanic_controller.dart';
 import '../../../services/api_constants.dart';
 import '../../widgets/cachanetwork_image.dart';
 
-
 class TowTruckProfileScreen extends StatefulWidget {
   const TowTruckProfileScreen({super.key});
 
@@ -25,10 +24,7 @@ class TowTruckProfileScreen extends StatefulWidget {
 }
 
 class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
-
-
   MechanicController mechanicController = Get.put(MechanicController());
-
 
   String userRole = "";
 
@@ -39,9 +35,10 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
     super.initState();
   }
 
-  getLocalData()async{
+  getLocalData() async {
     userRole = await PrefsHelper.getString(AppConstants.role);
-    print("----------------------------------------------------------------------------  Role : $userRole");
+    print(
+        "----------------------------------------------------------------------------  Role : $userRole");
     setState(() {});
   }
 
@@ -61,66 +58,79 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                   Assets.icons.timeProgress.svg(color: Colors.black),
                   SizedBox(width: 20.w),
                   GestureDetector(
-                    onTap: () {
-                      context.pushNamed(AppRoutes.notificationsScreen);
-                    },
-                      child: Assets.icons.notificationIcon.svg(color: Colors.black)),
+                      onTap: () {
+                        context.pushNamed(AppRoutes.notificationsScreen);
+                      },
+                      child: Assets.icons.notificationIcon
+                          .svg(color: Colors.black)),
                 ],
               ),
-              CustomNetworkImage(
-                boxShape: BoxShape.circle,
-                imageUrl:
-                mechanicController.profile.value.profileImage == null ||  mechanicController.profile.value.profileImage == "" ?
-                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" :
-                "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
-                height: 128.h,
-                width: 128.w,
+              Obx(
+                () => CustomNetworkImage(
+                  boxShape: BoxShape.circle,
+                  imageUrl: mechanicController.profile.value.profileImage ==
+                              null ||
+                          mechanicController.profile.value.profileImage == ""
+                      ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      : "${ApiConstants.imageBaseUrl}/${mechanicController.profile.value.profileImage}",
+                  height: 128.h,
+                  width: 128.w,
+                ),
               ),
-              CustomText(
-                text: mechanicController.profile.value.name ?? 'N/A',
-                fontsize: 25.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textColor151515,
+              Obx(
+                () => CustomText(
+                  text: mechanicController.profile.value.name ?? 'N/A',
+                  fontsize: 25.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textColor151515,
+                ),
               ),
               SizedBox(height: 24.h),
               CustomProfileListTile(
                   title: 'Profile Information',
                   icon: Assets.icons.profileInfo.svg(),
                   onTap: () {
-                   userRole.toLowerCase() == "customer" ? context.pushNamed(AppRoutes.personalInfoCustomerScreen) :
-                   userRole.toLowerCase() == "mechanic" ?  context.pushNamed(AppRoutes.mechanicProfileInformationScreen) :
-                    context.pushNamed(AppRoutes.profileDetailsScreen);
+                    userRole.toLowerCase() == "customer"
+                        ? context.pushNamed(
+                            AppRoutes.personalInfoCustomerScreen,
+                            extra: {
+                                "name": "${mechanicController.profile.value.name ?? "N/A"}",
+                                "image": "${mechanicController.profile.value.profileImage}",
+                                "email": "${mechanicController.profile.value.email}",
+                                "phone": "${mechanicController.profile.value.phone}",
+                                "address": "${mechanicController.profile.value.address ?? ""}",
+                                "license": "${mechanicController.profile.value.filePath}",
+                                "isEditable": false
+                              }).then((_){
+                      mechanicController.getProfile();
+                    })
+                        : userRole.toLowerCase() == "mechanic"
+                            ? context.pushNamed(
+                                AppRoutes.mechanicProfileInformationScreen)
+                            : context.pushNamed(AppRoutes.profileDetailsScreen);
                   }),
-
-
               CustomProfileListTile(
                   title: 'Earnings',
                   icon: Assets.icons.earnings.svg(),
                   onTap: () {
                     context.pushNamed(AppRoutes.earningScreen);
-
                   }),
-
-
               CustomProfileListTile(
                   title: 'Admin Support',
                   icon: Assets.icons.support.svg(),
                   onTap: () {
                     context.pushNamed(AppRoutes.adminSupportScreen);
                   }),
-
-
               CustomProfileListTile(
                   title: 'Settings ',
                   icon: Assets.icons.settings.svg(),
                   onTap: () {
                     context.pushNamed(AppRoutes.settingsScreen);
                   }),
-
               CustomProfileListTile(
-                  title: 'Logout',
-                  icon: Assets.icons.logout.svg(),
-                 onTap: (){
+                title: 'Logout',
+                icon: Assets.icons.logout.svg(),
+                onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -130,16 +140,21 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 26.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 26.h),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CustomText(
-                                textAlign: TextAlign.center,
-                                  text: 'Log Out', fontsize: 20.sp,  color: AppColors.logColor,
-                                fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.center,
+                                  text: 'Log Out',
+                                  fontsize: 20.sp,
+                                  color: AppColors.logColor,
+                                  fontWeight: FontWeight.w400),
                               SizedBox(height: 10.h),
-                              Divider(thickness: 1, color: Colors.grey.withOpacity(0.4)),
+                              Divider(
+                                  thickness: 1,
+                                  color: Colors.grey.withOpacity(0.4)),
                               SizedBox(height: 24.h),
                               Text(
                                 "Are you sure you want to sure\nLogout?",
@@ -151,7 +166,8 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                               ),
                               SizedBox(height: 30.h),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(
                                     width: 250.w,
@@ -162,38 +178,45 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                                       leftBtnOnTap: () {
                                         Navigator.pop(context);
                                       },
-                                      rightBtnOnTap: () async{
-                                       await PrefsHelper.remove(AppConstants.role);
-                                       await PrefsHelper.remove(AppConstants.isLogged);
-                                       await PrefsHelper.remove(AppConstants.bearerToken);
-                                       await PrefsHelper.remove(AppConstants.address);
-                                       await PrefsHelper.remove(AppConstants.name);
-                                       await PrefsHelper.remove(AppConstants.image);
-                                       await PrefsHelper.remove(AppConstants.userId);
-                                       await  PrefsHelper.remove(AppConstants.email);
-                                       await PrefsHelper.remove(AppConstants.phone);
-                                       await PrefsHelper.remove(AppConstants.fcmToken);
-                                       await PrefsHelper.remove(AppConstants.mechanicType);
-                                       await PrefsHelper.remove(AppConstants.emailValidator);
+                                      rightBtnOnTap: () async {
+                                        await PrefsHelper.remove(
+                                            AppConstants.role);
+                                        await PrefsHelper.remove(
+                                            AppConstants.isLogged);
+                                        await PrefsHelper.remove(
+                                            AppConstants.bearerToken);
+                                        await PrefsHelper.remove(
+                                            AppConstants.address);
+                                        await PrefsHelper.remove(
+                                            AppConstants.name);
+                                        await PrefsHelper.remove(
+                                            AppConstants.image);
+                                        await PrefsHelper.remove(
+                                            AppConstants.userId);
+                                        await PrefsHelper.remove(
+                                            AppConstants.email);
+                                        await PrefsHelper.remove(
+                                            AppConstants.phone);
+                                        await PrefsHelper.remove(
+                                            AppConstants.fcmToken);
+                                        await PrefsHelper.remove(
+                                            AppConstants.mechanicType);
+                                        await PrefsHelper.remove(
+                                            AppConstants.emailValidator);
                                         context.go(AppRoutes.logInScreen);
                                       },
                                     ),
                                   ),
                                 ],
                               ),
-
-
                             ],
                           ),
                         ),
                       );
                     },
                   );
-
-
-
-                },)
-
+                },
+              )
             ],
           ),
         ],
@@ -201,10 +224,6 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
     );
   }
 }
-
-
-
-
 
 class CustomTwoBtnWidget extends StatelessWidget {
   final List? btnNameList;
@@ -214,7 +233,12 @@ class CustomTwoBtnWidget extends StatelessWidget {
   final VoidCallback? rightBtnOnTap;
 
   const CustomTwoBtnWidget(
-      {super.key, this.btnNameList, this.leftBtnOnTap, this.rightBtnOnTap, this.width, this.height});
+      {super.key,
+      this.btnNameList,
+      this.leftBtnOnTap,
+      this.rightBtnOnTap,
+      this.width,
+      this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -223,10 +247,10 @@ class CustomTwoBtnWidget extends StatelessWidget {
       children: List.generate(btnNameList!.length, (index) {
         return GestureDetector(
           onTap: index == 0 ? leftBtnOnTap : rightBtnOnTap,
-
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(color: index == 0 ? AppColors.redColors : Colors.red),
+                border: Border.all(
+                    color: index == 0 ? AppColors.redColors : Colors.red),
                 borderRadius: BorderRadius.circular(8.r),
                 color: index == 0 ? Colors.transparent : Colors.red),
             width: width,

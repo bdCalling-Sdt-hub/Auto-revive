@@ -113,7 +113,7 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                                         controller: locationName,
                                         onSelect: (data){
                                           locationName.text = data.displayname;
-                                         distance =  controller.calculateDistance(data.latitude, data.longitude);
+                                         distance =  controller.calculateDistanceInMiles(data.latitude, data.longitude);
                                          log = data.longitude;
                                          lat = data.latitude;
                                          setState(() {});
@@ -181,7 +181,7 @@ class _CustomerSelectCarScreenState extends State<CustomerSelectCarScreen> {
                                     ],
                                   ),
                                   CustomText(
-                                      text: "Total Distance: ${distance.toStringAsFixed(2)} KM",
+                                      text: "Total Distance: ${distance.toStringAsFixed(2)} Miles",
                                       color: Colors.white,
                                       fontsize: 16.h,
                                       top: 20.h)

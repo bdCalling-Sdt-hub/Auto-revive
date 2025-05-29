@@ -1,29 +1,39 @@
 import 'dart:io';
 
 import 'package:autorevive/pregentaitions/widgets/custom_upload_button.dart';
+import 'package:autorevive/services/api_constants.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../controllers/mechanic_controller.dart';
+import '../../../../controllers/upload_controller.dart';
 import '../../../../core/config/app_routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../helpers/toast_message_helper.dart';
 import '../../../widgets/cachanetwork_image.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_text_field.dart';
 
 class PersonalInfoCustomerScreen extends StatefulWidget {
-  final bool isEditable;
-   const PersonalInfoCustomerScreen({super.key, this.isEditable = false});
+
+   const PersonalInfoCustomerScreen({super.key});
 
   @override
   State<PersonalInfoCustomerScreen> createState() =>
       _PersonalInfoCustomerScreenState();
 }
 
-class _PersonalInfoCustomerScreenState
-    extends State<PersonalInfoCustomerScreen> {
+class _PersonalInfoCustomerScreenState extends State<PersonalInfoCustomerScreen> {
+
+
+  MechanicController mechanicController = Get.put(MechanicController());
+  UploadController uploadController = Get.put(UploadController());
+
   final TextEditingController fullNameCtrl = TextEditingController();
   final TextEditingController platformCtrl = TextEditingController();
   final TextEditingController emailCtrl = TextEditingController();
@@ -31,7 +41,7 @@ class _PersonalInfoCustomerScreenState
   final TextEditingController currentAddressCtrl = TextEditingController();
   bool? validUSDOTNumber;
   bool? readOnly = true;
-  String appbarTitle = "Personal Information";
+  String appbarTitle = "Edit Information";
 
   final List<String> platForm = [
     'In shop',
@@ -42,21 +52,21 @@ class _PersonalInfoCustomerScreenState
   @override
   void initState() {
     super.initState();
-    readOnly = !widget.isEditable;
-    appbarTitle = widget.isEditable ? "Edit Profile" : "Personal Information";
   }
 
-
-  @override
-  void dispose() {
-    readOnly = true;
-    appbarTitle = "Personal Information";
-    setState(() {});
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    Map routerData = GoRouterState.of(context).extra as Map;
+
+    if(fullNameCtrl.text == null || fullNameCtrl.text == ""){
+      fullNameCtrl.text = routerData["name"];
+      emailCtrl.text = routerData["email"];
+      phoneNoCtrl.text = routerData["phone"];
+      currentAddressCtrl.text = routerData["address"];
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -102,15 +112,14 @@ class _PersonalInfoCustomerScreenState
                                     fit: BoxFit.cover))
                             : CustomNetworkImage(
                                 boxShape: BoxShape.circle,
-                                imageUrl:
-                                    "https://randomuser.me/api/portraits/men/45.jpg",
+                                imageUrl: "${ApiConstants.imageBaseUrl}/${routerData["image"]}",
                                 height: 128.h,
                                 width: 128.w,
                               ),
                       ),
 
                       /// <<<<=========================>>>> Camera icon on top of the image <<<=======================================>>
-                      if(appbarTitle == "Edit Profile") Positioned(
+                  Positioned(
                         top: 67.h,
                         left: 42.w,
                         child: Container(
@@ -144,7 +153,6 @@ class _PersonalInfoCustomerScreenState
               CustomTextField(
                   controller: fullNameCtrl,
                   hintText: "Enter your name",
-                  readOnly: readOnly,
                   labelText: "Full Name"),
 
               ///<<<=============>>> Email Filed <<<===============>>>
@@ -153,14 +161,13 @@ class _PersonalInfoCustomerScreenState
                   controller: emailCtrl,
                   hintText: "Enter E-mail",
                   labelText: "Email",
-                  readOnly: readOnly,
+                  readOnly: true,
                   isEmail: true),
 
               ///<<<=============>>> Phone Filed <<<===============>>>
 
               CustomTextField(
                   controller: phoneNoCtrl,
-                  readOnly: readOnly,
                   labelText: "Phone No.",
                   hintText: "Enter your phone number"),
 
@@ -170,20 +177,40 @@ class _PersonalInfoCustomerScreenState
                 controller: currentAddressCtrl,
                 hintText: "Enter Current Address",
                 labelText: "Current Address",
-                readOnly: readOnly,
               ),
 
-              CustomUploadButton(title: "License.pdf", onTap: () {}),
+
+              ///<<<=============>>> DRIVING LICENSE OR PASSPORT Filed <<<===============>>>
+
+              CustomUploadButton(
+                topLabel: 'Upload driving license or passport',
+                title: pdfFile?.toString() ?? '${routerData["license"]}',
+                icon: Icons.upload,
+                onTap: importPdf,
+              ),
+
+
 
               SizedBox(height: 100.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
-              CustomButton(
-                title:  appbarTitle == "Edit Profile" ? "Update Profile" : "Edit Profile",
-                onpress: () {
-                 appbarTitle == "Edit Profile" ? null : context.pushNamed(AppRoutes.personalInfoCustomerScreen, extra: true);
+              Obx(()=>
+                 CustomButton(
+                   loading: mechanicController.updateProfileCustomerLoading.value,
+                  title:   "Update Profile",
+                  onpress: () {
+                   // appbarTitle == "Edit Profile" ? null : context.pushNamed(AppRoutes.personalInfoCustomerScreen, extra: true);
 
-                },
+                    mechanicController.customerUpdateProfile(
+                      name: fullNameCtrl.text,
+                      address: currentAddressCtrl.text,
+                      phone: phoneNoCtrl.text,
+                      passPort: filePath ?? '${routerData["license"]}',
+                      profileImage: profileImagePath,
+                      context: context
+                    );
+                  },
+                ),
               ),
               SizedBox(height: 20.h),
             ],
@@ -262,15 +289,19 @@ class _PersonalInfoCustomerScreenState
   //==================================> Gallery <===============================
 
   File? selectedImage;
+  String? profileImagePath;
 
   Future<void> _pickImageFromGallery() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      setState(() {
-        selectedImage = File(pickedFile.path);
-      });
+
+
       Navigator.pop(context);
+
+        profileImagePath = await uploadController.uploadFile(file: File(pickedFile.path));
+        selectedImage = File(pickedFile.path);
+      setState(() { });
+
     }
   }
 
@@ -280,10 +311,36 @@ class _PersonalInfoCustomerScreenState
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      setState(() {
-        selectedImage = File(pickedFile.path);
-      });
       Navigator.pop(context);
+
+        profileImagePath = await uploadController.uploadFile(file: File(pickedFile.path));
+        selectedImage = File(pickedFile.path);
+      setState(() { });
+
+    }
+  }
+
+
+
+  File? pdfFile;
+  String? filePath;
+
+  Future<void> importPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      File selectedFile = File(result.files.single.path!);
+
+
+        filePath = await uploadController.uploadFile(file: selectedFile);
+        pdfFile = selectedFile;
+      setState(() {  });
+    }
+    else {
+      ToastMessageHelper.showToastMessage("No file selected.");
     }
   }
 }

@@ -244,7 +244,7 @@ class _CustomerBookingDetailsScreenState
                         child: Obx(
                           () => CustomText(
                             text: bookingController.totalPrice?.value != "null"
-                                ? "${bookingController.totalPrice?.value}"
+                                ? bookingController.role == "tow_truck" ? "\$ 0" : "${bookingController.totalPrice?.value}"
                                 : "\$${routeData['price']}",
                             fontsize: 48.h,
                             color: Colors.white,

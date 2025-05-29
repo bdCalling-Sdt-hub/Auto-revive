@@ -55,6 +55,7 @@ class MechanicController extends GetxController{
     var response = await ApiClient.getData(ApiConstants.getProfileEndPoint);
     if (response.statusCode == 200) {
       profile.value = GetProfileModel.fromJson(response.body['data']);
+      update();
       getProfileLoading(false);
     } else if (response.statusCode == 404) {
       getProfileLoading(false);
@@ -473,6 +474,49 @@ class MechanicController extends GetxController{
     address.value = await PrefsHelper.getString(AppConstants.address);
     print("=================================local Data fetched");
     update();
+  }
+
+
+
+
+  var updateProfileCustomerLoading = false.obs;
+
+  customerUpdateProfile({
+    String? name,
+    String? phone, address, profileImage, passPort, required BuildContext context
+
+  }) async {
+
+    updateProfileCustomerLoading(true);
+
+    var body = {
+      'name': "$name",
+      'phone': "$phone",
+      "address" : "$address",
+      "filePath" : "$passPort",
+      "profileImage" : "$profileImage"
+    };
+
+
+    updateProfileCustomerLoading(true);
+
+    var response = await ApiClient.putData(
+      ApiConstants.getProfileEndPoint,
+      body,
+    );
+
+
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
+      context.pop();
+      updateProfileCustomerLoading(false);
+      update();
+    } else {
+      updateProfileCustomerLoading(false);
+      ToastMessageHelper.showToastMessage("Failed to save experience data.");
+    }
   }
 
 

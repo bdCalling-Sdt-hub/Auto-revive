@@ -620,9 +620,9 @@ class AppRoutes {
           path: personalInfoCustomerScreen,
           name: personalInfoCustomerScreen,
           pageBuilder: (context, state) {
-            final isEditable = state.extra as bool? ?? false;
+            // final isEditable = state.extra as bool? ?? false;
             return _customTransitionPage(
-              PersonalInfoCustomerScreen(isEditable: isEditable),
+              PersonalInfoCustomerScreen(),
               state,
             );
           },

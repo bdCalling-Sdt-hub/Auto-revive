@@ -71,6 +71,7 @@ class CustomerBookingController extends GetxController {
   RxList<ServicesModelCustomer> services = <ServicesModelCustomer>[].obs;
   RxBool servicesLoading = false.obs;
   RxString? totalPrice = ''.obs;
+  RxString? role = ''.obs;
 
   getService({String? id}) async {
     servicesLoading(true);
@@ -83,9 +84,11 @@ class CustomerBookingController extends GetxController {
           .map((x) => ServicesModelCustomer.fromJson(x)));
 
       totalPrice?.value = response.body["data"]["servicePrice"].toString();
+      role?.value = response.body["data"]["providerId"]["role"].toString();
 
       print("======================services : ${services}");
 
+      update();
       servicesLoading(false);
     }
     servicesLoading(false);

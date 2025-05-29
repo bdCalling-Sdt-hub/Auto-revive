@@ -175,20 +175,56 @@ class CustomerMapController extends GetxController {
 
 
 
-
+  //
+  // Future<BitmapDescriptor> getBytesFromUrl(String url, {int size = 100}) async {
+  //   var response = await http.get(Uri.parse(url));
+  //    var imageData = response.bodyBytes;
+  //
+  //   final codec = await ui.instantiateImageCodec(
+  //     imageData,
+  //     targetWidth: size,
+  //     targetHeight: size
+  //   );
+  //   final frame = await codec.getNextFrame();
+  //   final data = await frame.image.toByteData(format: ui.ImageByteFormat.png);
+  //   return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  // }
   Future<BitmapDescriptor> getBytesFromUrl(String url, {int size = 100}) async {
-    var response = await http.get(Uri.parse(url));
-     var imageData = response.bodyBytes;
+    try {
+      final response = await http.get(Uri.parse(url));
 
-    final codec = await ui.instantiateImageCodec(
-      imageData,
-      targetWidth: size,
-      targetHeight: size
-    );
-    final frame = await codec.getNextFrame();
-    final data = await frame.image.toByteData(format: ui.ImageByteFormat.png);
-    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+      if (response.statusCode != 200) {
+        throw Exception('Failed to load image: ${response.statusCode}');
+      }
+
+      final imageData = response.bodyBytes;
+
+      final codec = await ui.instantiateImageCodec(
+        imageData,
+        targetWidth: size,
+        targetHeight: size,
+      );
+      final frame = await codec.getNextFrame();
+      final byteData = await frame.image.toByteData(format: ui.ImageByteFormat.png);
+
+      if (byteData == null) {
+        throw Exception('Failed to convert image to byte data.');
+      }
+
+      return BitmapDescriptor.fromBytes(byteData.buffer.asUint8List());
+    } catch (e, stackTrace) {
+      print('Error loading image from URL: $e');
+      // Optional: Log stack trace
+      // print(stackTrace);
+
+      // Option 1: Rethrow to handle upstream
+      // throw e;
+
+      // Option 2: Return a default marker
+      return BitmapDescriptor.defaultMarker;
+    }
   }
+
 }
 
 

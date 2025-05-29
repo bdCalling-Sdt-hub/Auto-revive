@@ -10,7 +10,7 @@ class CustomerBookingModel {
   final DateTime? updatedAt;
   final int? v;
   final int? transportPrice;
-  final int? servicePrice;
+  final num? servicePrice;
   final String? carModel;
 
   CustomerBookingModel( {
@@ -65,6 +65,7 @@ class ProviderId {
   final String? address;
   final int? feedbackCount;
   final int? avgRating;
+  final num? distance;
   final List<String>? certifications;
 
   ProviderId({
@@ -76,6 +77,7 @@ class ProviderId {
     this.address,
     this.feedbackCount,
     this.avgRating,
+    this.distance,
     this.certifications,
   });
 
@@ -88,6 +90,7 @@ class ProviderId {
     address: json["address"],
     feedbackCount: json["feedbackCount"],
     avgRating: json["avgRating"],
+    distance: json["distance"],
     certifications: json["certifications"] == null ? [] : List<String>.from(json["certifications"]!.map((x) => x)),
   );
 
@@ -100,6 +103,7 @@ class ProviderId {
     "address": address,
     "feedbackCount": feedbackCount,
     "avgRating": avgRating,
+    "distance": distance,
     "certifications": certifications == null ? [] : List<dynamic>.from(certifications!.map((x) => x)),
   };
 }

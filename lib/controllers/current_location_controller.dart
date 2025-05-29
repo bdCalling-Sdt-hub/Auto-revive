@@ -79,8 +79,8 @@ class CurrentLocationController extends GetxController {
 
 
 
-  double calculateDistance(double endLat, double endLng) {
-    const double earthRadius = 6371000;
+  double calculateDistanceInMiles(double endLat, double endLng) {
+    const double earthRadiusMeters = 6371000; // Radius in meters
 
     double dLat = _degreesToRadians(endLat - latitude.toDouble());
     double dLng = _degreesToRadians(endLng - longitude.toDouble());
@@ -92,14 +92,16 @@ class CurrentLocationController extends GetxController {
             sin(dLng / 2);
 
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    double distance = earthRadius * c;
+    double distanceInMeters = earthRadiusMeters * c;
 
-    return distance / 1000;
+    double distanceInMiles = distanceInMeters / 1609.344; // 1 mile = 1609.344 meters
+    return distanceInMiles;
   }
 
   double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
   }
+
 
 
 
