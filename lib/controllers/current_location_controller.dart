@@ -25,7 +25,7 @@ class CurrentLocationController extends GetxController {
     bool _serviceEnabled;
     loc.PermissionStatus _permissionGranted;
 
-    // ১. Location service on আছে কিনা চেক
+
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -35,7 +35,7 @@ class CurrentLocationController extends GetxController {
       }
     }
 
-    // ২. Permission আছে কিনা চেক
+
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == loc.PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
@@ -45,7 +45,7 @@ class CurrentLocationController extends GetxController {
       }
     }
 
-    // ৩. Location data নিন
+
     final locData = await location.getLocation();
 
     latitude.value = locData.latitude ?? 0.0;
