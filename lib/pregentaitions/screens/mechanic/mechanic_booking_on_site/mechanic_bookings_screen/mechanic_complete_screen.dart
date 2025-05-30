@@ -31,6 +31,7 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
     Map routeData = GoRouterState.of(context).extra as Map;
     mechanicBookingAllFiltersController.getJobProcessComplete(jobProcessId: '${routeData["id"]}');
     return CustomScaffold(
+
       appBar: AppBar(
         centerTitle: true,
         title: CustomText(
@@ -39,6 +40,7 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
           fontsize: 20.sp,
         ),
       ),
+
       body: Obx( () {
         return Column(
           children: [
@@ -66,11 +68,27 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
                     SizedBox(height: 10.w),
                     Row(
                       children: [
-                        Assets.icons.detailsMessage.svg(),
+                        GestureDetector(
+                            onTap: () {
+                              context.pushNamed(
+                                  AppRoutes.messageChatScreen, extra: {
+                                "receiverId" : "${mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.id}",
+                                "name" : "${mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.name}"
+                              });
+                            },
+                            child: Assets.icons.detailsMessage.svg()),
                         SizedBox(width: 6.w),
                         GestureDetector(
                             onTap: () {
-                              context.pushNamed(AppRoutes.mechanicMapScreen);
+                              context.pushNamed(AppRoutes.mechanicMapScreen,
+                                  extra: {
+                                    "name":mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.name,
+                                    "address": mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.address,
+                                    "rating": routeData["rating"],
+                                    "lat": routeData["lat"],
+                                    "log": routeData["log"],
+                                    "image": mechanicBookingAllFiltersController.jobProcessComplete.value.customerId?.profileImage
+                                  });
                             },
                             child: Assets.icons.detailsLocation.svg()),
                       ],
@@ -156,7 +174,8 @@ class _MechanicCompleteDetailsScreenState extends State<MechanicCompleteDetailsS
             SizedBox(height: 93.h),
             CustomButton(title: 'Complete',
                 onpress: () {
-                  // context.pushNamed(AppRoutes.mechanicBookingsScreen);
+                 context.pop();
+                 context.pop();
 
             }),
             SizedBox(height: 20.h),

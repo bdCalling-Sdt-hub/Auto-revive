@@ -7,26 +7,32 @@ import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../controllers/mechanic_controller/mechanic_on_site_controller/booking_all_filters_controller.dart';
+import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../widgets/custom_app_bar.dart';
 
-class TowTruckDetailsScreen extends StatelessWidget {
+class TowTruckDetailsScreen extends StatefulWidget {
   const TowTruckDetailsScreen({super.key});
+
+  @override
+  State<TowTruckDetailsScreen> createState() => _TowTruckDetailsScreenState();
+}
+
+class _TowTruckDetailsScreenState extends State<TowTruckDetailsScreen> {
+
+
+  MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
 
   @override
   Widget build(BuildContext context) {
     Map routeData = GoRouterState.of(context).extra as Map;
+    mechanicBookingAllFiltersController.getProvider(id: routeData['id']);
     return CustomScaffold(
       appBar: CustomAppBar(
           title: "${routeData["title"]}"),
-      // appBar: AppBar(
-      //     centerTitle: true,
-      //     title: CustomText(
-      //       maxline: 2,
-      //       text: "Details",
-      //       fontsize: 20.sp,
-      //     )),
       body: Column(
         children: [
           SizedBox(height: 44.w),
@@ -55,84 +61,117 @@ class TowTruckDetailsScreen extends StatelessWidget {
                       SizedBox(
                           width: 120.w,
                           child: CustomText(
-                            text: 'New York, USA  |  ',
+                            text: '${routeData["address"]}',
                           )),
-                      Icon(
-                        Icons.star,
-                        size: 16.r,
-                        color: Colors.amber,
-                      ),
-                      CustomText(
-                        text: ' 4.85',
-                      ),
+                      // Icon(
+                      //   Icons.star,
+                      //   size: 16.r,
+                      //   color: Colors.amber,
+                      // ),
+                      // CustomText(
+                      //   text: ' 4.85',
+                      // ),
                     ],
                   ),
                   SizedBox(height: 10.w),
                   Row(
                     children: [
-                      Assets.icons.detailsMessage.svg(),
+                      GestureDetector(
+                          onTap: () {
+                            context.pushNamed(
+                                AppRoutes.messageChatScreen, extra: {
+                              "receiverId" : "${routeData["provideId"]}",
+                              "name" : "${routeData["name"]}"
+                            });
+                          },
+                          child: Assets.icons.detailsMessage.svg()),
                       SizedBox(width: 6.w),
-                      Assets.icons.detailsLocation.svg(),
+                      GestureDetector(
+                          onTap: () {
+                            context.pushNamed(AppRoutes.mechanicMapScreen,
+                                extra: {
+                                  "name": routeData["name"],
+                                  "address": routeData["address"],
+                                  "rating": routeData["rating"],
+                                  "lat": routeData["lat"],
+                                  "log": routeData["log"],
+                                  "image": routeData["image"]
+                                });
+                          },
+                          child: Assets.icons.detailsLocation.svg()),
                     ],
-                  ),
+                  )
                 ],
               )
             ],
           ),
           SizedBox(height: 44.w),
-          CustomContainer(
-            paddingAll: 32.r,
-            radiusAll: 16.r,
-            color: AppColors.primaryColor,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.circle_rounded,
-                      size: 14.r,
-                      color: Colors.white,
-                    ),
-                    Flexible(
-                      child: CustomText(
-                        text: 'New York, USA',
+          Obx(()=>
+             CustomContainer(
+              paddingAll: 32.r,
+              radiusAll: 16.r,
+              color: AppColors.primaryColor,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.circle_rounded,
+                        size: 14.r,
                         color: Colors.white,
-                        left: 2.w,
-                        fontsize: 12.sp,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.circle_rounded,
-                      size: 14.r,
-                      color: Colors.white,
-                    ),
-                    Flexible(
-                      child: CustomText(
-                          text: 'California, USA',
+                      Flexible(
+                        child: CustomText(
+                          text: mechanicBookingAllFiltersController.provider.value.location ?? 'N/A',
                           color: Colors.white,
                           left: 2.w,
-                          fontsize: 12.sp),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16.h),
-                CustomText(
-                  text: 'Total Distance: 23 KM',
-                  color: Colors.white,
-                  fontsize: 20.sp,
-                ),
-              ],
+                          fontsize: 12.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.circle_rounded,
+                        size: 14.r,
+                        color: Colors.white,
+                      ),
+                      Flexible(
+                        child: CustomText(
+                            text: mechanicBookingAllFiltersController.provider.value.destination ?? 'N/A',
+                            color: Colors.white,
+                            left: 2.w,
+                            fontsize: 12.sp),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  CustomText(
+                    text: 'Total Distance: ${mechanicBookingAllFiltersController.provider.value.totalDistance ?? 'N/A'} Miles',
+                    color: Colors.white,
+                    fontsize: 20.sp,
+                  ),
+                ],
+              ),
             ),
           ),
           const Spacer(),
-          CustomButton(title: 'Complete', onpress: () {}),
+          CustomButton(title: 'Complete',
+              onpress: () {
+                mechanicBookingAllFiltersController.changeStatus(
+                    status: 'confirmed',
+                    jobId: "${routeData["id"]}",
+                    isScreenBack: true,
+                    context: context);
+
+
+
+          }),
+          SizedBox(height: 20.h)
         ],
       ),
     );

@@ -40,6 +40,7 @@ class ApiConstants{
   static  String jobProcessCompleteProvider(String id) => "/job-process/provider/$id";
   static const String customerBookingEndPoint = "/job-process/customer";
   static const String getCustomerServices = "/job-process/customer";
+  static const String getProviderDetails = "/job-process/provider";
   static const String getAllServiceEndPoint = "/service";
   static  String changeStatus (String id) => "/job-process/provider/$id";
   static  String bookingAllPaginationFilters = "/job-process/provider";

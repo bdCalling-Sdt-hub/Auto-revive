@@ -81,14 +81,28 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                       SizedBox(height: 10.w),
                       Row(
                         children: [
-                          Assets.icons.detailsMessage.svg(),
+                          GestureDetector(
+                              onTap: () {
+                                context.pushNamed(
+                                    AppRoutes.messageChatScreen, extra: {
+                                  "receiverId" : "${routeData["provideId"]}",
+                                  "name" : "${routeData["name"]}"
+                                });
+                              },
+                              child: Assets.icons.detailsMessage.svg()),
                           SizedBox(width: 6.w),
                           GestureDetector(
-
-                            onTap: () {
-                              context.pushNamed(AppRoutes.mechanicMapScreen);
-                            },
-
+                              onTap: () {
+                                context.pushNamed(AppRoutes.mechanicMapScreen,
+                                    extra: {
+                                      "name": routeData["name"],
+                                      "address": routeData["address"],
+                                      "rating": routeData["rating"],
+                                      "lat": routeData["lat"],
+                                      "log": routeData["log"],
+                                      "image": routeData["image"]
+                                    });
+                              },
                               child: Assets.icons.detailsLocation.svg()),
                         ],
                       ),
@@ -291,7 +305,7 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                   ToastMessageHelper.showToastMessage("Please enter price!",title: 'Attention');
                 }else{
                   mechanicBookingAllFiltersController.addServiceProvider(
-                      context: context, serviceId: routeData["id"]?.toString() ?? ""
+                      context: context, serviceId: routeData["id"]?.toString() ?? "",
                   );
                 }
 

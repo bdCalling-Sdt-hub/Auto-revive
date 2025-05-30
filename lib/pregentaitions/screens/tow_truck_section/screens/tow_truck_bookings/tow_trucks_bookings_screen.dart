@@ -122,7 +122,7 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with 
                     onTapDetails: () {},
                     onTap: (){
                       mechanicBookingAllFiltersController.changeStatus(
-                          status: 'canceled',
+                          status: 'request-canceled',
                           jobId: bookingAllFilters.id,
                           context: context);
                     },
@@ -148,7 +148,8 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with 
                   var bookingAllFilters = mechanicBookingAllFiltersController.bookingFilters[index];
                   return BookingCardWidget(
                     locationOnTap:  () {
-                      context.pushNamed(AppRoutes.mechanicMapScreen, extra: {
+                      context.pushNamed(AppRoutes.mechanicMapScreen,
+                          extra: {
                         "name" : bookingAllFilters.customerId!.name,
                         "address" :  bookingAllFilters.customerId!.address,
                         "rating" : '0.0',
@@ -164,13 +165,18 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with 
 
                     },
                     onTap: () {
+                      print('========================================== Complete Test${bookingAllFilters.jobId?.id}');
                       context.pushNamed(AppRoutes.towTruckDetailsScreen,
                           extra: {
                             "title" : "Details",
                             "name" :  bookingAllFilters.customerId?.name??"",
                             "address" :  bookingAllFilters.customerId?.address ?? "",
                             "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
-                            "id": bookingAllFilters.id
+                            "id": bookingAllFilters.id,
+                            "provideId": bookingAllFilters.customerId?.id,
+                            "jobId": bookingAllFilters.jobId?.id
+
+
                           }
                       );
 
