@@ -139,7 +139,7 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
                        },
                        onTap: (){
               mechanicBookingAllFiltersController.changeStatus(
-                  status: bookingAllFilters.status,
+                  status: "request-canceled",
                   jobId: bookingAllFilters.id,
                   context: context);
                        },
@@ -186,7 +186,9 @@ class _MechanicBookingsScreenState extends State<MechanicBookingsScreen>  with S
                                   "name" :  bookingAllFilters.customerId?.name??"",
                                   "address" :  bookingAllFilters.customerId?.address ?? "",
                                   "image": bookingAllFilters.customerId?.profileImage != null ? "${ApiConstants.imageBaseUrl}/${bookingAllFilters.customerId?.profileImage}": "",
-                                  "id": bookingAllFilters.id
+                                  "id": bookingAllFilters.id,
+                                  "provideId": bookingAllFilters.customerId?.id,
+
                                 }
                             );
 

@@ -97,7 +97,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                       isOnline: user.receiver?.isOnline ?? false,
                                       image: "${ApiConstants.imageBaseUrl}/${user.receiver?.profileImage}",
                                       message: user.lastMessage?.content == "" ? "File" : "${user.lastMessage?.content}",
-                                      time: "${TimeFormatHelper.timeWithAMPMLocalTime(DateTime.parse("${user.lastMessage?.createdAt}"))}" ),
+                                      time: "${TimeFormatHelper.timeWithAMPMLocalTime(DateTime.parse("${user.lastMessage?.createdAt ?? DateTime.now()}"))}" ),
                                 ),
                               );
                             }),

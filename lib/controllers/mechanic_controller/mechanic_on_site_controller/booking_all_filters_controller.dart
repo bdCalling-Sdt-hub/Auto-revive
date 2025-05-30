@@ -7,6 +7,7 @@ import '../../../core/config/app_routes/app_routes.dart';
 import '../../../helpers/toast_message_helper.dart';
 import '../../../models/booking_all_filter_model.dart';
 import '../../../models/get_all_service_model.dart';
+import '../../../models/get_provider_model.dart';
 import '../../../models/job_process_complete_model.dart';
 import '../../../services/api_client.dart';
 import '../../../services/api_constants.dart';
@@ -48,6 +49,7 @@ class MechanicBookingAllFiltersController extends GetxController {
   Future<void> changeStatus({
     String? status,
     String? jobId,
+    bool isScreenBack=false,
     required BuildContext context,
   }) async {
     var body = {
@@ -64,9 +66,14 @@ class MechanicBookingAllFiltersController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-
+        bookingFilters.removeWhere((x)=>x.id==jobId);
+        if(isScreenBack){
+          context.pop();
+        }
+        update();
+        bookingFilters.refresh();
       } else {
-        ToastMessageHelper.showToastMessage("Failed to change status.");
+        ToastMessageHelper.showToastMessage("Failed to change status.",title: "Attention");
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Something went wrong.");
@@ -101,7 +108,8 @@ class MechanicBookingAllFiltersController extends GetxController {
 
   Future<void> addServiceProvider({
     required BuildContext context,
-    required String serviceId
+    required String serviceId,
+
   }) async {
 
     print("=================================================================>>>  $servicesBody");
@@ -117,7 +125,9 @@ class MechanicBookingAllFiltersController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
-        context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen, extra: {"id":"$serviceId"});
+        context.pushNamed(AppRoutes.mechanicCompleteDetailsScreen,
+            extra: {"id":"$serviceId",
+        });
 
       } else {
         ToastMessageHelper.showToastMessage("Job process not found",title: 'Attention');
@@ -145,6 +155,28 @@ class MechanicBookingAllFiltersController extends GetxController {
       getJobProcessCompleteLoading(false);
     }
   }
+
+
+
+
+
+  /// ================================> Get Provider ==============================>
+
+  RxBool getProviderLoading = false.obs;
+  Rx<ProviderModel> provider = ProviderModel().obs;
+  getProvider({String? id}) async {
+    getProviderLoading(true);
+    var response = await ApiClient.getData(
+        "${ApiConstants.getProviderDetails}/${id ?? ""}");
+    if (response.statusCode == 200) {
+      provider.value = ProviderModel.fromJson(response.body['data']);
+      update();
+      getProviderLoading(false);
+    } else if (response.statusCode == 404) {
+      getProviderLoading(false);
+    }
+  }
+
 
 
 
