@@ -43,7 +43,7 @@ class ChatController extends GetxController {
       update();
     }
 
-    var response = await ApiClient.getData(ApiConstants.message("$tempReceiverId?page=${page.value}"));
+    var response = await ApiClient.getData(ApiConstants.message("$tempReceiverId?page=${page.value}&limit=18"));
 
     if (response.statusCode == 200) {
 

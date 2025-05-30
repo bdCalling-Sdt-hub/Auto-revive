@@ -101,7 +101,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                                         :
                                     BubbleNormal(
                                       text: "${message.content}",
-                                      // isSender: isSender,
+                                      isSender: isSender,
                                       color: isSender
                                           ? AppColors.primaryColor
                                           : AppColors.fontColorFEFEFE,
