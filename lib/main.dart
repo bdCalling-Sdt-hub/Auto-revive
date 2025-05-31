@@ -17,7 +17,7 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  Stripe.publishableKey = Config.publishableKey;
+  Stripe.publishableKey =  Config.publishableKey;
   Stripe.merchantIdentifier = 'MerchantIdentifier';
   await Stripe.instance.applySettings();
 

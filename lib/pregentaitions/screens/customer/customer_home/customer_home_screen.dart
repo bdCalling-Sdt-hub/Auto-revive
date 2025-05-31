@@ -1,5 +1,6 @@
 import 'package:autorevive/controllers/live_location_change_controller.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:autorevive/services/socket_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   void initState() {
     controller.getCurrentLocation();
     liveLocationChangeController.listenToLocationChanges();
+
 
     super.initState();
   }
@@ -138,17 +140,30 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.h),
+                     SizedBox(height: 10.h),
+                    
+                    
+
                     Obx(
                       () {
                         controller.isLoading.value;
                         return GestureDetector(
                           onTap: () {
-                            context.pushNamed(AppRoutes.customerSelectCarScreen,
-                                extra: {
-                                  "title": "Tow Truck",
-                                  "address" : "${controller.address.value}"
-                                });
+
+                            if(controller.address.value.isNotEmpty){
+
+                              context.pushNamed(AppRoutes.customerSelectCarScreen,
+                                  extra: {
+                                    "title": "Tow Truck",
+                                    "address" : "${controller.address.value}"
+                                  });
+
+                            }else{
+                              ToastMessageHelper.showToastMessage("Please wait 10 seconds while we fetch your location. Then try again.");
+                            }
+
+
+
                           },
                           child: Container(
                             decoration: BoxDecoration(
