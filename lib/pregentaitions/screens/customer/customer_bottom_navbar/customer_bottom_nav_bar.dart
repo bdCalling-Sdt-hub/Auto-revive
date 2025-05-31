@@ -38,29 +38,31 @@ class CustomerBottomNavBarState extends State<CustomerBottomNavBar> {
       backgroundColor: currentIndex == 0 ? Colors.transparent : AppColors.bgColorWhite,
       extendBody: true,
       body: screens[currentIndex],
-      bottomNavigationBar: Container(
-        height: sizeH * .07,
-        margin: EdgeInsets.all(sizeH * .015),
-        padding: EdgeInsets.all(sizeH * .01),
-        decoration: BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(sizeH * .05),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10.r,
-              spreadRadius: 1.r,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(0),
-            _buildNavItem(1),
-            _buildNavItem(2),
-            _buildNavItem(3),
-          ],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: sizeH * .07,
+          margin: EdgeInsets.all(sizeH * .015),
+          padding: EdgeInsets.all(sizeH * .01),
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor,
+            borderRadius: BorderRadius.circular(sizeH * .05),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10.r,
+                spreadRadius: 1.r,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(0),
+              _buildNavItem(1),
+              _buildNavItem(2),
+              _buildNavItem(3),
+            ],
+          ),
         ),
       ),
     );

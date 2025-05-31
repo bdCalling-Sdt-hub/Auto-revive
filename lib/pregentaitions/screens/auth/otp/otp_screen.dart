@@ -5,8 +5,6 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../controllers/auth_controller.dart';
@@ -44,18 +42,37 @@ class OtpScreen extends StatelessWidget {
               CustomPinCodeTextField(textEditingController: otpTEController),
           
               SizedBox(height: 10.h),
-          
+
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(text: "Didn't got the code?"),
-                  GestureDetector(
-                      onTap: () {
-                        authController.reSendOtp();
+                  const Spacer(),
+                  Align(
+                    alignment: Alignment.centerRight,
+
+                    child: Obx(() =>
+                        GestureDetector(
+
+                      onTap: authController.isCountingDown.value
+                          ? null
+                          : () {
+                        authController.startCountdown();
+                        authController.reSendOtp('${Get.parameters['email']}');
                       },
-                      child: CustomText(text: "Resend", color: Colors.red))
+                      child: CustomText(
+                        text: authController.isCountingDown.value
+                            ? 'Resend in ${authController.countdown.value}s'
+                            : 'Resend code',
+                        color: authController.isCountingDown.value
+                            ? Colors.red
+                            : AppColors.primaryColor,
+                        fontsize: 12.sp,
+                      ),
+                    )),
+                  ),
                 ],
               ),
+
           
               SizedBox(height: 70.h),
           

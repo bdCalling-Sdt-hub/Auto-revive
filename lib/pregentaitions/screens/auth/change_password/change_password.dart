@@ -133,13 +133,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                        loading: authController.changePasswordLoading.value,
                        title: 'Change Password',
                        onpress: () {
-                     if(fromKey.currentState!.validate()){
-                       authController.changePassword(
-                           newPasswordCTRl.text,
-                           currentPasswordCTRl.text,
-                           conformPasswordCTRl.text);
-                     }
-                     },),
+                         if (fromKey.currentState!.validate()) {
+                           authController.changePassword(
+                             currentPasswordCTRl.text,
+                             newPasswordCTRl.text,
+                             conformPasswordCTRl.text,
+                           );
+                         }
+                       },
+                     ),
                    ),
                     SizedBox(height: 24.h),
                   ],

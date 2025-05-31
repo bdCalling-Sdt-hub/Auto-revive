@@ -11,6 +11,8 @@ class ApiConstants{
   static const String loginUpEndPoint = "/auth/login";
   static const String changePassword = "/auth/change-password";
   static const String verifyEmailEndPoint = "/auth/verify-email";
+  static const String forgotPasswordEndPoint = "/auth/forgot-password";
+  static const String resetPasswordEndPoint = "/auth/reset-password";
   static const String uploadEndPoint = "/upload";
   static const String getAllToolsEndPoint = "/tool";
   static const String getAllExperienceEndPoint = "/experience";

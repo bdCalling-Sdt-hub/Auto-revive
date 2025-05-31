@@ -1,17 +1,19 @@
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import '../../../../controllers/auth_controller.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
 
   final TextEditingController passCtrl = TextEditingController();
   final TextEditingController rePassCtrl = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
 
 
   @override
@@ -23,52 +25,66 @@ class ResetPasswordScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
 
-            SizedBox(height: 16.h),
+              SizedBox(height: 16.h),
 
-            ///<<<=============>>> LOGO <<<===============>>>
+              ///<<<=============>>> LOGO <<<===============>>>
 
-            Assets.icons.logoSVG.svg(),
-
-
-            SizedBox(height: 38.h),
-
-
-            ///<<<=============>>> EMAIL FILED <<<===============>>>
-
-            CustomTextField(
-                controller: passCtrl,
-                hintText: "Enter Password",
-                prefixIcon: Assets.icons.mail.svg(),
-                isPassword: true),
+              Assets.icons.logoSVG.svg(),
 
 
+              SizedBox(height: 38.h),
 
 
-            ///<<<=============>>> EMAIL Re Password <<<===============>>>
+              ///<<<=============>>> EMAIL FILED <<<===============>>>
 
-
-            CustomTextField(
-                controller: passCtrl,
-                hintText: "Enter Re-enter Password",
-                prefixIcon: Assets.icons.mail.svg(),
-                isPassword: true),
+              CustomTextField(
+                  controller: passCtrl,
+                  hintText: "Enter Password",
+                  prefixIcon: Assets.icons.mail.svg(),
+                  isPassword: true),
 
 
 
-            SizedBox(height: 111.h),
+
+              ///<<<=============>>> EMAIL Re Password <<<===============>>>
 
 
-            ///<<<=============>>> SEND OTP <<<===============>>>
+              CustomTextField(
+                  controller: passCtrl,
+                  hintText: "Enter Re-enter Password",
+                  prefixIcon: Assets.icons.mail.svg(),
+                  isPassword: true),
 
-            CustomButton(title: "Confirm", onpress: (){
-              context.pushNamed(AppRoutes.otpScreen);
-            }),
 
 
-          ],
+              SizedBox(height: 111.h),
+
+
+              ///<<<=============>>> SEND OTP <<<===============>>>
+
+              Obx(()=>
+               CustomButton(
+                 loading: authController.setPasswordLoading.value,
+                   title: "Confirm",
+                   onpress: (){
+                     if(formKey.currentState!.validate()){
+                       authController.setPassword(
+                           passCtrl.text,
+                           rePassCtrl.text,
+                           context: context);
+
+                     }
+                }),
+              ),
+
+
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../../../services/api_constants.dart';
@@ -26,11 +26,17 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
 
   TowTrackController towTrackController = Get.put(TowTrackController());
 
+  bool isLoading = true;
 
   @override
   void initState() {
     towTrackController.getTowTrackProfile();
     super.initState();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -46,7 +52,13 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
+          child: isLoading
+              ? Column(
+            children: List.generate(2, (_) => _buildProfileDetailsShimmer()),
+          )
+              :
+
+          Column(
             children: [
               Obx(() {
                 final profile = towTrackController.trackProfile.value;
@@ -252,23 +264,42 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                           GestureDetector(
                             onTap: () async {
                               await towTrackController.getTowTrackProfile();
-                              final vehicle = profile.vehicles?.first;
+                              final vehicles = profile.vehicles ?? [];
 
-                              if (vehicle == null) return;
+                              if (vehicles.isEmpty) return;
                               context.pushNamed(
                                 AppRoutes.vehicleEquipmentScreen,
                                 extra: {
                                   "title": "Vehicle and Equipment Verification",
                                   "isEdit": true,
-                                  "year": vehicle.year ?? '',
-                                  "brand": vehicle.brand ?? '',
-                                  "modelNo": vehicle.modelNo ?? '',
-                                  "gvwr": vehicle.gvwr ?? '',
-                                  "type": vehicle.type ?? '',
-                                  "video": vehicle.video ?? '',
-
+                                  "vehicles": vehicles.map((v) => {
+                                    "year": v.year ?? '',
+                                    "brand": v.brand ?? '',
+                                    "modelNo": v.modelNo ?? '',
+                                    "gvwr": v.gvwr ?? '',
+                                    "type": v.type ?? '',
+                                    "video": v.video ?? '',
+                                  }).toList(),
                                 },
                               ).then((_) => towTrackController.getTowTrackProfile());
+
+                              // final vehicle = profile.vehicles?.first;
+                              //
+                              // if (vehicle == null) return;
+                              // context.pushNamed(
+                              //   AppRoutes.vehicleEquipmentScreen,
+                              //   extra: {
+                              //     "title": "Vehicle and Equipment Verification",
+                              //     "isEdit": true,
+                              //     "year": vehicle.year ?? '',
+                              //     "brand": vehicle.brand ?? '',
+                              //     "modelNo": vehicle.modelNo ?? '',
+                              //     "gvwr": vehicle.gvwr ?? '',
+                              //     "type": vehicle.type ?? '',
+                              //     "video": vehicle.video ?? '',
+                              //
+                              //   },
+                              // ).then((_) => towTrackController.getTowTrackProfile());
                             },
                             child: Assets.icons.editIcon.svg(),
                           ),
@@ -480,12 +511,200 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
       ),
     );
   }
-
   String getFileName(String? path) {
     if (path == null || path.trim().isEmpty) return 'Not uploaded';
     path = path.replaceAll('\\', '/');
     return path.split('/').last;
   }
+
+  Widget _buildProfileDetailsShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: kToolbarHeight + 20.h),
+
+            // Profile Image Circle
+            Center(
+              child: Container(
+                width: 128.w,
+                height: 128.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade300,
+                ),
+              ),
+            ),
+            SizedBox(height: 12.h),
+
+            // Name and info block
+            Container(
+              height: 60.h,
+              width: double.infinity,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.symmetric(vertical: 8.h),
+            ),
+
+            SizedBox(height: 24.h),
+
+            // Company Info Container
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.r),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: 24.h,
+                    width: 150.w,
+                    color: Colors.grey.shade400,
+                    margin: EdgeInsets.only(bottom: 16.h),
+                  ),
+                  ...List.generate(4, (_) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.h),
+                    child: Container(
+                      height: 18.h,
+                      width: double.infinity,
+                      color: Colors.grey.shade400,
+                    ),
+                  )),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            // Licensing Section Title
+            Container(
+              height: 24.h,
+              width: 180.w,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.only(bottom: 12.h),
+            ),
+
+            // Several short lines for licensing details
+            ...List.generate(3, (_) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.h),
+              child: Container(
+                height: 18.h,
+                width: double.infinity,
+                color: Colors.grey.shade300,
+              ),
+            )),
+
+            SizedBox(height: 20.h),
+
+            // Vehicle and Equipment Section Title
+            Container(
+              height: 24.h,
+              width: 180.w,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.only(bottom: 12.h),
+            ),
+
+            // Multiple vehicles placeholders
+            ...List.generate(2, (_) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 18.h,
+                    width: double.infinity,
+                    color: Colors.grey.shade400,
+                    margin: EdgeInsets.only(bottom: 6.h),
+                  ),
+                  Container(
+                    height: 18.h,
+                    width: double.infinity,
+                    color: Colors.grey.shade400,
+                    margin: EdgeInsets.only(bottom: 6.h),
+                  ),
+                  Container(
+                    height: 40.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                  ),
+                ],
+              ),
+            )),
+
+            SizedBox(height: 20.h),
+
+            // Service and Coverage Section Title
+            Container(
+              height: 24.h,
+              width: 180.w,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.only(bottom: 12.h),
+            ),
+
+            ...List.generate(4, (_) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.h),
+              child: Container(
+                height: 18.h,
+                width: double.infinity,
+                color: Colors.grey.shade300,
+              ),
+            )),
+
+            SizedBox(height: 20.h),
+
+            // Business Requirements Section Title
+            Container(
+              height: 24.h,
+              width: 220.w,
+              color: Colors.grey.shade300,
+              margin: EdgeInsets.only(bottom: 12.h),
+            ),
+
+            ...List.generate(5, (_) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.h),
+              child: Container(
+                height: 18.h,
+                width: double.infinity,
+                color: Colors.grey.shade300,
+              ),
+            )),
+
+            SizedBox(height: 40.h),
+
+            // Signature Upload placeholder
+            Container(
+              height: 50.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+
+            SizedBox(height: 24.h),
+
+            // Date text placeholder
+            Container(
+              height: 18.h,
+              width: 120.w,
+              color: Colors.grey.shade300,
+            ),
+
+            SizedBox(height: 80.h),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
 
 

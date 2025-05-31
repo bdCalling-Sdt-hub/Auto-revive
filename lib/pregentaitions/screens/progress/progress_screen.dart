@@ -34,8 +34,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
               padding: EdgeInsets.all(8.r),
               itemBuilder: (context, index) {
                 return BookingCardCustomer(
-                  isNextPay: true,
-                  buttonLabel: 'Pay Now',
+                  buttonLabel: 'Cancel',
+                  acceptCancelBtnName:  ["Complete", "Cancel"],
                   buttonColor: AppColors.primaryShade300,
                   onTapDetails: () {
                     context.pushNamed(AppRoutes.towTruckDetailsScreen);
@@ -45,9 +45,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       "title" : "Details"
                     });
                   },
-                  title: r'Price: $108',
                   name: 'David Bryan',
-                  certificates: const ["ASE", "OEM"],
+                  address: 'dhaka',
                   rating: rating,
                   status: 'On-going',
                   image: '',
@@ -55,6 +54,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               },
             ),
           ),
+          SizedBox(height: 45.h)
         ],
       )
     );

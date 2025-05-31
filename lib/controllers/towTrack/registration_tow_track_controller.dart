@@ -165,47 +165,75 @@ class TowTrackController extends GetxController{
   }
 
 
-/// =====================================> Vehicle Equipment ==============================================>
-
+  /// =====================================> Multiple Vehicle Equipment ==============================================
   var vehiclesEquipmentLoading = false.obs;
 
-  vehiclesEquipment({
-    int? year,
-    String? brand,
-    String? modelNo,
-    int? gvwr,
-    String? type,
-    String? video,
+  Future<bool> vehiclesEquipmentMultiple({
+    required List<Map<String, dynamic>> vehicles,
     required BuildContext context,
   }) async {
     var body = {
-      'vehicles': [
-        {
-          'year': int.tryParse(year.toString()),
-          'brand': brand,
-          'modelNo': modelNo,
-          'gvwr': int.tryParse(gvwr.toString()),
-          'type': type,
-          'video': video,
-
-        }
-      ]
+      'vehicles': vehicles,
     };
     vehiclesEquipmentLoading(true);
     var response = await ApiClient.putData(
-        ApiConstants.towTrackVehicleEndPoint,
-        body);
+      ApiConstants.towTrackVehicleEndPoint,
+      body,
+    );
     vehiclesEquipmentLoading(false);
+
     if (response.statusCode == 200 || response.statusCode == 201) {
-      // context.pushNamed(AppRoutes.serviceCoverageScreen);
       ToastMessageHelper.showToastMessage("${response.body["message"]}");
       return true;
     } else {
-      ToastMessageHelper.showToastMessage('You must enter the current year!', title: 'Attention');
+      ToastMessageHelper.showToastMessage('Failed to update vehicle data.', title: 'Attention');
       return false;
     }
   }
 
+
+
+
+  // /// =====================================> Vehicle Equipment ==============================================>
+  //
+  // var vehiclesEquipmentLoading = false.obs;
+  //
+  // vehiclesEquipment({
+  //   int? year,
+  //   String? brand,
+  //   String? modelNo,
+  //   int? gvwr,
+  //   String? type,
+  //   String? video,
+  //   required BuildContext context,
+  // }) async {
+  //   var body = {
+  //     'vehicles': [
+  //       {
+  //         'year': int.tryParse(year.toString()),
+  //         'brand': brand,
+  //         'modelNo': modelNo,
+  //         'gvwr': int.tryParse(gvwr.toString()),
+  //         'type': type,
+  //         'video': video,
+  //
+  //       }
+  //     ]
+  //   };
+  //   vehiclesEquipmentLoading(true);
+  //   var response = await ApiClient.putData(
+  //       ApiConstants.towTrackVehicleEndPoint,
+  //       body);
+  //   vehiclesEquipmentLoading(false);
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     // context.pushNamed(AppRoutes.serviceCoverageScreen);
+  //     ToastMessageHelper.showToastMessage("${response.body["message"]}");
+  //     return true;
+  //   } else {
+  //     ToastMessageHelper.showToastMessage('You must enter the current year!', title: 'Attention');
+  //     return false;
+  //   }
+  // }
 
   /// =====================================> service Coverage ==============================================>
 

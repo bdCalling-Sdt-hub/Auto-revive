@@ -206,8 +206,12 @@ class AppRoutes {
     GoRoute(
       path: emailVerifyScreen,
       name: emailVerifyScreen,
-      pageBuilder: (context, state) =>
-          _customTransitionPage(EmailVerifyScreen(), state),
+      builder: (context, state) {
+        String email = state.extra as String;
+        return EmailVerifyScreen(email: email);
+      },
+      // pageBuilder: (context, state) =>
+      //     _customTransitionPage(EmailVerifyScreen(), state),
     ),
 
     ///<<<=============>>> OTP SCREEN <<<===============>>>
