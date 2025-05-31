@@ -23,6 +23,7 @@ class _PrivacyAllScreenState extends State<PrivacyAllScreen> {
   void dispose() {
     settingsController.value.value = '';
     super.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,8 @@ class _PrivacyAllScreenState extends State<PrivacyAllScreen> {
         centerTitle: true,
         title: CustomText(text: routeDate.toString(), fontsize: 20.h),
       ),
-      body: Obx(()=>
-      settingsController.getPrivacyPolicyLoading.value
+      body:
+      Obx(()=> settingsController.getPrivacyPolicyLoading.value
           ?  CustomLoader(top: 20.h)
           : settingsController.value.isEmpty
           ? Center(child: CustomText(text: "No Data Found!", top: 300.h))

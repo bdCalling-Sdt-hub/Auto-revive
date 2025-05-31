@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../helpers/toast_message_helper.dart';
 
 class LogInScreen extends StatelessWidget {
   LogInScreen({super.key});
@@ -63,7 +64,11 @@ class LogInScreen extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                       onTap: () {
-                        context.pushNamed(AppRoutes.emailVerifyScreen);
+                        if(emailCtrl.text.isEmpty){
+                          ToastMessageHelper.showToastMessage("Please enter your email",title: 'Attention');
+                        }else{
+                          context.pushNamed(AppRoutes.emailVerifyScreen, extra: emailCtrl.text);
+                        }
                       },
                       child: CustomText(text: "Forgot Password", color: Colors.red, bottom: 20.h, top: 8.h)),
                 ),

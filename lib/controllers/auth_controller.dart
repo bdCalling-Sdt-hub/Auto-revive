@@ -127,6 +127,8 @@ class AuthController extends GetxController {
         }else {
           context.go(AppRoutes.towTrackBasicInfoScreen);
         }
+      }else{
+        context.go(AppRoutes.resetPasswordScreen);
       }
       verfyLoading(false);
     } else{
@@ -139,6 +141,29 @@ class AuthController extends GetxController {
 
   }
 
+
+
+
+
+  final RxInt countdown = 180.obs;
+  final RxBool isCountingDown = false.obs;
+
+
+  void startCountdown() {
+    isCountingDown.value = true;
+    countdown.value = 180;
+    update();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (countdown.value > 0) {
+        countdown.value--;
+        update();
+      } else {
+        timer.cancel();
+        isCountingDown.value = false;
+        update();
+      }
+    });
+  }
 
   ///************************************************************************///
   ///===============Log in================<>
@@ -280,79 +305,83 @@ class AuthController extends GetxController {
   // }
 
 
-  //
-  // ///************************************************************************///
-  //
-  //
-  // ///===============Forgot Password================<>
-  // RxBool forgotLoading = false.obs;
-  //
-  // handleForgot(String email, screenType, {required BuildContext context}) async {
-  //   forgotLoading(true);
-  //   var body = {"email": email};
-  //   var response = await ApiClient.postData(
-  //       ApiConstants.forgotPasswordPoint, jsonEncode(body));
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //
-  //     if(screenType == "forgot"){
-  //       context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
-  //       // context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
-  //     }
-  //
-  //     forgotLoading(false);
-  //   }  else {
-  //     forgotLoading(false);
-  //     ToastMessageHelper.showToastMessage(response.body["message"]);
-  //   }
-  // }
-  //
-  //
-  // ///===============Set Password================<>
-  //
-  // RxBool setPasswordLoading = false.obs;
-  //
-  // setPassword(String password,{required BuildContext context}) async {
-  //   setPasswordLoading(true);
-  //   var body = {
-  //     "password": password.toString().trim()
-  //   };
-  //
-  //   var response = await ApiClient.postData(
-  //       ApiConstants.setPasswordEndPoint, jsonEncode(body));
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     context.pushNamed(AppRoutes.loginScreen);
-  //     ToastMessageHelper.showToastMessage('${response.body["message"]}');
-  //     print("======>>> successful");
-  //     setPasswordLoading(false);
-  //   } else if(response.statusCode == 1){
-  //     setPasswordLoading(false);
-  //     ToastMessageHelper.showToastMessage("Server error! \n Please try later");
-  //   } else {
-  //     setPasswordLoading(false);
-  //     ToastMessageHelper.showToastMessage('${response.body["message"]}');
-  //   }
-  // }
-  //
-  //
+
+  ///************************************************************************///
+
+
+  ///===========================================> Forgot Password ====================================================<>
+  RxBool forgotLoading = false.obs;
+
+  handleForgot(String email, screenType, {required BuildContext context}) async {
+    forgotLoading(true);
+    var body = {"email": email};
+    var response = await ApiClient.postData(
+        ApiConstants.forgotPasswordEndPoint, jsonEncode(body));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+
+      if(screenType == "forgot"){
+        context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
+        // context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
+      }
+
+      forgotLoading(false);
+    }  else {
+      forgotLoading(false);
+      ToastMessageHelper.showToastMessage(response.body["message"]);
+    }
+  }
+
+
+
+
+
+  ///===============Set Password================<>
+
+  RxBool setPasswordLoading = false.obs;
+
+  setPassword(String password,confirmPassword,{required BuildContext context}) async {
+    setPasswordLoading(true);
+    var body = {
+      "password": password.toString().trim(),
+      "confirmPassword": confirmPassword.toString().trim()
+    };
+
+    var response = await ApiClient.postData(
+        ApiConstants.resetPasswordEndPoint, jsonEncode(body));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      context.pushNamed(AppRoutes.logInScreen);
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
+      print("======>>> successful");
+      setPasswordLoading(false);
+    } else if(response.statusCode == 1){
+      setPasswordLoading(false);
+      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+    } else {
+      setPasswordLoading(false);
+      ToastMessageHelper.showToastMessage('${response.body["message"]}');
+    }
+  }
+
+
   ///===============Resend================<>
 
   RxBool resendLoading = false.obs;
 
-  reSendOtp() async {
+  reSendOtp(String email) async {
     resendLoading(true);
-    var body = {};
+    var body = {"email": email};
 
     var response = await ApiClient.postData(
         ApiConstants.resendOtpEndPoint,jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       ToastMessageHelper.showToastMessage(
-          'You have got an one time code to your email');
+          'You have got an one time code to your email',title: 'Attention');
       print("======>>> successful");
       resendLoading(false);
     }else{
-      ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      ToastMessageHelper.showToastMessage("${response.body["message"]}",title: 'Attention');
       resendLoading(false);
     }
   }
