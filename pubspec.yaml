@@ -48,8 +48,6 @@ dependencies:
   custom_rating_bar: ^3.0.0
   toastification:
   quickalert: ^1.1.0
-#  flutter_stripe: ^10.2.0
-  flutter_stripe: ^11.3.0
   location_picker_text_field:
   country_pickers: ^3.0.1
   socket_io_client:
@@ -58,7 +56,8 @@ dependencies:
   firebase_messaging:
   firebase_core: ^3.13.1
   firebase_analytics: ^11.4.6
-
+  flutter_widget_from_html:
+  webview_flutter: ^4.13.0
 
 
 dev_dependencies:

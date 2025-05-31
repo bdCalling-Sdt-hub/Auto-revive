@@ -1,14 +1,14 @@
-package com.example.autorevive  // তোমার প্রকল্পের প্যাকেজ নাম
+package com.example.autorevive
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
-import io.flutter.embedding.android.FlutterFragmentActivity  // যদি FlutterFragmentActivity দরকার হয়, অন্যথায় FlutterActivity
+import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity: FlutterFragmentActivity() {  // অথবা FlutterActivity ব্যবহার করো, যা দরকার
+class MainActivity: FlutterActivity() {
 
     private val CHANNEL = "com.example.vibration/vibrate"
 

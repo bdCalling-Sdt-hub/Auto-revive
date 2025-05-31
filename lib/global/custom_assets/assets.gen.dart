@@ -223,8 +223,17 @@ class $AssetsLottieGen {
   LottieGenImage get noInternet =>
       const LottieGenImage('assets/lottie/no_internet.json');
 
+  /// File path: assets/lottie/paymentfail.json
+  LottieGenImage get paymentfail =>
+      const LottieGenImage('assets/lottie/paymentfail.json');
+
+  /// File path: assets/lottie/paymentsuccess.json
+  LottieGenImage get paymentsuccess =>
+      const LottieGenImage('assets/lottie/paymentsuccess.json');
+
   /// List of all assets
-  List<LottieGenImage> get values => [buttonLoading, noData, noInternet];
+  List<LottieGenImage> get values =>
+      [buttonLoading, noData, noInternet, paymentfail, paymentsuccess];
 }
 
 class Assets {
