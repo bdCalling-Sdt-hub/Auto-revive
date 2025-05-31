@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../controllers/settings_controller.dart';
@@ -46,12 +47,25 @@ class _PrivacyAllScreenState extends State<PrivacyAllScreen> {
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               children: [
-                CustomText(
-                  textAlign: TextAlign.start,
-                  maxline: 20,
-                  text: settingsController.value.value),
+                // CustomText(
+                //   textAlign: TextAlign.start,
+                //   maxline: 20,
+                //   text: settingsController.value.value),
 
-              ],
+
+
+              HtmlWidget(
+              settingsController.value.value,
+              textStyle: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                fontSize: 14.h,
+              )),
+
+
+                SizedBox(height: 40.h)
+
+              ]
             ),
           ),
         )),

@@ -8,7 +8,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:toastification/toastification.dart';
 import 'core/config/app_routes/app_routes.dart';
 import 'core/config/app_themes/app_themes.dart';
@@ -16,12 +15,6 @@ import 'core/config/app_themes/app_themes.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  Stripe.publishableKey =  Config.publishableKey;
-  Stripe.merchantIdentifier = 'MerchantIdentifier';
-  await Stripe.instance.applySettings();
-
-
   await Firebase.initializeApp();
   await FirebaseMessaging.instance;
   FirebaseNotificationService.instance;

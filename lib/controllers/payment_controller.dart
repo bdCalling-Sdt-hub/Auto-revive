@@ -1,168 +1,53 @@
 import 'dart:convert';
+import 'package:autorevive/core/app_constants/app_constants.dart';
+import 'package:autorevive/core/config/app_routes/app_routes.dart';
+import 'package:autorevive/global/custom_assets/assets.gen.dart';
+import 'package:autorevive/helpers/prefs_helper.dart';
+import 'package:autorevive/helpers/quick_alert.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:http/http.dart' as http;
-
-import '../env/config.dart';
-import '../helpers/toast_message_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../models/payment_history_model.dart';
 import '../services/api_client.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
+import '../services/vibration_service.dart';
 
-class PaymentController {
+class PaymentController extends GetxController{
   Map<String, dynamic>? paymentIntentData;
 
-  PaymentController() {
-    Stripe.publishableKey = Config.publishableKey;
-  }
+  requestToAddBalance({required String price,required BuildContext context})async{
+    Map<String, dynamic> body = {
+      "amount": int.parse(price.toString()),
+    };
 
-  Future<PaymentIntent> stripeCheckPaymentIntentTransaction(String piId) async {
-    try {
-      final paymentIntent = await Stripe.instance.retrievePaymentIntent(piId);
+
+    final apiResponse = await ApiClient.postData(ApiConstants.addBalance, jsonEncode(body));
+
+    if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
+
+      var url = apiResponse.body["data"];
+      context.pushNamed(AppRoutes.paymentWebView, extra: url);
+
       if (kDebugMode) {
-        print("Payment Intent: $paymentIntent");
-      }
-      return paymentIntent;
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error fetching payment intent: $e');
-      }
-      rethrow;
-    }
-  }
-
-  Future<void> makePayment({required String price}) async {
-    try {
-      paymentIntentData = await createPaymentIntent(price, "USD");
-      if (paymentIntentData != null) {
-        String clientSecret = paymentIntentData!['client_secret'];
-
-        if (kDebugMode) {
-          print("Client Secret: $clientSecret");
-        }
-
-        await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-            billingDetails: const BillingDetails(
-              name: '',
-              email: 'jaimulislam7@gmail.com',
-            ),
-            googlePay: const PaymentSheetGooglePay(merchantCountryCode: 'US'),
-            merchantDisplayName: 'jaimul islam',
-            paymentIntentClientSecret: clientSecret,
-            style: ThemeMode.dark,
-          ),
-        );
-
-        displayPaymentSheet(price: price);
-      }
-    } catch (e, s) {
-      if (kDebugMode) {
-        print('Exception: $e\nStack trace: $s');
+        debugPrint("Payment successfully created: ${apiResponse.body}");
       }
     }
   }
 
 
-  Future<Map<String, dynamic>?> createPaymentIntent(String amount, String currency) async {
-    try {
-      Map<String, dynamic> body = {
-        'amount': calculateAmount(amount),
-        'currency': currency,
-      };
 
-      var response = await http.post(
-        Uri.parse('https://api.stripe.com/v1/payment_intents'),
-        body: body,
-        headers: {
-          'Authorization': 'Bearer ${Config.secretKey}', // Use sk_test_... key here
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-      );
-
-      if (kDebugMode) {
-        print("Payment Intent Response: ${response.body}");
-      }
-
-      return jsonDecode(response.body);
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error creating payment intent: $e");
-      }
-      return null;
-    }
-  }
-
-  String calculateAmount(String amount) {
-    final doubleAmount = double.tryParse(amount);
-    if (doubleAmount != null) {
-      return (doubleAmount * 100).toInt().toString();
-    } else {
-      throw const FormatException("Invalid amount format");
-    }
-  }
-
-
-  Future<void> displayPaymentSheet({required String price}) async {
-    try {
-      await Stripe.instance.presentPaymentSheet();
-      retrieveTxnId(paymentIntent: paymentIntentData!['id'], price:price );
-      if (kDebugMode) {
-        print('Payment intent: $paymentIntentData');
-      }
- ToastMessageHelper.showToastMessage("Payment Success");
-      paymentIntentData = null;
-    } catch (e) {
-      if (kDebugMode) {
-        print("Error displaying payment sheet: $e");
-      }
-    }
-  }
-
-
-  Future<void> retrieveTxnId({required String paymentIntent, required String price}) async {
-    try {
-      // Step 1: Retrieve the payment intent details (charges)
-      final response = await http.get(
-        Uri.parse('https://api.stripe.com/v1/charges?payment_intent=$paymentIntent'),
-        headers: {
-          "Authorization": "Bearer ${Config.secretKey}",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        String transactionId = data['data'][0]['balance_transaction']; // Get the transaction ID
-
-        if (kDebugMode) {
-          print("Transaction Id: $transactionId");
-          print("***********payment data: $data");
-        }
-
-        // Step 2: Send the subscriptionId and transactionId to your custom API
-        Map<String, dynamic> body = {
-          "amount": int.parse(price.toString()),
-        };
-
-        ///API URL
-
-        // Step 3: Call the custom API with the transactionId and subscriptionId
-        final apiResponse = await ApiClient.postData(ApiConstants.addBalance, jsonEncode(body));
-
-        if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
-
-          if (kDebugMode) {
-            print("Payment successfully created: ${apiResponse.body}");
-          }
-        }
-      }
-    } catch (e) {
-    }
-  }
 
   /// ================================> Payment History  ==============================>
 
@@ -181,7 +66,126 @@ class PaymentController {
 
 
 
+  final isLoading = false.obs;
+  /// Handles the final payment result
+  Future<void> paymentResults({required String finishUrl,required BuildContext context}) async {
+    try {
+      isLoading(true);
+
+      var accessToken = await PrefsHelper.getString(AppConstants.bearerToken);
+      final headers = {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      };
+
+      final response = await http.get(Uri.parse(finishUrl), headers: headers);
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+
+        if (responseBody != null && responseBody["message"] == "Payment successfully.") {
+
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentSuccessScreen(title: "Payment Success", message: "Payment was successful!")));
+
+        } else {
+
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentSuccessScreen(title: "Payment Fail", message: "Payment was Fail! Please Try again")));
+
+
+        }
+      } else {
+
+        // QuickAlert.show(
+        //   context: context,
+        //   type: QuickAlertType.error,
+        //   text: "Your transaction failed. Please try again.",
+        //   onConfirmBtnTap: () {
+        //     context.pushNamed(AppRoutes.customerBottomNavBar);
+        //   },
+        // );
+      }
+    } catch (e) {
+      log(e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
 
 
 }
 
+
+
+
+class PaymentSuccessScreen extends StatefulWidget {
+  final String title;
+  final String message;
+   PaymentSuccessScreen({super.key, required this.title, required this.message});
+
+  @override
+  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+}
+
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+
+
+  @override
+  void initState() {
+    vibration();
+    super.initState();
+  }
+
+  vibration()async{
+    VibrationService.vibrateForDuration(1500);
+    await Future.delayed(Duration(milliseconds: 1000));
+    VibrationService.vibrateForDuration(1500);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:  Text('${widget.title}'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding:  EdgeInsets.all(16.r),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Lottie animation
+
+              SizedBox(height: 100.h),
+
+              widget.title == "Payment Success" ?
+              Assets.lottie.paymentsuccess.lottie(height: 150.h) : Assets.lottie.paymentfail.lottie(height: 150.h) ,
+
+               SizedBox(height: 24.h),
+
+              // Success message
+               Text('${widget.message}',
+                style: TextStyle(
+                  fontSize: 20.h,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+               SizedBox(height: 24.h),
+
+
+              Spacer(),
+
+              CustomButton(title: "Go To Home", onpress: () {
+                context.go(AppRoutes.customerBottomNavBar);
+              }),
+
+              SizedBox(height: 50.h)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

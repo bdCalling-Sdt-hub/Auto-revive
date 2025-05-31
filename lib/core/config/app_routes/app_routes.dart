@@ -43,6 +43,7 @@ import '../../../pregentaitions/screens/progress/progress_screen.dart';
 import '../../../pregentaitions/screens/settings_screen/settings_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/add_balace_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/earning_screen.dart';
+import '../../../pregentaitions/screens/tow_truck_profile/earning/payment_web_view.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/earning/withdraw_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_profile/personal_info_customer/personal_info_customer_screen.dart';
 import '../../../pregentaitions/screens/tow_truck_section/screens/auth/tow_track_basic_info_screen.dart';
@@ -115,6 +116,7 @@ class AppRoutes {
   static const String progressScreen = "/ProgressScreen";
   static const String adminSupportScreen = "/AdminSupportScreen";
   static const String addBalanceScreen = "/AddBalanceScreen";
+  static const String paymentWebView = "/PaymentWebView";
 
 
 
@@ -656,6 +658,20 @@ class AppRoutes {
             return _customTransitionPage(
               AddBalanceScreen(),
               state,
+            );
+          },
+        ),
+
+
+        ///<<<=============>>> ADD BALANCE SCREEN <<<===============>>>
+
+        GoRoute(
+          path: paymentWebView,
+          name: paymentWebView,
+          pageBuilder: (context, state) {
+            final paymentUrl = state.extra as String;
+            return MaterialPage(
+              child: PaymentWebView(paymentUrl: paymentUrl),
             );
           },
         ),

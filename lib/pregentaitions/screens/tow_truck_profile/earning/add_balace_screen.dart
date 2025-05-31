@@ -74,7 +74,8 @@ class _AddBalanceScreenState extends State<AddBalanceScreen> {
               onTap: (){
 
                 if(_amountController.text != ""){
-                  paymentController.makePayment(
+                  paymentController.requestToAddBalance(
+                    context: context,
                     price: _amountController.text
                   );
                 }else{
