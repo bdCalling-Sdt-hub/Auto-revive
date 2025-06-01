@@ -46,6 +46,25 @@ class BookingCardWidget extends StatelessWidget {
   final String address;
 
 
+  Color getStatusColor(String? status) {
+    switch (status) {
+      case 'requested':
+      case 'rejected':
+      case 'request-canceled':
+      case 'denied':
+      case 'service-rejected':
+      case 'canceled':
+        return AppColors.cancelButtonColor;
+      case 'accepted':
+      case 'confirmed':
+      case 'serviced':
+      case 'paid':
+      case 'completed':
+        return AppColors.primaryColor;
+      default:
+        return AppColors.primaryShade300;
+    }
+  }
 
 
   @override
@@ -73,10 +92,14 @@ class BookingCardWidget extends StatelessWidget {
                       child: CustomText(
                         text: status ?? '',
                         fontsize: 10.sp,
-                        color: status == 'requested'
-                            ? AppColors.cancelButtonColor
-                            : AppColors.primaryColor,
-                      )),
+                        color: getStatusColor(status),
+                      //
+                      //   color: status == 'requested'
+                      //       ? AppColors.cancelButtonColor
+                      //       : AppColors.primaryColor,
+                      // )
+                      ),
+                  ),
                   GestureDetector(
                     onTap: locationOnTap,
                       child: Assets.icons.location.svg()),

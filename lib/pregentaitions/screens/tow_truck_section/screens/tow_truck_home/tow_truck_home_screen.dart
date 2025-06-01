@@ -88,9 +88,13 @@ class _TowTruckHomeScreenState extends State<TowTruckHomeScreen> {
                     children: [
                       Assets.icons.logoSVG.svg(color: AppColors.bgColorWhite, height: 50.h),
                       const  Spacer(),
-                      Assets.icons.timeProgress.svg(),
-                      SizedBox(width: 20.w),
-                      Assets.icons.notificationIcon.svg()
+                      // Assets.icons.timeProgress.svg(),
+                      // SizedBox(width: 20.w),
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed(AppRoutes.notificationsScreen);
+                        },
+                          child: Assets.icons.notificationIcon.svg())
                     ],
                   ),
 
