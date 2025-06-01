@@ -222,8 +222,13 @@ class AppRoutes {
       path: otpScreen,
       name: otpScreen,
       builder: (context, state) {
-        String screenType = state.extra as String;
-        return OtpScreen(screenType: screenType);
+        // String screenType = state.extra as String;
+        // String email = state.extra as String;
+
+        final extra = state.extra as Map<String, String>;
+        final screenType = extra['screenType'] ?? '';
+        final email = extra['email'] ?? '';
+        return OtpScreen(screenType: screenType,email: email,);
       },
 
       // =>

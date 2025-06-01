@@ -11,8 +11,9 @@ import '../../../../controllers/auth_controller.dart';
 
 class OtpScreen extends StatelessWidget {
   final String screenType;
+  final String email;
 
-  OtpScreen({super.key, required this.screenType});
+  OtpScreen({super.key, required this.screenType, required this.email});
 
    TextEditingController otpTEController = TextEditingController();
  final AuthController authController = Get.find<AuthController>();
@@ -57,7 +58,7 @@ class OtpScreen extends StatelessWidget {
                           ? null
                           : () {
                         authController.startCountdown();
-                        authController.reSendOtp('${Get.parameters['email']}');
+                        authController.reSendOtp('${email}');
                       },
                       child: CustomText(
                         text: authController.isCountingDown.value

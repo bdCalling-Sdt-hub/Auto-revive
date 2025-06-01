@@ -45,12 +45,21 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
        if(screenType == "user"){
-        context.pushNamed(AppRoutes.otpScreen, extra: "user");
+        context.pushNamed(AppRoutes.otpScreen, extra: {
+          "screenType" : "user",
+          "email" : ""
+        });
        }else if(screenType == "mechanic"){
-         context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
+         context.pushNamed(AppRoutes.otpScreen, extra: {
+           "screenType" : "mechanic",
+           "email" : ""
+         });
 
        }else{
-         context.pushNamed(AppRoutes.otpScreen, extra: "track");
+         context.pushNamed(AppRoutes.otpScreen, extra: {
+           "screenType" : "track",
+           "email" : ""
+         });
        }
 
 
@@ -85,9 +94,15 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
       if(role.toLowerCase() == "mechanic"){
-        context.pushNamed(AppRoutes.otpScreen, extra: "mechanic");
+        context.pushNamed(AppRoutes.otpScreen, extra: {
+          "screenType" : "mechanic",
+          "email" : ""
+        });
       }else{
-        context.pushNamed(AppRoutes.otpScreen, extra: "tow_truck");
+        context.pushNamed(AppRoutes.otpScreen, extra: {
+          "screenType" : "tow_truck",
+          "email" : ""
+        });
       }
       ToastMessageHelper.showToastMessage("Account create successful.\n \nNow you have an one time code your email");
       mechanicSignUpLoading(false);
@@ -116,8 +131,16 @@ class AuthController extends GetxController {
         ApiConstants.verifyEmailEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
-      await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
+      verfyLoading(false);
+      if(screenType== 'forgot'){
+        debugPrint("==========bearer token save done : ${response.body["data"]['token']}");
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
+      }else{
+        debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
+      }
+
+
       if (type == 'Sign Up') {
         print('================================ screenType received yjuikhujikgyhujvghg: $screenType');
         if(screenType == "user"){
@@ -219,6 +242,11 @@ class AuthController extends GetxController {
           await PrefsHelper.setBool(AppConstants.isLogged, true);
         }
       } else {
+        if(data["step"]==1){
+          context.go(AppRoutes.towTrackBasicInfoScreen);
+        }else if (data["step"] == 2) {
+          context.go(AppRoutes.companyInformationScreen);
+        }
         context.go(AppRoutes.towTruckBottomNavBar);
         await PrefsHelper.setBool(AppConstants.isLogged, true);
       }
@@ -228,7 +256,10 @@ class AuthController extends GetxController {
     } else {
       logInLoading(false);
       if (response.body["message"] == "Email not verified. Please verify your email.") {
-        context.go(AppRoutes.otpScreen, extra: "");
+        context.go(AppRoutes.otpScreen, extra: {
+          "screenType" : "",
+          "email" : ""
+        });
         await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['tokens']);
         ToastMessageHelper.showToastMessage("We've sent an OTP to your email to verify your email.");
       } else if (response.body["message"] == "⛔ Wrong password! ⛔") {
@@ -319,8 +350,11 @@ class AuthController extends GetxController {
         ApiConstants.forgotPasswordEndPoint, jsonEncode(body));
     if (response.statusCode == 200 || response.statusCode == 201) {
 
+      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["resetPasswordToken"]);
+
       if(screenType == "forgot"){
-        context.pushNamed(AppRoutes.otpScreen, extra: "Forgot Password");
+        context.pushNamed(AppRoutes.otpScreen, extra: {
+          "screenType" : "Forgot Password", "email" : email});
         // context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
       }
 
@@ -359,7 +393,7 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage("Server error! \n Please try later");
     } else {
       setPasswordLoading(false);
-      ToastMessageHelper.showToastMessage('${response.body["message"]}');
+      ToastMessageHelper.showToastMessage('${response.body["message"]}',title: 'attention');
     }
   }
 
@@ -377,11 +411,11 @@ class AuthController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       ToastMessageHelper.showToastMessage(
-          'You have got an one time code to your email',title: 'Attention');
+          'You have got an one time code to your email');
       print("======>>> successful");
       resendLoading(false);
     }else{
-      ToastMessageHelper.showToastMessage("${response.body["message"]}",title: 'Attention');
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
       resendLoading(false);
     }
   }

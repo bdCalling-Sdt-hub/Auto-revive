@@ -22,16 +22,25 @@ class MechanicBookingsDetailsScreen extends StatefulWidget {
 class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsScreen> {
 
   MechanicBookingAllFiltersController mechanicBookingAllFiltersController = Get.put(MechanicBookingAllFiltersController());
+  final TextEditingController _searchController = TextEditingController();
 
+  final RxString _searchQuery = ''.obs;
+
+  @override
   @override
   void initState() {
     super.initState();
     mechanicBookingAllFiltersController.getAllService();
+    _searchController.addListener(() {
+      _searchQuery.value = _searchController.text.trim().toLowerCase();
+    });
+
   }
 
   @override
   void dispose() {
     mechanicBookingAllFiltersController.servicesBody.clear();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -50,6 +59,8 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                /// ==============================================> Profile ============================================>
+
                 children: [
                   CustomImageAvatar(image: "${routeData["image"]}", radius: 44.r),
                   SizedBox(width: 10.w),
@@ -71,11 +82,6 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                             fontsize: 20.sp,
                             bottom: 6.h,
                           ),
-                          // CustomText(
-                          //   text: "${routeData["address"]}",
-                          //   fontsize: 20.sp,
-                          //   bottom: 6.h,
-                          // ),
                         ],
                       ),
                       SizedBox(height: 10.w),
@@ -112,7 +118,7 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
               ),
             ),
             SizedBox(height: 26.h),
-            // ============>> Service Search and Selection <<============= //
+            ///  =================================>> Service Search and Selection =================================================>>
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(
@@ -122,10 +128,10 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                     textAlign: TextAlign.start,
                     fontsize: 20.sp,
                     color: AppColors.textColor151515,
-                    text: 'Problem(s) need to be solved',
+                    text: 'Payment need to pay',
                   ),
                   SizedBox(height: 18.h),
-                  // Search Box
+                  /// =========================>  Search Box ======================================>
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     decoration: BoxDecoration(
@@ -139,17 +145,18 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                         ),
                       ],
                     ),
-                    child: const Row(
+                    child:  Row(
                       children: [
                         Expanded(
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: _searchController,
+                            decoration: const InputDecoration(
                               hintText: 'Service Name',
                               border: InputBorder.none,
                             ),
                           ),
                         ),
-                        Icon(Icons.search, color: AppColors.primaryShade300),
+                        const Icon(Icons.search, color: AppColors.primaryShade300),
                       ],
                     ),
                   ),
@@ -157,12 +164,20 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                   SizedBox(height: 16.h),
 
                   /// =====================================> Scrollable Services List ======================================>
-                  Obx((){
+
+
+
+                  Obx(() {
                     if (mechanicBookingAllFiltersController.getAllServiceLoading.value) {
-                      return  const Center(child: CustomLoader());
+                      return const Center(child: CustomLoader());
                     }
 
-                    if (mechanicBookingAllFiltersController.allService.isEmpty) {
+                    final filteredServices = mechanicBookingAllFiltersController.allService.where((service) {
+                      final serviceName = service.name?.toLowerCase() ?? '';
+                      return serviceName.contains(_searchQuery.value);
+                    }).toList();
+
+                    if (filteredServices.isEmpty) {
                       return const Center(
                         child: Text(
                           'No data available',
@@ -170,157 +185,314 @@ class _MechanicBookingsDetailsScreenState extends State<MechanicBookingsDetailsS
                         ),
                       );
                     }
-                   return Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Container(
-                       height: 330.h,
-                       padding: EdgeInsets.all(8.w),
-                       decoration: BoxDecoration(
-                         border: Border.all(color: AppColors.primaryShade300),
-                         borderRadius: BorderRadius.circular(8.r),
-                       ),
-                       child: Scrollbar(
-                         thickness: 4,
-                         radius: Radius.circular(8.r),
-                         child: ListView.builder(
-                           itemCount: mechanicBookingAllFiltersController.allService.length,
-                           itemBuilder: (context, index) {
-                             final service = mechanicBookingAllFiltersController.allService[index];
-                             const bool isEnabled = true;
-                             final TextEditingController priceController = TextEditingController();
+
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 330.h,
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.primaryShade300),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Scrollbar(
+                          thickness: 4,
+                          radius: Radius.circular(8.r),
+                          child: ListView.builder(
+                            itemCount: filteredServices.length,
+                            itemBuilder: (context, index) {
+                              final service = filteredServices[index];
+                              const bool isEnabled = true;
+                              final TextEditingController priceController = TextEditingController();
                               RxBool checked = false.obs;
-                             return Column(
-                               children: [
-                                 Padding(
-                                   padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 8),
-                                   child: ListTile(
-                                     dense: true,
-                                     contentPadding: EdgeInsets.zero,
-                                     leading: Theme(
-                                       data: Theme.of(context).copyWith(
-                                         unselectedWidgetColor: Colors.blue,
-                                       ),
-                                       child: Obx(() {
-                                         return Checkbox(
-                                           value: checked.value,
-                                           onChanged: isEnabled ? (v) {} : null,
-                                           activeColor: AppColors.primaryColor,
-                                           checkColor: Colors.white,
-                                           side: const BorderSide(
-                                             color: AppColors.primaryColor,
-                                             width: 2,
-                                           ),
-                                         );
-                                       })
-                                     ),
-                                     title: Text(
-                                       service.name.toString(),
-                                       style:  TextStyle(
-                                         fontSize: 12.sp,
-                                         color: isEnabled ? Colors.black : Colors.grey,
-                                         decoration: isEnabled ? null : TextDecoration.lineThrough,
-                                       ),
-                                     ),
-                                     trailing: Container(
-                                       width: 50.w,
-                                       padding: EdgeInsets.symmetric(horizontal: 6.w),
-                                       decoration: BoxDecoration(
-                                         color: checked.value ? Colors.grey.shade200 : Colors.white, // white if unchecked
-                                         borderRadius: BorderRadius.circular(6.r),
-                                         border: Border.all(color: AppColors.primaryShade300),
-                                       ),
-                                       child:
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 8),
+                                    child: ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: Theme(
+                                        data: Theme.of(context).copyWith(
+                                          unselectedWidgetColor: Colors.blue,
+                                        ),
+                                        child: Obx(() {
+                                          return Checkbox(
+                                            value: checked.value,
+                                            onChanged: isEnabled ? (v) {} : null,
+                                            activeColor: AppColors.primaryColor,
+                                            checkColor: Colors.white,
+                                            side: const BorderSide(
+                                              color: AppColors.primaryColor,
+                                              width: 2,
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                      title: Text(
+                                        service.name.toString(),
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: isEnabled ? Colors.black : Colors.grey,
+                                          decoration: isEnabled ? null : TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                      trailing: Container(
+                                        width: 50.w,
+                                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                                        decoration: BoxDecoration(
+                                          color: checked.value ? Colors.grey.shade200 : Colors.white,
+                                          borderRadius: BorderRadius.circular(6.r),
+                                          border: Border.all(color: AppColors.primaryShade300),
+                                        ),
+                                        child: TextField(
+                                          controller: priceController,
+                                          keyboardType: TextInputType.number,
+                                          style: TextStyle(fontSize: 14.sp),
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "\$",
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.symmetric(vertical: 2),
+                                          ),
+                                          enabled: isEnabled,
+                                          onChanged: (val) {
+                                            if (val.trim().isEmpty) {
+                                              mechanicBookingAllFiltersController.servicesBody
+                                                  .removeWhere((item) => item['serviceId'] == service.id.toString());
+                                              checked(false);
+                                              checked.refresh();
+                                            } else {
+                                              mechanicBookingAllFiltersController.servicesBody
+                                                  .removeWhere((item) => item['serviceId'] == service.id.toString());
 
-                                       TextField(
-                                         controller: priceController,
-                                         keyboardType: TextInputType.number,
-                                         style: TextStyle(fontSize: 14.sp),
-                                         decoration: const InputDecoration(
-                                           border: InputBorder.none,
-                                           hintText: "\$",
-                                           isDense: true,
-                                           contentPadding: EdgeInsets.symmetric(vertical: 2),
-                                         ),
-                                         enabled: isEnabled,
-                                         onChanged: (val) {
-
-                                           print("-------------------------------  value : $val");
-
-                                           if(val.trim().isEmpty){
-
-                                             mechanicBookingAllFiltersController.servicesBody
-                                                 .removeWhere((item) => item['serviceId'] == service.id.toString());
-                                             checked(false);
-                                             checked.refresh();
-                                           }else{
-
-                                             // Remove previous entry if exists (to update amount)
-                                             mechanicBookingAllFiltersController.servicesBody
-                                                 .removeWhere((item) => item['serviceId'] == service.id.toString());
-
-                                             // Add updated entry
-                                             mechanicBookingAllFiltersController.servicesBody.add({
-                                               "serviceId": service.id.toString(),
-                                               "amount": int.parse(val.trim()),
-                                             });
-                                             checked(true);
-                                           checked.refresh();
-                                           }
-                                         },
-                                       ),
-
-                                     ),
-                                   ),
-                                 ),
-                                 if (index != mechanicBookingAllFiltersController.allService.length - 1)
-                                   Divider(
-                                     color: AppColors.primaryShade300.withOpacity(0.5),
-                                     thickness: 0.5,
-                                     height: 1.h,
-                                     endIndent: 0.1,
-                                   ),
-                               ],
-                             );
-
-                           },
-                         ),
-                       ),
-                     ),
-                   );
-                  }
-                  ),
-
+                                              mechanicBookingAllFiltersController.servicesBody.add({
+                                                "serviceId": service.id.toString(),
+                                                "amount": int.parse(val.trim()),
+                                              });
+                                              checked(true);
+                                              checked.refresh();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  if (index != filteredServices.length - 1)
+                                    Divider(
+                                      color: AppColors.primaryShade300.withOpacity(0.5),
+                                      thickness: 0.5,
+                                      height: 1.h,
+                                      endIndent: 0.1,
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 20.w),
-              child:
-              CustomButton(
-                loading: mechanicBookingAllFiltersController.addServiceLoading.value,
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: CustomButton(
+                  loading: mechanicBookingAllFiltersController.addServiceLoading.value,
                   title: 'Submit',
                   onpress: () {
-                if(mechanicBookingAllFiltersController.servicesBody.isEmpty){
-                  ToastMessageHelper.showToastMessage("Please enter price!",title: 'Attention');
-                }else{
-                  mechanicBookingAllFiltersController.addServiceProvider(
-                      context: context, serviceId: routeData["id"]?.toString() ?? "",
-                  );
-                }
-
-              }),
+                    if (mechanicBookingAllFiltersController.servicesBody.isEmpty) {
+                      ToastMessageHelper.showToastMessage("Please enter price!", title: 'Attention');
+                    } else {
+                      mechanicBookingAllFiltersController.addServiceProvider(
+                        context: context,
+                        serviceId: routeData["id"]?.toString() ?? "",
+                      );
+                    }
+                  }),
             ),
             SizedBox(height: 260.h),
           ],
         ),
       ),
     );
+
+
+
+
+
+
+
+    //                 Obx((){
+  //                   if (mechanicBookingAllFiltersController.getAllServiceLoading.value) {
+  //                     return  const Center(child: CustomLoader());
+  //                   }
+  //                   final filteredServices = mechanicBookingAllFiltersController.allService.where((service) {
+  //                     final serviceName = service.name?.toLowerCase() ?? '';
+  //                     return serviceName.contains(_searchQuery.value);
+  //                   }).toList();
+  //
+  //                   if (mechanicBookingAllFiltersController.allService.isEmpty) {
+  //                     return const Center(
+  //                       child: Text(
+  //                         'No data available',
+  //                         style: TextStyle(fontSize: 16),
+  //                       ),
+  //                     );
+  //                   }
+  //                  return Padding(
+  //                    padding: const EdgeInsets.all(8.0),
+  //                    child: Container(
+  //                      height: 330.h,
+  //                      padding: EdgeInsets.all(8.w),
+  //                      decoration: BoxDecoration(
+  //                        border: Border.all(color: AppColors.primaryShade300),
+  //                        borderRadius: BorderRadius.circular(8.r),
+  //                      ),
+  //                      child: Scrollbar(
+  //                        thickness: 4,
+  //                        radius: Radius.circular(8.r),
+  //                        child: ListView.builder(
+  //                          itemCount: mechanicBookingAllFiltersController.allService.length,
+  //                          itemBuilder: (context, index) {
+  //                            final service = mechanicBookingAllFiltersController.allService[index];
+  //                            const bool isEnabled = true;
+  //                            final TextEditingController priceController = TextEditingController();
+  //                             RxBool checked = false.obs;
+  //                            return Column(
+  //                              children: [
+  //                                Padding(
+  //                                  padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 8),
+  //                                  child: ListTile(
+  //                                    dense: true,
+  //                                    contentPadding: EdgeInsets.zero,
+  //                                    leading: Theme(
+  //                                      data: Theme.of(context).copyWith(
+  //                                        unselectedWidgetColor: Colors.blue,
+  //                                      ),
+  //                                      child: Obx(() {
+  //                                        return Checkbox(
+  //                                          value: checked.value,
+  //                                          onChanged: isEnabled ? (v) {} : null,
+  //                                          activeColor: AppColors.primaryColor,
+  //                                          checkColor: Colors.white,
+  //                                          side: const BorderSide(
+  //                                            color: AppColors.primaryColor,
+  //                                            width: 2,
+  //                                          ),
+  //                                        );
+  //                                      })
+  //                                    ),
+  //                                    title: Text(
+  //                                      service.name.toString(),
+  //                                      style:  TextStyle(
+  //                                        fontSize: 12.sp,
+  //                                        color: isEnabled ? Colors.black : Colors.grey,
+  //                                        decoration: isEnabled ? null : TextDecoration.lineThrough,
+  //                                      ),
+  //                                    ),
+  //                                    trailing: Container(
+  //                                      width: 50.w,
+  //                                      padding: EdgeInsets.symmetric(horizontal: 6.w),
+  //                                      decoration: BoxDecoration(
+  //                                        color: checked.value ? Colors.grey.shade200 : Colors.white, // white if unchecked
+  //                                        borderRadius: BorderRadius.circular(6.r),
+  //                                        border: Border.all(color: AppColors.primaryShade300),
+  //                                      ),
+  //                                      child:
+  //
+  //                                      TextField(
+  //                                        controller: priceController,
+  //                                        keyboardType: TextInputType.number,
+  //                                        style: TextStyle(fontSize: 14.sp),
+  //                                        decoration: const InputDecoration(
+  //                                          border: InputBorder.none,
+  //                                          hintText: "\$",
+  //                                          isDense: true,
+  //                                          contentPadding: EdgeInsets.symmetric(vertical: 2),
+  //                                        ),
+  //                                        enabled: isEnabled,
+  //                                        onChanged: (val) {
+  //
+  //                                          print("-------------------------------  value : $val");
+  //
+  //                                          if(val.trim().isEmpty){
+  //
+  //                                            mechanicBookingAllFiltersController.servicesBody
+  //                                                .removeWhere((item) => item['serviceId'] == service.id.toString());
+  //                                            checked(false);
+  //                                            checked.refresh();
+  //                                          }else{
+  //
+  //                                            // Remove previous entry if exists (to update amount)
+  //                                            mechanicBookingAllFiltersController.servicesBody
+  //                                                .removeWhere((item) => item['serviceId'] == service.id.toString());
+  //
+  //                                            // Add updated entry
+  //                                            mechanicBookingAllFiltersController.servicesBody.add({
+  //                                              "serviceId": service.id.toString(),
+  //                                              "amount": int.parse(val.trim()),
+  //                                            });
+  //                                            checked(true);
+  //                                          checked.refresh();
+  //                                          }
+  //                                        },
+  //                                      ),
+  //
+  //                                    ),
+  //                                  ),
+  //                                ),
+  //                                if (index != mechanicBookingAllFiltersController.allService.length - 1)
+  //                                  Divider(
+  //                                    color: AppColors.primaryShade300.withOpacity(0.5),
+  //                                    thickness: 0.5,
+  //                                    height: 1.h,
+  //                                    endIndent: 0.1,
+  //                                  ),
+  //                              ],
+  //                            );
+  //
+  //                          },
+  //                        ),
+  //                      ),
+  //                    ),
+  //                  );
+  //                 }
+  //                 ),
+  //
+  //               ],
+  //             ),
+  //           ),
+  //           SizedBox(height: 12.h,),
+  //           Padding(
+  //             padding:  EdgeInsets.symmetric(horizontal: 20.w),
+  //             child:
+  //             CustomButton(
+  //               loading: mechanicBookingAllFiltersController.addServiceLoading.value,
+  //                 title: 'Submit',
+  //                 onpress: () {
+  //               if(mechanicBookingAllFiltersController.servicesBody.isEmpty){
+  //                 ToastMessageHelper.showToastMessage("Please enter price!",title: 'Attention');
+  //               }else{
+  //                 mechanicBookingAllFiltersController.addServiceProvider(
+  //                     context: context, serviceId: routeData["id"]?.toString() ?? "",
+  //                 );
+  //               }
+  //
+  //             }),
+  //           ),
+  //           SizedBox(height: 260.h),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+
+
+
   }
-
-
-
-
-
 }
 
