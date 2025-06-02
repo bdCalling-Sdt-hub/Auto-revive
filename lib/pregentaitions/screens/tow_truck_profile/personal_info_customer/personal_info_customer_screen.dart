@@ -43,10 +43,7 @@ class _PersonalInfoCustomerScreenState extends State<PersonalInfoCustomerScreen>
   bool? readOnly = true;
   String appbarTitle = "Edit Information";
 
-  final List<String> platForm = [
-    'In shop',
-    'On Site',
-  ];
+
 
 
   @override
@@ -191,7 +188,7 @@ class _PersonalInfoCustomerScreenState extends State<PersonalInfoCustomerScreen>
 
 
 
-              SizedBox(height: 100.h),
+              SizedBox(height: 90.h),
 
               /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
               Obx(()=>
@@ -212,7 +209,7 @@ class _PersonalInfoCustomerScreenState extends State<PersonalInfoCustomerScreen>
                   },
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 60.h),
             ],
           ),
         ),

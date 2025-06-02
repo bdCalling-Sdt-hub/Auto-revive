@@ -91,7 +91,7 @@ class BookingCardWidget extends StatelessWidget {
                       onTap: historyButtonAction,
                       child: CustomText(
                         text: status ?? '',
-                        fontsize: 10.sp,
+                        fontsize: 11.sp,
                         color: getStatusColor(status),
                       //
                       //   color: status == 'requested'

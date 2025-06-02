@@ -61,6 +61,35 @@ class BookingCardCustomer extends StatelessWidget {
   final VoidCallback? historyButtonAction;
   final Color? buttonColor;
 
+
+
+
+  Color getStatusColor(String? status) {
+    switch (status) {
+      case 'requested':
+      case 'rejected':
+      case 'request-canceled':
+      case 'denied':
+      case 'service-rejected':
+      case 'canceled':
+        return AppColors.cancelButtonColor;
+      case 'accepted':
+      case 'confirmed':
+      case 'serviced':
+      case 'paid':
+      // case 'completed':
+      case 'process':
+        return AppColors.primaryColor;
+      case 'active':
+        return AppColors.activeColor;
+      case 'complete':
+      case 'completed':
+      return Colors.green;
+      default:
+        return AppColors.primaryShade300;
+    }
+  }
+
   CustomerBookingController bookingController =
       Get.find<CustomerBookingController>();
 
@@ -92,11 +121,17 @@ class BookingCardCustomer extends StatelessWidget {
                       onTap: historyButtonAction,
                       child: CustomText(
                         text: status ?? '',
-                        fontsize: 10.sp,
-                        color: status == 'Cancel'
-                            ? AppColors.cancelButtonColor
-                            : AppColors.primaryColor,
-                      ),
+                        fontsize: 11.sp,
+                        color: getStatusColor(status),
+                      )
+
+                      // CustomText(
+                      //   text: status ?? '',
+                      //   fontsize: 10.sp,
+                      //   color: status == 'Cancel'
+                      //       ? AppColors.cancelButtonColor
+                      //       : AppColors.primaryColor,
+                      // ),
                     ),
                   ],
                 ),
