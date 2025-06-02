@@ -154,12 +154,13 @@ class AuthController extends GetxController {
         context.go(AppRoutes.resetPasswordScreen);
       }
       verfyLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}");
     } else{
       verfyLoading(false);
+      ToastMessageHelper.showToastMessage("${response.body["message"]}",title: 'attention');
       print('================================ screenType received yjuikhujikgyhujvghg: $screenType');
     }
-    verfyLoading(false);
-    ToastMessageHelper.showToastMessage("${response.body["message"]}");
+
 
 
   }
@@ -246,6 +247,14 @@ class AuthController extends GetxController {
           context.go(AppRoutes.towTrackBasicInfoScreen);
         }else if (data["step"] == 2) {
           context.go(AppRoutes.companyInformationScreen);
+        }else if (data["step"] == 3) {
+          context.go(AppRoutes.licensingAndComplianceScreen);
+        }else if (data["step"] == 4) {
+          context.go(AppRoutes.vehicleEquipmentScreen);
+        }else if (data["step"] == 5) {
+          context.go(AppRoutes.serviceCoverageScreen);
+        }else if (data["step"] == 6) {
+          context.go(AppRoutes.businessRequirementScreen);
         }
         context.go(AppRoutes.towTruckBottomNavBar);
         await PrefsHelper.setBool(AppConstants.isLogged, true);
@@ -265,7 +274,7 @@ class AuthController extends GetxController {
       } else if (response.body["message"] == "⛔ Wrong password! ⛔") {
         ToastMessageHelper.showToastMessage(response.body["message"]);
       } else {
-        ToastMessageHelper.showToastMessage(response.body['message']);
+        ToastMessageHelper.showToastMessage(response.body['message'],title: 'attention');
       }
     }
   }

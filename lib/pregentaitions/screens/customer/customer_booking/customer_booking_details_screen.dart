@@ -203,7 +203,7 @@ class _CustomerBookingDetailsScreenState
               CustomText(
                   text: routeData["title"] == "Complete"
                       ? "Price need to pay..."
-                      : "Problem which need to solve that's price",
+                      : "Payment amount due",
                   color: Colors.black,
                   fontsize: 20.h,
                   maxline: 2,

@@ -55,7 +55,11 @@ class _TowTruckProfileScreenState extends State<TowTruckProfileScreen> {
                   Assets.icons.logoSVG
                       .svg(color: AppColors.primaryColor, height: 50.h),
                   const Spacer(),
-                  Assets.icons.timeProgress.svg(color: Colors.black),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(AppRoutes.progressScreen);
+                    },
+                      child: Assets.icons.timeProgress.svg(color: Colors.black)),
                   SizedBox(width: 20.w),
                   GestureDetector(
                       onTap: () {

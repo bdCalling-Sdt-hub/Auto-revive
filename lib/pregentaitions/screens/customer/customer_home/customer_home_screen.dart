@@ -105,7 +105,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: CustomText(
-                          text: "Find the best way",
+                          text: "Find a solution",
                           fontsize: 35.h,
                           bottom: 24.h,
                           fontWeight: FontWeight.w700,
