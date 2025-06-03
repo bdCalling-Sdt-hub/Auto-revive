@@ -48,12 +48,19 @@ class EarningHistoryCard extends StatelessWidget {
           color: Colors.white,
           textAlign: TextAlign.start,
         ),
-        subtitle: CustomText(
-          text: 'Transaction id: $transactionId\n$date',
-          color: Colors.white,
-          textAlign: TextAlign.start,
-          fontsize: 10.sp,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: 'Tr. ID: $transactionId\n$date',
+              color: Colors.white,
+              textAlign: TextAlign.start,
+              fontsize: 10.sp,
+            ),
+          ],
         ),
+
+
         trailing: CustomText(
           right: 24.w,
           text: '\$ $amount',

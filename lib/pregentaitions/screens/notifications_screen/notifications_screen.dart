@@ -18,14 +18,29 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
 
   NotificationsController notificationsController = Get.put(NotificationsController());
-
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     notificationsController.getNotifications();
     super.initState();
+    _addScrollListener();
   }
 
+  void _addScrollListener() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        notificationsController.loadMore();
+        print("==========test========load more true");
+      }
+    });
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
          Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           child: ListView.builder(
+            controller: _scrollController,
             itemCount: notificationsController.notifications.length,
             itemBuilder: (context, index)  {
               var notification = notificationsController.notifications[index];

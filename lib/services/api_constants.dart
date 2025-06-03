@@ -37,6 +37,7 @@ class ApiConstants{
   static const String adminSupport = "/setting/support";
   static const String radiusLimits = "/setting/radius-limits";
   static const String addBalance = "/payment/add-balance";
+  static const String withdrawRequest = "/payment/withdraw/request";
   static const String jobRequest = "/job-process/provider/do-request";
   static  String addServiceProvider(String id) => "/job-process/provider/add-services/$id";
   static  String jobProcessCompleteProvider(String id) => "/job-process/provider/$id";
