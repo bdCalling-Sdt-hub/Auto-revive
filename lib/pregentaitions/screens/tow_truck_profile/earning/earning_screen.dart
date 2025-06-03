@@ -3,17 +3,19 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_image_avatar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../../../models/payment_history_model.dart';
+import '../../../../services/api_constants.dart';
 import '../../../widgets/custom_loader.dart';
 import '../../../widgets/earning_history_card.dart';
 import '../../../widgets/no_data_found_card.dart';
+import 'package:intl/intl.dart';
+
 
 class EarningScreen extends StatefulWidget {
   const EarningScreen({super.key});
@@ -67,7 +69,7 @@ class _EarningScreenState extends State<EarningScreen> {
                     ),
                     SizedBox(height: 8.h),
                     CustomText(
-                      text: '\$240',
+                      text: '\$${paymentController.paymentHistory.value.wallet ?? 'N/A'}',
                       color: Colors.white,
                       fontsize: 32.sp,
                       fontWeight: FontWeight.w700,
@@ -79,7 +81,9 @@ class _EarningScreenState extends State<EarningScreen> {
                       color: AppColors.bgColorWhite,
                       width: double.infinity,
                       onTap: () {
-                        context.pushNamed(AppRoutes.withdrawScreen);
+                        context.pushNamed(AppRoutes.withdrawScreen,
+                          extra: paymentController.paymentHistory.value.wallet,
+                        );
                       },
                       child: CustomText(
                         text: 'Withdraw Now',
@@ -124,26 +128,26 @@ class _EarningScreenState extends State<EarningScreen> {
             fontsize: 24.sp,
           ),
           Obx(()=>
-          paymentController.paymentHistoryLoading.value ?  const CustomLoader() : paymentController.paymentHistory.isEmpty ?  const Center(child: NoDataFoundCard()) :
-              Expanded(
+          paymentController.paymentHistoryLoading.value ? const CustomLoader() : (paymentController.paymentHistory.value.history?.isEmpty ?? true) ? const Center(child: NoDataFoundCard())
+              : Expanded(
                 child: ListView.builder(
-                    itemCount: paymentController.paymentHistory.length,
+                    itemCount: paymentController.paymentHistory.value.history?.length ?? 0,
                     itemBuilder: (context, index) {
-                      var history = paymentController.paymentHistory[index];
-
+                      var item = paymentController.paymentHistory.value.history![index];
                       return EarningHistoryCard(
-                        userName: 'Jeorge Mayank',
-                      transactionId: '374364736',
-                        date: history.createdAt != null
-                            ? DateTime.parse('${history.createdAt!}')
-                            .toIso8601String()
-                            .split('T')
-                            .first
-                            : 'N/A',
-                        amount: '${history.amount ?? 'N/A'}',
-                     image: '',
-
+                        userName: item.title != null ? titleValues.reverse[item.title] ?? '' : item.rawTitle ?? '',
+                        transactionId: item.trId ?? 'N/A',
+                        // date: item.createdAt != null
+                        //     ? DateTime.parse('${item.createdAt!}')
+                        //     .toIso8601String()
+                        //     .split('T')
+                        //     .first
+                        //     : 'N/A',
+                        date: item.createdAt != null ? DateFormat('dd MMM yyyy').format(item.createdAt!) : 'N/A',
+                        amount: item.amount != null ? '${item.amount}' : 'N/A',
+                        image: '${ApiConstants.imageBaseUrl}/${item.image != null ? imageValues.reverse[item.image] : item.rawImage}',
                       );
+
                     }),
               ),)
         ],

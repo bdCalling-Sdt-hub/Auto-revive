@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import '../../services/api_client.dart';
 import '../models/notifications_model.dart';
@@ -24,15 +26,18 @@ class NotificationsController extends GetxController{
 
   RxBool notificationLoading = false.obs;
   RxList<NotificationModel> notifications = <NotificationModel>[].obs;
+
+
+
   getNotifications()async{
     if(page.value == 1){
       notificationLoading(true);
     }
     var response = await ApiClient.getData("/notification?page=${page.value}");
     if(response.statusCode == 200){
-      // totalPage = jsonDecode(response.body['pagination']['totalPage'].toString()) ?? 0;
-      // currectPage = jsonDecode(response.body['pagination']['currentPage'].toString()) ?? 0;
-      // totalResult = jsonDecode(response.body['pagination']['totalData'].toString()) ?? 0;
+      totalPage = jsonDecode(response.body['pagination']['totalPage'].toString()) ?? 0;
+      currentPage = jsonDecode(response.body['pagination']['currentPage'].toString()) ?? 0;
+      totalResult = jsonDecode(response.body['pagination']['totalData'].toString()) ?? 0;
       var data  = List<NotificationModel>.from(response.body["data"].map((x)=> NotificationModel.fromJson(x)));
       notifications.assignAll(data);
       update();

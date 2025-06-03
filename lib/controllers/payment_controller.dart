@@ -25,6 +25,8 @@ import 'package:http/http.dart' as http;
 import '../services/vibration_service.dart';
 
 class PaymentController extends GetxController{
+
+
   Map<String, dynamic>? paymentIntentData;
 
   requestToAddBalance({required String price,required BuildContext context})async{
@@ -47,17 +49,40 @@ class PaymentController extends GetxController{
   }
 
 
+/// ===================================> Withdraw Request ==============================>
+
+
+  withdrawRequestBalance({required String price,required BuildContext context})async{
+    Map<String, dynamic> body = {
+      "amount": int.parse(price.toString()),
+    };
+
+
+    final apiResponse = await ApiClient.postData(ApiConstants.withdrawRequest, jsonEncode(body));
+
+    if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
+
+      var url = apiResponse.body["data"];
+      context.pushNamed(AppRoutes.paymentWebView, extra: url);
+
+      if (kDebugMode) {
+        debugPrint("Payment successfully created: ${apiResponse.body}");
+      }
+    }
+  }
+
+
 
 
   /// ================================> Payment History  ==============================>
 
   RxBool paymentHistoryLoading = false.obs;
-  RxList<PaymentHistoryModel> paymentHistory = <PaymentHistoryModel>[].obs;
+  Rx<PaymentHistoryModel> paymentHistory = PaymentHistoryModel().obs;
   getPaymentHistory()async{
     paymentHistoryLoading(true);
     var response = await ApiClient.getData(ApiConstants.paymentHistory);
     if(response.statusCode == 200){
-      paymentHistory.value = List<PaymentHistoryModel>.from(response.body["data"].map((x)=> PaymentHistoryModel.fromJson(x)));
+      paymentHistory.value = PaymentHistoryModel.fromJson(response.body['data']);
       paymentHistoryLoading(false);
     }else{
       paymentHistoryLoading(false);
