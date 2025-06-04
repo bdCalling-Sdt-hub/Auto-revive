@@ -3,7 +3,6 @@ import 'package:autorevive/core/app_constants/app_constants.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/helpers/prefs_helper.dart';
-import 'package:autorevive/helpers/quick_alert.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/services/api_constants.dart';
 import 'package:flutter/foundation.dart';
@@ -11,15 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../models/payment_history_model.dart';
 import '../services/api_client.dart';
-import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../services/vibration_service.dart';
@@ -62,7 +55,7 @@ class PaymentController extends GetxController{
 
     if (apiResponse.statusCode==200|| apiResponse.statusCode==201) {
 
-      var url = apiResponse.body["data"];
+      var url = apiResponse.body["data"]["url"];
       context.pushNamed(AppRoutes.paymentWebView, extra: url);
 
       if (kDebugMode) {
@@ -70,6 +63,45 @@ class PaymentController extends GetxController{
       }
     }
   }
+
+
+
+  // RxBool paymentLoading = false.obs;
+  //
+  // withdrawRequestBalance({required String price,required BuildContext context}) async {
+  //
+  //   paymentLoading(true);
+  //
+  //
+  //   Map<String, dynamic> body = {
+  //     "amount": int.parse(price.toString()),
+  //   };
+  //   // Map<String, String> body = {
+  //   //   "amount": int.parse(price.toString()),
+  //   // };
+  //
+  //   var response = await ApiClient.postData(
+  //       ApiConstants.withdrawRequest,
+  //       jsonEncode(body)
+  //   );
+  //
+  //
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     launchUrl(Uri.parse(response.body["data"]["url"]), mode: LaunchMode.externalApplication);
+  //     print("================================================>${response.body["data"]["url"]}");
+  //     paymentLoading(false);
+  //   } else if(response.statusCode == 1){
+  //     paymentLoading(false);
+  //     ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+  //   } else {
+  //     paymentLoading(false);
+  //     ToastMessageHelper.showToastMessage(response.body["message"]);
+  //   }
+  // }
+
+
+
+
 
 
 

@@ -81,7 +81,7 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.textColor151515,
                               ),
-                              SizedBox(width: 40.w),
+                              SizedBox(width: 4.w),
 
                               GestureDetector(
                                 onTap: () async {
@@ -445,7 +445,6 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                       SizedBox(height: 15.h),
 
                       /// ==================================> Reference =============================================>
-
                       ListView.builder(
                         itemCount: mechanicController.profile.value.references?.length ?? 0,
                         shrinkWrap: true,
@@ -465,24 +464,22 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                                       fontsize: 16.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                         await context.pushNamed(
-                                          AppRoutes.mechanicReferenceScreen,
-                                          extra: {
-                                            "title": "Reference",
-                                            "isEdit": true,
-                                            "data": reference,
-
-                                          },
-                                        ).then((_) {
-                                          print('===========================================test');
-                                          mechanicController.getProfile();
-                                        });
-
-                                      },
-                                      child: Assets.icons.editIcon.svg(),
-                                    ),
+                                    if (index == 0)
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await context
+                                              .pushNamed(
+                                            AppRoutes.mechanicReferenceScreen,
+                                            extra: {
+                                              "title": "Reference",
+                                              "isEdit": true,
+                                              "data": mechanicController.profile.value.references,
+                                            },
+                                          )
+                                              .then((_) => mechanicController.getProfile());
+                                        },
+                                        child: Assets.icons.editIcon.svg(),
+                                      ),
                                   ],
                                 ),
                                 CustomText(
@@ -501,65 +498,122 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
                           );
                         },
                       ),
+
+                      // ListView.builder(
+                      //   itemCount: mechanicController.profile.value.references?.length ?? 0,
+                      //   shrinkWrap: true,
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   itemBuilder: (context, index) {
+                      //     final reference = mechanicController.profile.value.references![index];
+                      //     return Padding(
+                      //       padding: EdgeInsets.only(bottom: 15.h),
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Row(
+                      //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //             children: [
+                      //               CustomText(
+                      //                 text: 'Reference ${index + 1}',
+                      //                 fontsize: 16.sp,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //               GestureDetector(
+                      //                 onTap: () async {
+                      //                    await context.pushNamed(
+                      //                     AppRoutes.mechanicReferenceScreen,
+                      //                     extra: {
+                      //                       "title": "Reference",
+                      //                       "isEdit": true,
+                      //                       "data": reference,
+                      //
+                      //                     },
+                      //                   ).then((_) {
+                      //                     print('===========================================test');
+                      //                     mechanicController.getProfile();
+                      //                   });
+                      //
+                      //                 },
+                      //                 child: Assets.icons.editIcon.svg(),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           CustomText(
+                      //             textAlign: TextAlign.start,
+                      //             text: reference.name ?? 'N/A',
+                      //             fontsize: 18.sp,
+                      //             fontWeight: FontWeight.bold,
+                      //           ),
+                      //           CustomText(
+                      //             textAlign: TextAlign.start,
+                      //             text: '${reference.phone ?? 'N/A'}\n${reference.relation ?? 'N/A'}',
+                      //             fontsize: 10.sp,
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                       SizedBox(height: 15.h),
 
                       /// ==========================================> Additional Information ==================================>
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: GestureDetector(
+                          onTap: () async {
+                            context.pushNamed(
+                              AppRoutes.mechanicAdditionalInformationScreen,
+                              extra: {
+                                "title": "Additional Information",
+                                "isEdit": true,
+                                "data": mechanicController.profile.value.whyOnSite,
 
+                              },
+                            ).then((_) {
+                              print('===========================================test');
+                              mechanicController.getProfile();
+                            });
+
+                          },
+                          child: Assets.icons.editIcon.svg(),
+                        ),
+                      ),
+                      SizedBox(height: 15.h),
                       CustomText(
                         textAlign: TextAlign.start,
                         maxline: 2,
                         text: 'Why do I want to work at On-Site Fleet Services?',
                         color: AppColors.textColor151515,fontsize: 18.sp),
                       SizedBox(height: 10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomText(
-                            textAlign: TextAlign.start,
-                              maxline: 10,
-                              text: mechanicController.profile.value.whyOnSite ?? 'N/A',
-                              fontsize: 10.sp,
-                              color: AppColors.textColor151515),
-                          GestureDetector(
-                            onTap: () async {
-                               context.pushNamed(
-                                AppRoutes.mechanicAdditionalInformationScreen,
-                                extra: {
-                                  "title": "Additional Information",
-                                  "isEdit": true,
-                                  "data": mechanicController.profile.value.whyOnSite,
-
-                                },
-                              ).then((_) {
-                                print('===========================================test');
-                                mechanicController.getProfile();
-                              });
-
-                            },
-                            child: Assets.icons.editIcon.svg(),
-                          ),
-                        ],
-                      ),
+                      CustomText(
+                        textAlign: TextAlign.start,
+                          maxline: 10,
+                          text: mechanicController.profile.value.whyOnSite ?? 'N/A',
+                          fontsize: 10.sp,
+                          color: AppColors.textColor151515),
                       SizedBox(height: 50.h),
 
                       /// ================================> Pdf Button ==============================================>
 
-                      GestureDetector(
-                        onTap: () async {
-                        context.pushNamed(
-                            AppRoutes.mechanicResumeCertificateScreen,
-                            extra: {
-                              "title": "Resume and Certificate",
-                              "isEdit": true,
-                            },
-                          ).then((_) {
-                            print('===========================================test');
-                            mechanicController.getProfile();
-                          });
-                        },
-                        child: Assets.icons.editIcon.svg(),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: GestureDetector(
+                          onTap: () async {
+                          context.pushNamed(
+                              AppRoutes.mechanicResumeCertificateScreen,
+                              extra: {
+                                "title": "Resume and Certificate",
+                                "isEdit": true,
+                              },
+                            ).then((_) {
+                              print('===========================================test');
+                              mechanicController.getProfile();
+                            });
+                          },
+                          child: Assets.icons.editIcon.svg(),
+                        ),
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 15.h),
                       CustomUploadButton(
                         title: mechanicController.profile.value.resume != null && mechanicController.profile.value.resume!.isNotEmpty
                             ? 'Resume.pdf'

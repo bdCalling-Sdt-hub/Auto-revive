@@ -10,7 +10,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/payment_controller.dart';
 import '../../../../helpers/toast_message_helper.dart';
-import '../../../widgets/custom_app_bar.dart';
 
 class WithdrawScreen extends StatefulWidget {
   const WithdrawScreen({super.key});
@@ -20,9 +19,11 @@ class WithdrawScreen extends StatefulWidget {
 }
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
-  final TextEditingController _amountController = TextEditingController();
 
+
+  final TextEditingController _amountController = TextEditingController();
   PaymentController paymentController = PaymentController();
+
 
   @override
   void dispose() {
@@ -117,8 +118,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                 Expanded(
                                   child: CustomTextField(
                                     controller: _amountController,
-                                    hintText: "amount",
-                                    labelText: "Enter an amount",
+                                    hintText: "Enter amount",
                                     keyboardType: TextInputType.number,
                                     validator: (value) {
                                       if (value == null || value.trim().isEmpty) {
@@ -160,13 +160,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () {
+
                                   if (_amountController.text.trim().isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content:
-                                        Text("Please enter an amount"),
-                                      ),
-                                    );
+                                    ToastMessageHelper.showToastMessage('Please enter an amount!', title: 'Attention');
                                     return;
                                   }
                                   // Navigator.of(context).pop();

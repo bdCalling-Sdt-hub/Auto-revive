@@ -3,12 +3,14 @@ import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
+import 'package:autorevive/pregentaitions/widgets/custom_listview_shimmer.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../models/payment_history_model.dart';
 import '../../../../services/api_constants.dart';
 import '../../../widgets/custom_loader.dart';
@@ -27,12 +29,14 @@ class EarningScreen extends StatefulWidget {
 class _EarningScreenState extends State<EarningScreen> {
   PaymentController paymentController = Get.put(PaymentController());
 
-
+  bool isLoading = true;
   @override
   void initState() {
    paymentController.getPaymentHistory();
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,6 @@ class _EarningScreenState extends State<EarningScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 44.w),
                 child: Column(
                   children: [
-
                     CustomText(
                       text: 'Your balance',
                       color: Colors.white,
@@ -68,11 +71,13 @@ class _EarningScreenState extends State<EarningScreen> {
                       top: 20,
                     ),
                     SizedBox(height: 8.h),
-                    CustomText(
-                      text: '\$${paymentController.paymentHistory.value.wallet ?? 'N/A'}',
-                      color: Colors.white,
-                      fontsize: 32.sp,
-                      fontWeight: FontWeight.w700,
+                    Obx(()=>
+                       CustomText(
+                        text: '\$${paymentController.paymentHistory.value.wallet ?? 'N/A'}',
+                        color: Colors.white,
+                        fontsize: 32.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(height: 10.h),
                     CustomContainer(
