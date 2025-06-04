@@ -36,38 +36,90 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
   }
   bool isLoading = true;
 
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // final routeData = GoRouterState.of(context).extra as Map;
       final extra = GoRouterState.of(context).extra;
       final Map routeData = extra is Map ? extra : {};
       final isEdit = routeData['isEdit'] ?? false;
       final data = routeData['data'];
 
       if (isEdit && data != null) {
-        final ref = ReferenceFormData();
-
-        ref.nameCtrl.text = data.name ?? '';
-        ref.phoneNoCtrl.text = data.phone ?? '';
-        ref.relationshipMap.updateAll((key, value) => false);
-        if (data.relation != null && ref.relationshipMap.containsKey(data.relation)) {
-          ref.relationshipMap[data.relation!] = true;
+        if (data is List) {
+          referenceList = data.map((refData) {
+            final ref = ReferenceFormData();
+            ref.nameCtrl.text = refData.name ?? '';
+            ref.phoneNoCtrl.text = refData.phone ?? '';
+            ref.relationshipMap.updateAll((key, value) => false);
+            if (refData.relation != null &&
+                ref.relationshipMap.containsKey(refData.relation)) {
+              ref.relationshipMap[refData.relation!] = true;
+            }
+            return ref;
+          }).toList();
         }
-        referenceList = [ref];
+        else {
+          final ref = ReferenceFormData();
+          ref.nameCtrl.text = data.name ?? '';
+          ref.phoneNoCtrl.text = data.phone ?? '';
+          ref.relationshipMap.updateAll((key, value) => false);
+          if (data.relation != null &&
+              ref.relationshipMap.containsKey(data.relation)) {
+            ref.relationshipMap[data.relation!] = true;
+          }
+          referenceList = [ref];
+        }
 
-
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 300), () {
           setState(() {
             isLoading = false;
           });
         });
-
+      } else {
+        setState(() {
+          referenceList = [ReferenceFormData()];
+          isLoading = false;
+        });
       }
     });
   }
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     // final routeData = GoRouterState.of(context).extra as Map;
+  //     final extra = GoRouterState.of(context).extra;
+  //     final Map routeData = extra is Map ? extra : {};
+  //     final isEdit = routeData['isEdit'] ?? false;
+  //     final data = routeData['data'];
+  //
+  //     if (isEdit && data != null) {
+  //       final ref = ReferenceFormData();
+  //
+  //       ref.nameCtrl.text = data.name ?? '';
+  //       ref.phoneNoCtrl.text = data.phone ?? '';
+  //       ref.relationshipMap.updateAll((key, value) => false);
+  //       if (data.relation != null && ref.relationshipMap.containsKey(data.relation)) {
+  //         ref.relationshipMap[data.relation!] = true;
+  //       }
+  //       referenceList = [ref];
+  //
+  //
+  //       Future.delayed(Duration(milliseconds: 500), () {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //       });
+  //
+  //     }
+  //   });
+  // }
 
 
   @override
@@ -259,7 +311,7 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
 
                 SizedBox(height: 70.h),
 
-                // Obx(()=>
+                 // Obx(()=>
                 //    CustomButton(
                 //      loading: mechanicController.referenceLoading.value,
                 //     title: "Save and Next",
