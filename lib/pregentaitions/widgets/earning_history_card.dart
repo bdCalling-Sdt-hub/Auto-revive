@@ -10,6 +10,7 @@ class EarningHistoryCard extends StatelessWidget {
   final String date;
   final String amount;
   final String image;
+  final String status;
 
   const EarningHistoryCard({
     Key? key,
@@ -18,10 +19,41 @@ class EarningHistoryCard extends StatelessWidget {
     required this.date,
     required this.amount,
     required this.image,
+    required this.status,
   }) : super(key: key);
+
+
+  Color _getStatusColor(String status) {
+    switch (status.toUpperCase()) {
+      case 'STATUS.PENDING':
+        return Colors.redAccent;
+      case 'STATUS.SUCCESS':
+        return Colors.lightGreenAccent;
+      default:
+        return Colors.grey;
+    }
+  }
+
+
+  String _getFormattedStatus(String status) {
+    if (status.contains('.')) {
+      return status.split('.').last.toLowerCase();
+    }
+    return status.toLowerCase();
+  }
+
+  // String _getFormattedStatus(String status) {
+  //   if (status.contains('.')) {
+  //     final parts = status.split('.');
+  //     return parts.last[0].toUpperCase() + parts.last.substring(1).toLowerCase();
+  //   }
+  //   return status[0].toUpperCase() + status.substring(1).toLowerCase();
+  // }
+
 
   @override
   Widget build(BuildContext context) {
+    final formattedStatus = _getFormattedStatus(status);
     return CustomContainer(
       verticalMargin: 5.h,
       paddingAll: 10.r,
@@ -57,17 +89,27 @@ class EarningHistoryCard extends StatelessWidget {
               textAlign: TextAlign.start,
               fontsize: 10.sp,
             ),
+
+          ],
+        ),
+        trailing: Column(
+          children: [
+            CustomText(
+              right: 24.w,
+              text: '\$ $amount',
+              color: Colors.white,
+              textAlign: TextAlign.start,
+              fontsize: 28.sp,
+            ),
+            CustomText(
+              text: formattedStatus,
+              color: _getStatusColor(status),
+              textAlign: TextAlign.start,
+              fontsize: 12.sp,
+            ),
           ],
         ),
 
-
-        trailing: CustomText(
-          right: 24.w,
-          text: '\$ $amount',
-          color: Colors.white,
-          textAlign: TextAlign.start,
-          fontsize: 28.sp,
-        ),
       ),
     );
   }

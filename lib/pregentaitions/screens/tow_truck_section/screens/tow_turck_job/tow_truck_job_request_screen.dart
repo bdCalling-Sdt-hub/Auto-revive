@@ -138,6 +138,7 @@ class _TowTruckJobRequestScreenState extends State<TowTruckJobRequestScreen> {
                   title: 'Apply',
                   onpress: () {
                     Navigator.of(context).pop();
+                    mechanicJobController.jobProvider.clear();
                     mechanicJobController.mechanicJobAllProvider(
                       radius: _miles.value.toInt().toString(),
                     );
