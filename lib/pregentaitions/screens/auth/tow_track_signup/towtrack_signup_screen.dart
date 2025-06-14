@@ -1,16 +1,11 @@
-import 'dart:io';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../controllers/auth_controller.dart';
-import '../../../../controllers/upload_controller.dart';
-import '../../../../helpers/toast_message_helper.dart';
 import '../../../widgets/custom_text.dart';
-import '../../../widgets/custom_upload_button.dart';
 
 class TowTrackSignupScreen extends StatefulWidget {
   const TowTrackSignupScreen({super.key});

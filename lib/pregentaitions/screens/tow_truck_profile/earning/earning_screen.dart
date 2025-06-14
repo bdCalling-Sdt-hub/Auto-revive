@@ -150,6 +150,7 @@ class _EarningScreenState extends State<EarningScreen> {
                         //     : 'N/A',
                         date: item.createdAt != null ? DateFormat('dd MMM yyyy').format(item.createdAt!) : 'N/A',
                         amount: item.amount != null ? '${item.amount}' : 'N/A',
+                        status:'${item.status ?? 'N/A'}',
                         image: '${ApiConstants.imageBaseUrl}/${item.image != null ? imageValues.reverse[item.image] : item.rawImage}',
                       );
 

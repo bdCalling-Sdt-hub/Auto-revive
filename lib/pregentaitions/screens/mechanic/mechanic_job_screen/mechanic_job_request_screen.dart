@@ -135,6 +135,7 @@ class _MechanicJobRequestScreenState extends State<MechanicJobRequestScreen> {
                   title: 'Apply',
                   onpress: () {
                     Navigator.of(context).pop();
+                    mechanicJobController.jobProvider.clear();
                     mechanicJobController.mechanicJobAllProvider(
                       radius: _miles.value.toInt().toString(),
                     );

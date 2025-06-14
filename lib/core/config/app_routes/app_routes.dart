@@ -672,7 +672,7 @@ class AppRoutes {
           path: paymentWebView,
           name: paymentWebView,
           pageBuilder: (context, state) {
-            final paymentUrl = state.extra as String;
+            String paymentUrl = state.extra as String;
             return MaterialPage(
               child: PaymentWebView(paymentUrl: paymentUrl),
             );
