@@ -206,10 +206,15 @@ class _ServiceCoverageScreenState extends State<ServiceCoverageScreen> {
                          return;
                        }
 
-                       if (selectedServices.isEmpty) {
-                         ToastMessageHelper.showToastMessage('Please select at least one towing service',title: 'Attention');
+                       if (_services.values.any((selected) => !selected)) {
+                         ToastMessageHelper.showToastMessage('Please select all towing services', title: 'Attention');
                          return;
                        }
+
+                       // if (selectedServices.isEmpty) {
+                       //   ToastMessageHelper.showToastMessage('Please select at least one towing service',title: 'Attention');
+                       //   return;
+                       // }
 
                        if (selectedETA.isEmpty) {
                          ToastMessageHelper.showToastMessage('Please select at least one ETA option',title: 'Attention');

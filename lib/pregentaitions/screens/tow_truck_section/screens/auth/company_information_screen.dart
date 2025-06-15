@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
+import '../../../../widgets/Custom_Ein_number.dart';
 
 class CompanyInformationScreen extends StatefulWidget {
   const CompanyInformationScreen({super.key});
@@ -121,6 +122,16 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
                 controller: _businessEmailTEController,
                 labelText: 'Business Email Address',
                 hintText: 'Business Email Address',
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Email is required';
+                  }
+                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                  if (!emailRegex.hasMatch(value.trim())) {
+                    return 'Enter a valid email address';
+                  }
+                  return null;
+                },
               ),
 
 
@@ -135,6 +146,20 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
                 controller: _websiteURLTEController,
                 labelText: 'Website URL',
                 hintText: 'David William LLC',
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Website URL is required';
+                  }
+                  final urlRegex = RegExp(
+                      r'^(https?:\/\/)?' // optional scheme
+                      r'([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}' // domain
+                      r'(\/[^\s]*)?$' // optional path
+                  );
+                  if (!urlRegex.hasMatch(value.trim())) {
+                    return 'Enter a valid URL';
+                  }
+                  return null;
+                },
               ),
 
 
@@ -171,12 +196,12 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
                       labelText: 'Enter EIN number',
                       hintText: 'Enter EIN number',
                       inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(9),
+                        EINInputFormatter(),
+                        LengthLimitingTextInputFormatter(10),
                       ],
                       validator: (value) {
                         if (value == null || value.isEmpty) return 'Please enter EIN number';
-                        if (value.length != 9) return 'EIN must be 9 digits';
+                        if (value.length != 10) return 'EIN must be 10 digits';
                         return null;
                       },
                     ),
@@ -349,4 +374,10 @@ class _CompanyInformationScreenState extends State<CompanyInformationScreen> {
     );
   }
 
+
+
+
+
 }
+
+

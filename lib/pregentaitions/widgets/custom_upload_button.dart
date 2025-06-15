@@ -58,9 +58,8 @@ class CustomUploadButton extends StatelessWidget {
                     size: 20.sp,
                   ),
                 ],
-                SizedBox(width: 10.w),
                 SizedBox(
-                  width: 200.w,
+                  width: 150.w,
                   child: CustomText(
                     text: title,
                     color: Colors.white,

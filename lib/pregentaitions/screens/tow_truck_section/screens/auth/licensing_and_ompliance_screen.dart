@@ -121,14 +121,25 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                 },
               ),
             if (validUSDOTNumber == true) ...[ CustomTextField(
-                keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
                 controller: _uSDOTNumberTEController,
                 labelText: 'US-DOT Number',
                 hintText: 'US-DOT Number',
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(9),
+                  LengthLimitingTextInputFormatter(12),
                 ],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'US-DOT Number is required';
+                }
+
+                final pattern = RegExp(r'^USDOT\d{7}$');
+                if (!pattern.hasMatch(value)) {
+                  return 'Enter valid US-DOT number (e.g., USDOT1523020)';
+                }
+
+                return null;
+              },
               ),
               CustomUploadButton(
                 topLabel: 'Do you have commercial insurance coverage?*',
@@ -153,14 +164,25 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
               ),
               if (coverageNumber == true) ...[
                 CustomTextField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 controller: _policyNumberTEController,
                 labelText: 'Policy Number',
                 hintText: 'Policy Number',
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(9),
+                  LengthLimitingTextInputFormatter(30),
                 ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Policy number is required';
+                    }
+
+                    final pattern = RegExp(r'^[A-Z0-9\-]{6,30}$');
+                    if (!pattern.hasMatch(value)) {
+                      return 'Policy number must be 6–30 characters, uppercase letters, numbers or dashes only';
+                    }
+
+                    return null;
+                  },
               ),
               CustomTextField(
                 keyboardType: TextInputType.number,
@@ -193,14 +215,25 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
               ),
     if (mCNumber == true) ...[
       CustomTextField(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 controller: _mCNumberTEController,
                 labelText: 'MC Number',
                 hintText: 'MC Number',
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(9),
+                  LengthLimitingTextInputFormatter(8),
                 ],
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'MC Number is required';
+          }
+
+          final pattern = RegExp(r'^MC\d{6}$');
+          if (!pattern.hasMatch(value)) {
+            return 'MC Number must be in the format MC followed by 6 digits';
+          }
+
+          return null;
+        },
               ),
       CustomUploadButton(
         topLabel: 'Upload Proof of MC authority',
