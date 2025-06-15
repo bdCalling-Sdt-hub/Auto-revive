@@ -49,7 +49,7 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
     super.initState();
     towTrackController.getTowTrackProfile().then((_) {
       final profile = towTrackController.trackProfile.value;
-      _nameTEController.text = profile.name ?? '';
+      // _nameTEController.text = profile.name ?? '';
       _emailTEController.text = profile.email ?? '';
 
 
@@ -57,7 +57,8 @@ class _TowTrackBasicInfoScreenState extends State<TowTrackBasicInfoScreen> {
 
         final extra = GoRouterState.of(context).extra;
         final Map routeData = extra is Map ? extra : {};
-            _nameTEController.text = routeData['name'] ?? '';
+            // _nameTEController.text = routeData['name'] ?? '';
+            _nameTEController.text = routeData['name'] ?? profile.name ?? '';
             _phoneTEController.text = routeData['phone'] ?? '';
             _addressTEController.text = routeData['address'] ?? '';
             _lLCTEController.text = routeData['llc'] ?? '';
