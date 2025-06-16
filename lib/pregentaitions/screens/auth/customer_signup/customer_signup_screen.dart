@@ -1,15 +1,12 @@
 import 'dart:io';
-
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../../../controllers/auth_controller.dart';
 import '../../../../controllers/upload_controller.dart';
 import '../../../../helpers/toast_message_helper.dart';
@@ -91,7 +88,26 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                     fontsize: 16.h,
                     color: const Color(0xff222222),
                     bottom: 6.h),
-                CustomTextField(controller: phoneCtrl, hintText: "Enter your phone"),
+
+                CustomTextField(
+                    keyboardType: TextInputType.number,
+                    controller: phoneCtrl,
+                    hintText: "Enter your phone",
+                   inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(11),
+                  ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter phone number';
+                    } else if (value.length < 11) {
+                      return 'Phone number must be 11 digits';
+                    } else if (value.length > 11) {
+                      return 'Phone number cannot exceed 11 digits';
+                    }
+                    return null;
+                  },
+                ),
 
 
 
@@ -185,8 +201,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                       }
                   },),
                 ),
-
-                SizedBox(height: 20.h)
+                SizedBox(height: 50.h)
               ],
             ),
           ),

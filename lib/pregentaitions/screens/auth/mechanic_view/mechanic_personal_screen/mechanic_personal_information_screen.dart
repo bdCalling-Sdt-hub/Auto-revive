@@ -57,7 +57,7 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
     super.initState();
     mechanicController.getProfile().then((_) {
       final profile = mechanicController.profile.value;
-      fullNameCtrl.text = profile.name ?? '';
+      // fullNameCtrl.text = profile.name ?? '';
       emailCtrl.text = profile.email ?? '';
 
 
@@ -67,7 +67,8 @@ class _MechanicPersonalInformationScreenState extends State<MechanicPersonalInfo
         final extra = GoRouterState.of(context).extra;
         final Map routeData = extra is Map ? extra : {};
 
-        fullNameCtrl.text = routeData['name'] ?? '';
+        // fullNameCtrl.text = routeData['name'] ?? '';
+        fullNameCtrl.text = routeData['name'] ?? profile.name ?? '';
         phoneNoCtrl.text = routeData['phone'] ?? '';
         currentAddressCtrl.text = routeData['address'] ?? '';
         platformCtrl.text = routeData['platform'] ?? '';

@@ -71,12 +71,9 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
     final Map routeData = extra is Map ? extra : {};
     final bool isEdit = routeData['isEdit'] ?? false;
 
-    // Map routeData = GoRouterState.of(context).extra as Map;
-    // final bool isEdit = (GoRouterState.of(context).extra as Map)['isEdit'] ?? false;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // appBar: CustomAppBar(
-      //     title: "${routeData["title"]}"),
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(

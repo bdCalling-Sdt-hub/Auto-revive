@@ -43,12 +43,13 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
   };
   final TextEditingController fromDateCtrl = TextEditingController();
 
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // final routeData = GoRouterState.of(context).extra as Map;
       final extra = GoRouterState.of(context).extra;
       final Map routeData = extra is Map ? extra : {};
       final data = routeData['data'];
@@ -80,17 +81,64 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
             workSettingCheckbox[key] = true;
           }
         }
-
-        Future.delayed(Duration(milliseconds: 500), () {
-          setState(() {
-            isLoading = false;
-          });
-        });
       }
+      Future.delayed(Duration(milliseconds: 500), () {
+                setState(() {
+                  isLoading = false;
+                });
+              });
     });
   }
 
-  bool isLoading = true;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     // final routeData = GoRouterState.of(context).extra as Map;
+  //     final extra = GoRouterState.of(context).extra;
+  //     final Map routeData = extra is Map ? extra : {};
+  //     final data = routeData['data'];
+  //
+  //     if (data != null) {
+  //       companyNameCtrl.text = data.companyName ?? '';
+  //       jobTitleCtrl.text = data.jobName ?? '';
+  //       supervisorsNameCtrl.text = data.supervisorsName ?? '';
+  //       supervisorsContactCtrl.text = data.supervisorsContact ?? '';
+  //
+  //       if (data.durationFrom != null) {
+  //         fromDateCtrl.text = data.durationFrom is DateTime
+  //             ? DateFormat('yyyy-MM-dd').format(data.durationFrom)
+  //             : data.durationFrom;
+  //       }
+  //
+  //       if (data.durationTo != null) {
+  //         dateCtrl.text = data.durationTo is DateTime
+  //             ? DateFormat('yyyy-MM-dd').format(data.durationTo)
+  //             : data.durationTo;
+  //       }
+  //
+  //       reasonLeavingCtrl.text = data.reason ?? '';
+  //
+  //       if (data.platform != null) {
+  //         workSettingCheckbox.updateAll((key, value) => false);
+  //         final key = data.platform.toString().toLowerCase();
+  //         if (workSettingCheckbox.containsKey(key)) {
+  //           workSettingCheckbox[key] = true;
+  //         }
+  //       }
+  //
+  //       Future.delayed(Duration(milliseconds: 500), () {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -369,6 +417,7 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
   }
 
 
+  // Shimmer Effect Widget
   Widget _buildShimmerEmploymentHistory() {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,
@@ -533,7 +582,6 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
       ),
     );
   }
-
 
 }
 

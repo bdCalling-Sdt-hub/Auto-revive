@@ -86,18 +86,29 @@ class OtpScreen extends StatelessWidget {
                     title: "Verify",
                     onpress: () {
                       print("--------------------------- ${screenType}");
-          
-                      if(screenType == "Sign Up"){
-                        // authController.verfyEmail(otpCtrl.text, screenType: "Sign Up", context: context);
+
+
+                      if(screenType == "user"){
+                        authController.verfyEmail(otpTEController.text, screenType: "user", context: context, type: "Sign Up");
+                      } else if (screenType == "mechanic") {
+                        authController.verfyEmail(otpTEController.text, screenType: "mechanic", context: context, type: "Sign Up");
+                      } else if (screenType == "tow_truck") {
+                        authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context, type: "Sign Up");
+                      } else {
+                        authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context, type: "forgot");
                       }
-                      if (screenType == "mechanic") {
-                        authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
-                      }
-                      else if(screenType == "tow_truck"){
-                        authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context,type: "Sign Up");
-                      } else{
-                        authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
-                      }
+
+                      // if(screenType == "user"){
+                      //   authController.verfyEmail(otpTEController.text, screenType: "user", context: context,type: "Sign Up");
+                      // }
+                      // if (screenType == "mechanic") {
+                      //   authController.verfyEmail(otpTEController.text, screenType: screenType, context: context, type: "Sign Up");
+                      // }
+                      // else if(screenType == "tow_truck"){
+                      //   authController.verfyEmail(otpTEController.text, screenType: "tow_truck", context: context,type: "Sign Up");
+                      // } else{
+                      //   authController.verfyEmail(otpTEController.text, screenType: "forgot", context: context);
+                      // }
                     }),
               ),
             ],
