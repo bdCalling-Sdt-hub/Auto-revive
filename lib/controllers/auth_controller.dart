@@ -133,8 +133,8 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       verfyLoading(false);
       if(screenType== 'forgot'){
-        debugPrint("==========bearer token save done : ${response.body["data"]['token']}");
-        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
+        debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
       }else{
         debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
         await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
