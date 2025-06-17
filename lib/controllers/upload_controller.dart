@@ -29,12 +29,12 @@ class UploadController extends GetxController {
         return uploadedFilePath;
       } else {
         uploadFileLoading(false);
-        ToastMessageHelper.showToastMessage("File upload failed!");
+        ToastMessageHelper.showToastMessage("File too large",title: "Attention");
         return null;
       }
     } catch (e) {
       uploadFileLoading(false);
-      ToastMessageHelper.showToastMessage("An error occurred during upload.");
+      ToastMessageHelper.showToastMessage("An error occurred during upload.",title: "Attention");
       return null;
     }
   }

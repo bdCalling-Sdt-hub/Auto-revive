@@ -16,6 +16,7 @@ import '../../../../../controllers/towTrack/registration_tow_track_controller.da
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
+import 'package:path/path.dart' as path;
 
 class BusinessRequirementScreen extends StatefulWidget {
   const BusinessRequirementScreen({super.key});
@@ -35,6 +36,8 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
   TowTrackController towTrackController = Get.put(TowTrackController());
 
   RxString signatureUrl = ''.obs;
+
+  RxString signatureFileName = ''.obs;
 
   final Map<String, bool> _services = {
     'Maintain active DOT registration & insurance coverage at all times.': false,
@@ -135,19 +138,23 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                 labelText: 'Authorized or Representative title',
                 hintText: 'Authorized or Representative title',
               ),
+              Obx(() => CustomUploadButton(
+                topLabel: 'Signature',
+                title: signatureFileName.value.isNotEmpty ? signatureFileName.value : 'Upload signature',
+                icon: Icons.upload,
+                onTap: () => importPdf(isSignature: true),
+              )),
 
-
-              Obx(() =>
-                  CustomUploadButton(
-                    topLabel: 'Signature',
-                    title: signatureUrl.value.isNotEmpty
-                        ? 'signature.jpg'
-                        : 'Upload signature',
-                    icon: Icons.upload,
-                    onTap: () => importPdf(isSignature: true),
-                  ),
-
-              ),
+              // Obx(() =>
+              //     CustomUploadButton(
+              //       topLabel: 'Signature',
+              //       title: signatureUrl.value.isNotEmpty
+              //           ? 'signature.jpg'
+              //           : 'Upload signature',
+              //       icon: Icons.upload,
+              //       onTap: () => importPdf(isSignature: true),
+              //     ),
+              // ),
 
               CustomTextField(
                 readOnly: true,
@@ -162,7 +169,7 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
               Obx(()=>
                 CustomButton(
                   loading: towTrackController.businessRequirementsLoading.value,
-                    title:  isEdit ? "Edit" : "Save and Next",
+                    title:  isEdit ? "Edit" : "Submit",
                     onpress: ()async {
                       if(_globalKey.currentState!.validate()){
 
@@ -170,11 +177,11 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                           ToastMessageHelper.showToastMessage("Please upload Signature", title: 'Attention');
                           return;
                         }
-
-                        if (!isEdit && !_services.values.any((v) => v)) {
-                          ToastMessageHelper.showToastMessage("Please select all services LLC", title: 'Attention');
+                        if (!isEdit && _services.values.any((v) => v == false)) {
+                          ToastMessageHelper.showToastMessage("Please select all services", title: 'Attention');
                           return;
                         }
+
 
 
 
@@ -343,10 +350,12 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
 
     if (result != null && result.files.isNotEmpty) {
       File selectedFile = File(result.files.single.path!);
+      String fileName = path.basename(selectedFile.path);
       String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
       if (uploadedPath != null) {
         if (isSignature) {
           signatureUrl.value = uploadedPath;
+          signatureFileName.value = fileName;
         }
       }
     } else {

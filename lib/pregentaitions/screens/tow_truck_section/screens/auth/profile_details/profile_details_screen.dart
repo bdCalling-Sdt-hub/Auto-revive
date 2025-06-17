@@ -133,6 +133,7 @@ class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      /// =====================> Company Information ====================>
                       GestureDetector(
                         onTap: () async {
                           await towTrackController.getTowTrackProfile();

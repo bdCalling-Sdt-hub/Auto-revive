@@ -17,6 +17,7 @@ import '../../../../../controllers/towTrack/registration_tow_track_controller.da
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../helpers/toast_message_helper.dart';
+import 'package:path/path.dart' as path;
 
 class LicensingAndComplianceScreen extends StatefulWidget {
   const LicensingAndComplianceScreen({super.key});
@@ -40,6 +41,12 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
   RxString registrationUrl = ''.obs;
   RxString insurancePolicyUrl = ''.obs;
   RxString mcUrl = ''.obs;
+
+  RxString registrationFileName = ''.obs;
+  RxString insurancePolicyFileName = ''.obs;
+  RxString mcFileName = ''.obs;
+
+
   bool? validUSDOTNumber;
   bool? coverageNumber;
   bool? mCNumber;
@@ -74,8 +81,6 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
 
 
     });
-
-
     towTrackController.getTowTrackProfile();
   }
 
@@ -120,7 +125,7 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   });
                 },
               ),
-            if (validUSDOTNumber == true) ...[ CustomTextField(
+             if (validUSDOTNumber == true) ...[ CustomTextField(
               keyboardType: TextInputType.text,
                 controller: _uSDOTNumberTEController,
                 labelText: 'US-DOT Number',
@@ -129,6 +134,7 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   LengthLimitingTextInputFormatter(12),
                 ],
               validator: (value) {
+                if (validUSDOTNumber != true) return null;
                 if (value == null || value.isEmpty) {
                   return 'US-DOT Number is required';
                 }
@@ -141,14 +147,21 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                 return null;
               },
               ),
-              CustomUploadButton(
+
+              Obx(() => CustomUploadButton(
                 topLabel: 'Do you have commercial insurance coverage?*',
-                title: registrationUrl.value.isNotEmpty
-                    ? 'DOT registration.pdf'
-                    : 'Upload DOT registration',
+                title: registrationFileName.value.isNotEmpty ? registrationFileName.value : 'Upload DOT registration',
                 icon: Icons.upload,
                 onTap: () => importPdf(target: 'dot'),
-              ),
+              )),
+              // CustomUploadButton(
+              //   topLabel: 'Do you have commercial insurance coverage?*',
+              //   title: registrationUrl.value.isNotEmpty
+              //       ? 'DOT registration.pdf'
+              //       : 'Upload DOT registration',
+              //   icon: Icons.upload,
+              //   onTap: () => importPdf(target: 'dot'),
+              // ),
             ],
 
               /// =======================================> Commercial Insurance ===================================>
@@ -172,6 +185,7 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   LengthLimitingTextInputFormatter(30),
                 ],
                   validator: (value) {
+                    if (coverageNumber != true) return null;
                     if (value == null || value.isEmpty) {
                       return 'Policy number is required';
                     }
@@ -194,14 +208,20 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   LengthLimitingTextInputFormatter(9),
                 ],
               ),
-                CustomUploadButton(
-                  topLabel: 'Upload Proof of a Active insurance policy.',
-                  title: insurancePolicyUrl.value.isNotEmpty
-                      ? 'insurancePolicy.pdf'
-                      : 'Upload insurance policy',
+                Obx(() => CustomUploadButton(
+                  title: insurancePolicyFileName.value.isNotEmpty ? insurancePolicyFileName.value : 'Upload insurance policy',
                   icon: Icons.upload,
                   onTap: () => importPdf(target: 'insurance'),
-                ),],
+                )),
+                // CustomUploadButton(
+                //   topLabel: 'Upload Proof of a Active insurance policy.',
+                //   title: insurancePolicyUrl.value.isNotEmpty
+                //       ? 'insurancePolicy.pdf'
+                //       : 'Upload insurance policy',
+                //   icon: Icons.upload,
+                //   onTap: () => importPdf(target: 'insurance'),
+                // ),
+              ],
 
               /// =======================================> MC Number ===================================>
               CustomChecked(
@@ -213,8 +233,8 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                   });
                 },
               ),
-    if (mCNumber == true) ...[
-      CustomTextField(
+              if (mCNumber == true) ...[
+              CustomTextField(
                 keyboardType: TextInputType.text,
                 controller: _mCNumberTEController,
                 labelText: 'MC Number',
@@ -222,27 +242,36 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(8),
                 ],
-        validator: (value) {
-          if (value == null || value.isEmpty) {
+                validator: (value) {
+                  if (mCNumber != true) return null;
+                if (value == null || value.isEmpty) {
             return 'MC Number is required';
           }
 
-          final pattern = RegExp(r'^MC\d{6}$');
-          if (!pattern.hasMatch(value)) {
+                final pattern = RegExp(r'^MC\d{6}$');
+                if (!pattern.hasMatch(value)) {
             return 'MC Number must be in the format MC followed by 6 digits';
           }
-
-          return null;
-        },
+                return null;
+              },
               ),
-      CustomUploadButton(
-        topLabel: 'Upload Proof of MC authority',
-        title: mcUrl.value.isNotEmpty
-            ? 'mc.pdf'
-            : 'Upload mc',
+
+              Obx(() => CustomUploadButton(
+        title: mcFileName.value.isNotEmpty ? mcFileName.value : 'Upload mc',
         icon: Icons.upload,
         onTap: () => importPdf(target: 'mc'),
-      ),],
+      )),
+              // CustomUploadButton(
+      //   topLabel: 'Upload Proof of MC authority',
+      //   title: mcUrl.value.isNotEmpty
+      //       ? 'mc.pdf'
+      //       : 'Upload mc',
+      //   icon: Icons.upload,
+      //   onTap: () => importPdf(target: 'mc'),
+      // ),
+
+    ],
+
 
 
               SizedBox(height: 44.h),
@@ -432,15 +461,19 @@ class _LicensingAndComplianceScreenState extends State<LicensingAndComplianceScr
 
     if (result != null && result.files.isNotEmpty) {
       File selectedFile = File(result.files.single.path!);
+      String fileName = path.basename(selectedFile.path);
       String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
 
       if (uploadedPath != null) {
         if (target == 'dot') {
           registrationUrl.value = uploadedPath;
+          registrationFileName.value = fileName;
         } else if (target == 'insurance') {
           insurancePolicyUrl.value = uploadedPath;
+          insurancePolicyFileName.value = fileName;
         } else if (target == 'mc') {
           mcUrl.value = uploadedPath;
+          mcFileName.value = fileName;
         }
       } else {
         ToastMessageHelper.showToastMessage("File upload failed.");

@@ -102,7 +102,7 @@ class TowTrackController extends GetxController{
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
         return true;
       } else {
-        ToastMessageHelper.showToastMessage('Submission failed. Please check inputs.', title: 'Attention');
+        ToastMessageHelper.showToastMessage(' Website must be a valid URL', title: 'Attention');
         return false;
       }
     } catch (e) {
@@ -294,7 +294,7 @@ class TowTrackController extends GetxController{
 
     };
 
-    licensingComplianceLoading(true);
+    businessRequirementsLoading(true);
 
     try {
       var response = await ApiClient.putData(
@@ -314,7 +314,7 @@ class TowTrackController extends GetxController{
       ToastMessageHelper.showToastMessage("Something went wrong.");
       return false;
     } finally {
-      licensingComplianceLoading(false);
+      businessRequirementsLoading(false);
     }
   }
 

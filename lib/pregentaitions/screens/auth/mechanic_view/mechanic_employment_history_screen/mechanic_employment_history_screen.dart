@@ -14,6 +14,8 @@ import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../widgets/custom_phone_number_picker.dart';
+
 
 class MechanicEmploymentHistoryScreen extends StatefulWidget {
   const MechanicEmploymentHistoryScreen({super.key});
@@ -205,33 +207,38 @@ class _MechanicEmploymentHistoryScreenState extends State<MechanicEmploymentHist
                         controller: supervisorsNameCtrl,
                         hintText: "Supervisors Name"),
                     ///<<<=============>>> Supervisors Contact <<<===============>>>
-                    CustomText(
-                        text: "Supervisors Contact:",
-                        color: AppColors.textColor151515,
-                        fontsize: 14.sp,
 
-                    ),
-                    SizedBox(height: 8.h),
-                    CustomTextField(
+                    ///<<<=============>>> Phone Filed <<<===============>>>
+                    CustomPhoneNumberPicker(
                       controller: supervisorsContactCtrl,
-                      hintText: "Supervisors Contact",
-                      keyboardType: TextInputType.phone,
-                      maxLength: 11,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(11),
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
-                        } else if (value.length < 11) {
-                          return 'Phone number must be 11 digits';
-                        } else if (value.length > 11) {
-                          return 'Phone number cannot exceed 11 digits';
-                        }
-                        return null;
-                      },
-                    ),
+                      lebelText: 'Supervisors Contact',),
+                    // CustomText(
+                    //     text: "Supervisors Contact:",
+                    //     color: AppColors.textColor151515,
+                    //     fontsize: 14.sp,
+                    //
+                    // ),
+                    // SizedBox(height: 8.h),
+                    // CustomTextField(
+                    //   controller: supervisorsContactCtrl,
+                    //   hintText: "Supervisors Contact",
+                    //   keyboardType: TextInputType.phone,
+                    //   maxLength: 11,
+                    //   inputFormatters: [
+                    //     LengthLimitingTextInputFormatter(11),
+                    //     FilteringTextInputFormatter.digitsOnly,
+                    //   ],
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please enter phone number';
+                    //     } else if (value.length < 11) {
+                    //       return 'Phone number must be 11 digits';
+                    //     } else if (value.length > 11) {
+                    //       return 'Phone number cannot exceed 11 digits';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
 
 
                     ///<<<=============>>> Employment Duration <<<===============>>>

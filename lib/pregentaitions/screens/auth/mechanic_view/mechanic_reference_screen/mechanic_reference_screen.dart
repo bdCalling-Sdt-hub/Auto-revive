@@ -14,6 +14,7 @@ import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_checkbox_list.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
+import '../../../../widgets/custom_phone_number_picker.dart';
 
 class MechanicReferenceScreen extends StatefulWidget {
   MechanicReferenceScreen({super.key});
@@ -193,33 +194,36 @@ class _MechanicReferenceScreenState extends State<MechanicReferenceScreen> {
                               controller: ref.nameCtrl,
                               hintText: "Name",
                             ),
-                            CustomText(
-                              text: "Phone No:",
-                              fontsize: 14.sp,
-                              color: AppColors.textColor151515,
-                            ),
+                            // CustomText(
+                            //   text: "Phone No:",
+                            //   fontsize: 14.sp,
+                            //   color: AppColors.textColor151515,
+                            // ),
                             SizedBox(height: 8.h),
-                            CustomTextField(
-                              controller: ref.phoneNoCtrl,
-                              hintText: "Phone No",
-                              keyboardType: TextInputType.number,
-                              readOnly: false,
-                              maxLength: 11,
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(11),
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter phone number';
-                                } else if (value.length < 11) {
-                                  return 'Phone number must be 11 digits';
-                                } else if (value.length > 11) {
-                                  return 'Phone number cannot exceed 11 digits';
-                                }
-                                return null;
-                              },
-                            ),
+                            CustomPhoneNumberPicker(
+                               controller: ref.phoneNoCtrl,
+                              lebelText: 'Phone No',),
+                            // CustomTextField(
+                            //   controller: ref.phoneNoCtrl,
+                            //   hintText: "Phone No",
+                            //   keyboardType: TextInputType.number,
+                            //   readOnly: false,
+                            //   maxLength: 11,
+                            //   inputFormatters: [
+                            //     LengthLimitingTextInputFormatter(11),
+                            //     FilteringTextInputFormatter.digitsOnly,
+                            //   ],
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Please enter phone number';
+                            //     } else if (value.length < 11) {
+                            //       return 'Phone number must be 11 digits';
+                            //     } else if (value.length > 11) {
+                            //       return 'Phone number cannot exceed 11 digits';
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
 
                             CustomText(
                               text: "Relationship:",

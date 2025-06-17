@@ -143,12 +143,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Withdraw-able amount',
+                                  'Withdraw amount',
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 CustomText(
+                                  maxline: 2,
                                   text:
                                   '\$${extra ?? 'N/A'}',
                                   color: AppColors.primaryColor,

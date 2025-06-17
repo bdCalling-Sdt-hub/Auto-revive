@@ -635,9 +635,9 @@ class _MechanicProfileInformationScreenState extends State<MechanicProfileInform
 
                       SizedBox(height: 16.h),
                       CustomButton(
-                        title: "Go To Login",
+                        title: "Go To Home Screen",
                         onpress: () {
-                          context.pushNamed(AppRoutes.logInScreen);
+                          context.pushNamed(AppRoutes.mechanicBottomNavBar);
                         },
                       ),
                     ],
