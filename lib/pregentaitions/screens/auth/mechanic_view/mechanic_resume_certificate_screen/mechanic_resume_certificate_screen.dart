@@ -10,11 +10,12 @@ import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
-import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_linear_indicator.dart';
 import '../../../../widgets/custom_text.dart';
 import '../../../../widgets/custom_upload_button.dart';
+import 'package:path/path.dart' as path;
+
 
 class MechanicResumeCertificateScreen extends StatefulWidget {
   const MechanicResumeCertificateScreen({super.key});
@@ -31,6 +32,11 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
 
   RxString resumeUrl = ''.obs;
   RxString certificateUrl = ''.obs;
+
+
+  RxString resumeFileName = ''.obs;
+  RxString certificateFileName = ''.obs;
+
 
 
   late final bool isEdit;
@@ -74,6 +80,8 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+
+
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(
@@ -110,19 +118,29 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
                     fontsize: 13.sp,
                     color: AppColors.textColor151515),
                 SizedBox(height: 29.h),
-                CustomUploadButton(
-                  // topLabel: 'Upload Resume',
-                  title: 'Upload Resume',
+                Obx(() => CustomUploadButton(
+                  title: resumeFileName.value.isNotEmpty ? resumeFileName.value : 'Upload Resume',
                   icon: Icons.upload,
                   onTap: () => importPdf(isResume: true),
-                ),
+                )),
+                // CustomUploadButton(
+                //   // topLabel: 'Upload Resume',
+                //   title: 'Upload Resume',
+                //   icon: Icons.upload,
+                //   onTap: () => importPdf(isResume: true),
+                // ),
                 SizedBox(height: 5.h),
-                CustomUploadButton(
-                  // topLabel: 'Upload Resume',
-                  title: 'Upload Certificate',
+                Obx(() => CustomUploadButton(
+                  title: certificateFileName.value.isNotEmpty ? certificateFileName.value : 'Upload Certificate',
                   icon: Icons.upload,
                   onTap: () => importPdf(isResume: false),
-                ),
+                )),
+                // CustomUploadButton(
+                //   // topLabel: 'Upload Resume',
+                //   title: 'Upload Certificate',
+                //   icon: Icons.upload,
+                //   onTap: () => importPdf(isResume: false),
+                // ),
                 SizedBox(height: 330.h),
 
                 /// ================================>>>>  Save and Next button    <<<<<<=============================>>>
@@ -227,12 +245,15 @@ class _MechanicResumeCertificateScreenState extends State<MechanicResumeCertific
 
     if (result != null && result.files.isNotEmpty) {
       File selectedFile = File(result.files.single.path!);
+      String fileName = path.basename(selectedFile.path);
       String? uploadedPath = await uploadController.uploadFile(file: selectedFile);
       if (uploadedPath != null) {
         if (isResume) {
           resumeUrl.value = uploadedPath;
+          resumeFileName.value = fileName;
         } else {
           certificateUrl.value = uploadedPath;
+          certificateFileName.value = fileName;
         }
       } else {
         ToastMessageHelper.showToastMessage("File upload failed.");

@@ -66,137 +66,143 @@ class _CustomerBookingDetailsScreenState
                       width: 110.w,
                       border: Border.all(color: AppColors.primaryColor)),
                   SizedBox(width: 18.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          CustomText(
-                              text: "${routeData["name"]}",
-                              color: Colors.black,
-                              right: 30.w,
-                              fontsize: 22.h),
-                          GestureDetector(
-                            onTap: () {
-                              context.pushNamed(AppRoutes.mechanicMapScreen,
-                                  extra: {
-                                    "name": routeData["name"],
-                                    "address": routeData["address"],
-                                    "rating": routeData["rating"],
-                                    "lat": routeData["lat"],
-                                    "log": routeData["log"],
-                                    "image": routeData["image"]
-                                  });
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: AppColors.primaryShade300,
-                                    borderRadius: BorderRadius.circular(8.r)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(4.r),
-                                  child: Icon(Icons.location_on,
-                                      color: Colors.white, size: 16.r),
-                                )),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          CustomText(
-                              text: "${routeData["address"]}",
-                              color: Colors.black),
-                          Container(
-                              margin: EdgeInsets.symmetric(horizontal: 6.w),
-                              height: 13.h,
-                              width: 1.w,
-                              color: Colors.grey),
-                          Icon(Icons.star, color: Colors.amber, size: 14.h),
-                          CustomText(
-                              text: "${routeData["rating"]}",
-                              fontsize: 12.h,
-                              color: Colors.black)
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      routeData["title"] == "Complete"
-                          ? Wrap(
-                              spacing: 10.w,
-                              runSpacing: 6.h,
-                              children: List.generate(
-                                  routeData["certifications"].length, (index) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 7.w,
-                                    vertical: 3.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffFFE6E6),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: CustomText(
-                                    text: routeData["certifications"][index],
-                                    fontsize: 10.sp,
-                                  ),
-                                );
-                              }),
-                            )
-                          : Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: AppColors.primaryShade300,
-                                        borderRadius: BorderRadius.circular(8.r)),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 4.h, horizontal: 6.w),
-                                      child: Row(
-                                        children: [
-                                          Assets.icons.profileIcon.svg(),
-                                          SizedBox(width: 10.w),
-                                          CustomText(
-                                              text: "Profile",
-                                              color: Colors.white,
-                                              fontsize: 12.h),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 6.w),
-                                GestureDetector(
-                                  onTap: () {
-                                    context.pushNamed(AppRoutes.messageChatScreen, extra: {
-                                      "receiverId" : "${routeData["provideId"]}",
-                                      "name" : "${routeData["name"]}"
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomText(
+                                  text: "${routeData["name"]}",
+                                  color: Colors.black,
+                                  right: 30.w,
+                                  fontsize: 22.h,
+                                 textOverflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                context.pushNamed(AppRoutes.mechanicMapScreen,
+                                    extra: {
+                                      "name": routeData["name"],
+                                      "address": routeData["address"],
+                                      "rating": routeData["rating"],
+                                      "lat": routeData["lat"],
+                                      "log": routeData["log"],
+                                      "image": routeData["image"]
                                     });
-                                  },
-                                  child: Container(
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.primaryShade300,
+                                      borderRadius: BorderRadius.circular(8.r)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(4.r),
+                                    child: Icon(Icons.location_on,
+                                        color: Colors.white, size: 16.r),
+                                  )),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            CustomText(
+                                text: "${routeData["address"]}",
+                                color: Colors.black),
+                            Container(
+                                margin: EdgeInsets.symmetric(horizontal: 6.w),
+                                height: 13.h,
+                                width: 1.w,
+                                color: Colors.grey),
+                            Icon(Icons.star, color: Colors.amber, size: 14.h),
+                            CustomText(
+                                text: "${routeData["rating"]}",
+                                fontsize: 12.h,
+                                color: Colors.black)
+                          ],
+                        ),
+                        SizedBox(height: 8.h),
+                        routeData["title"] == "Complete"
+                            ? Wrap(
+                                spacing: 10.w,
+                                runSpacing: 6.h,
+                                children: List.generate(
+                                    routeData["certifications"].length, (index) {
+                                  return Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 7.w,
+                                      vertical: 3.h,
+                                    ),
                                     decoration: BoxDecoration(
-                                        color: AppColors.primaryShade300,
-                                        borderRadius: BorderRadius.circular(8.r)),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 4.h, horizontal: 6.w),
-                                      child: Row(
-                                        children: [
-                                          Assets.icons.mail.svg(),
-                                          SizedBox(width: 10.w),
-                                          CustomText(
-                                              text: "Message",
-                                              color: Colors.white,
-                                              fontsize: 12.h),
-                                        ],
+                                      color: const Color(0xffFFE6E6),
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: CustomText(
+                                      text: routeData["certifications"][index],
+                                      fontsize: 10.sp,
+                                    ),
+                                  );
+                                }),
+                              )
+                            : Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed(AppRoutes.mechanicProfileInformationScreen);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.primaryShade300,
+                                          borderRadius: BorderRadius.circular(8.r)),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 4.h, horizontal: 6.w),
+                                        child: Row(
+                                          children: [
+                                            Assets.icons.profileIcon.svg(),
+                                            SizedBox(width: 10.w),
+                                            CustomText(
+                                                text: "Profile",
+                                                color: Colors.white,
+                                                fontsize: 12.h),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                    ],
+                                  SizedBox(width: 6.w),
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.pushNamed(AppRoutes.messageChatScreen, extra: {
+                                        "receiverId" : "${routeData["provideId"]}",
+                                        "name" : "${routeData["name"]}"
+                                      });
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.primaryShade300,
+                                          borderRadius: BorderRadius.circular(8.r)),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 4.h, horizontal: 6.w),
+                                        child: Row(
+                                          children: [
+                                            Assets.icons.mail.svg(),
+                                            SizedBox(width: 10.w),
+                                            CustomText(
+                                                text: "Message",
+                                                color: Colors.white,
+                                                fontsize: 12.h),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                      ],
+                    ),
                   )
                 ],
               ),
