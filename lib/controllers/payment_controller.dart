@@ -44,8 +44,9 @@ class PaymentController extends GetxController{
 
 /// ===================================> Withdraw Request ==============================>
 
-
+  RxBool withDrawLoading = false.obs;
   withdrawRequestBalance({required String price,required BuildContext context})async{
+    withDrawLoading(true);
     Map<String, dynamic> body = {
       "amount": int.parse(price.toString()),
     };
@@ -59,8 +60,11 @@ class PaymentController extends GetxController{
       context.pushNamed(AppRoutes.paymentWebView, extra: url);
 
       if (kDebugMode) {
-        debugPrint("Payment successfully created: ${apiResponse.body}");
+        debugPrint("=============================================Payment successfully created: ${apiResponse.body}");
       }
+      withDrawLoading(false);
+    }else{
+      withDrawLoading(false);
     }
   }
 

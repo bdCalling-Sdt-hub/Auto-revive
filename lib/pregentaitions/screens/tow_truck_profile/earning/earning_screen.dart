@@ -18,7 +18,6 @@ import '../../../widgets/earning_history_card.dart';
 import '../../../widgets/no_data_found_card.dart';
 import 'package:intl/intl.dart';
 
-
 class EarningScreen extends StatefulWidget {
   const EarningScreen({super.key});
 
@@ -30,13 +29,12 @@ class _EarningScreenState extends State<EarningScreen> {
   PaymentController paymentController = Get.put(PaymentController());
 
   bool isLoading = true;
+
   @override
   void initState() {
-   paymentController.getPaymentHistory();
+    paymentController.getPaymentHistory();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,8 @@ class _EarningScreenState extends State<EarningScreen> {
           Stack(
             alignment: Alignment.center,
             children: [
-              Assets.images.balanceBg.image(height: 220.h, width: double.infinity, fit: BoxFit.cover),
+              Assets.images.balanceBg.image(
+                  height: 220.h, width: double.infinity, fit: BoxFit.cover),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 44.w),
                 child: Column(
@@ -71,9 +70,10 @@ class _EarningScreenState extends State<EarningScreen> {
                       top: 20,
                     ),
                     SizedBox(height: 8.h),
-                    Obx(()=>
-                       CustomText(
-                        text: '\$${paymentController.paymentHistory.value.wallet ?? 'N/A'}',
+                    Obx(
+                      () => CustomText(
+                        text:
+                            '\$${paymentController.paymentHistory.value.wallet?.toStringAsFixed(2) ?? 'N/A'}',
                         color: Colors.white,
                         fontsize: 32.sp,
                         fontWeight: FontWeight.w700,
@@ -86,7 +86,8 @@ class _EarningScreenState extends State<EarningScreen> {
                       color: AppColors.bgColorWhite,
                       width: double.infinity,
                       onTap: () {
-                        context.pushNamed(AppRoutes.withdrawScreen,
+                        context.pushNamed(
+                          AppRoutes.withdrawScreen,
                           extra: paymentController.paymentHistory.value.wallet,
                         );
                       },
@@ -95,9 +96,6 @@ class _EarningScreenState extends State<EarningScreen> {
                         color: AppColors.primaryColor,
                       ),
                     ),
-
-
-
                     SizedBox(height: 10.h),
                     CustomContainer(
                       paddingAll: 8.h,
@@ -112,12 +110,7 @@ class _EarningScreenState extends State<EarningScreen> {
                         color: AppColors.primaryColor,
                       ),
                     ),
-
-
                     SizedBox(height: 30.h)
-
-
-
                   ],
                 ),
               ),
@@ -132,33 +125,45 @@ class _EarningScreenState extends State<EarningScreen> {
             text: 'Earnings History',
             fontsize: 24.sp,
           ),
-          Obx(()=>
-          paymentController.paymentHistoryLoading.value ? const CustomLoader() : (paymentController.paymentHistory.value.history?.isEmpty ?? true) ? const Center(child: NoDataFoundCard())
-              : Expanded(
-                child: ListView.builder(
-                    itemCount: paymentController.paymentHistory.value.history?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      var item = paymentController.paymentHistory.value.history![index];
-                      return EarningHistoryCard(
-                        userName: item.title != null ? titleValues.reverse[item.title] ?? '' : item.rawTitle ?? '',
-                        transactionId: item.trId ?? 'N/A',
-                        // date: item.createdAt != null
-                        //     ? DateTime.parse('${item.createdAt!}')
-                        //     .toIso8601String()
-                        //     .split('T')
-                        //     .first
-                        //     : 'N/A',
-                        date: item.createdAt != null ? DateFormat('dd MMM yyyy').format(item.createdAt!) : 'N/A',
-                        amount: item.amount != null ? '${item.amount}' : 'N/A',
-                        status:'${item.status ?? 'N/A'}',
-                        image: '${ApiConstants.imageBaseUrl}/${item.image != null ? imageValues.reverse[item.image] : item.rawImage}',
-                      );
-
-                    }),
-              ),)
+          Obx(
+            () => paymentController.paymentHistoryLoading.value
+                ? const CustomLoader()
+                : (paymentController.paymentHistory.value.history?.isEmpty ?? true)
+                    ? const Center(child: NoDataFoundCard())
+                    : SizedBox(
+              height: 400.h,
+                        child: ListView.builder(
+                            itemCount: paymentController.paymentHistory.value.history?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              var item = paymentController
+                                  .paymentHistory.value.history![index];
+                              return EarningHistoryCard(
+                                userName: item.title != null
+                                    ? titleValues.reverse[item.title] ?? ''
+                                    : item.rawTitle ?? '',
+                                transactionId: item.trId ?? 'N/A',
+                                // date: item.createdAt != null
+                                //     ? DateTime.parse('${item.createdAt!}')
+                                //     .toIso8601String()
+                                //     .split('T')
+                                //     .first
+                                //     : 'N/A',
+                                date: item.createdAt != null
+                                    ? DateFormat('dd MMM yyyy')
+                                        .format(item.createdAt!)
+                                    : 'N/A',
+                                amount: item.amount != null
+                                    ? '${item.amount?.toStringAsFixed(2)}'
+                                    : 'N/A',
+                                status: '${item.status ?? 'N/A'}',
+                                image:
+                                    '${ApiConstants.imageBaseUrl}/${item.image != null ? imageValues.reverse[item.image] : item.rawImage}',
+                              );
+                            }),
+                      ),
+          )
         ],
       ),
     );
   }
-
 }

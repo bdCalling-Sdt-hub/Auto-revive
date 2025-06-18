@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -88,8 +89,7 @@ class ChatController extends GetxController {
 
 
   uploadFile({required List<File> images, String? receiveId, threadId}) async {
-    List<MultipartBody> photoList =
-        images.map((file) => MultipartBody("files", file)).toList();
+    List<MultipartBody> photoList = images.map((file) => MultipartBody("files", file)).toList();
 
     var response = await ApiClient.postMultipartData(
       "/upload/multiple",
@@ -97,11 +97,10 @@ class ChatController extends GetxController {
       multipartBody: photoList,
     );
 
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       List<String> filenames = List<String>.from(response.body["data"]);
-
       sendMessage(threadId: "$threadId",content: "",receiveId: "$receiveId", filePath: filenames);
-
     } else {
       ToastMessageHelper.showToastMessage("Failed to upload files");
     }
@@ -112,9 +111,13 @@ class ChatController extends GetxController {
   SocketServices socketServices = SocketServices();
 
   void listenMessage() async {
+
     socketServices.socket.on("message-receive", (data) {
       if (data != null) {
+
+
         ChatModel demoData = ChatModel.fromJson(data);
+
         chats.insert(0, demoData);
 
         update();

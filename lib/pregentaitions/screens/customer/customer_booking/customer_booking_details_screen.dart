@@ -77,6 +77,7 @@ class _CustomerBookingDetailsScreenState
                                   text: "${routeData["name"]}",
                                   color: Colors.black,
                                   right: 30.w,
+                                  textAlign: TextAlign.start,
                                   fontsize: 22.h,
                                  textOverflow: TextOverflow.ellipsis,
                               ),
@@ -250,9 +251,9 @@ class _CustomerBookingDetailsScreenState
                         child: Obx(
                           () => CustomText(
                             text: bookingController.totalPrice?.value != "null"
-                                ? bookingController.role == "tow_truck" ? "\$ 0" : "${bookingController.totalPrice?.value}"
+                                ? bookingController.role == "tow_truck" ? "\$ 0" : "${double.tryParse(bookingController.totalPrice?.value ?? '0')?.toStringAsFixed(2) ?? '0.00'}"
                                 : "\$${routeData['price']}",
-                            fontsize: 48.h,
+                            fontsize: 30.h,
                             color: Colors.white,
                           ),
                         ),
@@ -283,8 +284,7 @@ class _CustomerBookingDetailsScreenState
                               color: Colors.red.shade200))
                       : Obx(
                           () => CustomButton(
-                              loading: bookingController
-                                  .customerInitPaymentLoading.value,
+                              loading: bookingController.customerInitPaymentLoading.value,
                               title: routeData["price"] == 0
                                   ? "Accept"
                                   : "Pay Now",
@@ -293,7 +293,7 @@ class _CustomerBookingDetailsScreenState
                                     await bookingController.customerInitBooking(
                                         status: "accepted",
                                         id: routeData["id"],
-                                        isToast: false);
+                                        isToast: false, isBack: true, context: context);
 
                                 if (response == "completed") {
                                   VibrationService.vibrateForDuration(2500);

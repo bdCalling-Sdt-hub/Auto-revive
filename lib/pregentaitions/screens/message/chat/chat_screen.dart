@@ -66,7 +66,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
           children: [
             Expanded(
               child: Obx(
-                () => chatController.chatLoading.value ? const CustomLoader() :  chatController.chats.isEmpty
+                () => chatController.chatLoading.value ? const SizedBox() :  chatController.chats.isEmpty
                         ? const NoDataFoundCard()
                         : ListView.builder(
                             controller: _scrollController,
@@ -95,7 +95,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                                         border: Border.all(color: Colors.grey),
                                         borderRadius: BorderRadius.circular(16.r),
                                       ),
-                                      // isSender: isSender,
+                                        isSender: isSender,
                                       color: Colors.transparent
                                     )
                                         :
@@ -105,7 +105,7 @@ class _MessageChatScreenState extends State<MessageChatScreen> {
                                       color: isSender
                                           ? AppColors.primaryColor
                                           : AppColors.fontColorFEFEFE,
-                                      seen: isSender,
+                                      // seen: isSender,
                                       textStyle: TextStyle(
                                         color: isSender
                                             ? Colors.white

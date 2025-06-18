@@ -29,6 +29,7 @@ class SocketServices {
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .enableReconnection()
+            .enableForceNew()
             .build()
     );
 
