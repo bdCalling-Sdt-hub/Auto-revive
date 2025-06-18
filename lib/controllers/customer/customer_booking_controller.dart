@@ -38,7 +38,7 @@ class CustomerBookingController extends GetxController {
   RxBool customerInitPaymentLoading = false.obs;
 
   Future<String?> customerInitBooking(
-      {String? status, String? id, bool? isToast}) async {
+      {String? status, String? id, bool? isToast, isBack = false, BuildContext? context}) async {
     customerInitPaymentLoading(true);
     var body = {"status": "$status"};
     var response = await ApiClient.putData(
@@ -54,6 +54,10 @@ class CustomerBookingController extends GetxController {
 
       if (isToast ?? true) {
         ToastMessageHelper.showToastMessage("${response.body["message"]}");
+      }
+
+      if(isBack){
+        context?.pop();
       }
 
       update();

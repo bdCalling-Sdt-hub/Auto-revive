@@ -92,22 +92,25 @@ class EarningHistoryCard extends StatelessWidget {
 
           ],
         ),
-        trailing: Column(
-          children: [
-            CustomText(
-              right: 24.w,
-              text: '\$ $amount',
-              color: Colors.white,
-              textAlign: TextAlign.start,
-              fontsize: 28.sp,
-            ),
-            CustomText(
-              text: formattedStatus,
-              color: _getStatusColor(status),
-              textAlign: TextAlign.start,
-              fontsize: 12.sp,
-            ),
-          ],
+        trailing: SizedBox(
+          width: 150.w,
+          child: Column(
+            children: [
+              CustomText(
+                right: 24.w,
+                text: '\$ $amount',
+                color: Colors.white,
+                textAlign: TextAlign.start,
+                fontsize: 28.sp,
+              ),
+              CustomText(
+                text: formattedStatus,
+                color: _getStatusColor(status),
+                textAlign: TextAlign.start,
+                fontsize: 12.sp,
+              ),
+            ],
+          ),
         ),
 
       ),
