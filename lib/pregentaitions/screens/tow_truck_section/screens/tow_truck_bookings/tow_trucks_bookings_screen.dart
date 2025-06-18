@@ -159,7 +159,7 @@ class _TowTrucksBookingsScreenState extends State<TowTrucksBookingsScreen> with 
                       });
                     },
                     isAccepted: true,
-                    buttonLabel: 'Confirm',
+                    buttonLabel: 'Complete',
                     buttonColor: AppColors.primaryShade300,
                     onTapDetails: () {
 

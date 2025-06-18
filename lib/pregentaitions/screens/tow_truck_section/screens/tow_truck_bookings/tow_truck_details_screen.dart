@@ -163,7 +163,7 @@ class _TowTruckDetailsScreenState extends State<TowTruckDetailsScreen> {
           CustomButton(title: 'Complete',
               onpress: () {
                 mechanicBookingAllFiltersController.changeStatus(
-                    status: 'confirmed',
+                    status: 'serviced',
                     jobId: "${routeData["id"]}",
                     isScreenBack: true,
                     context: context);

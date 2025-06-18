@@ -30,7 +30,7 @@ class ApiConstants{
   static  String message(String id) => "/message/${id}";
   static const String postJob = "/job";
   static const String initBookingCustomer = "/job-process/customer";
-  static const String feedBack = "/job-process/customer/feedback/";
+  static const String feedBack = "/job-process/customer/feedback";
   static const String paymentRefundRequest = "/payment/refund/request";
   static const String findMechanicRadius = "/user/radius/mechanic";
   static const String privacyPolicy = "/setting";

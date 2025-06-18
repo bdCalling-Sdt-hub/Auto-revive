@@ -64,7 +64,7 @@ class ProviderId {
   final String? role;
   final String? address;
   final int? feedbackCount;
-  final int? avgRating;
+  final num? avgRating;
   final num? distance;
   final List<String>? certifications;
 
@@ -89,7 +89,7 @@ class ProviderId {
     role: json["role"],
     address: json["address"],
     feedbackCount: json["feedbackCount"],
-    avgRating: json["avgRating"],
+    avgRating: json["avgRating"] is num ? json["avgRating"] : null,
     distance: json["distance"],
     certifications: json["certifications"] == null ? [] : List<String>.from(json["certifications"]!.map((x) => x)),
   );
