@@ -10,8 +10,10 @@ import 'package:get/get.dart';
 import '../../../../controllers/auth_controller.dart';
 import '../../../../controllers/upload_controller.dart';
 import '../../../../helpers/toast_message_helper.dart';
+import '../../../widgets/custom_phone_number_picker.dart';
 import '../../../widgets/custom_text.dart';
 import '../../../widgets/custom_upload_button.dart';
+import 'package:path/path.dart' as path;
 
 class CustomerSignupScreen extends StatefulWidget {
   CustomerSignupScreen({super.key});
@@ -83,31 +85,34 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
 
                 ///<<<=============>>> PHONE FIELD <<<===============>>>
 
-                CustomText(
-                    text: "Phone No.",
-                    fontsize: 16.h,
-                    color: const Color(0xff222222),
-                    bottom: 6.h),
 
-                CustomTextField(
-                    keyboardType: TextInputType.number,
-                    controller: phoneCtrl,
-                    hintText: "Enter your phone",
-                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(11),
-                  ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter phone number';
-                    } else if (value.length < 11) {
-                      return 'Phone number must be 11 digits';
-                    } else if (value.length > 11) {
-                      return 'Phone number cannot exceed 11 digits';
-                    }
-                    return null;
-                  },
-                ),
+                CustomPhoneNumberPicker(controller: phoneCtrl, lebelText: 'Phone No.'),
+
+                // CustomText(
+                //     text: "Phone No.",
+                //     fontsize: 16.h,
+                //     color: const Color(0xff222222),
+                //     bottom: 6.h),
+                //
+                // CustomTextField(
+                //     keyboardType: TextInputType.number,
+                //     controller: phoneCtrl,
+                //     hintText: "Enter your phone",
+                //    inputFormatters: [
+                //     FilteringTextInputFormatter.digitsOnly,
+                //     LengthLimitingTextInputFormatter(11),
+                //   ],
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter phone number';
+                //     } else if (value.length < 11) {
+                //       return 'Phone number must be 11 digits';
+                //     } else if (value.length > 11) {
+                //       return 'Phone number cannot exceed 11 digits';
+                //     }
+                //     return null;
+                //   },
+                // ),
 
 
 
@@ -131,7 +136,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                     bottom: 6.h),
 
                 CustomUploadButton(
-                  title: pdfFile?.toString() ?? 'Upload.pdf',
+                  title: pdfFile != null ? path.basename(pdfFile!.path) : 'Upload.pdf',
                   icon: Icons.upload,
                   onTap: importPdf,
                 ),
