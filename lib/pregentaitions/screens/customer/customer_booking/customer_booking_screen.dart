@@ -1,8 +1,6 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
 import 'package:autorevive/core/constants/app_colors.dart';
-import 'package:autorevive/pregentaitions/widgets/booking_card_widget.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_listview_shimmer.dart';
-import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/no_data_found_card.dart';
 import 'package:autorevive/services/api_constants.dart';
@@ -10,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../controllers/customer/customer_booking_controller.dart';
-import '../../../../helpers/quick_alert.dart';
-import '../../../../services/vibration_service.dart';
 import '../../../widgets/booking_card_customer.dart';
 
 class CustomerBookingScreen extends StatefulWidget {
@@ -112,7 +107,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
           child: TabBarView(
             controller: _tabController,
             children: [
-              /// Requested Tab
+              /// ===================================> Requested Tab ===============================>
               Obx(() =>
               bookingController.bookingLoading.value ? const CustomListviewShimmer()  : bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
@@ -147,7 +142,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                           bookingController.fetchBooking(status: "requested", nextStatus: "accepted");
                         });
                       },
-                      rating: booking.providerId?.avgRating ?? 0,
+                      rating: (booking.providerId?.avgRating ?? 0).toInt(),
                       name: booking.providerId?.name.toString() ?? "",
                       money: booking.providerId?.role == "tow_truck" ? "${booking.servicePrice?.toStringAsFixed(2)}" : booking.transportPrice?.toString() ?? "",
                       image: booking.providerId?.profileImage != null ? '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}' : "",
@@ -173,7 +168,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       title: 'Price: \$${booking.servicePrice ?? "0"}',
                       name: '${booking.providerId?.name ?? "N/A"}',
                       certificates: booking.providerId?.certifications ?? [],
-                      rating: booking.providerId?.avgRating ?? 0,
+                      rating: (booking.providerId?.avgRating ?? 0).toInt(),
                       status: 'On-going',
                       image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
                       id: booking.id.toString(),
@@ -253,7 +248,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                 ),
               ),
 
-              // History Tab
+              /// =====================================> History Tab ============================================>
               Obx(() =>
               bookingController.bookingLoading.value ? const CustomListviewShimmer(): bookingController.booking.isEmpty ? const NoDataFoundCard() :
                  ListView.builder(
@@ -271,8 +266,8 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       name: '${booking.providerId?.name ?? "N/A"}',
                       // title: 'New York, USA',
                       status:  booking.status, //'Complete',
-                      rating: booking.providerId?.avgRating ?? 0,
-                      certificates:  booking.providerId?.certifications ?? [],
+                      rating: (booking.providerId?.avgRating ?? 0).toInt(),
+                    certificates:  booking.providerId?.certifications ?? [],
                       image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
                       id: booking.id.toString(),
                     );

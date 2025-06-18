@@ -178,7 +178,7 @@ class _BusinessRequirementScreenState extends State<BusinessRequirementScreen> {
                           return;
                         }
                         if (!isEdit && _services.values.any((v) => v == false)) {
-                          ToastMessageHelper.showToastMessage("Please select all services", title: 'Attention');
+                          ToastMessageHelper.showToastMessage("Please check all agreements", title: 'Attention');
                           return;
                         }
 
