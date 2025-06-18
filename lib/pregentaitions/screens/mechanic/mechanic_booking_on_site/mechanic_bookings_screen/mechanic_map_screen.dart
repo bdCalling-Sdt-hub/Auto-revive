@@ -1,10 +1,12 @@
 
 
 import 'dart:convert';
+import 'dart:ui';
 import 'package:autorevive/controllers/current_location_controller.dart';
 import 'package:autorevive/controllers/live_location_change_controller.dart';
 import 'package:autorevive/env/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -29,26 +31,58 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
   LatLng userLatLng = const LatLng(23.7805733, 90.2792399);
   LatLng mechanicLatLng = const LatLng(23.7855733, 90.2852399);
 
+
+  BitmapDescriptor carIcon = BitmapDescriptor.defaultMarker;
+
   @override
   void initState() {
     super.initState();
+    getMarkerFromAsset('assets/images/carImage.png').then((icon) {
+      setState(() {
+        carIcon = icon;
+      });
+    });
+
+    loadRouteData();
+  }
+
+
+
+  void loadRouteData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      routeData = GoRouterState.of(context).extra as Map;
-      if (currentLocationController.latitude.value != null) {
-        userLatLng = LatLng(
-          currentLocationController.latitude.value,
-          currentLocationController.longitude.value,
+      final extra = GoRouterState.of(context).extra;
+      if (extra != null && extra is Map) {
+        setState(() {
+          routeData = extra;
+        });
+
+        if (currentLocationController.latitude.value != null) {
+          userLatLng = LatLng(
+            currentLocationController.latitude.value,
+            currentLocationController.longitude.value,
+          );
+        }
+
+        mechanicLatLng = LatLng(
+          routeData["lat"] ?? 23.78,
+          routeData["log"] ?? 90.28,
         );
+
+        getRoutePolyline(userLatLng, mechanicLatLng);
+      } else {
+        // 🔁 Retry after 500 milliseconds
+        Future.delayed(const Duration(milliseconds: 500), () {
+          loadRouteData();
+        });
       }
-      mechanicLatLng = LatLng(routeData["lat"], routeData["log"]);
-      getRoutePolyline(userLatLng, mechanicLatLng);
     });
   }
 
+
+
   Future<void> getRoutePolyline(LatLng origin, LatLng destination) async {
      String apiKey = "${Config.googleMapKey}";
-    final String url =
-        "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=$apiKey";
+    final String url = "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&key=$apiKey";
 
     final response = await http.get(Uri.parse(url));
 
@@ -79,6 +113,8 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +134,8 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
                     markerId: const MarkerId("mechanic"),
                     position: mechanicLatLng,
                     infoWindow: InfoWindow(title: "${routeData["name"]}"),
+                    icon: carIcon
+
                   ),
                   Marker(
                     markerId: const MarkerId("user"),
@@ -140,6 +178,24 @@ class _MechanicMapScreenState extends State<MechanicMapScreen> {
       ),
     );
   }
+
+
+
+
+
+  Future<BitmapDescriptor> getMarkerFromAsset(String assetPath, {int width = 50}) async {
+    final ByteData byteData = await rootBundle.load(assetPath);
+    final codec = await instantiateImageCodec(
+      byteData.buffer.asUint8List(),
+      targetWidth: width,
+    );
+    final frame = await codec.getNextFrame();
+    final data = await frame.image.toByteData(format: ImageByteFormat.png);
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+  }
+
+
+
 }
 
 

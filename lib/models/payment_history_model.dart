@@ -1,5 +1,5 @@
 class PaymentHistoryModel {
-  final int? wallet;
+  final num? wallet;
   final List<History>? history;
 
   PaymentHistoryModel({
@@ -23,7 +23,7 @@ class PaymentHistoryModel {
 class History {
   final String? trId;
   final DateTime? createdAt;
-  final int? amount;
+  final num? amount;
   final Title? title;
   final String? rawTitle;
   final Image? image;

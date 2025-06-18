@@ -6,6 +6,7 @@ import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/payment_controller.dart';
@@ -69,7 +70,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         ),
                         SizedBox(height: 8.h),
                         CustomText(
-                          text: "\$${extra ?? 'N/A'}",
+                          text: "\$${double.parse(extra.toString()).toStringAsFixed(2) ?? 'N/A'}",
                           color: Colors.white,
                           fontsize: 32.sp,
                           fontWeight: FontWeight.w700,
@@ -151,46 +152,74 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                                 CustomText(
                                   maxline: 2,
                                   text:
-                                  '\$${extra ?? 'N/A'}',
+                                  '\$${double.parse(extra.toString()).toStringAsFixed(2) ?? 'N/A'}',
                                   color: AppColors.primaryColor,
                                 ),
                               ],
                             ),
                             SizedBox(height: 40.h),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
 
-                                  if (_amountController.text.trim().isEmpty) {
-                                    ToastMessageHelper.showToastMessage('Please enter an amount!', title: 'Attention');
-                                    return;
-                                  }
-                                  // Navigator.of(context).pop();
-                                  if(_amountController.text != ""){
-                                    paymentController.withdrawRequestBalance(
-                                        context: context,
-                                        price: _amountController.text
-                                    );
-                                  }else{
-                                    ToastMessageHelper.showToastMessage("Enter balance !");
-                                  }
+                            Obx(() =>
+                               CustomButton(
+                                loading: paymentController.withDrawLoading.value,
+                                  title: "Withdraw",
+                                 onpress: () {
 
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.r),
-                                  ),
-                                  padding:
-                                  EdgeInsets.symmetric(vertical: 14.h),
-                                ),
-                                child: CustomText(
-                                  text: 'Ok',
-                                  color: AppColors.bgColorWhiteFFFFFF,
-                                ),
+                                   if (_amountController.text.trim().isEmpty) {
+                                     ToastMessageHelper.showToastMessage('Please enter an amount!', title: 'Attention');
+                                     return;
+                                   }
+                                   // Navigator.of(context).pop();
+                                   if(_amountController.text != ""){
+                                     paymentController.withdrawRequestBalance(
+                                         context: context,
+                                         price: _amountController.text
+                                     );
+                                   }else{
+                                     ToastMessageHelper.showToastMessage("Enter balance !");
+                                   }
+
+                                 },
+
                               ),
                             ),
+
+
+
+                            // SizedBox(
+                            //   width: double.infinity,
+                            //   child: ElevatedButton(
+                            //     onPressed: () {
+                            //
+                            //       if (_amountController.text.trim().isEmpty) {
+                            //         ToastMessageHelper.showToastMessage('Please enter an amount!', title: 'Attention');
+                            //         return;
+                            //       }
+                            //       // Navigator.of(context).pop();
+                            //       if(_amountController.text != ""){
+                            //         paymentController.withdrawRequestBalance(
+                            //             context: context,
+                            //             price: _amountController.text
+                            //         );
+                            //       }else{
+                            //         ToastMessageHelper.showToastMessage("Enter balance !");
+                            //       }
+                            //
+                            //     },
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor: AppColors.primaryColor,
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(30.r),
+                            //       ),
+                            //       padding:
+                            //       EdgeInsets.symmetric(vertical: 14.h),
+                            //     ),
+                            //     child: CustomText(
+                            //       text: 'Ok',
+                            //       color: AppColors.bgColorWhiteFFFFFF,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

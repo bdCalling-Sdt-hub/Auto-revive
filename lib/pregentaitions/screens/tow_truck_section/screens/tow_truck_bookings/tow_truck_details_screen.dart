@@ -28,7 +28,17 @@ class _TowTruckDetailsScreenState extends State<TowTruckDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map routeData = GoRouterState.of(context).extra as Map;
+
+
+    // Map routeData = GoRouterState.of(context).extra as Map;
+
+    final extra = GoRouterState.of(context).extra;
+    if (extra == null || extra is! Map) {
+      return const Center(child: Text('Something went wrong Please go back'));
+    }
+    final Map routeData = extra;
+
+
     mechanicBookingAllFiltersController.getProvider(id: routeData['id']);
     return CustomScaffold(
       appBar: CustomAppBar(

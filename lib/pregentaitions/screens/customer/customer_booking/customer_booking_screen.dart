@@ -122,7 +122,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       acceptCancelBtnName: [booking.platform == "in shop" && booking.status == "accepted" ? "Pay now" : "Accept", "Cancel"],
                       buttonLabel: 'Cancel',
                       onTapDetails: () {
-                        context.pushNamed(AppRoutes.towTruckDetailsScreen);
+                        // context.pushNamed(AppRoutes.towTruckDetailsScreen);
                       },
                       certificates: booking.providerId?.certifications ?? [],
                       address: booking.platform?.toLowerCase() == "on site" ? "" : booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${"${booking.providerId?.distance?.toStringAsFixed(2)}"}',
@@ -165,7 +165,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       isNextPaySection: true,
                       acceptCancelBtnName: [booking.status == "paid" ? "Complete" : "Pay Now", "Cancel"],
                       isNextPay:  booking.platform?.toLowerCase() == "in shop" ? false : true,
-                      title: 'Price: \$${booking.servicePrice ?? "0"}',
+                      title: 'Price: \$${booking.servicePrice?.toStringAsFixed(2) ?? "0"}',
                       name: '${booking.providerId?.name ?? "N/A"}',
                       certificates: booking.providerId?.certifications ?? [],
                       rating: (booking.providerId?.avgRating ?? 0).toInt(),
@@ -173,7 +173,7 @@ class _CustomerBookingScreenState extends State<CustomerBookingScreen> with Sing
                       image: '${ApiConstants.imageBaseUrl}/${booking.providerId?.profileImage}',
                       id: booking.id.toString(),
                       buttonLabel: booking.status == "serviced" ? 'Pay Now' : "See Details",
-                      address:  booking.platform?.toLowerCase() == "on site" ? "" :  booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${booking}',
+                      address:  booking.platform?.toLowerCase() == "on site" ? "" :  booking.platform?.toLowerCase() == "in shop" ? "${booking.providerId?.address}" : 'Distance : ${(booking.providerId?.distance)?.toStringAsFixed(2)}',
 
                       onTapDetails: () {
                         context.pushNamed(AppRoutes.towTruckDetailsScreen);
