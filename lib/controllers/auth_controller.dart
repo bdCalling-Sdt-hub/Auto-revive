@@ -220,6 +220,8 @@ class AuthController extends GetxController {
 
       var role = data['role'];
 
+      print("========================================= role : $role");
+
       if (role == "customer") {
         context.go(AppRoutes.customerBottomNavBar);
         await PrefsHelper.setBool(AppConstants.isLogged, true);
@@ -255,9 +257,11 @@ class AuthController extends GetxController {
           context.go(AppRoutes.serviceCoverageScreen);
         }else if (data["step"] == 6) {
           context.go(AppRoutes.businessRequirementScreen);
+        }else{
+          context.go(AppRoutes.towTruckBottomNavBar);
+          await PrefsHelper.setBool(AppConstants.isLogged, true);
         }
-        context.go(AppRoutes.towTruckBottomNavBar);
-        await PrefsHelper.setBool(AppConstants.isLogged, true);
+
       }
 
       ToastMessageHelper.showToastMessage('You are logged in');
