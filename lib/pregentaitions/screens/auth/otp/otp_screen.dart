@@ -1,4 +1,3 @@
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -8,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../../controllers/auth_controller.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class OtpScreen extends StatelessWidget {
   final String screenType;
@@ -58,7 +58,7 @@ class OtpScreen extends StatelessWidget {
                           ? null
                           : () {
                         authController.startCountdown();
-                        authController.reSendOtp('${email}');
+                        authController.reSendOtp();
                       },
                       child: CustomText(
                         text: authController.isCountingDown.value

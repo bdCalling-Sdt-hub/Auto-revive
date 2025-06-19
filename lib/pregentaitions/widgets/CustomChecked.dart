@@ -1,6 +1,7 @@
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/constants/app_colors.dart';
 
 class CustomChecked extends StatelessWidget {
   const CustomChecked(

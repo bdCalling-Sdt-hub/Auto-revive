@@ -1,4 +1,3 @@
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/helpers/toast_message_helper.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/customer/customer_booking_controller.dart';
+import '../../core/constants/app_colors.dart';
 import '../../helpers/quick_alert.dart';
 import '../../services/vibration_service.dart';
 

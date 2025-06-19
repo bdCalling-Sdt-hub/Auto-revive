@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 
 
+
 class CustomText extends StatelessWidget {
 
   CustomText(

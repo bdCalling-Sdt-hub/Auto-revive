@@ -1,5 +1,4 @@
 import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/CustomChecked.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_checkbox_list.dart';
@@ -14,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 
 class ServiceCoverageScreen extends StatefulWidget {

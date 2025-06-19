@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
 import '../core/app_constants/app_constants.dart';
 import '../core/constants/app_colors.dart';
-import '../global/custom_assets/assets.gen.dart';
 import '../helpers/prefs_helper.dart';
 import '../helpers/toast_message_helper.dart';
 import '../pregentaitions/widgets/custom_button.dart';
@@ -24,6 +22,7 @@ class AuthController extends GetxController {
   RxBool signUpLoading = false.obs;
 
   ///========================================== Sing up ==================================<>
+
   handleSignUp({String? name, email, phone, password,confirmPassword,filePath,required BuildContext context, required String screenType}) async {
     String role = await PrefsHelper.getString(AppConstants.role);
 
@@ -116,12 +115,7 @@ class AuthController extends GetxController {
   }
 
 
-
-
-
-  // ///************************************************************************///
-
-  ///===============Verify Email================<>
+  ///========================================Verify Email===========================================<>
   RxBool verfyLoading = false.obs;
 
   verfyEmail(String otpCode, {String screenType = '',String type = '', required BuildContext context}) async {
@@ -133,8 +127,9 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       verfyLoading(false);
       if(screenType== 'forgot'){
-        debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
-        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
+        debugPrint("==========bearer token save done : ${response.body["data"]['token']}");
+        await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['token']);
+
       }else{
         debugPrint("==========bearer token save done : ${response.body["data"]['accessToken']}");
         await PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]['accessToken']);
@@ -169,13 +164,13 @@ class AuthController extends GetxController {
 
 
 
-  final RxInt countdown = 180.obs;
+  final RxInt countdown = 60.obs;
   final RxBool isCountingDown = false.obs;
 
 
   void startCountdown() {
     isCountingDown.value = true;
-    countdown.value = 180;
+    countdown.value = 60;
     update();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countdown.value > 0) {
@@ -189,8 +184,7 @@ class AuthController extends GetxController {
     });
   }
 
-  ///************************************************************************///
-  ///===============Log in================<>
+  ///============================================= Log in ===============================================<>
   RxBool logInLoading = false.obs;
 
   handleLogIn(String email, String password, {required BuildContext context}) async {
@@ -349,10 +343,6 @@ class AuthController extends GetxController {
   // }
 
 
-
-  ///************************************************************************///
-
-
   ///===========================================> Forgot Password ====================================================<>
   RxBool forgotLoading = false.obs;
 
@@ -360,15 +350,17 @@ class AuthController extends GetxController {
     forgotLoading(true);
     var body = {"email": email};
     var response = await ApiClient.postData(
-        ApiConstants.forgotPasswordEndPoint, jsonEncode(body));
+        ApiConstants.forgotPasswordEndPoint,
+        jsonEncode(body),
+    );
     if (response.statusCode == 200 || response.statusCode == 201) {
 
       PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["resetPasswordToken"]);
 
+
       if(screenType == "forgot"){
         context.pushNamed(AppRoutes.otpScreen, extra: {
-          "screenType" : "Forgot Password", "email" : email});
-        // context.pushNamed(AppRoutes.forgotPasswordScreen, extra: email.toString());
+          "screenType": "forgot", "email" : email});
       }
 
       forgotLoading(false);
@@ -415,14 +407,22 @@ class AuthController extends GetxController {
 
   RxBool resendLoading = false.obs;
 
-  reSendOtp(String email) async {
+  reSendOtp() async {
     resendLoading(true);
-    var body = {"email": email};
-
+    String token = await PrefsHelper.getString(AppConstants.bearerToken);
+    var headers = {
+      'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+    };
+    var body = {};
     var response = await ApiClient.postData(
-        ApiConstants.resendOtpEndPoint,jsonEncode(body));
+        ApiConstants.resendOtpEndPoint,
+        jsonEncode(body),
+    headers: headers
+    );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+      PrefsHelper.setString(AppConstants.bearerToken, response.body["data"]["verificationToken"]);
       ToastMessageHelper.showToastMessage(
           'You have got an one time code to your email');
       print("======>>> successful");
