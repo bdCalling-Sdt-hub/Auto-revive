@@ -1,5 +1,3 @@
-import 'package:autorevive/core/config/app_routes/app_routes.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/auth_controller.dart';
 

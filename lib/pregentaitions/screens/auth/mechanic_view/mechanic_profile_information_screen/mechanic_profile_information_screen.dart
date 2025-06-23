@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../../services/api_constants.dart';
 import '../../../../widgets/cachanetwork_image.dart';

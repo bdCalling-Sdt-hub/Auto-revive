@@ -1,4 +1,3 @@
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
@@ -10,6 +9,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/payment_controller.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../helpers/toast_message_helper.dart';
 
 class WithdrawScreen extends StatefulWidget {

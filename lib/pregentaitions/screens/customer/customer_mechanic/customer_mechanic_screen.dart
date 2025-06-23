@@ -1,11 +1,12 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_app_bar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../core/constants/app_colors.dart';
 
 class CustomerMechanicScreen extends StatelessWidget {
   const CustomerMechanicScreen({super.key});

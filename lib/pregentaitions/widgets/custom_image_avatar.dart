@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../core/constants/app_colors.dart';
 class CustomImageAvatar extends StatelessWidget {
   const CustomImageAvatar({
     super.key,

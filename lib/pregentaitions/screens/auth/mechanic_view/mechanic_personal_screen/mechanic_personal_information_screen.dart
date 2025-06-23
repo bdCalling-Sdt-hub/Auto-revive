@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text_field.dart';
@@ -12,6 +11,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/mechanic_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 import '../../../../widgets/CustomChecked.dart';

@@ -1,5 +1,4 @@
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_loader.dart';
@@ -13,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../controllers/mechanic_controller/mechanic_job_controller.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class MechanicJobScreen extends StatefulWidget {
   const MechanicJobScreen({super.key});

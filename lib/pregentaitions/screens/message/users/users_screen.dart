@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:autorevive/core/app_constants/app_constants.dart';
 import 'package:autorevive/core/config/app_routes/app_routes.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/helpers/prefs_helper.dart';
 import 'package:autorevive/helpers/time_format.dart';
 import 'package:autorevive/pregentaitions/widgets/cachanetwork_image.dart';
@@ -20,6 +19,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../controllers/chat_controller.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class UsersScreen extends StatefulWidget {
   UsersScreen({super.key});

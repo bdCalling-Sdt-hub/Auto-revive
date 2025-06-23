@@ -1,4 +1,3 @@
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/notifications_controller.dart';
+import '../../../core/constants/app_colors.dart';
 import '../../widgets/custom_loader.dart';
 
 class NotificationScreen extends StatefulWidget {

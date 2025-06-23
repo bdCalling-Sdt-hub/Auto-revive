@@ -11,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/mechanic_controller.dart';
 import '../../../../controllers/upload_controller.dart';
-import '../../../../core/config/app_routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../helpers/toast_message_helper.dart';
 import '../../../widgets/cachanetwork_image.dart';

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_linear_indicator.dart';
@@ -18,6 +17,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../controllers/towTrack/registration_tow_track_controller.dart';
 import '../../../../../controllers/upload_controller.dart';
 import '../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../helpers/toast_message_helper.dart';
 import '../../../../../models/car_model.dart';
 

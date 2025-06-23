@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/global/custom_assets/assets.gen.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_app_bar.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_button.dart';
@@ -15,6 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:autorevive/controllers/customer/customer_map_controller.dart';
 import '../../../../controllers/customer/customer_home_controller.dart';
 import '../../../../controllers/mechanic_controller/mechanic_job_controller.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../widgets/custom_container.dart';
 import '../../../widgets/custom_slider.dart';
 

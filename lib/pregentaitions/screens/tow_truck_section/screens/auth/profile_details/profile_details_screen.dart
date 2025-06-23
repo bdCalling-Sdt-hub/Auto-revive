@@ -1,5 +1,4 @@
 import 'package:autorevive/controllers/towTrack/registration_tow_track_controller.dart';
-import 'package:autorevive/core/constants/app_colors.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_container.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_scaffold.dart';
 import 'package:autorevive/pregentaitions/widgets/custom_text.dart';
@@ -10,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../../../core/config/app_routes/app_routes.dart';
+import '../../../../../../core/constants/app_colors.dart';
 import '../../../../../../global/custom_assets/assets.gen.dart';
 import '../../../../../../services/api_constants.dart';
 import '../../../../../widgets/cachanetwork_image.dart';
