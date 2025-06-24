@@ -1,8 +1,5 @@
-
-
 import 'dart:async';
 import 'dart:ui' as ui;
-
 import 'package:autorevive/models/find_mechanic_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -111,66 +108,125 @@ class CustomerMapController extends GetxController {
 
 
 
-
   /// ================================> Get All Mechanic ==============================>
 
   RxBool mechanicLoading = false.obs;
   RxList<FindMechanicCustomerModel> mechanic = <FindMechanicCustomerModel>[].obs;
-  fetchMechanicWithRadius({String? radius, String? target})async{
-    mechanicLoading(true);
-    var response = await ApiClient.getData(target?.toLowerCase() == "tow truck" ? "/user/radius/tow_truck/$radius" : ApiConstants.findMechanicRadius+"/$radius");
-    if(response.statusCode == 200){
-      mechanic.value = List<FindMechanicCustomerModel>.from(response.body["data"].map((x)=> FindMechanicCustomerModel.fromJson(x)));
-      var tempMechanic = List<MarkerModels>.from(response.body["data"].map((x)=> MarkerModels.fromJson(x)));
 
+  fetchMechanicWithRadius({String? radius, String? target}) async {
+    mechanicLoading(true);
+
+    var response = await ApiClient.getData(target?.toLowerCase() == "tow truck" ? "/user/radius/tow_truck/$radius" : ApiConstants.findMechanicRadius + "/$radius",
+    );
+
+    if (response.statusCode == 200) {
+      mechanic.value = List<FindMechanicCustomerModel>.from(response.body["data"].map((x) => FindMechanicCustomerModel.fromJson(x)),);
+
+      var tempMechanic = List<MarkerModels>.from(response.body["data"].map((x) => MarkerModels.fromJson(x)),);
 
       markers.clear();
 
-
       for (var x in tempMechanic) {
-
         final coordinates = x.coordinates;
 
-        if (coordinates.length >= 2) {
+        if (coordinates.length >= 2 &&
+            coordinates[0] != null &&
+            coordinates[1] != null) {
           final lat = coordinates[1];
           final lng = coordinates[0];
 
+          if (lat != 0.0 && lng != 0.0) {
+            BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
 
-          BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
+            if (x.profileImage.isNotEmpty) {
+              icon = await getBytesFromUrl(
+                "${ApiConstants.imageBaseUrl}/${x.profileImage}",
+                size: 100,
+              );
+            }
 
-          if (x.profileImage.isNotEmpty) {
-              icon = await getBytesFromUrl("${ApiConstants.imageBaseUrl}/${x.profileImage}", size: 100);
+            print("🧭 Adding marker at: $lat, $lng");
+
+            markers.add(
+              Marker(
+                markerId: MarkerId(x.id.toString()),
+                position: LatLng(lat.toDouble(), lng.toDouble()),
+                infoWindow: InfoWindow(title: x.name ?? "Mechanic"),
+                icon: icon,
+              ),
+            );
+          } else {
+            print("⚠️ Skipping marker at 0.0, 0.0 for ${x.id}");
           }
-
-          
-
-          print("🧭 Adding marker at: $lat, $lng");
-
-          markers.add(
-            Marker(
-              markerId: MarkerId(x.id.toString()),
-              position: LatLng(lat.toDouble(), lng.toDouble()),
-              infoWindow: InfoWindow(title: x.name ?? "Mechanic"),
-              icon: icon
-            ),
-          );
-
-
-
         } else {
-          print("⚠️ Skipping mechanic ${x.id} due to missing coordinates");
+          print("⚠️ Invalid coordinates for mechanic ${x.id}");
         }
       }
 
-
-
       update();
-
       mechanicLoading(false);
-    }else{
+    } else {
       mechanicLoading(false);
     }
   }
+
+  // RxBool mechanicLoading = false.obs;
+  // RxList<FindMechanicCustomerModel> mechanic = <FindMechanicCustomerModel>[].obs;
+  // fetchMechanicWithRadius({String? radius, String? target})async{
+  //   mechanicLoading(true);
+  //   var response = await ApiClient.getData(target?.toLowerCase() == "tow truck" ? "/user/radius/tow_truck/$radius" : ApiConstants.findMechanicRadius+"/$radius");
+  //   if(response.statusCode == 200){
+  //     mechanic.value = List<FindMechanicCustomerModel>.from(response.body["data"].map((x)=> FindMechanicCustomerModel.fromJson(x)));
+  //     var tempMechanic = List<MarkerModels>.from(response.body["data"].map((x)=> MarkerModels.fromJson(x)));
+  //
+  //
+  //     markers.clear();
+  //
+  //
+  //     for (var x in tempMechanic) {
+  //
+  //       final coordinates = x.coordinates;
+  //
+  //       if (coordinates.length >= 2) {
+  //         final lat = coordinates[1];
+  //         final lng = coordinates[0];
+  //
+  //
+  //         BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
+  //
+  //         if (x.profileImage.isNotEmpty) {
+  //             icon = await getBytesFromUrl("${ApiConstants.imageBaseUrl}/${x.profileImage}", size: 100);
+  //         }
+  //
+  //
+  //
+  //         print("🧭 Adding marker at: $lat, $lng");
+  //
+  //         markers.add(
+  //           Marker(
+  //             markerId: MarkerId(x.id.toString()),
+  //             position: LatLng(lat.toDouble(), lng.toDouble()),
+  //             infoWindow: InfoWindow(title: x.name ?? "Mechanic"),
+  //             icon: icon
+  //           ),
+  //         );
+  //
+  //
+  //
+  //       } else {
+  //         print("⚠️ Skipping mechanic ${x.id} due to missing coordinates");
+  //       }
+  //     }
+  //
+  //
+  //
+  //     update();
+  //
+  //     mechanicLoading(false);
+  //   }else{
+  //     mechanicLoading(false);
+  //   }
+  // }
 
 
 

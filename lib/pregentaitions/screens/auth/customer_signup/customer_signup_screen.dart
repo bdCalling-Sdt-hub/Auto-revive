@@ -186,7 +186,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                       padding:  EdgeInsets.only(top: 15.h),
                       child: CustomText(text: isMatched.value ? "Password Matched" : "",color: Colors.green,fontsize: 14.sp,),
                     ))),
-                SizedBox(height: 10.h),
+                SizedBox(height: 12.h),
                 Obx(()=>
                    CustomButton(
                      loading: authController.signUpLoading.value,
@@ -206,7 +206,7 @@ class _CustomerSignupScreenState extends State<CustomerSignupScreen> {
                       }
                   },),
                 ),
-                SizedBox(height: 50.h)
+                SizedBox(height: 55.h)
               ],
             ),
           ),
